@@ -1,0 +1,155 @@
+<div [@routerTransition]>
+    <ng-container *ngIf="loaded">
+        <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+            <div class="kt-subheader kt-grid__item">
+                <div class="kt-container">
+                    <div class="kt-subheader__main">
+                        <button (click)="backButtonPressed()" type="button" class="btn btn-light back-button mt-2">
+                            {{backButtonText}}
+                        </button>
+                        <h3 class="kt-subheader__title">
+                            Bandeja de Plan de Intervención
+                        </h3>
+                    </div>
+                    <div class="kt-subheader__toolbar">
+                        <div class="kt-subheader__wrapper">
+                            <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.."
+                                *ngIf="('Pages.ConflictTools.InterventionPlan.Create' | permission) && !id"
+                                class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                                Guardar
+                            </button>
+                            <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.."
+                                *ngIf="('Pages.ConflictTools.InterventionPlan.Edit' | permission) && id"
+                                class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="interventionPlan" class="kt-container kt-grid__item kt-grid__item--fluid">
+
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row m-0">
+                                    <label class="font-weight-bold m-0">
+                                        Código: <span class="title-dark"> PI - {{interventionPlan.code}}</span>
+                                    </label> 
+                                </div>
+                            </div>
+                            <div class="col-12 label-title">
+                                <label class="font-weight-bold m-0">
+                                    Plan de Intervención: <span class="title-dark">{{interventionPlan.caseName}}</span>
+                                </label> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body">
+
+                        <p-tabView [(activeIndex)]="tabIndex">
+
+                            <p-tabPanel header="Aspectos generales">
+                                <general-information-intervention-plan
+                                    #generalInformation
+                                    [(interventionPlan)]="interventionPlan"
+                                    [departments]="departments"
+                                    [persons]="persons"
+                                    [territorialUnits]="territorialUnits"
+                                    (showSocialConflictSearch)="showConflictModal()">
+                                </general-information-intervention-plan>
+                            </p-tabPanel>
+                            
+                            <p-tabPanel header="Actores">
+                                <actor-information-intervention-plan
+                                    #actorInformation
+                                    [(interventionPlan)]="interventionPlan"
+                                    (addActor)="addActor()"
+                                    (editActor)="showActorEdition($event)">                                    
+                                </actor-information-intervention-plan>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Situación actual">
+                                <state-information-intervention-plan
+                                    #stateInformation
+                                    [(interventionPlan)]="interventionPlan"
+                                    (addState)="addState()"
+                                    (editState)="showStateEdition($event)">                                    
+                                </state-information-intervention-plan>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Objetivos">
+                                <methodology-information-intervention-plan
+                                    #methodologyInformation
+                                    [(interventionPlan)]="interventionPlan"
+                                    (addMethodology)="addMethodology()"
+                                    (editMethodology)="showMethodologyEdition($event)">                                    
+                                </methodology-information-intervention-plan>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Nivel de riesgo">
+                                <risk-information-intervention-plan
+                                    #riskInformation
+                                    [(interventionPlan)]="interventionPlan"
+                                    (addRisk)="addRisk()"
+                                    (editRisk)="showRiskEdition($event)">                                    
+                                </risk-information-intervention-plan>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Actividades">
+                                <schedule-information-intervention-plan
+                                    #scheduleInformation
+                                    [(interventionPlan)]="interventionPlan"
+                                    (addSchedule)="addSchedule()"
+                                    (editSchedule)="showScheduleEdition($event)">                                    
+                                </schedule-information-intervention-plan>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Equipo de intervención">
+                                <team-information-intervention-plan
+                                    #teamInformation
+                                    [(interventionPlan)]="interventionPlan"
+                                    (addTeam)="addTeam()"
+                                    (editTeam)="showTeamEdition($event)">                                    
+                                </team-information-intervention-plan>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Evaluación de resultados">
+                                <solution-information-intervention-plan
+                                    #solutionInformation
+                                    [(interventionPlan)]="interventionPlan"
+                                    (addSolution)="addSolution()"
+                                    (editSolution)="showSolutionEdition($event)">                                    
+                                </solution-information-intervention-plan>
+                            </p-tabPanel>
+                            
+                        </p-tabView>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ng-container>
+
+    <find-conflict #findConflictModal (modalSave)="selectConflict($event)"></find-conflict>
+    <find-directory-government #findDirectoryGovernmentDialog (modalSave)="saveDirectoryGovernment($event)"></find-directory-government>
+
+    <create-edit-actor-information-intervention-plan #actorInformationModal (modalSave)="saveActorEdition($event)"></create-edit-actor-information-intervention-plan>
+    <create-edit-state-information-intervention-plan #stateInformationModal (modalSave)="saveStateEdition($event)"></create-edit-state-information-intervention-plan>
+    <create-edit-methodology-information-intervention-plan #methodologyInformationModal (modalSave)="saveMethodologyEdition($event)"></create-edit-methodology-information-intervention-plan>
+    <create-edit-risk-information-intervention-plan #riskInformationModal (modalSave)="saveRiskEdition($event)"></create-edit-risk-information-intervention-plan>
+    <create-edit-schedule-information-intervention-plan #scheduleInformationModal (modalSave)="saveScheduleEdition($event)" (findDirectoryGovernment)="showFindDirectoryGovernment(governmentModalSites.schedule)" (findMethodology)="showFindMethodology()"></create-edit-schedule-information-intervention-plan>
+    <create-edit-team-information-intervention-plan #teamInformationModal (modalSave)="saveTeamEdition($event)" (findDirectoryGovernment)="showFindDirectoryGovernment(governmentModalSites.teams)"></create-edit-team-information-intervention-plan>
+    <create-edit-solution-information-intervention-plan #solutionInformationModal (modalSave)="saveSolutionEdition($event)"></create-edit-solution-information-intervention-plan>
+
+    <find-methodology #findMethodologyModal [interventionPlan]="interventionPlan" (modalSave)="saveScheduleObjective($event)"></find-methodology>
+
+</div>

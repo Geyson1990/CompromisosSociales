@@ -1,0 +1,478 @@
+<div class="row mt-3">
+
+    <div *ngIf="socialConflictAlert.id" class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-3">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictAlertCode">
+                Código
+            </label>
+            <div class="input-group">
+                <input id="SocialConflictAlertCode" value="{{socialConflictAlert.code}}" class="form-control"
+                    type="text" maxlength="20" disabled>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!socialConflictAlert.id" class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-3">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictAlertCodeInput">
+                Código
+            </label>
+            <div class="input-group">
+                <input id="SocialConflictAlertCodeInput" value="Generado automáticamente" class="form-control"
+                    type="text" maxlength="20" disabled>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6 col-md-6 offset-lg-4 col-lg-4 offset-xl-6 col-xl-3 offset-xxl-6 col-xxl-3">
+        <label for="SocialConflictAlert">
+            Fecha de emisión
+        </label>
+        <div class="input-group fix-border">
+            <input #datePicker="bsDatepicker" id="SocialConflictAlert" name="SocialConflictAlert" type="text"
+                class="form-control" bsDatepicker datePickerMomentModifier [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today'}"
+                [(ngModel)]="alertTime">
+            <span (click)="datePicker.toggle()" class="input-group-text">
+                <i class="far fa-calendar-alt"></i>
+            </span>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictAlertDescription">
+                Nombre de la alerta (*)
+            </label>
+            <div class="input-group">
+                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="4"
+                    cdkAutosizeMaxRows="100" #socialConflictAlertDescriptionInput
+                    [(ngModel)]="socialConflictAlert.description" id="SocialConflictAlertDescription"
+                    name="SocialConflictAlertDescription" class="form-control" type="text" required
+                    maxlength="1000"></textarea>
+                <span class="input-legth">
+                    {{socialConflictAlertDescriptionInput.value ? socialConflictAlertDescriptionInput.value.length :
+                    0}}/{{socialConflictAlertDescriptionInput.maxLength}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictAlertTerritorialUnit">
+                Unidad territorial
+            </label>
+            <div class="input-group">
+                <select [(ngModel)]="socialConflictAlert.territorialUnit.id" id="SocialConflictAlertTerritorialUnit"
+                    name="SocialConflictAlertTerritorialUnit" class="form-control" type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let territorialUnit of territorialUnits" [value]="territorialUnit.id">
+                        {{territorialUnit.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictAlertInformation">
+                Información principal
+            </label>
+            <div class="input-group">
+                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="4"
+                    cdkAutosizeMaxRows="100" #socialConflictAlertInformationInput
+                    [(ngModel)]="socialConflictAlert.information" id="SocialConflictAlertInformation"
+                    name="SocialConflictAlertInformation" class="form-control" type="text" maxlength="6000"></textarea>
+                <span class="input-legth">
+                    {{socialConflictAlertInformationInput.value ? socialConflictAlertInformationInput.value.length :
+                    0}}/{{socialConflictAlertInformationInput.maxLength}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 my-4">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Caso relacionado a la alerta
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictInput">
+                Caso
+            </label>
+            <div class="input-group input-group-right">
+                <textarea id="SocialConflictInput" name="SocialConflictInput" class="form-control" type="text"
+                    value="{{socialConflictTitle}}" disabled></textarea>
+                <span class="input-group-text border-0" (click)="findSocialConflict()">
+                    <i class="fas fa-search"></i>
+                </span>
+            </div>
+            <div *ngIf="socialConflictAlert.socialConflict" class="row col-12 mt-2 text-right mx-0 px-0">
+                <button (click)="removeSocialConflict()" class="mb-2 ml-auto btn btn-danger">
+                    <i class="fa fa-minus"></i>
+                    Eliminar caso
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 my-4">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Ámbito geográfico
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <div class="mb-2 form-group">
+            <label for="TerritorialUnitSelect">
+                Unidad territorial
+            </label>
+            <div class="input-group">
+                <select (change)="onTerritorialUnitChange($event)" [(ngModel)]="selectedTerritorialUnitId"
+                    id="TerritorialUnitSelect" name="TerritorialUnitSelect" class="form-control" type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let territorialUnit of territorialUnits" [value]="territorialUnit.id">
+                        {{territorialUnit.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12"></div>
+
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="DepartmentUnitSelect">
+                Departamento
+            </label>
+            <div class="input-group">
+                <select [disabled]="selectedTerritorialUnitId == -1" (change)="onDepartmentChange($event)"
+                    [(ngModel)]="selectedDepartmentId" id="DepartmentUnitSelect" name="DepartmentUnitSelect"
+                    class="form-control" type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let department of selectedDepartments" [value]="department.id">
+                        {{department.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="ProvinceUnitSelect">
+                Provincia
+            </label>
+            <div class="input-group">
+                <select [disabled]="selectedDepartmentId == -1" (change)="onProvinceChange($event)"
+                    [(ngModel)]="selectedProvinceId" id="ProvinceUnitSelect" name="ProvinceUnitSelect"
+                    class="form-control" type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let province of selectedProvinces" [value]="province.id">
+                        {{province.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="DisctrictUnitSelect">
+                Distrito
+            </label>
+            <div class="input-group">
+                <select [disabled]="selectedProvinceId == -1" (change)="onDistrictChange($event)"
+                    [(ngModel)]="selectedDistrictId" id="DisctrictUnitSelect" name="DisctrictUnitSelect"
+                    class="form-control" type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let district of selectedDistricts" [value]="district.id">
+                        {{district.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="RegionSelect">
+                Centro Poblado
+            </label>
+            <div class="input-group">
+                <select [disabled]="selectedDistrictId == -1" [(ngModel)]="selectedRegionId" id="RegionSelect"
+                    name="RegionSelect" class="form-control" type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let region of selectedRegions" [value]="region.id">
+                        {{region.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="UbicationInputText">
+                Localidad - Comunidad - Otros
+            </label>
+            <div class="input-group">
+                <input #ubicationInput [disabled]="selectedDistrictId == -1" [(ngModel)]="selectedUbicationText"
+                    id="UbicationInputText" name="UbicationInputText" class="form-control text-uppercase" type="text"
+                    required maxlength="255">
+                <span class="input-legth">
+                    {{ubicationInput?.value ? ubicationInput?.value?.length :
+                    0}}/{{ubicationInput.maxLength}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row col-sm-12 col-md-6 col-lg-3 col-xl-3 m-0">
+        <button [disabled]="selectedDistrictId == -1" (click)="addTerritorialUnit()"
+            class="mb-2 mt-auto btn btn-primary">
+            <i class="fa fa-plus"></i>
+            Agregar
+        </button>
+    </div>
+
+</div>
+<div class="row align-items-center mt-4 mx-0">
+    <!--<Primeng-TurboTable-Start>-->
+    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+        <p-table #dataTable sortMode="multiple" [value]="socialConflictAlert.locations"
+            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+            [resizableColumns]="primengTableHelper.resizableColumns">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 200px">
+                        Unidad territorial
+                    </th>
+                    <th style="width: 200px">
+                        Departamento
+                    </th>
+                    <th style="width: 200px">
+                        Provincia
+                    </th>
+                    <th style="width: 200px">
+                        Distrito
+                    </th>
+                    <th style="width: 200px">
+                        Centro Poblado
+                    </th>
+                    <th style="width: 200px">
+                        Localidad-Comunidad
+                    </th>
+                    <th style="width: 80px">
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-record="$implicit" let-rowIndex="rowIndex">
+                <tr [hidden]="record.isHidden">
+                    <td style="width: 200px">
+                        <span class="ui-column-title">
+                            Unidad territorial
+                        </span>
+                        {{record.territorialUnit ? record.territorialUnit.name : 'N/A'}}
+                    </td>
+                    <td style="width: 200px">
+                        <span class="ui-column-title">
+                            Departamento
+                        </span>
+                        {{record.department ? record.department.name : 'N/A'}}
+                    </td>
+                    <td style="width: 200px">
+                        <span class="ui-column-title">
+                            Provincia
+                        </span>
+                        {{record.province ? record.province.name : 'N/A'}}
+                    </td>
+                    <td style="width: 200px">
+                        <span class="ui-column-title">
+                            Distrito
+                        </span>
+                        {{record.district ? record.district.name : 'N/A'}}
+                    </td>
+                    <td style="width: 200px">
+                        <span class="ui-column-title">
+                            Centro poblado
+                        </span> {{record.region ? record.region.name : ''}}
+                    </td>
+                    <td style="width: 200px">
+                        <span class="ui-column-title">
+                            Localidad - Comunidad
+                        </span> {{record.ubication}}
+                    </td>
+                    <td style="width: 80px">
+                        <button *ngIf="!record.remove" type="button" pButton icon="pi pi-trash" class="ui-button-danger"
+                            data-toggle="tooltip" title="Eliminar la localización" data-placement="top"
+                            (click)="removeItemFromLocation(record, rowIndex)"></button>
+                        <button *ngIf="record.remove" type="button" pButton icon="pi pi-undo" class="ui-button-warning"
+                            data-toggle="tooltip" title="Deshacer la eliminación de la localización"
+                            data-placement="top" (click)="cancelRemoveLocation(record)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <div class="primeng-no-data" *ngIf="socialConflictAlert.locations.length == 0">
+            Aún no agregó ninguna unidad territorial
+        </div>
+        <div class="primeng-paging-container">
+            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                (onPageChange)="getData($event)" [totalRecords]="socialConflictAlert.locations.length"
+                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+            </p-paginator>
+            <span class="total-records-count">
+                {{'TotalRecordsCount' | localize:socialConflictAlert.locations.length}}
+            </span>
+        </div>
+    </div>
+    <!--<Primeng-TurboTable-End>-->
+</div>
+
+<div class="row">
+
+    <div class="col-12 mt-2 mb-4">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Cobertura geográfica
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictLatitude">
+                Latitud
+            </label>
+            <div class="input-group">
+                <input [(ngModel)]="socialConflictAlert.latitude" id="SocialConflictLatitude" name="SocialConflictLatitude"
+                    class="form-control" (keyup)="keyUpDecimal($event)" (keypress)="keyUpDecimal($event)" type="text"
+                    maxlength="14">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictLongitude">
+                Longitud
+            </label>
+            <div class="input-group">
+                <input [(ngModel)]="socialConflictAlert.longitude" id="SocialConflictLongitude"
+                    name="SocialConflictLongitude" class="form-control" (keyup)="keyUpDecimal($event)"
+                    (keypress)="keyUpDecimal($event)" type="text" maxlength="14">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mt-2 mb-4">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Publicación
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="form-group col-sm-12 mb-2">
+        <label for="SocialConflictPublished" class="kt-checkbox">
+            <input id="SocialConflictPublished" type="checkbox" name="SocialConflictPublished"
+                [(ngModel)]="socialConflictAlert.published">
+            Publicar caso
+            <span></span>
+        </label>
+    </div>
+
+</div>
+
+<div class="row" *ngIf="socialConflictAlert.creatorUser">
+
+    <div class="col-12 mt-4 mb-2">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Información de registro
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="col-sm-12 col-md-8 col-lg-9 col-xl-9">
+        <div class="mb-2 form-group">
+            <label for="UserRegisterInput">
+                Registrado por
+            </label>
+            <div class="input-group">
+                <input class="form-control" id="UserRegisterInput"
+                    value="{{getUserName(socialConflictAlert.creatorUser)}}" type="text" readonly>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="UserRegisterDateInput">
+                Fecha de registro
+            </label>
+            <div class="input-group">
+                <input class="form-control" id="UserRegisterDateInput"
+                    value="{{socialConflictAlert.creationTime | momentFormat: 'L'}}" type="text" readonly>
+                <span class="input-group-text">
+                    <i class="far fa-calendar-alt"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <ng-container *ngIf="socialConflictAlert.editionUser">
+
+        <div class="col-sm-12 col-md-8 col-lg-9 col-xl-9">
+            <div class="mb-2 form-group">
+                <label for="UserUpdateInput">
+                    Última actualización
+                </label>
+                <div class="input-group">
+                    <input class="form-control" id="UserUpdateInput"
+                        value="{{getUserName(socialConflictAlert.editionUser)}}" type="text" readonly>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+            <div class="mb-2 form-group">
+                <label for="UserUpdateDateInput">
+                    Fecha de actualización
+                </label>
+                <div class="input-group">
+                    <input id="UserUpdateDateInput" class="form-control"
+                        value="{{socialConflictAlert.lastModificationTime | momentFormat: 'L'}}" type="text" readonly>
+                    <span class="input-group-text">
+                        <i class="far fa-calendar-alt"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    </ng-container>
+
+</div>

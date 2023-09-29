@@ -1,0 +1,108 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{ backdrop: 'static', keyboard: !saving }">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #factForm="ngForm" novalidate>
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="rowIndex || rowIndex == 0; else elseRowIndex">
+                            Editar situación actual
+                        </span>
+                        <ng-template #elseRowIndex>
+                            <span>
+                                Crear situación actual
+                            </span>
+                        </ng-template>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 mb-2">
+                        <label for="StateManager">
+                            Persona que registra
+                        </label>
+                        <select (change)="onManagerChange($event)" class="form-control" id="StateManager"
+                            name="StateManager" [(ngModel)]="item.manager.id">
+                            <option value="-1">
+                                Seleccione
+                            </option>
+                            <option *ngFor="let manager of managers" [value]="manager.id">
+                                {{manager.name}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div
+                        class="form-group col-sm-12 col-md-12 col-lg-6 offset-xl-2 col-xl-4 offset-xxl-2 col-xxl-4 mb-2">
+                        <label for="StateTimeInput">
+                            Fecha
+                        </label>
+                        <div class="input-group fix-border">
+                            <input #datePicker="bsDatepicker" id="StateTimeInput" name="StateTimeInput" type="text"
+                                class="form-control" bsDatepicker datePickerMomentModifier
+                                [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }" [(ngModel)]="stateTime">
+                            <span (click)="datePicker.toggle()" class="input-group-text">
+                                <i class="far fa-calendar-alt"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mt-4 mb-0">
+                        <h6 class="d-block text-left text-dark font-weight-bold">
+                            Detalle de la situación actual
+                        </h6>
+
+                        <hr>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="mb-2 form-group">
+                            <label for="StateText">
+                                Situación actual (Interna) (*)
+                            </label>
+                            <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="4"
+                                cdkAutosizeMaxRows="100" #stateInput [(ngModel)]="item.state" id="StateText"
+                                name="StateText" class="form-control" type="text" maxlength="5000" required></textarea>
+                            <span class="input-legth">
+                                {{stateInput.value ? stateInput.value?.length : 0}}/{{stateInput.maxLength}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="mb-3 form-group">
+                            <label for="StateDescriptionText">
+                                Proyección y acciones propuestas (*)
+                            </label>
+                            <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="4"
+                                cdkAutosizeMaxRows="100" #stateDescriptionTextInput [(ngModel)]="item.description"
+                                id="StateDescriptionText" name="StateDescriptionText" class="form-control" type="text"
+                                maxlength="5000" required></textarea>
+                            <span class="input-legth">
+                                {{stateDescriptionTextInput.value ? stateDescriptionTextInput.value?.length :
+                                0}}/{{stateDescriptionTextInput.maxLength}}
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!factForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

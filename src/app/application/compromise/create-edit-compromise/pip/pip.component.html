@@ -1,0 +1,238 @@
+<div class="tab-container">
+
+    <h5 class="d-block text-left text-dark font-weight-bold">
+        Información de la inversión
+    </h5>
+
+    <hr>
+
+    <div class="row">
+
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="mb-2 form-group">
+                <label for="compromiseSnipCode">
+                    Código SNIP
+                </label>
+                <div class="input-group input-group-right">
+                    <input id="compromiseSnipCode" class="form-control" type="text" name="PipMefSnipCode" [(ngModel)]="sNIPCode">
+                    <span (click)="searchSnipCode()" class="input-group-text">
+                        <i class="fas fa-search"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="mb-2 form-group">
+                <label for="compromiseUnifiedCode">
+                    Código Unificado
+                </label>
+                <div class="input-group input-group-right">
+                    <input id="compromiseUnifiedCode" class="form-control" type="text" name="PipMefUnifiedCode" [(ngModel)]="unifiedCode">
+                    <span (click)="searchUnifiedCode()" class="input-group-text">
+                        <i class="fas fa-search"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12"></div>
+
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="mb-2 form-group">
+                <label>
+                    Código SNIP
+                </label>
+                <div class="input-group input-group-right">
+                    <input class="form-control" type="text" name="PipMefSnipCode" disabled
+                        value="{{compromise?.pipmef?.snipCode}}">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="mb-2 form-group">
+                <label>
+                    Código Unificado
+                </label>
+                <div class="input-group input-group-right">
+                    <input class="form-control" type="text" disabled value="{{compromise?.pipmef?.unifiedCode}}">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="mb-2 form-group">
+                <label>
+                    Estado
+                </label>
+                <div class="input-group">
+                    <input class="form-control" type="text" disabled value="{{compromise?.pipmef?.status}}">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="mb-2 form-group">
+                <label>
+                    Denominación del proyecto
+                </label>
+                <div class="input-group">
+                    <textarea class="form-control" type="text" disabled
+                        value="{{compromise?.pipmef?.projectName}}"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="mb-2 form-group">
+                <label>
+                    Fecha de viabilidad
+                </label>
+                <div class="input-group fix-border">
+                    <input type="text" class="form-control" disabled value="{{compromise?.pipmef?.viabilityDate}}">
+                    <span class="input-group-text">
+                        <i class="far fa-calendar-alt"></i>
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="mb-2 form-group">
+                <label>
+                    Costo de inversión actualizado	
+                </label>
+                <div class="input-group">
+                    <input class="form-control" type="text" disabled value="{{compromise?.pipmef?.updatedCost | number: '1.2-2' : 'en-US'}}">
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="mb-2 form-group">
+                <label>
+                    Devengado acumulado
+                </label>
+                <div class="input-group">
+                    <input class="form-control" type="text" disabled value="{{compromise?.pipmef?.accumulatedAccrued | number: '1.2-2' : 'en-US'}}">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+            <div class="mb-2 form-group">
+                <label>
+                    PIM
+                </label>
+                <div class="input-group">
+                    <input type="text" class="form-control" disabled value="{{compromise?.pipmef?.pim | number: '1.2-2' : 'en-US'}}">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+            <div class="mb-2 form-group">
+                <label>
+                    PIA
+                </label>
+                <div class="input-group">
+                    <input type="text" class="form-control" disabled value="{{compromise?.pipmef?.pia | number: '1.2-2' : 'en-US'}}">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+            <div class="mb-2 form-group">
+                <label>
+                    Devengado
+                </label>
+                <div class="input-group">
+                    <input type="text" class="form-control" disabled value="{{compromise?.pipmef?.accrued | number: '1.2-2' : 'en-US'}}">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="mb-2 form-group">
+                <label for="compromiseFormuledUnit">
+                    Unidad formuladora
+                </label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="compromiseFormuledUnit" disabled value="{{compromise?.pipmef?.formulatingUnit}}">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="mb-2 form-group">
+                <label for="compromiseExecutorUnit">
+                    Unidad ejecutora
+                </label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="compromiseExecutorUnit" disabled value="{{compromise?.pipmef?.executingUnit}}">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h5 class="d-block text-left text-dark font-weight-bold mt-4">
+        Seguimiento de la inversión
+    </h5>
+
+    <hr>
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+            <div class="mb-2 form-group">
+                <label for="PipPhasesTypeSelect">
+                    Fase y Etapa
+                </label>
+                <div class="input-group">
+                    <select (change)="pipPhaseChange($event)" [(ngModel)]="compromise.pipmef.pIPPhase.id" id="PipPhasesTypeSelect" name="PipPhasesTypeSelect" class="form-control"
+                        type="text">
+                        <option value="-1">
+                            No especifica
+                        </option>
+                        <option *ngFor="let status of pipPhases" [value]="status.id">
+                            {{status.value}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+            <div class="mb-2 form-group">
+                <label for="MilestoneTypeSelect">
+                    Hito
+                </label>
+                <div class="input-group">
+                    <select [disabled]="compromise.pipmef.pIPPhase.id == -1" [(ngModel)]="compromise.pipmef.pIPMilestone.id" id="MilestoneTypeSelect" name="MilestoneTypeSelect"
+                        class="form-control" type="text">
+                        <option value="-1">
+                            No especifica
+                        </option>
+                        <option *ngFor="let status of selectPipMilestones" [value]="status.id">
+                            {{status.value}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h5 class="d-block text-left text-dark font-weight-bold mt-4">
+        Cronograma de cumplimiento
+    </h5>
+
+    <hr>
+
+    <phase-milestone-information 
+        #phaseMilestone
+        [(compromise)]="compromise"
+        (addCompromise)="addEvent()"
+        (editCompromise)="editEvent($event)">
+    </phase-milestone-information>
+
+</div>

@@ -1,0 +1,84 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #riskForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="rowIndex || rowIndex == 0; else elseRowIndex">
+                            Editar nivel de riesgo
+                        </span>
+                        <ng-template #elseRowIndex>
+                            <span>
+                                Crear nivel de riesgo
+                            </span>
+                        </ng-template>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="RiskLevel">
+                            Nivel de riesgo (*)
+                        </label>
+                        <select (change)="onRiskChange($event)" class="form-control" id="RiskLevel" name="RiskLevel"
+                            [(ngModel)]="item.risk.id">
+                            <option value="-1">
+                                Seleccione
+                            </option>
+                            <option *ngFor="let risk of risks" [value]="risk.id">
+                                {{risk.name}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="RiskTimeInput">
+                            Fecha (*)
+                        </label>
+                        <div class="input-group fix-border">
+                            <input #datePicker="bsDatepicker" id="RiskTimeInput" name="RiskTimeInput" type="text"
+                                class="form-control" bsDatepicker datePickerMomentModifier
+                                [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }" [(ngModel)]="riskTime">
+                            <span (click)="datePicker.toggle()" class="input-group-text">
+                                <i class="far fa-calendar-alt"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="RiskDescription">
+                            Observación
+                        </label>
+                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="4"
+                            cdkAutosizeMaxRows="100" id="RiskDescription" #observationInput
+                            #observationInputValidation="ngModel" class="form-control" type="text" name="Name"
+                            [(ngModel)]="item.description" maxlength="2000"></textarea>
+                        <validation-messages [formCtrl]="observationInputValidation"></validation-messages>
+                        <span class="input-legth">
+                            {{observationInput.value ? observationInput.value?.length :
+                            0}}/{{observationInput.maxLength}}
+                        </span>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!riskForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+hr {
+    background: #8da1b5 !important;
+    height: 1px;
+    width: 100%;
+    margin-bottom: 0.5rem !important;
+    margin-top: 0.5rem !important;
+}
+
+.input-group-text {
+    background: transparent !important;
+    border-left: 0 !important;
+}
+
+input:disabled,
+textarea:disabled {
+    background: #dadada !important;
+    border-color: #c4c4c4 !important;
+}
+
+.risk-color {
+    border-radius: 10px;
+    min-width: 50px;
+    height: 18px;
+}

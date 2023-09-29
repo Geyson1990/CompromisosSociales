@@ -1,0 +1,55 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #userForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="item.id">
+                            Editar responsable específico: {{item.name}}
+                        </span>
+                        <span *ngIf="!item.id">
+                            Crear responsable específico
+                        </span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-sm-12">
+                        <label for="ResponsibleActor">
+                            Actor responsable
+                        </label>
+                        <input type="text" id="ResponsibleActor" name="ResponsibleActor" class="form-control"
+                            value="{{responsibleActor.name}}" readonly disabled>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="Name">
+                            Nombre del responsable específico (*)
+                        </label>
+                        <input id="Name" #nameInput="ngModel" class="form-control" type="text" name="Name"
+                            [(ngModel)]="item.name" required maxlength="255">
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!userForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

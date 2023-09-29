@@ -1,0 +1,55 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #riskForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="rowIndex || rowIndex == 0; else elseRowIndex">
+                            Editar nivel de riesgo
+                        </span>
+                        <ng-template #elseRowIndex>
+                            <span>
+                                Crear nivel de riesgo
+                            </span>
+                        </ng-template>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
+                        <label for="RiskLevel">
+                            Nivel de riesgo (*)
+                        </label>
+                        <select (change)="onRiskChange($event)" class="form-control" id="RiskLevel" name="RiskLevel"
+                            [(ngModel)]="item.risk.id">
+                            <option value="-1">
+                                Seleccione
+                            </option>
+                            <option *ngFor="let risk of risks" [value]="risk.id">
+                                {{risk.name}}
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!riskForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

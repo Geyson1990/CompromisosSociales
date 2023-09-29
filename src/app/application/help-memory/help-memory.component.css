@@ -1,0 +1,32 @@
+.input-group-text {
+    background: transparent !important;
+    border-left: 0 !important;
+}
+
+input:disabled,
+textarea:disabled {
+    background: #dadada !important;
+    border-color: #c4c4c4 !important;
+}
+
+.input-group-text {
+    background: #C4C4C4 !important;
+    border-left: 0 !important;
+}
+
+.input-group-right>.form-control:focus~span {
+    border-color: #9aabff;
+}
+
+.input-group-right>span {
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+
+.input-group-right>span:hover {
+    background: #dadada !important;
+}
+
+.input-group-right>span:active {
+    background: #ebebeb !important;
+}

@@ -1,0 +1,108 @@
+<div class="box-container mx-0 mb-4 row">
+    <div class="box-container col-sm-12 col-md-6 col-lg-5 col-xl-4 col-xxl-4 my-2 mx-auto">
+        <div class="box-content">
+            <div class="box-header">
+                <label>
+                    FACTOR DE CORRECIÓN
+                </label>
+            </div>
+            <div class="box-body">
+                <div class="box-body-item">
+                    <div class="box-body-title">
+                        <label>
+                            FC Impacto
+                        </label>
+                    </div>
+                    <div class="box-body-text">
+                        <label>
+                            {{item?.fixImpactRate | number: '1.2-2' : 'en-US'}}
+                        </label>
+                    </div>
+                </div>
+                <div class="box-body-item">
+                    <div class="box-body-title">
+                        <label>
+                            FC Probabilidad
+                        </label>
+                    </div>
+                    <div class="box-body-text">
+                        <label>
+                            {{item?.fixProbabilityRate | number: '1.2-2' : 'en-US'}}
+                        </label>
+                    </div>
+                </div>
+                <div class="box-body-item">
+                    <div class="box-body-title">
+                        <label>
+                            Impacto
+                        </label>
+                    </div>
+                    <div class="box-body-text">
+                        <label>
+                            {{item?.impact | number: '1.2-2' : 'en-US'}}
+                        </label>
+                    </div>
+                </div>
+                <div class="box-body-item">
+                    <div class="box-body-title">
+                        <label>
+                            Probabilidad
+                        </label>
+                    </div>
+                    <div class="box-body-text">
+                        <label>
+                            {{item?.probability | number: '1.2-2' : 'en-US'}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-container col-sm-12 col-md-6 col-lg-5 col-xl-4 col-xxl-4 my-2 mx-auto">
+        <div class="box-content">
+            <div class="box-header">
+                <label>
+                    NIVEL DE RIESGO
+                </label>
+            </div>
+            <div class="box-body">
+                <div class="box-body-item">
+                    <div class="box-body-title">
+                        <label>
+                            Riesgo
+                        </label>
+                    </div>
+                    <div class="box-body-text">
+                        <label>
+                            {{item?.value | number: '1.2-2' : 'en-US'}}
+                        </label>
+                    </div>
+                </div>
+                <!--div class="box-body-item">
+                    <div class="box-body-title">
+                        <label>
+                            Tres Niveles
+                        </label>
+                    </div>
+                    <div class="box-body-text">
+                        <label>
+                            {{item?.value | primaryLevel}}
+                        </label>
+                    </div>
+                </div-->
+                <div class="box-body-item">
+                    <div class="box-body-title">
+                        <label>
+                            Diez Niveles
+                        </label>
+                    </div>
+                    <div class="box-body-text">
+                        <label>
+                            {{item?.impact | impactProbabilityLevel: item?.probability}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

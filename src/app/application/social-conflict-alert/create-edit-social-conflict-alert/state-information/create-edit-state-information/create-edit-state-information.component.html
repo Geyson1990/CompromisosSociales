@@ -1,0 +1,75 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #stateForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="rowIndex || rowIndex == 0; else elseRowIndex">
+                            Editar actualización de alerta
+                        </span>
+                        <ng-template #elseRowIndex>
+                            <span>
+                                Crear actualización de alerta
+                            </span>
+                        </ng-template>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-2">
+                        <label for="StateTime">
+                            Fecha (*)
+                        </label>
+                        <p-calendar [style]="{'width':'100%'}" [locale]="es" id="StateTime" name="StateTime"
+                            class="boostrap-dropdown" [(ngModel)]="stateTime" dateFormat="dd/mm/yy" [showTime]="false"
+                            inputId="StateTimeInput">
+                        </p-calendar>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-2">
+                        <label for="StateHour">
+                            Hora (*)
+                        </label>
+                        <p-calendar [style]="{'width':'100%'}" [locale]="es" id="StateHour" name="StateHour"
+                            class="boostrap-dropdown" [(ngModel)]="stateTime" hourFormat="HH:mm:ss" [timeOnly]="true"
+                            [hourFormat]="24" [showSeconds]="true" [showTime]="true" inputId="StateHourInput">
+                        </p-calendar>
+                    </div>
+
+                    <div class="form-group col-sm-12 mt-2">
+                        <label for="StateDescription">
+                            Actualización de Alerta (*)
+                        </label>
+                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="4"
+                            cdkAutosizeMaxRows="100" id="StateDescription" #alertDescription
+                            #alertStateDescriptionInput="ngModel" class="form-control" type="text"
+                            name="StateDescription" [(ngModel)]="item.description" required maxlength="2000"></textarea>
+                        <validation-messages [formCtrl]="alertStateDescriptionInput"></validation-messages>
+                        <span class="input-legth">
+                            {{alertDescription.value ? alertDescription.value.length :
+                            0}}/{{alertDescription.maxLength}}
+                        </span>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!stateForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

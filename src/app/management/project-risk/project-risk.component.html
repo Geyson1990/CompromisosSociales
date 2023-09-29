@@ -1,0 +1,200 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div class="kt-container">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        <span>
+                            Riesgo de proyectos estratégicos
+                        </span>
+                    </h3>
+                    <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                    <span class="kt-subheader__desc">
+                        Gestione los proyectos y sus etapas de todas la plataforma
+                    </span>
+                </div>
+                <div class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <button *ngIf="'Pages.Management.ProjectRisk.Create' | permission" (click)="createItem()"
+                            class="btn btn-primary">
+                            <i class="fa fa-plus"></i>
+                            Crear proyecto
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="kt-container kt-grid__item kt-grid__item--fluid">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <form class="kt-form" autocomplete="new-password">
+                        <div>
+                            <div class="row align-items-center mb-4">
+                                <div class="col-xl-12">
+                                    <div class="form-group m-form__group align-items-center">
+                                        <div class="input-group">
+                                            <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                                class="form-control m-input" placeholder="Buscar..." type="text">
+                                            <span class="input-group-btn">
+                                                <button (click)="getData()" aria-label="Buscar" class="btn btn-primary"
+                                                    type="submit">
+                                                    <i class="flaticon-search-1"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row align-items-center">
+                        <!--<Primeng-TurboTable-Start>-->
+                        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable sortMode="multiple" (onLazyLoad)="getData($event)"
+                                [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns" dataKey="id">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 130px"
+                                            [hidden]="!(['Pages.Management.ProjectRisk.Edit', 'Pages.Management.ProjectRisk.Delete'] | permissionAny)">
+                                            Acciones
+                                        </th>
+                                        <th style="width: 250px" pSortableColumn="Name">
+                                            Descripción
+                                            <p-sortIcon field="Name"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="CreationTime">
+                                            Fecha
+                                            <p-sortIcon field="CreationTime"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 180px">
+                                            Unidades territoriales
+                                        </th>
+                                        <th style="width: 180px" pSortableColumn="Province.Department.Name">
+                                            Departamento
+                                            <p-sortIcon field="Province.Department.Name"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 180px" pSortableColumn="Province.Name">
+                                            Provincia
+                                            <p-sortIcon field="Province.Name"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 130px" pSortableColumn="Impact">
+                                            Impacto
+                                            <p-sortIcon field="Impact"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 130px" pSortableColumn="Probability">
+                                            Probabilidad
+                                            <p-sortIcon field="Probability"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 130px" pSortableColumn="Value">
+                                            Riesgo
+                                            <p-sortIcon field="Value"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="Value">
+                                            Diez niveles
+                                            <p-sortIcon field="Value"></p-sortIcon>
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record let-expanded="expanded">
+                                    <tr>
+                                        <td style="width: 130px"
+                                            [hidden]="!(['Pages.Management.ProjectRisk.Edit', 'Pages.Management.ProjectRisk.Delete'] | permissionAny)">
+                                            <div class="btn-group dropdown" dropdown container="body">
+                                                <button dropdownToggle class="dropdown-toggle btn btn-sm btn-primary">
+                                                    <i class="fa fa-cog"></i><span class="caret"></span>
+                                                    {{"Actions" | localize}}
+                                                </button>
+                                                <ul class="dropdown-menu" *dropdownMenu>
+                                                    <li>
+                                                        <a href="javascript:;"
+                                                            *ngIf="'Pages.Management.ProjectRisk.Edit' | permission"
+                                                            (click)="editItem(record)">
+                                                            Editar
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;"
+                                                            *ngIf="'Pages.Management.ProjectRisk.Delete' | permission"
+                                                            (click)="deleteItem(record)">
+                                                            Eliminar
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td style="width: 250px">
+                                            <span class="ui-column-title">
+                                                Descripción
+                                            </span> {{record.name}}
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">
+                                                Fecha
+                                            </span> {{record.creationTime | momentFormat:'L'}}
+                                        </td>
+                                        <td style="width: 180px">
+                                            <span class="ui-column-title">
+                                                Unidades territoriales
+                                            </span> {{record.territorialUnitText}}
+                                        </td>
+                                        <td style="width: 180px">
+                                            <span class="ui-column-title">
+                                                Departamento
+                                            </span> {{record?.department?.name}}
+                                        </td>
+                                        <td style="width: 180px">
+                                            <span class="ui-column-title">
+                                                Provincia
+                                            </span> {{record.province?.name}}
+                                        </td>
+                                        <td style="width: 130px">
+                                            <span class="ui-column-title">
+                                                Impacto
+                                            </span> {{record.impact | number :'1.2-2' : 'en-US'}}
+                                        </td>
+                                        <td style="width: 130px">
+                                            <span class="ui-column-title">
+                                                Probabilidad
+                                            </span> {{record.probability | number :'1.2-2' : 'en-US'}}
+                                        </td>
+                                        <td style="width: 130px">
+                                            <span class="ui-column-title">
+                                                Riesgo
+                                            </span> {{record.value | number :'1.2-2' : 'en-US'}}
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">
+                                                Diez niveles
+                                            </span> {{record.value | secondaryLevel }}
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{'NoData' | localize}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                    (onPageChange)="getData($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                                </span>
+                            </div>
+                        </div>
+                        <!--<Primeng-TurboTable-End>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

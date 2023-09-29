@@ -1,0 +1,13 @@
+.condition-open {
+    border-radius: 10px;
+    min-width: 50px;
+    height: 18px;
+    background: #00B050;
+}
+
+.condition-closed {
+    border-radius: 10px;
+    min-width: 50px;
+    height: 18px;
+    background: #FF0000;
+}

@@ -1,0 +1,303 @@
+<detail-box-project-risk [item]="projectRisk"></detail-box-project-risk>
+
+<div class="row mb-4">
+
+    <div class="col-12 mt-3">
+        <label class="fz-16 font-weight-bold">
+            DESCRIPCIÓN DEL PROYECTO
+        </label>
+        <hr>
+    </div>
+
+    <div class="col-sm-8 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="ProjectRiskCode">
+                Código Proyecto (*)
+            </label>
+            <div class="input-group">
+                <input #projectRiskCodeInput [(ngModel)]="projectRisk.code" id="ProjectRiskCode" name="ProjectRiskCode"
+                    class="form-control" type="text" required maxlength="30">
+                <span class="input-legth">
+                    {{projectRiskCodeInput.value ?
+                    projectRiskCodeInput.value.length :0}}/{{projectRiskCodeInput.maxLength}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <div class="mb-2 form-group">
+            <label for="ProjectRiskEvaluationTime">
+                Fecha de análisis
+            </label>
+            <input type="text" id="ProjectRiskEvaluationTime" name="ProjectRiskEvaluationTime" class="form-control"
+                bsDatepicker datePickerMomentModifier [(date)]="projectRisk.evaluatedTime"
+                [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', customTodayClass: 'datepicker-today' }">
+        </div>
+    </div>
+
+    <div class="col-sm-12">
+        <div class="mb-2 form-group">
+            <label for="ProjectRiskName">
+                Proyecto estratégico (*)
+            </label>
+            <div class="input-group">
+                <textarea #projectRiskNameInput [(ngModel)]="projectRisk.name" id="ProjectRiskName"
+                    name="ProjectRiskName" class="form-control" type="text" required maxlength="500"></textarea>
+                <span class="input-legth">
+                    {{projectRiskNameInput.value ?
+                    projectRiskNameInput.value.length :0}}/{{projectRiskNameInput.maxLength}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mt-3">
+        <label class="fz-16 font-weight-bold">
+            FACTOR DE CORRECIÓN
+        </label>
+        <hr>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <div class="mb-2 form-group">
+            <label for="ProjectRiskFCImpact">
+                FC Impacto
+            </label>
+            <div class="input-group">
+                <select (change)="onFixRateChange($event)" [(ngModel)]="projectRisk.fixImpactRate" id="ProjectRiskFCImpact" name="ProjectRiskFCImpact"
+                    class="form-control">
+                    <option value="2">
+                        (+) Valor 5
+                    </option>
+                    <option value="1.8">
+                        (+) Valor 4
+                    </option>
+                    <option value="1.6">
+                        (+) Valor 3
+                    </option>
+                    <option value="1.4">
+                        (+) Valor 2
+                    </option>
+                    <option value="1.2">
+                        (+) Valor 1
+                    </option>
+                    <option value="1">
+                        Neutro
+                    </option>
+                    <option value="0.8">
+                        (-) Valor 1
+                    </option>
+                    <option value="0.6">
+                        (-) Valor 2
+                    </option>
+                    <option value="0.4">
+                        (-) Valor 3
+                    </option>
+                    <option value="0.2">
+                        (-) Valor 4
+                    </option>
+                    <option value="0.1">
+                        (-) Valor 5
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <div class="mb-2 form-group">
+            <label for="ProjectRiskFCProbability">
+                FC Probabilidad
+            </label>
+            <div class="input-group">
+                <select (change)="onFixRateChange($event)" [(ngModel)]="projectRisk.fixProbabilityRate" id="ProjectRiskFCProbability"
+                    name="ProjectRiskFCProbability" class="form-control">
+                    <option value="2">
+                        (+) Valor 5
+                    </option>
+                    <option value="1.8">
+                        (+) Valor 4
+                    </option>
+                    <option value="1.6">
+                        (+) Valor 3
+                    </option>
+                    <option value="1.4">
+                        (+) Valor 2
+                    </option>
+                    <option value="1.2">
+                        (+) Valor 1
+                    </option>
+                    <option value="1">
+                        Neutro
+                    </option>
+                    <option value="0.8">
+                        (-) Valor 1
+                    </option>
+                    <option value="0.6">
+                        (-) Valor 2
+                    </option>
+                    <option value="0.4">
+                        (-) Valor 3
+                    </option>
+                    <option value="0.2">
+                        (-) Valor 4
+                    </option>
+                    <option value="0.1">
+                        (-) Valor 5
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mt-3">
+        <label class="fz-16 font-weight-bold">
+            UBICACIÓN
+        </label>
+        <hr>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <div class="mb-2 form-group">
+            <label for="ProjectRiskDepartment">
+                Departamento
+            </label>
+            <div class="input-group">
+                <select (change)="onDepartmentChange($event)" [(ngModel)]="projectRisk.departmentId"
+                    id="ProjectRiskDepartment" name="ProjectRiskDepartment" class="form-control" type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let department of departments" [value]="department.id">
+                        {{department.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <div class="mb-2 form-group">
+            <label for="ProjectRiskProvince">
+                Provincia
+            </label>
+            <div class="input-group">
+                <select [disabled]="projectRisk.departmentId == -1" (change)="onProvinceChange($event)"
+                    [(ngModel)]="projectRisk.provinceId" id="ProjectRiskProvince" name="ProjectRiskProvince"
+                    class="form-control" type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let province of provinces" [value]="province.id">
+                        {{province.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="ProjectRiskTerritorialUnits">
+                Unidades territoriales
+            </label>
+            <div class="input-group">
+                <textarea id="ProjectRiskTerritorialUnits" value="{{projectRisk.territorialUnitText}}"
+                    name="ProjectRiskTerritorialUnits" class="form-control" type="text" readonly></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-5 col-xl-5">
+        <div class="mb-2 form-group">
+            <label for="ProjectRiskStage">
+                Fase del proyecto
+            </label>
+            <div class="input-group">
+                <select (change)="onStageChange($event)" [(ngModel)]="projectRisk.stageId" id="ProjectRiskStage"
+                    name="ProjectRiskStage" class="form-control" type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let stage of stages" [value]="stage.id">
+                        {{stage.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row" *ngIf="projectRisk?.creationUser">
+
+    <div class="col-12">
+        <h5 class="fz-16 d-block text-left text-dark font-weight-bold">
+            INFORMACIÓN ADICIONAL
+        </h5>
+        <hr>
+    </div>
+
+    <div class="col-sm-12 col-md-8 col-lg-9 col-xl-9">
+        <div class="mb-2 form-group">
+            <label for="filterText">
+                Registrado por
+            </label>
+            <div class="input-group">
+                <input placeholder="Usuario que creó el registro"
+                    value="{{projectRisk.creationUser.name}} {{projectRisk.creationUser.surname}}"
+                    class="form-control" type="text" readonly>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="filterText">
+                Fecha de registro
+            </label>
+            <div class="input-group input-group-right">
+                <input placeholder="Fecha que se creó el registro"
+                    value="{{projectRisk.creationTime | momentFormat: 'DD/MM/YYYY HH:mm:ss'}}" class="form-control"
+                    type="text" readonly>
+                <span class="input-group-text">
+                    <i class="far fa-calendar-alt"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row" *ngIf="projectRisk?.editionUser">
+
+    <div class="col-sm-12 col-md-8 col-lg-9 col-xl-9">
+        <div class="mb-2 form-group">
+            <label for="filterText">
+                Última actualización
+            </label>
+            <div class="input-group">
+                <input placeholder="Último usuario que actualizó el registro"
+                    value="{{projectRisk.editionUser.name}} {{projectRisk.editionUser.surname}}"
+                    class="form-control" type="text" readonly>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="filterText">
+                Fecha de actualización
+            </label>
+            <div class="input-group input-group-right">
+                <input placeholder="Última fecha que se actualizó el registro"
+                    value="{{projectRisk.lastModificationTime | momentFormat: 'DD/MM/YYYY HH:mm:ss'}}"
+                    class="form-control" type="text" readonly>
+                <span class="input-group-text">
+                    <i class="far fa-calendar-alt"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+
+</div>

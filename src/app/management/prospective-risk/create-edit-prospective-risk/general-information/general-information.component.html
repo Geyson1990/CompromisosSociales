@@ -1,0 +1,293 @@
+<div class="box-container mx-0 mb-4 row">
+    <div class="box-container col-sm-12 col-md-6 col-lg-5 col-xl-4 col-xxl-4 my-2 mx-auto">
+        <div class="box-content">
+            <div class="box-header">
+                <label>
+                    Datos de Identificación
+                </label>
+            </div>
+            <div class="box-body">
+                <div class="box-body-item">
+                    <div class="box-body-title">
+                        <label>
+                            Unidad Territorial
+                        </label>
+                    </div>
+                    <div class="box-body-text">
+                        <label>
+                            {{item?.territorialUnitText}}
+                        </label>
+                    </div>
+                </div>
+                <div class="box-body-item">
+                    <div class="box-body-title">
+                        <label>
+                            Región
+                        </label>
+                    </div>
+                    <div class="box-body-text">
+                        <label>
+                            {{item?.department?.name}}
+                        </label>
+                    </div>
+                </div>
+                <div class="box-body-item">
+                    <div class="box-body-title">
+                        <label>
+                            Provincia
+                        </label>
+                    </div>
+                    <div class="box-body-text">
+                        <label>
+                            {{item?.province?.name}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-container col-sm-12 col-md-6 col-lg-5 col-xl-4 col-xxl-4 my-2 mx-auto">
+        <div class="box-content">
+            <div class="box-header">
+                <label>
+                    NIVEL DE RIESGO
+                </label>
+            </div>
+            <div class="box-body">
+                <div class="box-body-item">
+                    <div class="box-body-title">
+                        <label>
+                            Factor de correción
+                        </label>
+                    </div>
+                    <div class="box-body-text">
+                        <label>
+                            {{item?.fixRate | number: '1.2-2' : 'en-US'}}
+                        </label>
+                    </div>
+                </div>
+                <div class="box-body-item">
+                    <div class="box-body-title">
+                        <label>
+                            Valor
+                        </label>
+                    </div>
+                    <div class="box-body-text">
+                        <label>
+                            {{item?.value | number: '1.2-2' : 'en-US'}}
+                        </label>
+                    </div>
+                </div>
+                <div class="box-body-item">
+                    <div class="box-body-title">
+                        <label>
+                            Tres Niveles
+                        </label>
+                    </div>
+                    <div class="box-body-text">
+                        <label>
+                            {{item?.value | primaryLevel}}
+                        </label>
+                    </div>
+                </div>
+                <div class="box-body-item">
+                    <div class="box-body-title">
+                        <label>
+                            Diez Niveles
+                        </label>
+                    </div>
+                    <div class="box-body-text">
+                        <label>
+                            {{item?.value | secondaryLevel}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mb-4">
+
+    <div class="col-12 mt-3">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Información general
+        </h5>
+        <hr>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <div class="mb-2 form-group">
+            <label for="ProspectiveRiskFCImpact">
+                Factor de correción
+            </label>
+            <div class="input-group">
+                <select (change)="onFixRateChange($event)" [(ngModel)]="item.fixRate" id="ProspectiveRiskFCImpact" name="ProspectiveRiskFCImpact"
+                    class="form-control">
+                    <option value="2">
+                        (+) Valor 5
+                    </option>
+                    <option value="1.8">
+                        (+) Valor 4
+                    </option>
+                    <option value="1.6">
+                        (+) Valor 3
+                    </option>
+                    <option value="1.4">
+                        (+) Valor 2
+                    </option>
+                    <option value="1.2">
+                        (+) Valor 1
+                    </option>
+                    <option value="1">
+                        Neutro
+                    </option>
+                    <option value="0.8">
+                        (-) Valor 1
+                    </option>
+                    <option value="0.6">
+                        (-) Valor 2
+                    </option>
+                    <option value="0.4">
+                        (-) Valor 3
+                    </option>
+                    <option value="0.2">
+                        (-) Valor 4
+                    </option>
+                    <option value="0.1">
+                        (-) Valor 5
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <div class="mb-2 form-group">
+            <label for="ProjectRiskEvaluationTime">
+                Fecha de análisis
+            </label>
+            <input type="text" id="ProjectRiskEvaluationTime" name="ProjectRiskEvaluationTime" class="form-control"
+                bsDatepicker datePickerMomentModifier [(date)]="item.evaluatedTime"
+                [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', customTodayClass: 'datepicker-today' }">
+        </div>
+    </div>
+</div>
+
+<p-tabView class="mt-4" [(activeIndex)]="tabIndex">
+
+    <p-tabPanel *ngFor="let variable of item?.variables; index as vi;" [header]="variable.name">
+        <div class="tab-container">
+            <div class="variable-container my-4 mx-0 row">
+                <div *ngFor="let option of variable.options; index as oi"
+                    class="variable-box-width col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-3">
+                    <div class="variable-content">
+                        <div class="variable-box">
+                            <label>
+                                {{option.name}}
+                            </label>
+                        </div>
+
+                        <div class="variable-selection" *ngIf="option?.details?.length > 0; else emptyVariable">
+                            <div class="form-group">
+                                <select [disabled]="option.type == optionTypes.cuantitative" aria-label="selection"
+                                    class="form-control" id="StaticVariableType{{vi}}_{{oi}}"
+                                    name="StaticVariableType{{vi}}_{{oi}}" [(ngModel)]="option.relationId"
+                                    (change)="optionChange(option, $event)">
+                                    <option *ngFor="let detail of option.details; index as i" [value]="detail.id">
+                                        {{detail.name}} - {{(option.type == optionTypes.cuantitative ? option.relationValue : detail.value)| number: '1.2-2' : 'en-us'}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <ng-template #emptyVariable>
+                            <div class="variable-selection">
+                                <div class="form-group">
+                                    <select disabled aria-label="selection"
+                                        class="form-control" id="StaticVariableTypeB{{vi}}_{{oi}}"
+                                        name="StaticVariableTypeB{{vi}}_{{oi}}" value="-1">
+                                        <option value="-1">
+                                            Variable sin detalles
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-tabPanel>
+
+</p-tabView>
+
+<div class="row" *ngIf="item?.creationUser">
+
+    <div class="col-12">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Información de registro
+        </h5>
+        <hr>
+    </div>
+
+    <div class="col-sm-12 col-md-8 col-lg-9 col-xl-9">
+        <div class="mb-2 form-group">
+            <label for="filterText">
+                Registrado por
+            </label>
+            <div class="input-group">
+                <input placeholder="Usuario que creó el registro"
+                    value="{{item.creationUser.name}} {{item.creationUser.surname}} - {{item.creationUser.emailAddress}}"
+                    class="form-control" type="text" readonly>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="filterText">
+                Fecha de registro
+            </label>
+            <div class="input-group input-group-right">
+                <input placeholder="Fecha que se creó el registro"
+                    value="{{item.creationTime | momentFormat: 'DD/MM/YYYY HH:mm:ss'}}" class="form-control" type="text"
+                    readonly>
+                <span class="input-group-text">
+                    <i class="far fa-calendar-alt"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row" *ngIf="item?.editionUser">
+
+    <div class="col-sm-12 col-md-8 col-lg-9 col-xl-9">
+        <div class="mb-2 form-group">
+            <label for="filterText">
+                Última actualización
+            </label>
+            <div class="input-group">
+                <input placeholder="Último usuario que actualizó el registro"
+                    value="{{item.editionUser.name}} {{item.editionUser.surname}} - {{item.editionUser.emailAddress}}"
+                    class="form-control" type="text" readonly>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="filterText">
+                Fecha de actualización
+            </label>
+            <div class="input-group input-group-right">
+                <input placeholder="Última fecha que se actualizó el registro"
+                    value="{{item.lastModificationTime | momentFormat: 'DD/MM/YYYY HH:mm:ss'}}" class="form-control"
+                    type="text" readonly>
+                <span class="input-group-text">
+                    <i class="far fa-calendar-alt"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+
+</div>

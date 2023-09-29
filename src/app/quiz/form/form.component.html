@@ -1,0 +1,85 @@
+<div [@routerTransition]>
+    <ng-container *ngIf="loaded">
+
+        <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+            <div class="kt-subheader kt-grid__item">
+                <div class="kt-container">
+                    <div class="kt-subheader__main">
+                        <h3 class="kt-subheader__title">
+                            
+                        </h3>
+                    </div>
+                    <div class="kt-subheader__toolbar">
+                        <div class="kt-subheader__wrapper">
+                            <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.."
+                                *ngIf="'Pages.Quiz.Customer' | permission" class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                                Enviar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kt-container kt-grid__item kt-grid__item--fluid">
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body">
+
+                        <div class="row">
+
+                            <div class="col-12 mt-2">
+                                <h6 class="d-block text-center text-dark font-weight-bold">
+                                    Experiencia del usuario con el manejo de la Plataforma Digital de Gestión de
+                                    Conflictos
+                                    Sociales
+                                </h6>
+
+                                <hr>
+                            </div>
+
+                            <div class="col-12 my-2">
+                                <h6 class="d-block text-justify text-dark">
+                                    Estimado usuario, deseamos conocer su experiencia en el uso de la Plataforma Digital para la Gestión de Conflictos Sociales.
+                                </h6>
+                                <h6 class="d-block text-dark">
+                                    Por favor, responda las siguientes preguntas:
+                                </h6>
+                            </div>
+
+                            <div *ngFor="let form of forms" class="col-12">
+                                <quiz-form-option [form]="form"></quiz-form-option>
+                            </div>
+
+                            <ng-container *ngIf="resources?.length > 0">
+                                <div class="col-12 mb-3">
+                                    <h5 class="d-block text-left text-dark font-weight-bold mt-4">
+                                        Archivos adjuntos
+                                    </h5>
+                                    <hr>
+                                </div>
+
+                                <div class="col-12">
+                                    <file-resource-item [resource]="resource"
+                                        (restoreResource)="restoreResource(resource)"
+                                        (removeResource)="removeResource(resource, i)"
+                                        *ngFor="let resource of resources; index as i;"></file-resource-item>
+                                </div>
+                            </ng-container>
+
+                            <file-uploader #fileUploadItems class="w-100 my-3" [(attachments)]="uploadFiles"
+                                [hideType]="true" [hideTitle]="true" [size]="size"
+                                [avaliableExtensions]="avaliableExtensions" [disabled]="uploadFiles.length >= 5"
+                                header="Agregar archivos (Opcional)"
+                                subtitle="Si desea, puede adjuntar un archivo con información adicional para sustentar sus sugerencias (Formatos admitidos: JPG/PNG, DOC/DOCX, PDF), con un tamaño máximo de 3MB"
+                                (saveAttachment)="saveAttach($event)">
+                            </file-uploader>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </ng-container>
+</div>

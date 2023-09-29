@@ -1,0 +1,216 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #scheduleForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="rowIndex || rowIndex == 0; else elseRowIndex">
+                            Editar actividad 
+                        </span>
+                        <ng-template #elseRowIndex>
+                            <span>
+                                Crear actividad 
+                            </span>
+                        </ng-template>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 mb-2">
+                        <label for="ScheduleActivity">
+                            Tipo de actividad (*)
+                        </label>
+                        <select (change)="onActivityChange($event)" class="form-control" id="ScheduleActivity"
+                            name="ScheduleActivity" [(ngModel)]="item.interventionPlanActivity.id">
+                            <option value="-1">
+                                Seleccione
+                            </option>
+                            <option *ngFor="let activity of activities" [value]="activity.id">
+                                {{activity.name}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div
+                        class="form-group col-sm-12 col-md-12 col-lg-6 offset-xl-2 col-xl-4 offset-xxl-2 col-xxl-4 mb-2">
+                        <label for="ScheduleTimeInput">
+                            Fecha de inicio (*)
+                        </label>
+                        <div class="input-group fix-border">
+                            <input #datePicker="bsDatepicker" id="ScheduleTimeInput" name="ScheduleTimeInput"
+                                type="text" class="form-control" bsDatepicker datePickerMomentModifier
+                                [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }" required [(ngModel)]="scheduleTime">
+                            <span (click)="datePicker.toggle()" class="input-group-text">
+                                <i class="far fa-calendar-alt"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div *ngIf="item.interventionPlanActivity.showDescription" class="form-group col-sm-12 mt-2">
+                        <label for="ScheduleActityDescription">
+                            Otros (*)
+                        </label>
+                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                            cdkAutosizeMaxRows="100" id="ScheduleActityDescription" #activityInput
+                            #activityInputValidation="ngModel" class="form-control" type="text"
+                            name="ScheduleActityDescription" [(ngModel)]="item.activity" required
+                            maxlength="5000"></textarea>
+                        <validation-messages [formCtrl]="activityInputValidation"></validation-messages>
+                        <span class="input-legth">
+                            {{activityInput.value ? activityInput.value?.length :
+                            0}}/{{activityInput.maxLength}}
+                        </span>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 mb-2">
+                        <label for="ScheduleEntity">
+                            Tipo de entidad (*)
+                        </label>
+                        <select (change)="onEntityChange($event)" class="form-control" id="ScheduleEntity"
+                            name="ScheduleEntity" [(ngModel)]="item.interventionPlanEntity.id">
+                            <option value="-1">
+                                Seleccione
+                            </option>
+                            <option *ngFor="let entity of entities" [value]="entity.id">
+                                {{entity.name}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <ng-container *ngIf="item.interventionPlanEntity.type == types.sector">
+                        <div class="form-group col-sm-12 my-2">
+                            <label for="DirectoryGovernmentSearch">
+                                Entidad responsable (*)
+                            </label>
+                            <div class="input-group input-group-right">
+                                <textarea id="DirectoryGovernmentSearch" name="DirectoryGovernmentSearch"
+                                    class="form-control" type="text" value="{{activityDirectoryGovernmentText}}"
+                                    disabled></textarea>
+                                <span class="input-group-text border-0" (click)="findDirectoryGovernmentEvent()">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                            </div>
+                            <div *ngIf="item.directoryGovernment" class="row col-12 mt-2 text-right mx-0 px-0">
+                                <button type="button" (click)="removeDirectoryGovernment()" aria-label="delete-button"
+                                    class="mb-2 ml-auto btn btn-danger">
+                                    <i class="fa fa-minus"></i>
+                                    Eliminar Entidad
+                                </button>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="item.interventionPlanEntity.type == types.responsible">
+                        <div class="form-group col-sm-12 my-2">
+                            <label for="ScheduleAlertResponsible">
+                                Entidad responsable (*)
+                            </label>
+                            <select (change)="onAlertResponsible($event)" class="form-control"
+                                id="ScheduleAlertResponsible" name="ScheduleAlertResponsible"
+                                [(ngModel)]="item.alertResponsible.id">
+                                <option value="-1">
+                                    Seleccione
+                                </option>
+                                <option *ngFor="let alertResponsible of alertResponsibles"
+                                    [value]="alertResponsible.id">
+                                    {{alertResponsible.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="item.interventionPlanEntity.type == types.other">
+
+                        <div class="form-group col-sm-12 my-2">
+                            <label for="ScheduleEntityDescription">
+                                Entidad responsable (*)
+                            </label>
+                            <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                                cdkAutosizeMaxRows="100" id="ScheduleEntityDescription" #entityInput
+                                #entityInputValidation="ngModel" class="form-control" type="text"
+                                name="ScheduleEntityDescription" [(ngModel)]="item.entity" required
+                                maxlength="5000"></textarea>
+                            <validation-messages [formCtrl]="entityInputValidation"></validation-messages>
+                            <span class="input-legth">
+                                {{entityInput.value ? entityInput.value?.length :
+                                0}}/{{entityInput.maxLength}}
+                            </span>
+                        </div>
+
+                    </ng-container>
+
+                    <div class="form-group col-sm-12 my-2">
+                        <label for="ScheduleObjectiveSearch">
+                            Objetivo (*)
+                        </label>
+                        <div class="input-group input-group-right">
+                            <textarea id="ScheduleObjectiveSearch" name="ScheduleObjectiveSearch"
+                                class="form-control" type="text" value="{{objectiveText}}"
+                                disabled></textarea>
+                            <span class="input-group-text border-0" (click)="findObjectiveEvent()">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </div>
+                        <div *ngIf="item.interventionPlanMethodology" class="row col-12 mt-2 text-right mx-0 px-0">
+                            <button type="button" (click)="removeObjective()" aria-label="delete-button"
+                                class="mb-2 ml-auto btn btn-danger">
+                                <i class="fa fa-minus"></i>
+                                Eliminar Objetivo
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-12 mt-2 mb-3">
+                        <label for="ScheduleDescription">
+                            Actividad planificada (*)
+                        </label>
+                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                            cdkAutosizeMaxRows="100" id="ScheduleDescription" #scheduleInput
+                            #scheduleInputValidation="ngModel" class="form-control" type="text"
+                            name="ScheduleDescription" [(ngModel)]="item.schedule" required
+                            maxlength="5000"></textarea>
+                        <validation-messages [formCtrl]="scheduleInputValidation"></validation-messages>
+                        <span class="input-legth">
+                            {{scheduleInput.value ? scheduleInput.value?.length :
+                            0}}/{{scheduleInput.maxLength}}
+                        </span>
+                    </div>
+
+                    <div class="form-group col-sm-12 mt-2">
+                        <label for="ScheduleProduct">
+                            Producto (*)
+                        </label>
+                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                            cdkAutosizeMaxRows="100" id="ScheduleProduct" #productInput
+                            #sproductInputValidation="ngModel" class="form-control" type="text"
+                            name="ScheduleProduct" [(ngModel)]="item.product" required
+                            maxlength="5000"></textarea>
+                        <validation-messages [formCtrl]="sproductInputValidation"></validation-messages>
+                        <span class="input-legth">
+                            {{productInput.value ? productInput.value?.length :
+                            0}}/{{productInput.maxLength}}
+                        </span>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!scheduleForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

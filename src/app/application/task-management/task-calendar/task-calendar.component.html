@@ -1,0 +1,14 @@
+<div class="row">
+    <div class="col-12 d-flex justify-content-end mb-5">
+        <button (click)="loadTasks(true)" class="btn btn-primary mt-auto mb-2" type="submit">
+            <i class="fas fa-sync" [attr.aria-label]="l('Search')"></i>
+            Refrescar
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <p-fullCalendar [events]="events" [options]="options"></p-fullCalendar>
+    </div>
+</div>

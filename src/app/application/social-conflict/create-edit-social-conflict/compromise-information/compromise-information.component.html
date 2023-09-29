@@ -1,0 +1,101 @@
+<form class="my-4 kt-form" autocomplete="new-password">
+    <div class="mb-2 form-group">
+        <label for="GlobalFilter">
+            Buscar por nombre del compromiso
+        </label>
+        <div class="input-group">
+            <input [(ngModel)]="filterText" id="GlobalFilter" name="GlobalFilter" class="form-control"
+                [placeholder]="l('SearchWithThreeDot')" type="text">
+            <span class="input-group-btn">
+                <button (click)="getData()" class="btn btn-primary" type="submit" aria-label="Buscar">
+                    <i class="flaticon-search-1"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+
+<div class="row mx-0 align-items-center">
+    <!--<Primeng-TurboTable-Start>-->
+    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+        <p-table #dataTable sortMode="multiple" (onLazyLoad)="getData($event)" [value]="primengTableHelper.records"
+            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+            [resizableColumns]="primengTableHelper.resizableColumns">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 150px" pSortableColumn="Code">
+                        Código
+                        <p-sortIcon field="Code"></p-sortIcon>
+                    </th>
+                    <th style="width: 100px" pSortableColumn="Type">
+                        Tipo
+                        <p-sortIcon field="Type"></p-sortIcon>
+                    </th>
+                    <th style="width: 450px" pSortableColumn="Name">
+                        Nombre del compromiso
+                        <p-sortIcon field="Name"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="Status.Value">
+                        Estado
+                        <p-sortIcon field="Status.Value"></p-sortIcon>
+                    </th>
+                    <th style="width: 150px" pSortableColumn="CreationTime">
+                        Fecha de creación
+                        <p-sortIcon field="CreationTime"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-record="$implicit">
+                <tr>
+                    <td style="width: 150px">
+                        <span class="ui-column-title">
+                            Código
+                        </span>
+                        {{record.code}}
+                    </td>
+                    <td style="width: 100px">
+                        <span class="ui-column-title">
+                            Código
+                        </span>
+                        {{
+                        record.type == 1 ? 'PIP' :
+                        record.type == 2 ? 'Actividad' :
+                        'N/A'
+                        }}
+                    </td>
+                    <td style="width: 450px">
+                        <span class="ui-column-title">
+                            Nombre del compromiso
+                        </span> {{record.name}}
+                    </td>
+                    <td style="width: 150px">
+                        <span class="ui-column-title">
+                            Estado
+                        </span> {{record?.status?.value}}
+                    </td>
+                    <td style="width: 150px">
+                        <span class="ui-column-title">
+                            Fecha de creación
+                        </span>
+                        {{record.creationTime | momentFormat:'L'}}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+            {{'NoData' | localize}}
+        </div>
+        <div class="primeng-paging-container">
+            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                (onPageChange)="getData($event)" [totalRecords]="primengTableHelper.totalRecordsCount"
+                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+
+            </p-paginator>
+            <span class="total-records-count">
+                {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+            </span>
+        </div>
+    </div>
+    <!--<Primeng-TurboTable-End>-->
+</div>

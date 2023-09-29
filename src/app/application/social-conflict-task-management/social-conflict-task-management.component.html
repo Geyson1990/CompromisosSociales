@@ -1,0 +1,81 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        Bandeja de tareas de Conflictos
+                    </h3>
+                </div>
+                <div class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <div [ngClass]="{'v-hidden' : activeIndex != tabList.taskList }" class="btn-group" dropdown>
+                            <button dropdownToggle type="button" class="btn btn-outline-success dropdown-toggle"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="far fa-file-excel"></i>
+                                Operaciones en excel
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-excel-operations" *dropdownMenu>
+                                <a class="dropdown-item" (click)="exportMatrixToExcel()" href="javascript:;">
+                                    <i class="fa fa-download" class="fz-1r"></i>
+                                    Exportar matriz
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <p-tabView [(activeIndex)]="activeIndex">
+
+                        <p-tabPanel>
+                            <ng-template pTemplate="header">
+                                <i class="fas fa-align-justify mr-2"></i>
+                                <span>Lista de tareas</span>
+                            </ng-template>
+
+                            <social-conflict-task-management-list #taskList (showConflict)="showConflict($event)">
+                            </social-conflict-task-management-list>
+                        </p-tabPanel>
+
+                        <p-tabPanel>
+                            <ng-template pTemplate="header">
+                                <i class="fas fa-filter mr-2"></i>
+                                <span>Busqueda Avanzada</span>
+                            </ng-template>
+                            <social-conflict-task-management-selection 
+                                #taskSelection
+                                (onShowExpandDeadLine)="openExpandDeadLine($event)" 
+                                (onShowPerson)="openPersons($event)"
+                                (onShowSender)="openSender($event)" 
+                                (onShowEmail)="openEmail($event)"
+                                (back)="onBackPressed($event)">
+                            </social-conflict-task-management-selection>
+                        </p-tabPanel>
+
+                        <p-tabPanel (onTabClick)="loadTasks()">
+                            <ng-template pTemplate="header">
+                                <i class="fas fa-calendar-alt mr-2"></i>
+                                <span>Calendario</span>
+                            </ng-template>
+                            <social-conflict-task-management-calendar #taskCalendar>
+                            </social-conflict-task-management-calendar>
+                        </p-tabPanel>
+
+                    </p-tabView>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <social-conflict-task-management-expand-deadline #taskExpandDeadlineModal (modalSave)="saveDeadLine($event)">
+    </social-conflict-task-management-expand-deadline>
+    <social-conflict-task-management-person #taskPerson (modalSave)="savePersons($event)">
+    </social-conflict-task-management-person>
+    <social-conflict-task-management-sender #taskSender></social-conflict-task-management-sender>
+    <social-conflict-task-management-email #taskEmail></social-conflict-task-management-email>
+</div>

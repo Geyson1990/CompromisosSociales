@@ -1,0 +1,452 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content" *ngIf="active">
+            <form #factForm="ngForm" novalidate>
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="rowIndex || rowIndex == 0; else elseRowIndex">
+                            Editar hecho de violencia
+                        </span>
+                        <ng-template #elseRowIndex>
+                            <span>
+                                Crear hecho de violencia
+                            </span>
+                        </ng-template>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                            <label for="ViolenceFactType">
+                                Tipo de hecho (*)
+                            </label>
+                            <select (change)="onFactChange($event)" class="form-control" id="ViolenceFactType"
+                                name="ViolenceFactType" [(ngModel)]="item.fact.id">
+                                <option value="-1">
+                                    Seleccione
+                                </option>
+                                <option *ngFor="let fact of facts" [value]="fact.id">
+                                    {{fact.name}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label for="ViolenceFactDescription">
+                                Hecho (*)
+                            </label>
+                            <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                                cdkAutosizeMaxRows="100" #violenceFactDescriptionInput id="ViolenceFactDescription"
+                                name="ViolenceFactDescription" class="form-control" type="text"
+                                [(ngModel)]="item.description" required maxlength="2000"></textarea>
+                            <span class="input-legth">
+                                {{violenceFactDescriptionInput?.value ? violenceFactDescriptionInput.value.length :
+                                0}}/{{violenceFactDescriptionInput.maxLength}}
+                            </span>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label for="ViolenceFactResponsible">
+                                Responsable de hecho
+                            </label>
+                            <input #violenceFactResponsibletInput="ngModel" id="ViolenceFactResponsible"
+                                name="ViolenceFactResponsible" class="form-control text-uppercase" type="text"
+                                [(ngModel)]="item.responsible" maxlength="255">
+                            <validation-messages [formCtrl]="violenceFactResponsibletInput"></validation-messages>
+                        </div>
+
+                        <div class="col-12 mt-4 mb-0">
+                            <h6 class="d-block text-left text-dark font-weight-bold">
+                                Cantidad de personas heridas por género
+                            </h6>
+
+                            <hr>
+                        </div>
+
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <div class="mb-2 form-group">
+                                <label for="InjuredMenCount">
+                                    Hombres
+                                </label>
+                                <div class="input-group">
+                                    <input [(ngModel)]="item.injuredMen" id="InjuredMenCount" name="InjuredMenCount"
+                                        class="form-control" (keyup)="keyUpOnlyNumber($event)"
+                                        (keypress)="keyPressOnlyNumbers($event)" type="text" maxlength="4">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <div class="mb-2 form-group">
+                                <label for="InjuredWomenCount">
+                                    Mujeres
+                                </label>
+                                <div class="input-group">
+                                    <input [(ngModel)]="item.injuredWomen" id="InjuredWomenCount"
+                                        name="InjuredWomenCount" class="form-control" (keyup)="keyUpOnlyNumber($event)"
+                                        (keypress)="keyPressOnlyNumbers($event)" type="text" maxlength="4">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <div class="mb-2 form-group">
+                                <label for="InjuredTotalCount">
+                                    Total
+                                </label>
+                                <div class="input-group">
+                                    <input id="InjuredTotalCount" name="InjuredTotalCount"
+                                        class="form-control font-weight-bold" value="{{item.totalInjured}}" disabled>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-4 mb-0">
+                            <h6 class="d-block text-left text-dark font-weight-bold">
+                                Cantidad de personas fallecidas por género
+                            </h6>
+
+                            <hr>
+                        </div>
+
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <div class="mb-2 form-group">
+                                <label for="DeadMenCount">
+                                    Hombres
+                                </label>
+                                <div class="input-group">
+                                    <input [(ngModel)]="item.deadMen" id="DeadMenCount" name="DeadMenCount"
+                                        class="form-control" (keyup)="keyUpOnlyNumber($event)"
+                                        (keypress)="keyPressOnlyNumbers($event)" type="text" maxlength="4">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <div class="mb-2 form-group">
+                                <label for="DeadWomenCount">
+                                    Mujeres
+                                </label>
+                                <div class="input-group">
+                                    <input [(ngModel)]="item.deadWomen" id="DeadWomenCount" name="DeadWomenCount"
+                                        class="form-control" (keyup)="keyUpOnlyNumber($event)"
+                                        (keypress)="keyPressOnlyNumbers($event)" type="text" maxlength="4">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                            <div class="mb-2 form-group">
+                                <label for="DeadTotalCount">
+                                    Total
+                                </label>
+                                <div class="input-group">
+                                    <input id="DeadTotalCount" name="DeadTotalCount"
+                                        class="form-control font-weight-bold" value="{{item.totalDead}}" disabled>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-4 mb-0">
+                            <h6 class="d-block text-left text-dark font-weight-bold">
+                                Período de tiempo del hecho
+                            </h6>
+
+                            <hr>
+                        </div>
+
+                        <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-3 col-xxl-3 mb-2">
+                            <label for="ViolenceFactStartTime">
+                                Fecha de inicio (*)
+                            </label>
+                            <p-calendar [style]="{'width':'100%'}" [locale]="es" id="ViolenceFactStartTime"
+                                name="ViolenceFactStartTime" class="boostrap-dropdown" [(ngModel)]="startTime"
+                                dateFormat="dd/mm/yy" [showTime]="false" inputId="ViolenceFactStartTimeInput">
+                            </p-calendar>
+                        </div>
+
+                        <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-3 col-xxl-3 mb-2">
+                            <label for="ViolenceFactStartHour">
+                                Hora de inicio (*)
+                            </label>
+                            <p-calendar [style]="{'width':'100%'}" [locale]="es" id="ViolenceFactStartHour"
+                                name="ViolenceFactStartHour" class="boostrap-dropdown" [(ngModel)]="startTime"
+                                hourFormat="HH:mm:ss" [timeOnly]="true" [hourFormat]="24" [showSeconds]="true"
+                                [showTime]="true" inputId="ViolenceFactStartHourInput">
+                            </p-calendar>
+                        </div>
+
+                        <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-3 col-xxl-3 mb-2">
+                            <label for="ViolenceFactEndTime">
+                                Fecha de término
+                            </label>
+                            <p-calendar [style]="{'width':'100%'}" [locale]="es" id="ViolenceFactEndTime"
+                                name="ViolenceFactEndTime" class="boostrap-dropdown" [(ngModel)]="endTime"
+                                dateFormat="dd/mm/yy" [showTime]="false" inputId="ViolenceFactEndTimeInput">
+                            </p-calendar>
+                        </div>
+
+                        <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-3 col-xxl-3 mb-2">
+                            <label for="ViolenceFactEndHour">
+                                Hora de término
+                            </label>
+                            <p-calendar [style]="{'width':'100%'}" [locale]="es" id="ViolenceFactEndHour"
+                                name="ViolenceFactEndHour" class="boostrap-dropdown" [(ngModel)]="endTime"
+                                hourFormat="HH:mm:ss" [timeOnly]="true" [hourFormat]="24" [showSeconds]="true"
+                                [showTime]="true" inputId="ViolenceFactEndHourInput">
+                            </p-calendar>
+                        </div>
+
+                        <div class="col-12 mt-4 mb-0">
+                            <h6 class="d-block text-left text-dark font-weight-bold">
+                                Regiones del hecho
+                            </h6>
+
+                            <hr>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <div class="mb-2 form-group">
+                                <label for="DepartmentUnitSelect">
+                                    Departamento
+                                </label>
+                                <div class="input-group">
+                                    <select (change)="onDepartmentChange($event)" [(ngModel)]="selectedDepartmentId"
+                                        id="DepartmentUnitSelect" name="DepartmentUnitSelect" class="form-control"
+                                        type="text">
+                                        <option value="-1">
+                                            Seleccione
+                                        </option>
+                                        <option *ngFor="let department of departments" [value]="department.id">
+                                            {{department.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <div class="mb-2 form-group">
+                                <label for="ProvinceUnitSelect">
+                                    Provincia
+                                </label>
+                                <div class="input-group">
+                                    <select [disabled]="selectedDepartmentId == -1" (change)="onProvinceChange($event)"
+                                        [(ngModel)]="selectedProvinceId" id="ProvinceUnitSelect"
+                                        name="ProvinceUnitSelect" class="form-control" type="text">
+                                        <option value="-1">
+                                            Seleccione
+                                        </option>
+                                        <option *ngFor="let province of selectedProvinces" [value]="province.id">
+                                            {{province.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <div class="mb-2 form-group">
+                                <label for="DisctrictUnitSelect">
+                                    Distrito
+                                </label>
+                                <div class="input-group">
+                                    <select (change)="onDistrictChange($event)" [disabled]="selectedProvinceId == -1"
+                                        [(ngModel)]="selectedDistrictId" id="DisctrictUnitSelect"
+                                        name="DisctrictUnitSelect" class="form-control" type="text">
+                                        <option value="-1">
+                                            Seleccione
+                                        </option>
+                                        <option *ngFor="let district of selectedDistricts" [value]="district.id">
+                                            {{district.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <div class="mb-2 form-group">
+                                <label for="RegionSelect">
+                                    Centro Poblado
+                                </label>
+                                <div class="input-group">
+                                    <select [disabled]="selectedDistrictId == -1" [(ngModel)]="selectedRegionId"
+                                        id="RegionSelect" name="RegionSelect" class="form-control" type="text">
+                                        <option value="-1">
+                                            Seleccione
+                                        </option>
+                                        <option *ngFor="let region of selectedRegions" [value]="region.id">
+                                            {{region.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <div class="mb-2 form-group">
+                                <label for="UbicationInputText">
+                                    Localidad - Comunidad - Otros
+                                </label>
+                                <div class="input-group">
+                                    <input #ubicationInput [(ngModel)]="selectedUbicationText" id="UbicationInputText"
+                                        name="UbicationInputText" class="form-control text-uppercase" type="text"
+                                        maxlength="255">
+                                    <span class="input-legth">
+                                        {{ubicationInput?.value ? ubicationInput?.value?.length :
+                                        0}}/{{ubicationInput.maxLength}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row col-sm-12 col-md-6 col-lg-3 col-xl-3 m-0">
+                            <button type="button" (click)="addRegion()" class="mb-2 mt-auto btn btn-primary">
+                                <i class="fa fa-plus"></i>
+                                Agregar
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="row align-items-center mt-4 mx-0">
+                        <!--<Primeng-TurboTable-Start>-->
+                        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable sortMode="multiple" [value]="item.locations"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 200px">
+                                            Departamento
+                                        </th>
+                                        <th style="width: 200px">
+                                            Provincia
+                                        </th>
+                                        <th style="width: 200px">
+                                            Distrito
+                                        </th>
+                                        <th style="width: 200px">
+                                            Centro Poblado
+                                        </th>
+                                        <th style="width: 200px">
+                                            Localidad-Comunidad
+                                        </th>
+                                        <th style="width: 130px">
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit" let-rowIndex="rowIndex">
+                                    <tr [hidden]="record.isHidden">
+                                        <td style="width: 200px">
+                                            <span class="ui-column-title">
+                                                Departamento
+                                            </span> {{record.department ? record.department.name : 'N/A'}}
+                                        </td>
+                                        <td style="width: 200px">
+                                            <span class="ui-column-title">
+                                                Provincia
+                                            </span> {{record.province ? record.province.name : 'N/A'}}
+                                        </td>
+                                        <td style="width: 200px">
+                                            <span class="ui-column-title">
+                                                Distrito
+                                            </span> {{record.district ? record.district.name : 'N/A'}}
+                                        </td>
+                                        <td style="width: 200px">
+                                            <span class="ui-column-title">
+                                                Centro poblado
+                                            </span> {{record.region ? record.region.name : 'N/A'}}
+                                        </td>
+                                        <td style="width: 200px">
+                                            <span class="ui-column-title">
+                                                Localidad - Comunidad
+                                            </span> {{record.ubication}}
+                                        </td>
+                                        <td style="width: 130px">
+                                            <button *ngIf="!record.remove" type="button" pButton icon="pi pi-trash"
+                                                class="ui-button-danger" data-toggle="tooltip"
+                                                title="Eliminar la localización" data-placement="top"
+                                                (click)="removeItemFromLocation(record, rowIndex)"></button>
+                                            <button *ngIf="record.remove" type="button" pButton icon="pi pi-undo"
+                                                class="ui-button-warning" data-toggle="tooltip"
+                                                title="Deshacer la eliminación de la localización" data-placement="top"
+                                                (click)="cancelRemoveLocation(record)"></button>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="item.locations.length == 0">
+                                Aún no agregó ninguna región
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                    (onPageChange)="getData($event)" [totalRecords]="item.locations.length"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{'TotalRecordsCount' | localize:item.locations.length}}
+                                </span>
+                            </div>
+                        </div>
+                        <!--<Primeng-TurboTable-End>-->
+                    </div>
+
+                    <div class="row">
+
+                        <div class="form-group col-sm-12">
+                            <label for="ViolenceFactActions">
+                                Acciones realizadas para la atención del hecho de violencia
+                            </label>
+                            <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                                cdkAutosizeMaxRows="100" #violenceFactActionsInput id="ViolenceFactActions"
+                                name="ViolenceFactActions" class="form-control" type="text" [(ngModel)]="item.actions"
+                                maxlength="2000"></textarea>
+                            <span class="input-legth">
+                                {{violenceFactActionsInput?.value ? violenceFactActionsInput.value.length :
+                                0}}/{{violenceFactActionsInput.maxLength}}
+                            </span>
+                        </div>
+
+                        <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                            <label for="ViolenceFactManager">
+                                Responsable información (PCM)
+                            </label>
+                            <select (change)="onManagerChange($event)" class="form-control" id="ViolenceFactManager"
+                                name="ViolenceFactManager" [(ngModel)]="item.manager.id">
+                                <option value="-1">
+                                    Seleccione
+                                </option>
+                                <option *ngFor="let manager of managers" [value]="manager.id">
+                                    {{manager.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!factForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

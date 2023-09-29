@@ -1,0 +1,135 @@
+<div [@routerTransition]>
+    <ng-container *ngIf="loaded">
+        <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+            <div class="kt-subheader kt-grid__item">
+                <div class="kt-container">
+                    <div class="kt-subheader__main">
+                        <button (click)="backButtonPressed()" type="button" class="btn btn-light back-button mt-2">
+                            {{backButtonText}}
+                        </button>
+                        <h3 class="kt-subheader__title">
+                            Bandeja de Reuniones Multisectoriales
+                        </h3>
+                    </div>
+                    <div class="kt-subheader__toolbar">
+                        <div class="kt-subheader__wrapper">
+                            <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.."
+                                *ngIf="('Pages.ConflictTools.SectorMeet.Create' | permission) && !id"
+                                class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                                Guardar
+                            </button>
+                            <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.."
+                                *ngIf="('Pages.ConflictTools.SectorMeet.Edit' | permission) && id"
+                                class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="state.sectorMeetSession" class="kt-container kt-grid__item kt-grid__item--fluid">
+
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row m-0">
+                                    <label class="font-weight-bold m-0">
+                                        Código: <span class="title-dark"> RE - {{state.sectorMeetSession.sectorMeet?.code}}</span>
+                                    </label> 
+                                    <label class="mx-2"></label>
+                                    <label class="font-weight-bold my-0 mr-2">
+                                        Sesión: <span class="title-dark">
+                                            {{state.sectorMeetSession.type == types.remote ? 'Remota' : 'Presencial'}}
+                                        </span>
+                                    </label> 
+                                    <label class="mx-2"></label>
+                                    <label class="font-weight-bold my-0 mr-2">
+                                        Fecha <span class="title-dark">{{state.sectorMeetSession.sessionTime | momentFormat: 'DD/MM/YYYY HH:mm'}}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12 label-title">
+                                <label class="font-weight-bold m-0">
+                                    Reunión: <span class="title-dark">{{state.sectorMeetSession.sectorMeet?.meetName}}</span>
+                                </label> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body">
+                        <p-tabView [(activeIndex)]="tabIndex">
+                            <p-tabPanel header="Registro de Participantes">
+                                <registration-information
+                                    #registrationInformation
+                                    (addLeader)="addLeader()"
+                                    (editLeader)="editLeader($event)"
+                                    (showTeam)="showTeam($event)">                                    
+                                </registration-information>
+                            </p-tabPanel>
+                            <p-tabPanel header="Agenda de la Reunión">
+                                <schedule-information
+                                    #scheduleInformation
+                                    (addSchedule)="addSchedule()"
+                                    (editSchedule)="editSchedule($event)">
+                                </schedule-information>
+                            </p-tabPanel>
+                            <p-tabPanel header="Resumen de la Reunión">
+                                <summary-information
+                                    #summaryInformation
+                                    (addSummary)="addSummary()"
+                                    (editSummary)="editSummary($event)">                                    
+                                </summary-information>
+                            </p-tabPanel>
+                            <p-tabPanel header="Acuerdos">
+                                <agreement-information
+                                    #agreementInformation
+                                    (addAgreement)="addAgreement()"
+                                    (editAgreement)="editAgreement($event)">
+                                </agreement-information>
+                            </p-tabPanel>
+                            <p-tabPanel header="Aspectos Críticos">
+                                <critical-aspect-information
+                                    #criticalAspectInformation
+                                    (addCriticalAspect)="addCriticalAspect()"
+                                    (editCriticalAspect)="editCriticalAspect($event)">                                    
+                                </critical-aspect-information>
+                            </p-tabPanel>
+                            <p-tabPanel header="Próximas Acciones">
+                                <action-information
+                                    #actionInformation
+                                    (addAction)="addAction()"
+                                    (editAction)="editAction($event)">                                    
+                                </action-information>
+                            </p-tabPanel>
+                            <p-tabPanel header="Registro Fotográfico">
+                                <resource-information>                                    
+                                </resource-information>
+                            </p-tabPanel>
+                        </p-tabView>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ng-container>
+
+    <create-edit-schedule #createEditScheduleModal (modalSave)="saveSchedule($event)"></create-edit-schedule>
+    <create-edit-agreement #createEditAgreementModal (modalSave)="saveAgreement($event)"></create-edit-agreement>
+    <create-edit-critical-aspect #createEditCriticalAspectModal (modalSave)="saveCriticalAspect($event)"></create-edit-critical-aspect>
+    <create-edit-action #createEditActionModal (modalSave)="saveAction($event)"></create-edit-action>
+    <create-edit-summary #createEditSummaryModal (modalSave)="saveSummary($event)" (findDirectory)="findSummaryDirectory()"></create-edit-summary>
+    <create-edit-leader #createEditLeaderModal (modalSave)="saveLeader($event)" (findDirectoryGovernment)="findDirectoryGovernment()" (findDirectoryIndustry)="findDirectoryIndustry()"></create-edit-leader>
+    <create-edit-team #createEditTeamModal (modalSave)="saveTeam($event)"></create-edit-team>
+
+    <team-information #teamInformationModal (modalSave)="saveLeader($event)" (addTeam)="addTeam()" (editTeam)="editTeam($event)"></team-information>
+    
+    <find-directory-government #findDirectoryGovernmentModal (modalSave)="saveDirectoryGoverment($event)"></find-directory-government>
+    <find-directory-industry #findDirectoryIndustryModal (modalSave)="saveDirectoryIndustry($event)"></find-directory-industry>
+    <find-leader-sector-meet-session #findSectorMeetSessionModal (modalSave)="saveSummaryDirectory($event)"></find-leader-sector-meet-session>
+</div>

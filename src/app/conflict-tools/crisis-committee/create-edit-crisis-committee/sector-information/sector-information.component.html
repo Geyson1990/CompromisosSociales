@@ -1,0 +1,85 @@
+<div class="row">
+
+    <div class="row col-sm-12 col-md-6 col-lg-3 col-xl-3 mb-2 mx-0">
+        <button (click)="addEvent()" class="mb-0 mt-auto btn btn-primary">
+            <i class="fa fa-plus"></i>
+            Agregar sector identificado
+        </button>
+    </div>
+
+</div>
+
+<div class="row align-items-center mt-4 mx-0">
+    <!--<Primeng-TurboTable-Start>-->
+    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+        <p-table #dataTable sortMode="multiple" [value]="crisisCommittee.sectors"
+            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+            [resizableColumns]="primengTableHelper.resizableColumns">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 50px">
+                    </th>
+                    <th style="width: 350px">
+                        Nombre
+                    </th>
+                    <th style="width: 180px">
+                        Nombre corto
+                    </th>
+                    <th style="width: 260px">
+                        Sector
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-record="$implicit" let-rowIndex="rowIndex">
+                <tr [hidden]="record.isHidden">
+                    <td style="width: 50px">
+                        {{(rowIndex + 1) | number: '2.0-0'}}
+                    </td>
+                    <td style="width: 350px">
+                        <span class="ui-column-title">
+                            Nombre
+                        </span> {{record.directoryGovernment ? record.directoryGovernment.name : 'N/A'}}
+                    </td>
+                    <td style="width: 180px">
+                        <span class="ui-column-title">
+                            Nombre corto
+                        </span> {{record.directoryGovernment ? record.directoryGovernment.shortName : 'N/A'}}
+                    </td>
+                    <td style="width: 150px">
+                        <span class="ui-column-title">
+                            Sector
+                        </span> {{record?.directoryGovernment?.directoryGovernmentSector ? record.directoryGovernment.directoryGovernmentSector.name : 'N/A'}}
+                    </td>
+                    <td style="width: 110px">
+                        <ng-container *ngIf="!record.verificationLocation">
+                            <button type="button" pButton icon="pi pi-pencil" class="ui-button-primary mr-2"
+                                data-toggle="tooltip" title="Editar sector identificado" data-placement="top"
+                                (click)="editEvent(record, rowIndex)"></button>
+                            <button *ngIf="!record.remove" type="button" pButton icon="pi pi-trash"
+                                class="ui-button-danger" data-toggle="tooltip" title="Eliminar sector identificado"
+                                data-placement="top" (click)="removeItem(record, rowIndex)"></button>
+                            <button *ngIf="record.remove" type="button" pButton icon="pi pi-undo"
+                                class="ui-button-warning" data-toggle="tooltip"
+                                title="Deshacer la eliminación del sector identificado" data-placement="top"
+                                (click)="cancelRemove(record)"></button>
+                        </ng-container>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <div class="primeng-no-data" *ngIf="crisisCommittee.sectors.length == 0">
+            Aún no agregó ningún registro
+        </div>
+        <div class="primeng-paging-container">
+            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                (onPageChange)="getData($event)" [totalRecords]="crisisCommittee.sectors.length"
+                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+            </p-paginator>
+            <span class="total-records-count">
+                {{'TotalRecordsCount' | localize:crisisCommittee.sectors.length}}
+            </span>
+        </div>
+    </div>
+    <!--<Primeng-TurboTable-End>-->
+</div>

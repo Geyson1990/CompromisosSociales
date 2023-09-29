@@ -1,0 +1,124 @@
+hr {
+    background: #8DA1B5 !important;
+    height: 1px;
+    width: 100%;
+    margin-bottom: 0.5rem !important;
+    margin-top: 0.5rem !important;
+}
+
+.input-group-text {
+    background: #C4C4C4 !important;
+    border-left: 0 !important;
+}
+
+.input-group-right>.form-control:focus~span {
+    border-color: #9aabff;
+}
+
+.input-group-right>span {
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+
+.input-group-right>span:hover {
+    background: #dadada !important;
+}
+
+.input-group-right>span:active {
+    background: #ebebeb !important;
+}
+
+.form-uploader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    height: 70px;
+    padding: 5px 10px;
+    font-size: 14px;
+    line-height: 22px;
+    color: #777;
+    background-color: #FFF;
+    background-image: none;
+    text-align: center;
+    border: 2px solid #E5E5E5;
+    -webkit-transition: border-color .15s linear;
+    transition: border-color .15s linear;
+
+}
+
+.form-uploader>input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 5;
+}
+
+.form-uploader-message>i {
+    font-size: 40px;
+}
+
+.upload-file-row~.upload-file-row {
+    border-bottom: 1px solid #8DA1B5;
+}
+
+.upload-file-row {
+    position: relative;
+}
+
+.upload-file-row>i {
+    margin: auto 15px auto 10px;
+    font-size: 50px;
+}
+
+.upload-file-row .title {
+    font-size: 120%;
+    font-weight: 500 !important;
+    color: #343a40 !important;
+}
+
+.upload-file-row .title:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.upload-file-row .metadata {
+    font-size: 105%;
+}
+
+.uploader-user {
+    text-decoration: underline;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.upload-file-trash>button {
+    margin: 0;
+    padding: 8px 10px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.upload-file-trash>button>i {
+    padding: 0 !important;
+}
+
+.upload-file-body {
+    flex: 1 1 auto;
+}
+
+input:disabled,
+textarea:disabled {
+    background: #dadada !important;
+    border-color: #c4c4c4 !important;
+}

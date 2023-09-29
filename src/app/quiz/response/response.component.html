@@ -1,0 +1,99 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div class="kt-container">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        Configuración de mensaje de respuesta automática
+                    </h3>
+                </div>
+                <div class="kt-subheader__toolbar">
+                    <div *ngIf="loaded" class="kt-subheader__wrapper">
+                        <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.."
+                            *ngIf="'Pages.Quiz.Responses.Edit' | permission" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="kt-container kt-grid__item kt-grid__item--fluid">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+
+                    <p-tabView>
+
+                        <p-tabPanel header="Mensaje de respuesta al usuario de la SGSD">
+
+                            <div class="form-group mb-0">
+                                <label for="AdminSubject">
+                                    Asunto
+                                </label>
+                                <input id="AdminSubject" type="text" maxlength="255" name="AdminSubject"
+                                    class="form-control" [ngClass]="{'edited': configuration.adminSubject}"
+                                    [(ngModel)]="configuration.adminSubject">
+                                <span class="d-block text-right">
+                                    {{configuration?.adminSubject ?
+                                    configuration.adminSubject.length :
+                                    0}}/255
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="AdminBody">
+                                    Cuerpo del mensaje
+                                </label>
+                                <p-editor id="AdminBody" name="AdminBody" type="text" [style]="{'height':'320px'}"
+                                    [ngClass]="{'edited':configuration.adminBody}" [(ngModel)]="configuration.adminBody"QuizState
+                                    maxlength="5000">
+                                </p-editor>
+                                <span class="d-block text-right">
+                                    {{configuration?.adminBody ?
+                                    configuration.adminBody.length :
+                                    0}}/20000
+                                </span>
+                            </div>
+
+                        </p-tabPanel>
+
+                        <p-tabPanel header="Mensaje de respuesta al ciudadano">
+                            <div class="form-group mb-0">
+                                <label for="CustomerSubject">
+                                    Asunto
+                                </label>
+                                <input id="CustomerSubject" type="text" maxlength="255" name="CustomerSubject"
+                                    class="form-control" [ngClass]="{'edited': configuration.customerSubject}"
+                                    [(ngModel)]="configuration.customerSubject">
+                                <span class="d-block text-right">
+                                    {{configuration?.customerSubject ?
+                                    configuration.customerSubject.length :
+                                    0}}/255
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="CustomerBody">
+                                    Cuerpo del mensaje
+                                </label>
+                                <p-editor id="CustomerBody" name="CustomerBody" type="text" [style]="{'height':'320px'}"
+                                    [ngClass]="{'edited':configuration.customerBody}" [(ngModel)]="configuration.customerBody"
+                                    maxlength="5000">
+                                </p-editor>
+                                <span class="d-block text-right">
+                                    {{configuration?.customerBody ?
+                                    configuration.customerBody.length :
+                                    0}}/20000
+                                </span>
+                            </div>
+                        </p-tabPanel>
+
+                    </p-tabView>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

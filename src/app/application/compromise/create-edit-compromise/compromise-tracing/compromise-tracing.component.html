@@ -1,0 +1,245 @@
+<div class="tab-container">
+
+    <h5 class="d-block text-left text-dark font-weight-bold">
+        Estado del compromiso
+    </h5>
+
+    <hr>
+
+    <div class="row mb-4">
+
+        <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+            <div class="mb-2 form-group">
+                <label for="CompromiseState">
+                    Abierto/Cerrado
+                </label>
+                <div class="input-group">
+                    <select (change)="onStateChange($event)" id="CompromiseState" name="CompromiseState"
+                        class="form-control" type="text" [(ngModel)]="compromise.compromiseState.id">
+                        <option value="-1">
+                            Seleccione
+                        </option>
+                        <option *ngFor="let state of states" [value]="state.id">
+                            {{state.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+            <div class="mb-2 form-group">
+                <label for="CompromiseSubState">
+                    Estado actual
+                </label>
+                <div class="input-group">
+                    <select (change)="onSubStateChange($event)" [disabled]="compromise.compromiseState.id == -1"
+                        id="CompromiseSubState" name="CompromiseSubState" class="form-control" type="text"
+                        [(ngModel)]="compromise.compromiseSubState.id">
+                        <option value="-1">
+                            Seleccione
+                        </option>
+                        <option *ngFor="let subState of subStates" [value]="subState.id">
+                            {{subState.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+            <div class="mb-2 form-group">
+                <label for="CompromiseStatusSelect">
+                    Estado actual (Provisional)
+                </label>
+                <div class="input-group">
+                    <select id="CompromiseStatusSelect" name="CompromiseStatusSelect" class="form-control" type="text"
+                        [(ngModel)]="compromise.status.id">
+                        <option value="-1">
+                            Seleccione
+                        </option>
+                        <option *ngFor="let status of statuses" [value]="status.id">
+                            {{status.value}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mb-4">
+
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Priorización del compromiso
+        </h5>
+    
+        <hr>
+
+        <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3 d-flex align-items-center">
+            <div class="checkbox-row">
+
+                <div (click)="changeToPriority()" class="checkbox-item" [ngClass]="{'selected' : compromise.isPriority }">
+                    <div class="checkbox-container">
+                        <div class="checkbox-content"></div>
+                    </div>
+                    <label class="checkbox-label">
+                        Priorizado
+                    </label>
+                </div>
+
+                <div (click)="changeToNoPriority()" class="checkbox-item" [ngClass]="{'selected' : !compromise.isPriority }">
+                    <div class="checkbox-container">
+                        <div class="checkbox-content"></div>
+                    </div>
+                    <label class="checkbox-label">
+                        No priorizado
+                    </label>
+                </div>
+
+            </div>
+        </div>
+
+        <div *ngIf="compromise.isPriority" class="col-sm-12 col-md-8 col-lg-9 col-xl-9">
+            <div class="mb-2 form-group">
+                <label for="ReferenciaCodeInput">
+                    Referencia de priorización (*)
+                </label>
+                <div class="input-group">
+                    <input #referenciaCodeInput id="ReferenciaCodeInput" name="ReferenciaCodeInput" class="form-control" type="text"
+                        maxlength="50" [(ngModel)]="compromise.priorityReference">
+                    <span class="input-legth">
+                        {{referenciaCodeInput.value ? referenciaCodeInput.value.length :
+                        0}}/{{referenciaCodeInput.maxLength}}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Actualizaciones del compromiso
+        </h5>
+    
+        <hr>
+
+        <div class="col-12">
+            <div class="mb-2 form-group">
+                <label for="SituationDescription" class="SituationDescription">
+                    Situación actual
+                </label>
+                <div class="input-group">
+                    <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                        cdkAutosizeMaxRows="100" #descriptionInput [(ngModel)]="description" id="SituationDescription" name="SituationDescription"
+                        class="form-control" maxlength="5000"></textarea>
+                    <span class="input-legth">
+                        {{descriptionInput.value ? descriptionInput.value.length :
+                        0}}/{{descriptionInput.maxLength}}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <file-upload #fileUploadItems title="Subir documento" titleEmpty="Agregar"
+            (saveAttachment)="saveAttachment($event)" class="w-100 my-3"></file-upload>
+
+    </div>
+
+    <h6 class="mt-4 mb-2 d-block text-left text-dark font-weight-bold h5">
+        Línea de tiempo
+    </h6>
+
+    <ng-container *ngIf="(!compromise.uploads || compromise.uploads.length == 0) && (!compromise.situations || compromise.situations.length == 0)">
+        <img aria-label="Empty Image" class="d-block mx-auto mt-4" src="/assets/common/images/empty-content.png">
+
+        <label class="font-weight-bold h4 text-center d-block">
+            Aún no se ha registrado información en la línea de tiempo
+        </label>
+    </ng-container>
+
+    <div class="w-100">
+        <ul class="timeline">
+
+            <li class="timeline-inverted" *ngFor="let upload of compromise.uploads; index as rowIndex">
+                <div class="timeline-badge">
+                    <i class="glyphicon glyphicon-check"></i>
+                </div>
+                <div class="timeline-panel">
+                    <div class="timeline-body">
+                        <div class="time-line-content">
+                            <div class="timeline-heading">
+                                <p>
+                                    <small class="text-muted">
+                                        <i class="glyphicon glyphicon-time"></i>
+                                        {{upload.creationTime | momentFormat: 'DD/MM/YYYY HH:mm:ss'}}
+                                    </small>
+                                </p>
+                            </div>
+                            <p>
+                                {{upload.description}}
+                            </p>
+                            <label class="d-block text-right" *ngIf="upload.uploadFile">
+                                <span>
+                                    <a class="document-line text-success" href="javascript:;">
+                                        {{upload?.uploadFile?.fileName}} ({{upload?.uploadFile?.size}})
+                                    </a>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="timeline-options">
+                            <button type="button" pButton icon="pi pi-trash" class="ui-button-danger"
+                                data-toggle="tooltip" title="Eliminar registro" data-placement="top"
+                                (click)="removeItemUpload(upload, rowIndex)"></button>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="timeline-inverted" *ngFor="let situation of compromise.situations; index as rowIndex">
+                <div class="timeline-badge">
+                    <i class="glyphicon glyphicon-check"></i>
+                </div>
+                <div class="timeline-panel">
+                    <div class="timeline-body">
+                        <div class="time-line-content">
+                            <div class="timeline-heading">
+                                <p>
+                                    <small class="text-muted">
+                                        <i class="glyphicon glyphicon-time"></i>
+                                        {{situation.creationTime | momentFormat: 'DD/MM/YYYY HH:mm:ss'}}
+                                    </small>
+                                </p>
+                            </div>
+                            <p>
+                                {{situation.description}}
+                            </p>
+                            <label class="d-block text-right" *ngIf="situation.resource">
+                                <span>
+                                    <a (click)="openInNewTab(situation.resource)" class="document-line text-success"
+                                        href="javascript:;">
+                                        {{situation.resource?.fileName}} ({{situation.resource?.size}})
+                                    </a>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="timeline-options">
+                            <button *ngIf="!situation.remove" type="button" pButton icon="pi pi-trash"
+                                class="ui-button-danger" data-toggle="tooltip" title="Eliminar registro"
+                                data-placement="top" (click)="removeItem(situation, rowIndex)"></button>
+                            <button *ngIf="situation.remove" type="button" pButton icon="pi pi-undo"
+                                class="ui-button-warning" data-toggle="tooltip"
+                                title="Deshacer la eliminación del registro" data-placement="top"
+                                (click)="cancelRemove(situation)"></button>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="white-space-2"></div>
+
+</div>

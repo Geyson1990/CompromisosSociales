@@ -1,0 +1,103 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #userForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="item.id">
+                            Editar capacidad de movilización: {{item.name}}
+                        </span>
+                        <span *ngIf="!item.id">
+                            Crear capacidad de movilización
+                        </span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-sm-12">
+                        <label for="Name">
+                            Nombre (*)
+                        </label>
+                        <input id="Name" #nameInput="ngModel" class="form-control" type="text" name="Name"
+                            [(ngModel)]="item.name" required maxlength="255">
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="ColorPickerBackground">
+                            Color de fondo
+                        </label>
+                        <div class="form-group color-input-container mb-0">
+                            <p-colorPicker class="pr-2 my-auto" id="ColorPickerBackground" name="ColorPickerBackground"
+                                [(ngModel)]="item.background" format="hex">
+                            </p-colorPicker>
+                            <input name="ColorPickerBackgroundValue" class="form-control" [(ngModel)]="item.background"
+                                (focus)="$event.target.select()">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="ColorPickerForeground">
+                            Color de texto
+                        </label>
+                        <div class="form-group color-input-container mb-0">
+                            <p-colorPicker class="pr-2 my-auto" id="ColorPickerForeground" name="ColorPickerForeground"
+                                [(ngModel)]="item.foreground" format="hex">
+                            </p-colorPicker>
+                            <input name="ColorPickerForegroundValue" class="form-control" [(ngModel)]="item.foreground"
+                                (focus)="$event.target.select()">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="ActorMovementState">
+                            Estado (*)
+                        </label>
+                        <select class="form-control" id="ActorMovementState" name="ActorMovementState"
+                            [(ngModel)]="state">
+                            <option value="false">
+                                Inactivo
+                            </option>
+                            <option value="true">
+                                Activo
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="ActorMovementDefault">
+                            Predeterminado (*)
+                        </label>
+                        <select class="form-control" id="ActorMovementDefault" name="ActorMovementDefault"
+                            [(ngModel)]="defaultState">
+                            <option value="false">
+                                No
+                            </option>
+                            <option value="true">
+                                Si
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!userForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

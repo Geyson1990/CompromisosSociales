@@ -1,0 +1,137 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div *ngIf="active" class="modal-content">
+            <form #userForm="ngForm" novalidate>
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="item.id">
+                            Editar unidad territorial: {{item.name}}
+                        </span>
+                        <span *ngIf="!item.id">
+                            Crear unidad territorial
+                        </span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-12">
+                        <label for="Name">
+                            Nombre (*)
+                        </label>
+                        <input id="Name" #nameInput="ngModel" class="form-control" type="text" name="Name"
+                            [(ngModel)]="item.name" required maxlength="255">
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+
+                    <div class="col-12 text-right mb-3">
+                        <button type="button" (click)="addNewCoordinator()" class="mb-0 mt-auto btn btn-primary">
+                            <i class="fa fa-plus"></i>
+                            Agregar coordinador
+                        </button>
+                    </div>
+
+                    <div class="col-12">
+                        <!--<Primeng-TurboTable-Start>-->
+                        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable sortMode="multiple" [value]="item.coordinators"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 50px">
+                                        </th>
+                                        <th style="width: 130px">
+                                            DNI
+                                        </th>
+                                        <th style="width: 200px">
+                                            Nombre
+                                        </th>
+                                        <th style="width: 200px">
+                                            Apellidos
+                                        </th>
+                                        <th style="width: 200px">
+                                            Correo electrónico
+                                        </th>
+                                        <th style="width: 110px">
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit" let-rowIndex="rowIndex">
+                                    <tr [hidden]="record.isHidden">
+                                        <td style="width: 50px">
+                                            {{(rowIndex + 1) | number: '2.0-0'}}
+                                        </td>
+                                        <td style="width: 130px">
+                                            <span class="ui-column-title">
+                                                DNI
+                                            </span> {{record.person ? record.person.document : 'N/A'}}
+                                        </td>
+                                        <td style="width: 200px">
+                                            <span class="ui-column-title">
+                                                Nombre
+                                            </span> {{record.person ? record.person.names : 'N/A'}}
+                                        </td>
+                                        <td style="width: 200px">
+                                            <span class="ui-column-title">
+                                                Apellidos
+                                            </span> {{record.person ? record.person.surname : ''}} {{record.person ?
+                                            record.person.surname2 : ''}}
+                                        </td>
+                                        <td style="width: 200px">
+                                            <span class="ui-column-title">
+                                                Correo electrónico
+                                            </span> {{record.person ? record.person.emailAddress : 'N/A'}}
+                                        </td>
+                                        <td style="width: 110px">
+                                            <button *ngIf="!record.remove" type="button" pButton icon="pi pi-trash"
+                                                class="ui-button-danger" data-toggle="tooltip" title="Eliminar"
+                                                data-placement="top" (click)="removeItem(record, rowIndex)"></button>
+                                            <button *ngIf="record.remove" type="button" pButton icon="pi pi-undo"
+                                                class="ui-button-warning" data-toggle="tooltip"
+                                                title="Deshacer la eliminación" data-placement="top"
+                                                (click)="cancelRemove(record)"></button>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="item.coordinators.length == 0">
+                                Aún no agregó ningún registro
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                    (onPageChange)="getData($event)" [totalRecords]="item.coordinators.length"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{'TotalRecordsCount' | localize:item.coordinators.length}}
+                                </span>
+                            </div>
+                        </div>
+                        <!--<Primeng-TurboTable-End>-->
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!userForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

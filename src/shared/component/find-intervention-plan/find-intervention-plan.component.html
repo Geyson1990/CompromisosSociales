@@ -1,0 +1,300 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xxl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>
+                        Seleccionar plan de intervención
+                    </span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Cerrar">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="kt-form" autocomplete="new-password">
+                    <div>
+                        <div class="row mb-4">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown">
+                                    <i class="fa fa-angle-down"></i>
+                                    {{"ShowAdvancedFilters" | localize}}
+                                </span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                    (click)="advancedFiltersAreShown=!advancedFiltersAreShown">
+                                    <i class="fa fa-angle-up"></i>
+                                    {{"HideAdvancedFilters" | localize}}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4" [hidden]="!advancedFiltersAreShown">
+
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4">
+                                <div class="mb-2 form-group">
+                                    <label for="CodeFilter">
+                                        Código
+                                    </label>
+                                    <div class="input-group">
+                                        <input [(ngModel)]="code" id="CodeFilter" name="CodeFilter" autoFocus
+                                            class="form-control" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8 col-xxl-8">
+                                <div class="mb-2 form-group">
+                                    <label for="CaseNameFilter">
+                                        Denominación del Plan de Intervención
+                                    </label>
+                                    <div class="input-group">
+                                        <input [(ngModel)]="caseName" id="CaseNameFilter" name="CaseNameFilter"
+                                            class="form-control" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12"></div>
+
+                            <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                                <div class="mb-2 form-group">
+                                    <label for="TerritorialUnitSelect">
+                                        Unidad territorial
+                                    </label>
+                                    <div class="input-group">
+                                        <select (change)="onTerritorialUnitChange($event)"
+                                            [(ngModel)]="territorialUnitId" id="TerritorialUnitSelect"
+                                            name="TerritorialUnitSelect" class="form-control" type="text">
+                                            <option value="-1">
+                                                (Todos)
+                                            </option>
+                                            <option *ngFor="let territorialUnit of territorialUnits"
+                                                [value]="territorialUnit.id">
+                                                {{territorialUnit.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                                <div class="mb-2 form-group">
+                                    <label for="DepartmentUnitSelect">
+                                        Departamento
+                                    </label>
+                                    <div class="input-group">
+                                        <select [disabled]="territorialUnitId == -1"
+                                            (change)="onDepartmentChange($event)" [(ngModel)]="departmentId"
+                                            id="DepartmentUnitSelect" name="DepartmentUnitSelect" class="form-control"
+                                            type="text">
+                                            <option value="-1">
+                                                (Todos)
+                                            </option>
+                                            <option *ngFor="let department of selectedDepartments"
+                                                [value]="department.id">
+                                                {{department.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                                <div class="mb-2 form-group">
+                                    <label for="ProvinceUnitSelect">
+                                        Provincia
+                                    </label>
+                                    <div class="input-group">
+                                        <select [disabled]="departmentId == -1" (change)="onProvinceChange($event)"
+                                            [(ngModel)]="provinceId" id="ProvinceUnitSelect" name="ProvinceUnitSelect"
+                                            class="form-control" type="text">
+                                            <option value="-1">
+                                                (Todos)
+                                            </option>
+                                            <option *ngFor="let province of selectedProvinces" [value]="province.id">
+                                                {{province.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                                <div class="mb-2 form-group">
+                                    <label for="DisctrictUnitSelect">
+                                        Distrito
+                                    </label>
+                                    <div class="input-group">
+                                        <select [disabled]="provinceId == -1" [(ngModel)]="districtId"
+                                            id="DisctrictUnitSelect" name="DisctrictUnitSelect" class="form-control"
+                                            type="text">
+                                            <option value="-1">
+                                                (Todos)
+                                            </option>
+                                            <option *ngFor="let district of selectedDistricts" [value]="district.id">
+                                                {{district.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12"></div>
+
+                            <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                                <label for="PersonAnalyst">
+                                    Elaborado por
+                                </label>
+                                <select class="form-control" id="PersonAnalyst" name="PersonAnalyst"
+                                    [(ngModel)]="personId">
+                                    <option value="-1">
+                                        (Todos)
+                                    </option>
+                                    <option *ngFor="let analyst of persons" [value]="analyst.id">
+                                        {{analyst.name}}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="col-12 text-right">
+                                <button (click)="resetFilters()" aria-label="Borrar filtros" class="btn btn-warning"
+                                    type="button">
+                                    <i class="fas fa-redo"></i>
+                                    Borrar
+                                </button>
+                                <button (click)="getData()" class="btn btn-primary" type="submit">
+                                    <i class="flaticon-search-1" [attr.aria-label]="l('Search')"></i>
+                                    Buscar
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-body" *ngIf="active">
+
+                <div class="primeng-datatable-container ui-table-border ui-table-small-details mx-2"
+                    [busyIf]="primengTableHelper.isLoading">
+                    <p-table #findDataTable sortMode="multiple" (onLazyLoad)="getData($event)"
+                        [value]="primengTableHelper.records" rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                        [paginator]="false" [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                        [responsive]="primengTableHelper.isResponsive"
+                        [resizableColumns]="primengTableHelper.resizableColumns">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 60px">
+                                </th>
+                                <th style="width: 150px" pSortableColumn="Code">
+                                    Código
+                                    <p-sortIcon field="Code"></p-sortIcon>
+                                </th>
+                                <th style="width: 450px" pSortableColumn="CaseName">
+                                    Denominación del Plan de Intervención
+                                    <p-sortIcon field="CaseName"></p-sortIcon>
+                                </th>
+                                <th style="width: 200px">
+                                    Ubicación
+                                </th>
+                                <th style="width: 150px" pSortableColumn="InterventionPlanTime">
+                                    Fecha de elaboración
+                                    <p-sortIcon field="InterventionPlanTime"></p-sortIcon>
+                                </th>
+                                <th style="width: 200px"
+                                    pSortableColumn="InterventionPlan.Code,InterventionPlanSensible.Code">
+                                    Código Caso / Situación Sensible
+                                    <p-sortIcon field="InterventionPlan.Code,InterventionPlanSensible.Code">
+                                    </p-sortIcon>
+                                </th>
+                                <th style="width: 350px"
+                                    pSortableColumn="InterventionPlan.CaseName,InterventionPlanSensible.CaseName">
+                                    Denominación del Caso / Situación Sensible
+                                    <p-sortIcon field="InterventionPlan.CaseName,InterventionPlanSensible.CaseName">
+                                    </p-sortIcon>
+                                </th>
+                                <th style="width: 200px">
+                                    Unidad territorial
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-record="$implicit">
+                            <tr>
+                                <td style="width: 60px">
+                                    <button (click)="selectSocialConflict(record)"
+                                        class="btn btn-primary btn-selection">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </td>
+                                <td style="width: 150px">
+                                    <span class="ui-column-title">
+                                        Código
+                                    </span>
+                                    {{record.code}}
+                                </td>
+                                <td style="width: 450px">
+                                    <span class="ui-column-title">
+                                        Denominación
+                                    </span>
+                                    {{record.caseName}}
+                                </td>
+                                <td style="width: 200px">
+                                    <span class="ui-column-title">
+                                        Ubicación
+                                    </span>
+                                    <div class="retricted-text">
+                                        {{record.locations}}
+                                    </div>
+                                </td>
+                                <td style="width: 150px">
+                                    <span class="ui-column-title">
+                                        Fecha de elaboración
+                                    </span> {{record.interventionPlanTime | momentFormat:'DD/MM/YYYY'}}
+                                </td>
+                                <td style="width: 200px">
+                                    <span class="ui-column-title">
+                                        Código Caso / Situación Sensible
+                                    </span> {{record.conflictCode}}
+                                </td>
+                                <td style="width: 350px">
+                                    <span class="ui-column-title">
+                                        Denominación del Caso / Situación Sensible
+                                    </span> {{record.conflictCaseName}}
+                                </td>
+                                <td style="width: 200px">
+                                    <span class="ui-column-title">
+                                        Unidad territorial
+                                    </span>
+                                    <div class="retricted-text">
+                                        {{record.territorialUnits}}
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                        Sin registros
+                    </div>
+                    <div class="primeng-paging-container">
+                        <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #findPaginator
+                            (onPageChange)="getData($event)" [totalRecords]="primengTableHelper.totalRecordsCount"
+                            [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                        </p-paginator>
+                        <span class="total-records-count">
+                            Registros: {{primengTableHelper.totalRecordsCount}}
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" (click)="close()">
+                    Salir
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

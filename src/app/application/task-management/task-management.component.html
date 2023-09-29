@@ -1,0 +1,83 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        Bandeja de tareas
+                    </h3>
+                </div>
+                <div class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <div [ngClass]="{'v-hidden' : activeIndex != tabList.taskList }" class="btn-group" dropdown>
+                            <button dropdownToggle type="button" class="btn btn-outline-success dropdown-toggle"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="far fa-file-excel"></i> 
+                                Operaciones en excel
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-excel-operations" *dropdownMenu>
+                                <a class="dropdown-item"(click)="taskList.exportMatrixToExcel()" href="javascript:;">
+                                    <i class="fa fa-download" class="fz-1r"></i> 
+                                    Exportar matriz
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <p-tabView [(activeIndex)]="activeIndex">
+
+                        <p-tabPanel>
+                            <ng-template pTemplate="header">
+                                <i class="fas fa-align-justify mr-2"></i>
+                                <span>Lista de tareas</span>
+                            </ng-template>
+
+                            <task-list #taskList (showCompromise)="showCompromise($event)" (showDownloadModal)="showDownloadModal()" (hideDownloadModal)="hideDownloadModal()"></task-list>
+                        </p-tabPanel>
+
+                        <p-tabPanel>
+
+                            <ng-template pTemplate="header">
+                                <i class="fas fa-filter mr-2"></i>
+                                <span>Busqueda Avanzada</span>
+                            </ng-template>
+
+                            <task-selection 
+                                #taskSelection 
+                                (onShowExpandDeadLine)="openExpandDeadLine($event)" 
+                                (onShowPerson)="openPersons($event)"
+                                (onShowSender)="openSender($event)"  
+                                (onShowEmail)="openEmail($event)"
+                                (back)="onBackPressed($event)">
+                            </task-selection>
+
+                        </p-tabPanel>
+
+                        <p-tabPanel (onTabClick)="taskCalendar.loadTasks()">
+                            <ng-template pTemplate="header">
+                                <i class="fas fa-calendar-alt mr-2"></i>
+                                <span>Calendario</span>
+                            </ng-template>
+                            <task-calendar #taskCalendar></task-calendar>
+                        </p-tabPanel>
+
+                    </p-tabView>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <task-expand-deadline #taskExpandDeadlineModal></task-expand-deadline>
+    <task-person #taskPerson (modalSave)="savePersons($event)"></task-person>
+    <task-management-sender #taskSender></task-management-sender>
+    <task-management-email #taskEmail></task-management-email>
+
+    <file-download-request #fileDownloadRequest></file-download-request>
+</div>

@@ -1,0 +1,18 @@
+<div class="col-12 mt-4">
+    <div class="form-uploader" id="drop_zone" (drop)="dropHandler($event)" (dragover)="dragOverHandler($event)">
+        <div class="form-uploader-message d-flex">
+            <i class="fas fa-cloud-upload-alt mr-2"></i>
+            <p class="h5 my-auto">
+                {{currentAttachment ? currentAttachment.fileName : 'Arrastra o presiona para subir un fichero'}}
+            </p>
+        </div>
+        <input type="file" id="fileInput" (change)="fileChangeEvent($event)">
+    </div>
+</div>
+
+<div class="col-12 mt-4 text-right">
+    <button class="btn btn-success" (click)="addAttachment(currentAttachment)">
+        <i class="fa fa-plus"></i>
+        {{currentAttachment ? title : titleEmpty}}
+    </button>
+</div>

@@ -1,0 +1,193 @@
+<div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid px-0'">
+    <div class="kt-portlet kt-portlet--mobile">
+        <div class="kt-portlet__body px-0">
+            <form class="kt-form" autocomplete="new-password">
+                <div class="row mb-4">
+
+                    <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+                        <div class="mb-2 form-group">
+                            <label for="TaskManagementState">
+                                Estado
+                            </label>
+                            <div class="input-group">
+                                <select [(ngModel)]="status" id="TaskManagementState" name="TaskManagementState" class="form-control"
+                                    type="text">
+                                    <option [value]="taskStatus.none">
+                                        Todas
+                                    </option>
+                                    <option [value]="taskStatus.pending">
+                                        Pendiente
+                                    </option>
+                                    <option [value]="taskStatus.nonCompleted">
+                                        No completada
+                                    </option>
+                                    <option [value]="taskStatus.completed">
+                                        Completada
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                        <div class="mb-2 form-group">
+                            <label for="CompromiseText">
+                                Acuerdos de gestion
+                            </label>
+                            <div class="input-group">
+                                <input [(ngModel)]="title" id="CompromiseText" name="CompromiseText" autoFocus class="form-control"
+                                    [placeholder]="l('SearchWithThreeDot')" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                        <div class="mb-2 form-group">
+                            <label for="CompromiseName">
+                                Compromiso
+                            </label>
+                            <div class="input-group">
+                                <input [(ngModel)]="compromiseName" id="CompromiseName" name="CompromiseName" autoFocus class="form-control"
+                                    [placeholder]="l('SearchWithThreeDot')" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 d-flex justify-content-end">
+                        <button (click)="getData()" class="btn btn-primary mt-auto mb-2" type="submit">
+                            <i class="flaticon-search-1" [attr.aria-label]="l('Search')"></i>
+                            Buscar
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+
+            <div class="row align-items-center mx-0">
+                <!--<Primeng-TurboTable-Start>-->
+                <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                    <p-table #dataTable sortMode="multiple" (onLazyLoad)="getData($event)"
+                        [value]="primengTableHelper.records" rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                        [paginator]="false" [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                        [responsive]="primengTableHelper.isResponsive"
+                        [resizableColumns]="primengTableHelper.resizableColumns">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 130px">
+                                    Acciones
+                                </th>
+                                <th class="text-center" style="width: 140px" pSortableColumn="Compromise.Record.SocialConflict.Code">
+                                    Código caso
+                                    <p-sortIcon field="Compromise.Record.SocialConflict.Code"></p-sortIcon>
+                                </th>
+                                <th class="text-center" style="width: 140px" pSortableColumn="Compromise.Record.Code">
+                                    Código acta
+                                    <p-sortIcon field="Compromise.Record.Code"></p-sortIcon>
+                                </th>
+                                <th class="text-center" style="width: 180px" pSortableColumn="Compromise.Code">
+                                    Código compromiso
+                                    <p-sortIcon field="Compromise.Code"></p-sortIcon>
+                                </th>
+                                <th style="width: 350px" pSortableColumn="Compromise.Name">
+                                    Nombre Compromiso
+                                    <p-sortIcon field="Compromise.Name"></p-sortIcon>
+                                </th>
+                                <th style="width: 350px" pSortableColumn="Title">
+                                    Acuerdo de gestión
+                                    <p-sortIcon field="Title"></p-sortIcon>
+                                </th>
+                                <th style="width: 300px" pSortableColumn="StartTime">
+                                    Fecha de reunion
+                                    <p-sortIcon field="StartTime"></p-sortIcon>
+                                </th>
+                                <th style="width: 200px" pSortableColumn="Deadline">
+                                    Fecha vencimiento
+                                    <p-sortIcon field="Deadline"></p-sortIcon>
+                                </th>
+                                <th style="width: 200px" pSortableColumn="Status">
+                                    Estado
+                                    <p-sortIcon field="Status"></p-sortIcon>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-record="$implicit">
+                            <tr>
+                                <td style="width: 130px">
+                                    <button class="btn btn-sm btn-primary" aria-label="action-button" (click)="showCompromise.emit(record.compromiseId)">
+                                        Ir a tablero
+                                    </button>
+                                </td>
+                                <td style="width: 140px">
+                                    <span class="ui-column-title">
+                                        Código caso
+                                    </span>
+                                    {{record.caseCode}}
+                                </td>
+                                <td style="width: 140px">
+                                    <span class="ui-column-title">
+                                        Código acta
+                                    </span>
+                                    {{record.recordCode}}
+                                </td>
+                                <td style="width: 180px">
+                                    <span class="ui-column-title">
+                                        Código compromiso
+                                    </span>
+                                    {{record.compromiseCode}}
+                                </td>
+                                <td style="width: 350px">
+                                    <span class="ui-column-title">
+                                        Nombre Compromiso
+                                    </span>
+                                    {{record.compromiseName}}
+                                </td>
+                                <td style="width: 350px">
+                                    <span class="ui-column-title">
+                                        Acuerdo de gestión
+                                    </span>
+                                    {{record.title}}
+                                </td>
+                                <td style="width: 300px">
+                                    <span class="ui-column-title">
+                                        Fecha inicio (reunión bilateral)
+                                    </span>
+                                    {{record.startTime | momentFormat:'L'}}
+                                </td>
+                                <td style="width: 200px">
+                                    <span class="ui-column-title">
+                                        Fecha vencimiento
+                                    </span>
+                                    {{record.deadline | momentFormat:'L'}}
+                                </td>
+                                <td style="width: 200px">
+                                    <span class="ui-column-title">
+                                        Estado
+                                    </span>
+                                    {{
+                                    record.status == taskStatus.pending ? 'Pendiente' :
+                                    record.status == taskStatus.completed ? 'Completado' :
+                                    record.status == taskStatus.nonCompleted ? 'No completado' :
+                                    'N/A'
+                                    }}
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                        {{'NoData' | localize}}
+                    </div>
+                    <div class="primeng-paging-container">
+                        <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                            (onPageChange)="getData($event)" [totalRecords]="primengTableHelper.totalRecordsCount"
+                            [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                        </p-paginator>
+                        <span class="total-records-count">
+                            {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                        </span>
+                    </div>
+                </div>
+                <!--<Primeng-TurboTable-End>-->
+            </div>
+        </div>
+    </div>
+</div>

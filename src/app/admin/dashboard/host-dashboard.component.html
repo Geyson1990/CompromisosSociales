@@ -1,0 +1,268 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        Estadísticas Generales
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <div class="tab-container">
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                                <div class="row m-0">
+                                    <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 p-0">
+
+                                        <div class="mb-2 form-group">
+                                            <label for="TerritorialUnitSelect">
+                                                Unidad territorial
+                                            </label>
+                                            <div class="input-group">
+                                                <select [disabled]="busy" (change)="onTerritorialUnitChange($event)"
+                                                    [(ngModel)]="territorialUnitId" id="TerritorialUnitSelect" name="TerritorialUnitSelect"
+                                                    class="form-control" type="text">
+                                                    <option value="-1">
+                                                        Todos
+                                                    </option>
+                                                    <option *ngFor="let territorialUnit of territorialUnits"
+                                                        [value]="territorialUnit.id">
+                                                        {{territorialUnit.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-2 form-group">
+                                            <label for="DepartmentSelect">
+                                                Departamento
+                                            </label>
+                                            <div class="input-group">
+                                                <select [disabled]="territorialUnitId == -1 || busy"
+                                                    (change)="onDepartmentChange($event)" [(ngModel)]="departmentId" id="DepartmentSelect"
+                                                    name="DepartmentSelect" class="form-control" type="text">
+                                                    <option value="-1">
+                                                        Todos
+                                                    </option>
+                                                    <option *ngFor="let department of selectedDepartments"
+                                                        [value]="department.id">
+                                                        {{department.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-2 form-group">
+                                            <label for="ProvinceSelect">
+                                                Provincia
+                                            </label>
+                                            <div class="input-group">
+                                                <select [disabled]="departmentId == -1 || busy"
+                                                    (change)="onProvinceChange($event)" [(ngModel)]="provinceId" id="ProvinceSelect"
+                                                    name="ProvinceSelect" class="form-control" type="text">
+                                                    <option value="-1">
+                                                        Todos
+                                                    </option>
+                                                    <option *ngFor="let province of selectedProvinces"
+                                                        [value]="province.id">
+                                                        {{province.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-2 form-group">
+                                            <label for="DistrictSelect">
+                                                Distrito
+                                            </label>
+                                            <div class="input-group">
+                                                <select [disabled]="provinceId == -1 || busy" [(ngModel)]="districtId" id="DistrictSelect"
+                                                    (change)="onDistrictChange($event)" name="DistrictSelect"
+                                                    class="form-control" type="text">
+                                                    <option value="-1">
+                                                        Todos
+                                                    </option>
+                                                    <option *ngFor="let district of selectedDistricts"
+                                                        [value]="district.id">
+                                                        {{district.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="charts.compromiseStates.type == chartTypes.pie" class="col-sm-12 col-md-12 col-lg-6 col-xl-6 d-flex flex-column">
+
+                                <h6 class="d-block text-center text-dark font-weight-bold text-accent-primary">
+                                    Total compromisos abiertos vs cerrados
+                                </h6>
+                        
+                                <app-spinner *ngIf="busy" class="d-block my-auto"></app-spinner>
+                                
+                                <p-chart *ngIf="!busy" type="pie" [data]="charts.compromiseStates.pie" [options]="optionsPieDefault">
+                                </p-chart>
+                            </div>
+                        
+                            <div *ngIf="charts.compromiseStates.type == chartTypes.bar" class="col-sm-12 col-md-12 col-lg-6 col-xl-6 d-flex flex-column">
+                        
+                                <h6 class="d-block text-center text-dark font-weight-bold text-accent-primary">
+                                    Total compromisos abiertos vs cerrados
+                                </h6>
+                        
+                                <app-spinner *ngIf="busy" class="d-block my-auto"></app-spinner>
+              
+                                <p-chart *ngIf="!busy" type="horizontalBar" [data]="charts.compromiseStates.bar" [options]="optionsBarDefault">
+                                </p-chart>
+                            </div>
+                            
+
+                        </div>
+
+                        <div class="row mb-4">
+
+                            <div *ngIf="charts.compromiseOpenedStates.type == chartTypes.pie" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+
+                                <h6 class="d-block text-center text-dark font-weight-bold mt-5 text-accent-primary">
+                                    Total Abiertos por estado
+                                </h6>
+                        
+                                <app-spinner *ngIf="busy" class="d-block my-auto"></app-spinner>
+                                
+                                <p-chart *ngIf="!busy" type="pie" [data]="charts.compromiseOpenedStates.pie" [options]="optionsPieDefault">
+                                </p-chart>
+                            </div>
+                        
+                            <div *ngIf="charts.compromiseOpenedStates.type == chartTypes.bar" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        
+                                <h6 class="d-block text-center text-dark font-weight-bold mt-5 text-accent-primary">
+                                    Total Abiertos por estado
+                                </h6>
+                        
+                                <app-spinner *ngIf="busy" class="d-block my-auto"></app-spinner>
+              
+                                <p-chart *ngIf="!busy" type="horizontalBar" [data]="charts.compromiseOpenedStates.bar" [options]="optionsBarDefault">
+                                </p-chart>
+                            </div>
+
+                            <div *ngIf="charts.compromisClosedStates.type == chartTypes.pie" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+
+                                <h6 class="d-block text-center text-dark font-weight-bold mt-5 text-accent-primary">
+                                    Total Cerrados por estado
+                                </h6>
+                        
+                                <app-spinner *ngIf="busy" class="d-block my-auto"></app-spinner>
+                                
+                                <p-chart *ngIf="!busy" type="pie" [data]="charts.compromisClosedStates.pie" [options]="optionsPieDefault">
+                                </p-chart>
+                            </div>
+                        
+                            <div *ngIf="charts.compromisClosedStates.type == chartTypes.bar" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        
+                                <h6 class="d-block text-center text-dark font-weight-bold mt-5 text-accent-primary">
+                                    Total Cerrados por estado
+                                </h6>
+                        
+                                <app-spinner *ngIf="busy" class="d-block my-auto"></app-spinner>
+              
+                                <p-chart *ngIf="!busy" type="horizontalBar" [data]="charts.compromisClosedStates.bar" [options]="optionsBarDefault">
+                                </p-chart>
+                            </div>
+
+                        </div>
+
+                        <div *ngIf="!busy" class="row align-items-center mx-0 mt-5">
+                            <!--<Primeng-TurboTable-Start>-->
+                            <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                                <ng-container *ngIf="loadTable">
+                                    <p-table #dataTable sortMode="multiple" [value]="summary" rows="10000"
+                                        [paginator]="false" [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                        [responsive]="false" [resizableColumns]="primengTableHelper.resizableColumns">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width:150px;" scope="col"
+                                                    class="bg-table-primary text-center align-middle" rowspan="2">
+                                                    Ubigeo
+                                                </th>
+                                                <th [style.width]="(openStatuses.length * 100) +'px'" scope="col"
+                                                    class="bg-table-primary text-center"
+                                                    [attr.colspan]="openStatuses.length">
+                                                    ABIERTO
+                                                </th>
+                                                <th [style.width]="(closedStatuses.length * 100) +'px'" scope="col"
+                                                    class="bg-table-primary text-center"
+                                                    [attr.colspan]="closedStatuses.length">
+                                                    CERRADO
+                                                </th>
+                                                <th style="width:150px;" scope="col"
+                                                    class="bg-table-primary text-center align-middle" colspan="1"
+                                                    rowspan="2">
+                                                    TOTAL
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th *ngFor="let column of columns" style="width:100px;" scope="col"
+                                                    class="bg-table-secondary text-light text-center">
+                                                    {{column.value}}
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr>
+                                                <td style="width: 150px">
+                                                    <span class="d-block">
+                                                        {{record.name}}
+                                                    </span>
+                                                </td>
+                                                <td *ngFor="let column of openStatuses" style="width: 100px">
+                                                    <span class="d-block text-center">
+                                                        <ng-container *ngFor="let status of record.openStatus">
+                                                            <ng-container *ngIf="status.id == column.id">
+                                                                {{status.count}}
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    </span>
+                                                </td>
+                                                <td *ngFor="let column of closedStatuses" style="width: 100px">
+                                                    <span class="d-block text-center">
+                                                        <ng-container *ngFor="let status of record.closeStatus">
+                                                            <ng-container *ngIf="status.id == column.id">
+                                                                {{status.count}}
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    </span>
+                                                </td>
+                                                <td style="width: 150px">
+                                                    <span class="d-block text-center">
+                                                        {{record.total}}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="emptymessage">
+                                            <tr>
+                                                <td colspan="7">
+                                                    {{'NoData' | localize}}
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                </ng-container>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

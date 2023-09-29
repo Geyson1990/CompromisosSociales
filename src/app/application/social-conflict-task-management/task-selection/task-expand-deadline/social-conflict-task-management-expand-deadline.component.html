@@ -1,0 +1,83 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #userForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>
+                            Ampliar la fecha de vencimiento
+                        </span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="col-sm-12 col-md-8 col-lg-6 col-xl-4">
+                        <div class="mb-2 form-group mr-2">
+                            <label for="TaskManagementDeadLine">
+                                Fecha de vencimiento anterior
+                            </label>
+                            <div class="input-group fix-border">
+                                <input name="TaskManagementDeadLine" type="text" class="form-control" value="{{item.deadline | momentFormat: 'DD/MM/YYYY'}}" disabled>
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-8 col-lg-6 col-xl-4">
+                        <div class="mb-2 form-group mr-2">
+                            <label for="TaskManagementDeadLine">
+                                Fecha vencimiento
+                            </label>
+                            <div class="input-group fix-border">
+                                <input name="TaskManagementDeadLine" type="text" class="form-control" bsDatepicker
+                                    datePickerMomentModifier [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }"
+                                    [(ngModel)]="deadline" [minDate]="minDate">
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="mb-2 form-group">
+                            <label for="TaskManagementDescription">
+                                Motivo (*)
+                            </label>
+                            <div class="input-group">
+                                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                                    cdkAutosizeMaxRows="100" #taskManagementDescriptionInput [(ngModel)]="description"
+                                    name="TaskManagementDescription" class="form-control" maxlength="500"></textarea>
+                                <span class="input-legth">
+                                    {{taskManagementDescriptionInput.value ? taskManagementDescriptionInput.value.length
+                                    :
+                                    0}}/{{taskManagementDescriptionInput.maxLength}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!userForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

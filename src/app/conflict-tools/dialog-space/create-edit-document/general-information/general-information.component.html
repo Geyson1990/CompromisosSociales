@@ -1,0 +1,484 @@
+<div class="row">
+
+    <div *ngIf="dialogSpaceDocument.type == spaceTypes.create" class="col-12">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictCodeCount">
+                ¿Cuenta con plazo de instalación?
+            </label>
+            <div class="checkbox-row">
+                <div (click)="changeInstallation(true)" class="checkbox-item"
+                    [ngClass]="{'selected' : dialogSpaceDocument.hasInstallation }">
+                    <div class="checkbox-container">
+                        <div class="checkbox-content"></div>
+                    </div>
+                    <label class="checkbox-label">
+                        Si
+                    </label>
+                </div>
+                <div (click)="changeInstallation(false)" class="checkbox-item"
+                    [ngClass]="{'selected' : !dialogSpaceDocument.hasInstallation }">
+                    <div class="checkbox-container">
+                        <div class="checkbox-content"></div>
+                    </div>
+                    <label class="checkbox-label">
+                        No
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mt-4 mb-4">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Documento oficial que sustenta la creación o modificación de la vigencia del espacio de diálogo
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 col-xxl-3">
+        <div class="form-group mb-2">
+            <label for="DocumentType">
+                Tipo de documento (*)
+            </label>
+            <div class="input-group">
+                <select [(ngModel)]="dialogSpaceDocument.dialogSpaceDocumentType.id" id="DocumentType"
+                    name="DocumentType" class="form-control" type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let documentType of documentTypes" [value]="documentType.id">
+                        {{documentType.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 col-xxl-3">
+        <div class="form-group mb-2">
+            <label for="DialogSpaceDocument">
+                Número de documento (*)
+            </label>
+            <div class="input-group">
+                <input [(ngModel)]="dialogSpaceDocument.document" id="DialogSpaceDocument" name="DialogSpaceDocument"
+                    class="form-control" type="text" maxlength="32">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-4 offset-xl-1 col-xl-3 offset-xxl-2 col-xxl-3">
+        <div class="form-group mb-2">
+            <label for="ScheduleTimeInput">
+                Fecha de publicación (*)
+            </label>
+            <div class="input-group fix-border">
+                <input #datePicker="bsDatepicker" id="ScheduleTimeInput" name="ScheduleTimeInput" type="text"
+                    class="form-control" bsDatepicker datePickerMomentModifier
+                    [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }" required
+                    (bsValueChange)="onDateChange()" [(ngModel)]="documentTime">
+                <span (click)="datePicker.toggle()" class="input-group-text">
+                    <i class="far fa-calendar-alt"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 col-xxl-3">
+        <div class="form-group mb-2">
+            <label for="DocumentTypeSelection">
+                Documento de (*)
+            </label>
+            <div class="input-group">
+                <input value="{{dialogSpaceDocument.type == spaceTypes.create ? 'Creación' : 'Modificación'}}"
+                    id="DocumentTypeSelection" name="DocumentTypeSelection" class="form-control" disabled />
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="dialogSpaceDocument.hasInstallation" class="col-sm-6 col-md-6 col-lg-4 col-xl-4 col-xxl-3">
+        <div class="form-group mb-2">
+            <label for="DocumentRange">
+                El plazo de instalación se contabiliza desde (*)
+            </label>
+            <div class="input-group">
+                <select (change)="onDateChange()" [(ngModel)]="dialogSpaceDocument.range" id="DocumentRange" name="DocumentRange"
+                    class="form-control">
+                    <option [value]="ranges.none">
+                        Seleccione
+                    </option>
+                    <option [value]="ranges.start">
+                        Desde la publicación
+                    </option>
+                    <option [value]="ranges.nextDay">
+                        Desde el día siguiente de la publicación
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div *ngIf="(dialogSpaceDocument.type == spaceTypes.create && dialogSpaceDocument.hasInstallation)" class="row">
+
+    <div class="col-12 mt-4 mb-4">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Datos de la instalación del espacio de diálogo
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="col-12">
+
+        <div class="checkbox-row">
+
+            <div class="form-group m-0">
+                <label for="DocumentMode">
+                    Plazo máximo para la instalación en (días) (*)
+                </label>
+                <div class="input-group">
+                    <input [(ngModel)]="dialogSpaceDocument.days" aria-label="Range In Days" id="DayRange"
+                        name="DayRange" class="form-control" (keyup)="keyUpOnlyNumber($event)"
+                        (keypress)="keyPressOnlyNumbers($event)" type="text" maxlength="11">
+                </div>
+            </div>
+
+            <div (click)="changeRangeSide(rangeSides.exclusive)" class="checkbox-item mt-4 pt-2"
+                [ngClass]="{'selected' : dialogSpaceDocument.rangeSide == rangeSides.exclusive }">
+                <div class="checkbox-container">
+                    <div class="checkbox-content"></div>
+                </div>
+                <label class="checkbox-label">
+                    Días hábiles
+                </label>
+            </div>
+
+            <div (click)="changeRangeSide(rangeSides.all)" class="checkbox-item mt-4 pt-2"
+                [ngClass]="{'selected' : dialogSpaceDocument.rangeSide == rangeSides.all }">
+                <div class="checkbox-container">
+                    <div class="checkbox-content"></div>
+                </div>
+                <label class="checkbox-label">
+                    Días calendario
+                </label>
+            </div>
+
+            <div class="form-group ml-a my-0">
+                <label for="InstallationMaxTime">
+                    Fecha máxima
+                </label>
+                <div class="input-group fix-border">
+                    <input #installationMaxTimePicker="bsDatepicker" id="InstallationMaxTime" name="InstallationMaxTime"
+                        type="text" class="form-control" bsDatepicker datePickerMomentModifier
+                        [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }"
+                        (bsValueChange)="onDateChange()" [(ngModel)]="installationMaxTime">
+                    <span (click)="installationMaxTimePicker.toggle()" class="input-group-text">
+                        <i class="far fa-calendar-alt"></i>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div *ngIf="vigencyStatus != vigencyStatuses.none" class="col-12">
+        <div class="form-group ml-a my-0">
+            <label for="InstallationStatus">
+                Estado de la instalación del Espacio del Diálogo
+            </label>
+            <div class="input-group">
+                <div class="installation-status installation-status-{{vigencyStatus}}">
+                    {{
+                    vigencyStatus == vigencyStatuses.installationComplete ? 'Instalación realizada' :
+                    vigencyStatus == vigencyStatuses.vigencyAvaliable ? 'Plazo vigente' :
+                    vigencyStatus == vigencyStatuses.vigencyOut ? 'Plazo vencido' :
+                    ''
+                    }}
+                </div>
+                <div class="installation-complete" *ngIf="vigencyStatus == vigencyStatuses.installationComplete">
+                    <label class="text-muted">
+                        Espacio de Diálogo Instalado
+                    </label>
+                </div>
+                <div class="installation-vigency-avaliable" *ngIf="vigencyStatus == vigencyStatuses.vigencyAvaliable">
+                    <label class="text-muted">
+                        {{vigencyDays < 0 ? vigencyDays * -1 : vigencyDays}} días
+                            {{dialogSpaceDocument.rangeSide==rangeSides.exclusive ? 'hábiles' : 'calendario' }}
+                            {{vigencyDays < 0 ? 'vencidos' : 'restantes' }} para la instalación </label>
+                </div>
+                <div class="installation-vigency-out" *ngIf="vigencyStatus == vigencyStatuses.vigencyOut">
+                    <label class="text-muted">
+                        {{vigencyDays < 0 ? vigencyDays * -1 : vigencyDays}} días
+                            {{dialogSpaceDocument.rangeSide==rangeSides.exclusive ? 'hábiles' : 'calendario' }}
+                            {{vigencyDays < 0 ? 'vencidos' : 'restantes' }} para la instalación </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-12 mt-4 mb-4">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Vigencia del espacio de diálogo
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 col-xxl-3">
+        <div class="form-group mb-2">
+            <label for="Exposition">
+                En vigencia
+            </label>
+            <div class="input-group">
+                <select (change)="onDateChange()" [(ngModel)]="dialogSpaceDocument.exposition" id="Exposition"
+                    name="Exposition" class="form-control">
+                    <option [value]="expositionTypes.none">
+                        Seleccione
+                    </option>
+                    <option [value]="expositionTypes.start">
+                       {{dialogSpaceDocument.hasInstallation ? 'Desde el mismo día de la instalación' : ' Desde el mismo día de la publicación'}}
+                    </option>
+                    <option [value]="expositionTypes.nextDay">
+                        {{dialogSpaceDocument.hasInstallation ? 'Desde el día siguiente de la instalación' : 'Desde el día siguiente de la publicación'}} 
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="dialogSpaceDocument.hasInstallation"
+        class="col-sm-6 col-md-6 offset-lg-4 col-lg-4 offset-xl-5 col-xl-3 offset-xxl-6 col-xxl-3">
+        <div class="form-group mb-2">
+            <label for="InstallationTime">
+                Fecha de instalación
+            </label>
+            <div class="input-group fix-border">
+                <input #installationDatePicker="bsDatepicker" id="InstallationTime" name="InstallationTime" type="text"
+                    class="form-control" bsDatepicker datePickerMomentModifier (bsValueChange)="onDateChange()"
+                    [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }"
+                    [(ngModel)]="installationTime">
+                <span (click)="installationDatePicker.toggle()" class="input-group-text">
+                    <i class="far fa-calendar-alt"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mb-3">
+
+        <div class="checkbox-row">
+
+            <div class="form-group m-0">
+                <label for="vigencyDays">
+                    Periodo de vigencia (días)
+                </label>
+                <div class="input-group">
+                    <input [(ngModel)]="dialogSpaceDocument.vigencyDays" aria-label="Range In Days" id="vigencyDays"
+                        name="vigencyDays" class="form-control" (keyup)="keyUpOnlyNumber($event)"
+                        (keypress)="keyPressOnlyNumbers($event)" type="text" maxlength="11">
+                </div>
+            </div>
+
+            <div (click)="changeVigencyRangeSide(rangeSides.exclusive)" class="checkbox-item mt-4 pt-2"
+                [ngClass]="{'selected' : dialogSpaceDocument.vigencyRangeSide == rangeSides.exclusive }">
+                <div class="checkbox-container">
+                    <div class="checkbox-content"></div>
+                </div>
+                <label class="checkbox-label">
+                    Días hábiles
+                </label>
+            </div>
+
+            <div (click)="changeVigencyRangeSide(rangeSides.all)" class="checkbox-item mt-4 pt-2"
+                [ngClass]="{'selected' : dialogSpaceDocument.vigencyRangeSide == rangeSides.all }">
+                <div class="checkbox-container">
+                    <div class="checkbox-content"></div>
+                </div>
+                <label class="checkbox-label">
+                    Días calendario
+                </label>
+            </div>
+
+            <div class="form-group ml-a my-0">
+                <label for="VigencyTime">
+                    Fecha máxima de vigencia
+                </label>
+                <div class="input-group fix-border">
+                    <input #vigencyTimePicker="bsDatepicker" id="VigencyTime" name="VigencyTime" type="text"
+                        class="form-control" bsDatepicker datePickerMomentModifier (bsValueChange)="onDateChange()"
+                        [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }"
+                        [(ngModel)]="vigencyTime">
+                    <span (click)="vigencyTimePicker.toggle()" class="input-group-text">
+                        <i class="far fa-calendar-alt"></i>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div *ngIf="alertStatus != alertStatuses.none" class="col-12">
+        <div class="form-group ml-a my-0">
+            <label for="AlertStatus">
+                Estado de Vigencia del Espacio del Diálogo
+            </label>
+            <div class="input-group">
+                <div class="alert-status alert-status-{{alertStatus}}">
+                    {{
+                    alertStatus == alertStatuses.green ? 'Alerta Verde' :
+                    alertStatus == alertStatuses.yellow ? 'Alerta Amarilla' :
+                    alertStatus == alertStatuses.red ? 'Alerta Roja' :
+                    ''
+                    }}
+                </div>
+                <div class="alert-status-dialog">
+                    <label class="text-muted">
+                        {{alertDays < 0 ? alertDays * -1 : alertDays}} días
+                            {{dialogSpaceDocument.vigencyRangeSide==rangeSides.exclusive ? 'hábiles' : 'calendario' }}
+                            {{alertDays < 0 ? 'sin vigencia' : 'restantes de vigencia' }} </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mt-4 mb-4">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Situación actual del espacio de diálogo
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 col-xxl-3">
+        <div class="form-group mb-2">
+            <label for="DialogSpaceDocumentSituation">
+                Situación actual (*)
+            </label>
+            <div class="input-group">
+                <select [(ngModel)]="dialogSpaceDocument.dialogSpaceDocumentSituation.id"
+                    id="DialogSpaceDocumentSituation" name="DialogSpaceDocumentSituation" class="form-control"
+                    type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let situation of situations" [value]="situation.id">
+                        {{situation.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="DialogSpaceDocumentObservation">
+                Observaciones
+            </label>
+            <div class="input-group">
+                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                    cdkAutosizeMaxRows="100" #dialogSpaceDocumentObservationInput id="DialogSpaceDocumentObservation"
+                    [(ngModel)]="dialogSpaceDocument.observation" name="DialogSpaceDocumentObservation"
+                    class="form-control" maxlength="5000"></textarea>
+                <span class="input-legth">
+                    {{dialogSpaceDocumentObservationInput.value ? dialogSpaceDocumentObservationInput.value.length
+                    :0}}/{{dialogSpaceDocumentObservationInput.maxLength}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mt-4 mb-4">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Agregar archivo del documento oficial que sustenta la creación del espacio de diálogo
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="col-12">
+        <file-resource-item [resource]="resource" (restoreResource)="restoreResource(resource)"
+            (removeResource)="removeResource(resource, i)"
+            *ngFor="let resource of dialogSpaceDocument.resources; index as i;"></file-resource-item>
+    </div>
+
+    <file-uploader #fileUploadItems class="w-100 my-3" [hideHeader]="true"
+        [(attachments)]="dialogSpaceDocument.uploadFiles" [hideType]="true" (saveAttachment)="saveAttach($event)">
+    </file-uploader>
+
+</div>
+
+<div class="row" *ngIf="dialogSpaceDocument?.creatorUser">
+
+    <div class="col-12 mt-4 mb-2">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Información de registro
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="col-sm-12 col-md-8 col-lg-9 col-xl-9">
+        <div class="mb-2 form-group">
+            <label for="UserRegisterInput">
+                Registrado por
+            </label>
+            <div class="input-group">
+                <input class="form-control" id="UserRegisterInput"
+                    value="{{getUserName(dialogSpaceDocument.creatorUser)}}" type="text" readonly>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="UserRegisterDateInput">
+                Fecha de registro
+            </label>
+            <div class="input-group">
+                <input class="form-control" id="UserRegisterDateInput"
+                    value="{{dialogSpaceDocument.creationTime | momentFormat: 'L'}}" type="text" readonly>
+                <span class="input-group-text">
+                    <i class="far fa-calendar-alt"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <ng-container *ngIf="dialogSpaceDocument?.editUser">
+
+        <div class="col-sm-12 col-md-8 col-lg-9 col-xl-9">
+            <div class="mb-2 form-group">
+                <label for="UserUpdateInput">
+                    Última actualización
+                </label>
+                <div class="input-group">
+                    <input class="form-control" id="UserUpdateInput"
+                        value="{{getUserName(dialogSpaceDocument.editUser)}}" type="text" readonly>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+            <div class="mb-2 form-group">
+                <label for="UserUpdateDateInput">
+                    Fecha de actualización
+                </label>
+                <div class="input-group">
+                    <input id="UserUpdateDateInput" class="form-control"
+                        value="{{dialogSpaceDocument.lastModificationTime | momentFormat: 'L'}}" type="text" readonly>
+                    <span class="input-group-text">
+                        <i class="far fa-calendar-alt"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    </ng-container>
+
+</div>

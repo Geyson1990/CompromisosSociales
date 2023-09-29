@@ -1,0 +1,77 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div class="kt-container">
+                <div class="kt-subheader__main">
+                    <button (click)="backButtonPressed()" type="button" class="btn btn-light back-button mt-2">
+                        {{backButtonText}}
+                    </button>
+                    <h3 class="kt-subheader__title">
+                        <span>
+                            Riesgo prospectivo provincial
+                        </span>
+                    </h3>
+                    <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                    <span class="kt-subheader__desc">
+                        Gestione las resultados de todas las regiones del Perú
+                    </span>
+                </div>
+                <div *ngIf="loaded" class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <button (click)="save()" [disabled]="editing" [buttonBusy]="busy" busyText="Guardando.."
+                            *ngIf="('Pages.Management.ProspectiveRisk.Edit' | permission)"
+                            class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="item" class="kt-container kt-grid__item kt-grid__item--fluid">
+
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row m-0">
+                                <label class="font-weight-bold m-0">
+                                    Región: <span class="title-dark">{{item?.department?.name}}</span>
+                                </label> 
+                                <label class="mx-2"></label>
+                                <label class="font-weight-bold my-0 mr-2">
+                                    Provincia: <span class="title-dark">{{item?.province?.name}}</span>
+                                </label> 
+                                <label class="mx-2"></label>
+                                <label class="font-weight-bold my-0 mr-2">
+                                    Fecha de análisis: <span class="title-dark">{{item.evaluatedTime | momentFormat: 'DD-MM-YYYY'}}</span>
+                                </label> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    
+                    <p-tabView [(activeIndex)]="tabIndex">
+
+                        <p-tabPanel header="Aspectos generales">
+                            <general-information-prospective-risk [(item)]="item" (optionValueChange)="formatInformation($event)"></general-information-prospective-risk>
+                        </p-tabPanel>
+
+                        <p-tabPanel *ngIf="('Pages.Management.ProspectiveRisk.History' | permission) && item.id" header="Historial">
+                            <history-information-prospective-risk [(item)]="item" (showHistory)="showHistory($event)"></history-information-prospective-risk>
+                        </p-tabPanel>
+
+                        <p-tabPanel *ngIf="('Pages.Management.ProspectiveRisk.History' | permission) && item.id" [disabled]="!hasHistory" header="Detalle de historial">
+                            <history-detail-prospective-risk [prospectiveRisk]="item" [history]="history" (loadError)="historyLoadError()"></history-detail-prospective-risk>
+                        </p-tabPanel>
+                    </p-tabView>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

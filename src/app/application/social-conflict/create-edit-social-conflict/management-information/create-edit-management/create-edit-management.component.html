@@ -1,0 +1,230 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #factForm="ngForm" novalidate>
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="rowIndex || rowIndex == 0; else elseRowIndex">
+                            Editar gestión realizada
+                        </span>
+                        <ng-template #elseRowIndex>
+                            <span>
+                                Crear gestión realizada
+                            </span>
+                        </ng-template>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 mb-2">
+                        <label for="ManagementsType">
+                            Tipo de gestión (*)
+                        </label>
+                        <select (change)="onManagementChange($event)" class="form-control" id="ManagementsType"
+                            name="ManagementsType" [(ngModel)]="item.management.id">
+                            <option value="-1">
+                                Seleccione
+                            </option>
+                            <option *ngFor="let management of managements" [value]="management.id">
+                                {{management.name}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div
+                        class="form-group col-sm-12 col-md-12 col-lg-6 offset-xl-2 col-xl-4 offset-xxl-2 col-xxl-4 mb-2">
+                        <label for="ManagementTimeInput">
+                            Fecha (*)
+                        </label>
+                        <div class="input-group fix-border">
+                            <input #datePicker="bsDatepicker" id="ManagementTimeInput" name="ManagementTimeInput"
+                                type="text" class="form-control" bsDatepicker datePickerMomentModifier
+                                [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }" required [(ngModel)]="managementTime">
+                            <span (click)="datePicker.toggle()" class="input-group-text">
+                                <i class="far fa-calendar-alt"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <ng-container *ngIf="item.management.showDetail">
+                        <div class="col-12 mt-4 mb-0">
+                            <h6 class="d-block text-left text-dark font-weight-bold">
+                                Cantidad de personas de sociedad civil
+                            </h6>
+
+                            <hr>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="mb-2 form-group">
+                                <label for="MenCountA">
+                                    Hombres
+                                </label>
+                                <div class="input-group">
+                                    <input #menCountAInputText [(ngModel)]="item.civilMen" id="MenCountA"
+                                        name="MenCountA" class="form-control" (keyup)="keyUpOnlyNumber($event)"
+                                        (keypress)="keyPressOnlyNumbers($event)" type="text" maxlength="4">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="mb-2 form-group">
+                                <label for="WomenCountA">
+                                    Mujeres
+                                </label>
+                                <div class="input-group">
+                                    <input #womenCountAInput [(ngModel)]="item.civilWomen" id="WomenCountA"
+                                        name="WomenCountA" class="form-control" (keyup)="keyUpOnlyNumber($event)"
+                                        (keypress)="keyPressOnlyNumbers($event)" type="text" maxlength="4">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-4 mb-0">
+                            <h6 class="d-block text-left text-dark font-weight-bold">
+                                Cantidad de funcionarios del estado
+                            </h6>
+
+                            <hr>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="mb-2 form-group">
+                                <label for="MenCountB">
+                                    Hombres
+                                </label>
+                                <div class="input-group">
+                                    <input [(ngModel)]="item.stateMen" id="MenCountB" name="MenCountB"
+                                        class="form-control" (keyup)="keyUpOnlyNumber($event)"
+                                        (keypress)="keyPressOnlyNumbers($event)" type="text" maxlength="4">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="mb-2 form-group">
+                                <label for="WomenCountB">
+                                    Mujeres
+                                </label>
+                                <div class="input-group">
+                                    <input [(ngModel)]="item.stateWomen" id="WomenCountB" name="WomenCountB"
+                                        class="form-control" (keyup)="keyUpOnlyNumber($event)"
+                                        (keypress)="keyPressOnlyNumbers($event)" type="text" maxlength="4">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-4 mb-0">
+                            <h6 class="d-block text-left text-dark font-weight-bold">
+                                Cantidad de personas de la empresa
+                            </h6>
+
+                            <hr>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="mb-2 form-group">
+                                <label for="MenCountC">
+                                    Hombres
+                                </label>
+                                <div class="input-group">
+                                    <input [(ngModel)]="item.companyMen" id="MenCountC" name="MenCountC"
+                                        class="form-control" (keyup)="keyUpOnlyNumber($event)"
+                                        (keypress)="keyPressOnlyNumbers($event)" type="text" maxlength="4">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="mb-2 form-group">
+                                <label for="WomenCountC">
+                                    Mujeres
+                                </label>
+                                <div class="input-group">
+                                    <input [(ngModel)]="item.companyWomen" id="WomenCountC" name="WomenCountC"
+                                        class="form-control" (keyup)="keyUpOnlyNumber($event)"
+                                        (keypress)="keyPressOnlyNumbers($event)" type="text" maxlength="4">
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <div class="col-12 mt-4 mb-0">
+                        <h6 class="d-block text-left text-dark font-weight-bold">
+                            Detalles de gestión
+                        </h6>
+
+                        <hr>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="mb-2 form-group">
+                            <label for="ManagementDescription">
+                                Descripción (*)
+                            </label>
+                            <textarea #managementDescriptionInput [(ngModel)]="item.description"
+                                id="ManagementDescription" name="ManagementDescription" class="form-control" rows="4"
+                                type="text" required maxlength="5000"></textarea>
+                            <span class="input-legth">
+                                {{managementDescriptionInput.value ? managementDescriptionInput.value?.length :
+                                0}}/{{managementDescriptionInput.maxLength}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="ManagementManager">
+                            Responsable de la gestión (*)
+                        </label>
+                        <select (change)="onManagerChange($event)" class="form-control" id="ManagementManager"
+                            name="ManagementManager" [(ngModel)]="item.manager.id">
+                            <option value="-1">
+                                Seleccione
+                            </option>
+                            <option *ngFor="let manager of managers" [value]="manager.id">
+                                {{manager.name}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <ng-container *ngIf="item.resources?.length > 0">
+                        <div class="col-12 mb-3">
+                            <h5 class="d-block text-left text-dark font-weight-bold mt-4">
+                                Archivos adjuntos
+                            </h5>
+                            <hr>
+                        </div>
+
+                        <div class="col-12">
+                            <file-resource-item [resource]="resource" (restoreResource)="restoreResource(resource)"
+                                (removeResource)="removeResource(resource, i)"
+                                *ngFor="let resource of item.resources; index as i;"></file-resource-item>
+                        </div>
+                    </ng-container>
+
+                    <file-uploader #fileUploadItems class="w-100 my-3" [(attachments)]="item.uploadFiles"
+                        [hideType]="true" (saveAttachment)="saveAttach($event)"></file-uploader>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!factForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

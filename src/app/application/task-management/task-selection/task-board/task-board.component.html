@@ -1,0 +1,440 @@
+<ng-container *ngIf="step == steps.taskBoard">
+    <div class="row">
+        <div class="task-header-title">
+            <button type="button" class="btn btn-outline task-back-button" aria-label="back-button"
+                (click)="backButtonPressed()">
+                <i class="fas fa-angle-left"></i>
+            </button>
+            <h5 class="font-weight-bold">
+                Compromiso: {{compromise.name}}
+            </h5>
+        </div>
+    </div>
+    <hr>
+    <div class="task-board-container pt-5">
+        <div class="task-bord-content">
+            <div class="task-list-container">
+
+                <div class="task-header pending mb-5">
+                    <div class="card">
+                        <div class="card-body p-3 shadow">
+                            <h5 class="m-0">
+                                PENDIENTE
+                                <span class="badge rounded-circle text-light">
+                                    {{pending.length}}
+                                </span>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="cdk-drop-list-1" cdkDropList #todoList="cdkDropList" [cdkDropListData]="pending"
+                    [cdkDropListConnectedTo]="[doneList,pendingList]" class="task-list"
+                    (cdkDropListDropped)="drop($event)">
+                    <div class="task-item" *ngFor="let item of pending; index as i;" cdkDrag>
+                        <div class="card w-100">
+                            <div class="card-body pr-2">
+                                <div class="task-body">
+                                    <div class="task-content">
+                                        <h5 class="card-title mb-2 task-title">
+                                            {{item.title}}
+                                        </h5>
+                                        <p class="card-text mb-2 task-description">
+                                            {{item.description}}
+                                        </p>
+                                        <span class="task-description">
+                                            {{item.deadline | momentFormat: 'dddd, D MMMM YYYY'}}
+                                        </span>
+                                    </div>
+                                    <div class="task-actions">
+                                        <a href="javascript:;" aria-label="Delete Action" class="btn btn-task task-trash mb-auto" (click)="deleteTask(item, i, 'pending')">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                        <a href="javascript:;" aria-label="Go Action" class="btn btn-task task-arrow mt-auto" (click)="editTask(item)">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-button mt-4">
+                    <a href="javascript:;" class="btn btn-task pl-0" (click)="newPendingTask()">
+                        <i class="fa fa-plus"></i>
+                        Nueva Tarea
+                    </a>
+                </div>
+            </div>
+
+            <div class="task-list-container">
+                <div class="task-header incomplete mb-5">
+                    <div class="card">
+                        <div class="card-body p-3 shadow">
+                            <h5 class="m-0">
+                                NO COMPLETADO
+                                <span class="badge rounded-circle text-light">
+                                    {{incomplete.length}}
+                                </span>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="cdk-drop-list-2" cdkDropList #pendingList="cdkDropList" [cdkDropListData]="incomplete"
+                    [cdkDropListConnectedTo]="[doneList, todoList]" class="task-list"
+                    (cdkDropListDropped)="drop($event)">
+                    <div class="task-item" *ngFor="let item of incomplete; index as i;" cdkDrag>
+                        <div class="card w-100">
+                            <div class="card-body pr-2">
+                                <div class="task-body">
+                                    <div class="task-content">
+                                        <h5 class="card-title mb-2 task-title">
+                                            {{item.title}}
+                                        </h5>
+                                        <p class="card-text mb-2 task-description">
+                                            {{item.description}}
+                                        </p>
+                                        <span class="task-description">
+                                            {{item.deadline | momentFormat: 'dddd, D MMMM YYYY'}}
+                                        </span>
+                                    </div>
+                                    <div class="task-actions">
+                                        <a href="javascript:;" aria-label="Delete Action" class="btn btn-task task-trash mb-auto" (click)="deleteTask(item, i, 'incomplete')">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                        <a href="javascript:;" aria-label="Go Action" class="btn btn-task task-arrow mt-auto" (click)="editTask(item)">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-button mt-4">
+                    <a href="javascript:;" class="btn btn-task pl-0" (click)="newIncompleteTask()">
+                        <i class="fa fa-plus"></i>
+                        Nueva Tarea
+                    </a>
+                </div>
+            </div>
+
+            <div class="task-list-container">
+                <div class="task-header complete mb-5">
+                    <div class="card">
+                        <div class="card-body p-3 shadow">
+                            <h5 class="m-0">
+                                COMPLETADO
+                                <span class="badge rounded-circle text-light">
+                                    {{complete.length}}
+                                </span>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="cdk-drop-list-3" cdkDropList #doneList="cdkDropList" [cdkDropListData]="complete"
+                    [cdkDropListConnectedTo]="[todoList,pendingList]" class="task-list"
+                    (cdkDropListDropped)="drop($event)">
+                    <div class="task-item" *ngFor="let item of complete; index as i;" cdkDrag>
+                        <div class="card w-100">
+                            <div class="card-body pr-2">
+                                <div class="task-body">
+                                    <div class="task-content">
+                                        <h5 class="card-title mb-2 task-title">
+                                            {{item.title}}
+                                        </h5>
+                                        <p class="card-text mb-2 task-description">
+                                            {{item.description}}
+                                        </p>
+                                        <span class="task-description">
+                                            {{item.deadline | momentFormat: 'dddd, D MMMM YYYY'}}
+                                        </span>
+                                    </div>
+                                    <div class="task-actions">
+                                        <a href="javascript:;" aria-label="Delete Action" class="btn btn-task task-trash mb-auto" (click)="deleteTask(item, i, 'complete')">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                        <a href="javascript:;" aria-label="Go Action" class="btn btn-task task-arrow mt-auto" (click)="editTask(item)">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-button mt-4">
+                    <a href="javascript:;" class="btn btn-task pl-0" (click)="newCompleteTask()">
+                        <i class="fa fa-plus"></i>
+                        Nueva Tarea
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="step == steps.taskCreate">
+
+    <div class="row">
+
+        <div class="col-12 mb-3">
+            <div class="task-header-title">
+                <button type="button" class="btn btn-outline task-back-button" aria-label="back-button" (click)="goTaskBoard()">
+                    <i class="fas fa-angle-left"></i>
+                </button>
+                <h5 class="font-weight-bold">
+                    Compromiso: {{compromise.name}}
+                </h5>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="row">                
+                <h5 class="kt-subheader__title font-weight-bold my-auto ml-2">
+                    {{editingTask.id ? 'Editar tarea' : 'Crear tarea'}}
+                </h5>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="kt-subheader__toolbar text-right">
+                <div class="kt-subheader__wrapper">
+
+                    <button *ngIf="('Pages.Application.TaskManagement' | permission) && editingTask.id"
+                        class="btn btn-warning" [disabled]="commentSend || saving" (click)="openEmail()">
+                        <i class="fa fa-paper-plane"></i>
+                        Compartir
+                    </button>
+
+                    <button *ngIf="('Pages.Application.TaskManagement' | permission) && editingTask.id"
+                        class="btn btn-success" [disabled]="commentSend || saving" (click)="openSender()">
+                        <i class="fa fa-paper-plane"></i>
+                        Enviar notificación
+                    </button>
+
+                    <button *ngIf="('Pages.Application.TaskManagement' | permission) && editingTask.id"
+                        class="btn btn-primary" [disabled]="commentSend" [buttonBusy]="saving" busyText="Guardar..."
+                        (click)="saveTask()">
+                        <i class="fa fa-save"></i>
+                        Guardar cambios
+                    </button>
+
+                    <button *ngIf="('Pages.Application.TaskManagement' | permission) && !editingTask.id"
+                        class="btn btn-primary" [disabled]="commentSend" [buttonBusy]="saving" busyText="Guardar..."
+                        (click)="saveTask()">
+                        <i class="fa fa-save"></i>
+                        Guardar cambios
+                    </button>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-3 col-xl-3">
+            <div class="mb-2 form-group">
+                <label for="StartEndRange">
+                    Estado
+                </label>
+                <div class="input-group">
+                    <select id="StartEndRange" name="CompromiseStatusSelect" class="form-control" type="text"
+                        [(ngModel)]="editingTask.status">
+                        <option value="1">
+                            Pendiente
+                        </option>
+                        <option value="2">
+                            Completado
+                        </option>
+                        <option value="3">
+                            No completado
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-9 col-xl-9">
+            <div class="row justify-content-end">
+                <div class="mb-2 form-group mr-2">
+                    <label for="TaskManagementStartTime">
+                        Fecha inicio
+                    </label>
+                    <div class="input-group fix-border">
+                        <input id="TaskManagementStartTime" name="TaskManagementStartTime" type="text"
+                            class="form-control" bsDatepicker datePickerMomentModifier
+                            [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }" [(ngModel)]="editingStartTime"
+                            [disabled]="editingTask.startTime">
+                        <span class="input-group-text">
+                            <i class="far fa-calendar-alt"></i>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="mb-2 form-group mr-2">
+                    <label for="TaskManagementDeadLine">
+                        Fecha vencimiento
+                    </label>
+                    <div class="input-group fix-border">
+                        <input id="TaskManagementDeadLine" name="TaskManagementDeadLine" type="text"
+                            class="form-control" bsDatepicker datePickerMomentModifier
+                            [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }" [(ngModel)]="editingDeadLine"
+                            [disabled]="editingTask.deadline">
+                        <span class="input-group-text">
+                            <i class="far fa-calendar-alt"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="editingTask.deadline" (click)="openExpandDeadLine()">
+                    <div class="task-button mt-4">
+                        <a href="javascript:;" class="btn btn-task pl-0 mt-2">
+                            <i class="fa fa-plus"></i>
+                            Ampliar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+
+        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 border-dark border-end"
+            style="border-right: 1px solid #343a40 !important;">
+
+            <div class="col-12">
+                <div class="mb-2 form-group">
+                    <label for="TaskManagementTitle">
+                        Título (*)
+                    </label>
+                    <div class="input-group">
+                        <input #taskManagementResponsibleTitleInput id="TaskManagementTitle" name="TaskManagementTitle"
+                            class="form-control" type="text" [(ngModel)]="editingTask.title" maxlength="100">
+                        <span class="input-legth">
+                            {{taskManagementResponsibleTitleInput.value ?
+                            taskManagementResponsibleTitleInput.value.length :
+                            0}}/{{taskManagementResponsibleTitleInput.maxLength}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="mb-2 form-group">
+                    <label for="TaskManagementDescription">
+                        Descripción
+                    </label>
+                    <div class="input-group">
+                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                            cdkAutosizeMaxRows="100" #taskManagementDescriptionInput
+                            [(ngModel)]="editingTask.description" id="TaskManagementDescription"
+                            name="TaskManagementDescription" class="form-control" maxlength="255"></textarea>
+                        <span class="input-legth">
+                            {{taskManagementDescriptionInput.value ? taskManagementDescriptionInput.value.length :
+                            0}}/{{taskManagementDescriptionInput.maxLength}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="mb-2 form-group">
+                    <label for="TaskAssociatedPersons">
+                        Responsable(s) de tarea (*)
+                    </label>
+                    <div class="input-group input-group-right">
+                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="4"
+                            cdkAutosizeMaxRows="100" id="TaskAssociatedPersons" name="TaskAssociatedPersons"
+                            class="form-control" type="text" value="{{personsTitle}}" disabled></textarea>
+                        <span class="input-group-text border-0" (click)="openPersons()">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+            <div class="container clearfix">
+
+                <div class="chat">
+
+                    <div class="chat-header clearfix">
+                        <div class="chat-about">
+                            <div class="chat-with">
+                                Comentarios
+                            </div>
+                            <div class="chat-num-messages">
+                                Alrededor de {{editingTask.comments ? editingTask.comments.length : 0}} mensajes
+                                disponibles.
+                            </div>
+                        </div>
+                    </div> <!-- end chat-header -->
+
+                    <div class="chat-history">
+                        <ul>
+                            <ng-container *ngFor="let comment of editingTask.comments">
+                                <li *ngIf="comment.type == commentTypes.user" class="clearfix">
+                                    <div class="message-data align-right">
+                                        <span class="message-data-time">
+                                            {{comment.creationTime | momentFormat: 'DD/MM/YYYY'}}
+                                        </span>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <span class="message-data-name mr-2">
+                                            {{comment?.user?.name}} {{comment?.user?.surname}}
+                                        </span>
+                                        <i class="fa fa-circle me"></i>
+                                    </div>
+                                    <div class="message other-message float-right">
+                                        {{comment.description}}
+                                    </div>
+                                </li>
+
+                                <li *ngIf="comment.type == commentTypes.system">
+                                    <div class="message-data">
+                                        <span class="message-data-name mr-2">
+                                            <i class="fa fa-circle online"></i>
+                                            {{comment?.user?.name}} {{comment?.user?.surname}}
+                                        </span>
+                                        <span class="message-data-time">
+                                            {{comment.creationTime | momentFormat: 'DD/MM/YYYY'}}
+                                        </span>
+                                    </div>
+                                    <div class="message my-message">
+                                        {{comment.description}}
+                                    </div>
+                                </li>
+                            </ng-container>
+                        </ul>
+
+                    </div> <!-- end chat-history -->
+
+                    <div class="chat-message clearfix">
+                        <textarea name="message-to-send" placeholder="Escribe tu mensaje aquí..."
+                            [(ngModel)]="commentDescription" [disabled]="saving" busyText="Guardar..." maxlength="500"
+                            rows="3"></textarea>
+
+                        <i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp;
+                        <i class="fa fa-file-image-o"></i>
+
+                        <button [disabled]="saving" [buttonBusy]="commentSend" (click)="sendComment()">Enviar</button>
+
+                    </div> <!-- end chat-message -->
+
+                </div> <!-- end chat -->
+
+            </div> <!-- end container -->
+
+        </div>
+    </div>
+
+</ng-container>

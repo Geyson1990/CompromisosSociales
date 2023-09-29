@@ -1,0 +1,171 @@
+<div [hidden]="step == 2">
+    <div class="row mb-4">
+
+        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="mb-2 form-group">
+                <label for="territorialUnitSelect">
+                    Unidad territorial
+                </label>
+                <div class="input-group">
+                    <select [(ngModel)]="territorialUnit" id="territorialUnitSelect" name="territorialUnitSelect"
+                        class="form-control" type="text">
+                        <option value="-1">
+                            Todas
+                        </option>
+                        <option *ngFor="let territorialUnit of territorialUnits" [value]="territorialUnit.id">
+                            {{territorialUnit.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="mb-2 form-group">
+                <label for="RecordCodeInput">
+                    Código del caso conflictivo
+                </label>
+                <div class="input-group">
+                    <input [(ngModel)]="socialCode" id="RecordCodeInput" name="RecordCodeInput" class="form-control"
+                        [placeholder]="l('SearchWithThreeDot')" type="text">
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="mb-2 form-group">
+                <label for="CompromiseCodeInput">
+                    Código del compromiso
+                </label>
+                <div class="input-group">
+                    <input [(ngModel)]="compromiseCode" id="CompromiseCodeInput" name="CompromiseCodeInput"
+                        class="form-control" [placeholder]="l('SearchWithThreeDot')" type="text">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="mb-2 form-group">
+                <label for="CompromiseTypeSelect">
+                    Tipo
+                </label>
+                <div class="input-group">
+                    <select [(ngModel)]="compromiseType" id="CompromiseTypeSelect" name="CompromiseTypeSelect"
+                        class="form-control" type="text">
+                        <option value="-1">Todas</option>
+                        <option value="1">PIP</option>
+                        <option value="1">Actividad</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="mb-2 form-group">
+                <label for="StartEndRange">
+                    Fecha de registro
+                </label>
+                <input class="form-control" id="StartEndRange" name="StartEndRange" #drp="bsDaterangepicker"
+                    readonly="readonly" bsDaterangepicker dateRangePickerMomentModifier [(date)]="dateRange" />
+            </div>
+        </div>
+
+
+
+        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 text-right justify-content-end d-flex">
+            <button (click)="getData()" class="btn btn-primary mt-auto mb-2" type="submit">
+                <i class="flaticon-search-1" [attr.aria-label]="l('Search')"></i>
+                Buscar
+            </button>
+        </div>
+
+    </div>
+    <div class="row">
+        <ng-container *ngFor="let compromise of primengTableHelper.records">
+            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-3 col-xxl-2">
+
+                <div class="compromise-container my-4">
+
+                    <div class="compromise-header">
+                        <label class="compromise-title">
+                            <b>COMPROMISO: </b>
+                            <span class="compromise-fw-t">
+                                {{compromise.code}}
+                            </span>
+                        </label>
+                        <label class="compromise-description">
+                            {{compromise.name}}
+                        </label>
+                    </div>
+
+                    <div class="compromise-divider"></div>
+
+                    <div class="compromise-body">
+                        <label *ngIf="compromise?.record?.socialConflict" class="compromise-body-title">
+                            <b>CASO:</b>
+                            <span class="compromise-fw-t">
+                                {{compromise.record.socialConflict.code}}
+                            </span>
+                        </label>
+
+                        <label *ngIf="compromise?.record?.socialConflict" class="compromise-body-description my-3">
+                            {{compromise.record.socialConflict.caseName}}
+                        </label>
+
+                        <label *ngIf="compromise?.record" class="compromise-body-time">
+                            <b>FECHA DE ACTA: </b>
+                            <span class="compromise-fw-t">
+                                {{compromise.record.recordTime | momentFormat: 'DD/MM/YYYY'}}
+                            </span>
+                        </label>
+
+                    </div>
+
+                    <div class="compromise-footer">
+                        <button class="compromise-button" type="button" (click)="selectCompromise(compromise)">
+                            Ir al tablero
+                            <i class="ml-2 fas fa-arrow-alt-circle-right"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </ng-container>
+    </div>
+    <div class="row align-items-center mx-0">
+        <!--<Primeng-TurboTable-Start>-->
+        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                {{'NoData' | localize}}
+            </div>
+            <div class="primeng-paging-container">
+                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                    (onPageChange)="getData($event)" [totalRecords]="primengTableHelper.totalRecordsCount"
+                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+
+                </p-paginator>
+                <span class="total-records-count">
+                    {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-container *ngIf="step == 2">
+    
+    <task-board 
+        #taskBoard 
+        [compromise]="selectedCompromise" 
+        (taskLoaded)="tasks = $event"
+        (onShowExpandDeadLine)="openExpandDeadLine($event)" 
+        (onShowPerson)="openPersons($event)"
+        (onShowSender)="openSender($event)" 
+        (onShowEmail)="openEmail($event)"
+        (back)="onBackPressed($event)">
+    </task-board>
+
+</ng-container>

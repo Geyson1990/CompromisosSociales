@@ -1,0 +1,579 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        Dashboard de Alerta de Situaciones Conflictivas
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                            <dashboard-filter [menuIndex]="indexes.alerts"></dashboard-filter>
+                        </div>
+
+                        <div class="col-sm-12 col-md-12 col-lg-8 col-xl-9">            
+                            
+                            <!--START TERRITORIAL UNITS-->
+                            <div class="row">
+                            
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6 px-2">
+                            
+                                    <h5 class="d-block text-center text-dark font-weight-bold mt-2 mb-3">
+                                        Alertas de Situaciones Conflictivas por Unidad Territorial
+                                    </h5>
+                            
+                                    <hr>
+                            
+                                    <p-table class="dashboard-table" [value]="territorialUnits" [rows]="10000" [paginator]="false" [lazy]="true"
+                                        [scrollable]="true" ScrollWidth="100%" [responsive]="false" [resizableColumns]="false"
+                                        [loading]="isLoading">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th class="dashboard-table-header">
+                                                    UNIDAD TERRITORIAL
+                                                </th>
+                                                <th class="dashboard-table-header">
+                                                    TOTAL
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr [hidden]="record.isHidden">
+                                                <td class="dashboard-table-row">
+                                                    <span class="d-block">
+                                                        {{record.name}}
+                                                    </span>
+                                                </td>
+                                                <td class="dashboard-table-row">
+                                                    <span class="d-block text-center">
+                                                        {{ formatNumber(record.count,0) }}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                            
+                                        <ng-template pTemplate="emptymessage">
+                                            <tr>
+                                                <td class="dashboard-table-row">
+                                                    Sin información
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                            
+                                        <ng-template pTemplate="summary">
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="dashboard-table-summary text-left">
+                                                            <span class="d-block">
+                                                                Total
+                                                            </span>
+                                                        </td>
+                                                        <td class="dashboard-table-summary">
+                                                            <span class="d-block text-center">
+                                                                {{summaries.territorialUnits}}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </ng-template>
+                            
+                                    </p-table>
+                                    <p-paginator class="dashboard-paginator" #territorialUnitPaginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                        (onPageChange)="getTerritorialUnits($event)" [totalRecords]="territorialUnits.length"></p-paginator>
+                                </div>
+                            
+                                <div *ngIf="charts.territorialUnits.type == chartTypes.pie" class="col-sm-12 col-md-12 col-lg-12 col-xl-6 px-2">
+                            
+                                    <h5 class="d-block text-center text-dark font-weight-bold mt-2 mb-3">
+                                        Alertas de Situaciones Conflictivas por Unidad Territorial
+                                    </h5>
+                            
+                                    <hr class="mb-3">
+                            
+                                    <div class="chart-content">
+                            
+                                        <p-chart [ngClass]="{'chart-busy': isBusyChart}" type="pie" [data]="charts.territorialUnits.pie"
+                                            [options]="optionsPieDefault">
+                                        </p-chart>
+                            
+                                        <dashboard-spinner *ngIf="isBusyChart" class="dashboard-spinner"></dashboard-spinner>
+                            
+                                    </div>
+                                </div>
+                            
+                                <div *ngIf="charts.territorialUnits.type == chartTypes.bar" class="col-sm-12 col-md-12 col-lg-12 col-xl-6 px-2">
+                            
+                                    <h5 class="d-block text-center text-dark font-weight-bold mt-2 mb-3">
+                                        Alertas de Situaciones Conflictivas por Unidad Territorial
+                                    </h5>
+                            
+                                    <hr class="mb-3">
+                            
+                                    <div class="chart-content">
+                            
+                                        <p-chart [ngClass]="{'chart-busy': isBusyChart}" type="horizontalBar" [data]="charts.territorialUnits.bar"
+                                            [options]="optionsBarDefault">
+                                        </p-chart>
+                            
+                                        <dashboard-spinner *ngIf="isBusyChart" class="dashboard-spinner"></dashboard-spinner>
+                            
+                                    </div>
+                                </div>
+                            
+                            </div>
+                            <!--END TERRITORIAL UNITS-->
+                            
+                            <!--START TYPOLOGIES-->
+                            <div class="row">
+                            
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6 px-2">
+                            
+                                    <h5 class="d-block text-center text-dark font-weight-bold mt-2 mb-3">
+                                        Alertas de Situaciones Conflictivas por Tipología
+                                    </h5>
+                            
+                                    <hr>
+                            
+                                    <p-table class="dashboard-table" [value]="typologies" [rows]="10000" [paginator]="false" [lazy]="true" [scrollable]="true"
+                                        ScrollWidth="100%" [responsive]="false" [resizableColumns]="false" [loading]="isLoading">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th class="dashboard-table-header">
+                                                    TIPOLOGÍA
+                                                </th>
+                                                <th class="dashboard-table-header">
+                                                    TOTAL
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr [hidden]="record.isHidden">
+                                                <td class="dashboard-table-row">
+                                                    <span class="d-block">
+                                                        {{record.name}}
+                                                    </span>
+                                                </td>
+                                                <td class="dashboard-table-row">
+                                                    <span class="d-block text-center">
+                                                        {{ formatNumber(record.count,0) }}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                            
+                                        <ng-template pTemplate="emptymessage">
+                                            <tr>
+                                                <td class="dashboard-table-row">
+                                                    Sin información
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                            
+                                        <ng-template pTemplate="summary">
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="dashboard-table-summary text-left">
+                                                            <span class="d-block">
+                                                                Total
+                                                            </span>
+                                                        </td>
+                                                        <td class="dashboard-table-summary">
+                                                            <span class="d-block text-center">
+                                                                {{summaries.typologies}}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </ng-template>
+                            
+                                    </p-table>
+                                    <p-paginator class="dashboard-paginator" #typologyPaginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                        (onPageChange)="getTypologies($event)" [totalRecords]="typologies.length"></p-paginator>
+                                </div>
+                            
+                                <div *ngIf="charts.typologies.type == chartTypes.pie" class="col-sm-12 col-md-12 col-lg-12 col-xl-6 px-2">
+                            
+                                    <h5 class="d-block text-center text-dark font-weight-bold mt-2 mb-3">
+                                        Alertas de Situaciones Conflictivas por Tipología
+                                    </h5>
+                            
+                                    <hr class="mb-3">
+                            
+                                    <div class="chart-content">
+                            
+                                        <p-chart [ngClass]="{'chart-busy': isBusyChart}" type="pie" [data]="charts.typologies.pie"
+                                            [options]="optionsPieDefault">
+                                        </p-chart>
+                            
+                                        <dashboard-spinner *ngIf="isBusyChart" class="dashboard-spinner"></dashboard-spinner>
+                            
+                                    </div>
+                                </div>
+                            
+                                <div *ngIf="charts.typologies.type == chartTypes.bar" class="col-sm-12 col-md-12 col-lg-12 col-xl-6 px-2">
+                            
+                                    <h5 class="d-block text-center text-dark font-weight-bold mt-2 mb-3">
+                                        Alertas de Situaciones Conflictivas por Tipología
+                                    </h5>
+                            
+                                    <hr class="mb-3">
+                            
+                                    <div class="chart-content">
+                            
+                                        <p-chart [ngClass]="{'chart-busy': isBusyChart}" type="horizontalBar" [data]="charts.typologies.bar"
+                                            [options]="optionsBarDefault">
+                                        </p-chart>
+                            
+                                        <dashboard-spinner *ngIf="isBusyChart" class="dashboard-spinner"></dashboard-spinner>
+                            
+                                    </div>
+                                </div>
+                            </div>
+                            <!--END TYPOLOGIES-->
+                            
+                            <!--START RIKS-->
+                            <div class="row">
+                            
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6 px-2">
+                            
+                                    <h5 class="d-block text-center text-dark font-weight-bold mt-2 mb-3">
+                                        Alertas de Situaciones Conflictivas por Nivel de Riesgo
+                                    </h5>
+                            
+                                    <hr>
+                            
+                                    <p-table class="dashboard-table" [value]="risks" [rows]="10000" [paginator]="false" [lazy]="true" [scrollable]="true"
+                                        ScrollWidth="100%" [responsive]="false" [resizableColumns]="false" [loading]="isLoading">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th class="dashboard-table-header">
+                                                    NIVEL DE RIESGO
+                                                </th>
+                                                <th class="dashboard-table-header">
+                                                    TOTAL
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr [hidden]="record.isHidden">
+                                                <td class="dashboard-table-row">
+                                                    <span class="d-block">
+                                                        {{record.name}}
+                                                    </span>
+                                                </td>
+                                                <td class="dashboard-table-row">
+                                                    <span class="d-block text-center">
+                                                        {{ formatNumber(record.count,0) }}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                            
+                                        <ng-template pTemplate="emptymessage">
+                                            <tr>
+                                                <td class="dashboard-table-row">
+                                                    Sin información
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                            
+                                        <ng-template pTemplate="summary">
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="dashboard-table-summary text-left">
+                                                            <span class="d-block">
+                                                                Total
+                                                            </span>
+                                                        </td>
+                                                        <td class="dashboard-table-summary">
+                                                            <span class="d-block text-center">
+                                                                {{summaries.risks}}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </ng-template>
+                            
+                                    </p-table>
+                                    <p-paginator class="dashboard-paginator" #risksPaginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                        (onPageChange)="getRisks($event)" [totalRecords]="risks.length"></p-paginator>
+                                </div>
+                            
+                                <div *ngIf="charts.risks.type == chartTypes.pie" class="col-sm-12 col-md-12 col-lg-12 col-xl-6 px-2">
+                            
+                                    <h5 class="d-block text-center text-dark font-weight-bold mt-2 mb-3">
+                                        Alertas de Situaciones Conflictivas por Nivel de Riesgo
+                                    </h5>
+                            
+                                    <hr class="mb-3">
+                            
+                                    <div class="chart-content">
+                            
+                                        <p-chart [ngClass]="{'chart-busy': isBusyChart}" type="pie" [data]="charts.risks.pie"
+                                            [options]="optionsPieDefault">
+                                        </p-chart>
+                            
+                                        <dashboard-spinner *ngIf="isBusyChart" class="dashboard-spinner"></dashboard-spinner>
+                            
+                                    </div>
+                                </div>
+                            
+                                <div *ngIf="charts.risks.type == chartTypes.bar" class="col-sm-12 col-md-12 col-lg-12 col-xl-6 px-2">
+                            
+                                    <h5 class="d-block text-center text-dark font-weight-bold mt-2 mb-3">
+                                        Alertas de Situaciones Conflictivas por Nivel de Riesgo
+                                    </h5>
+                            
+                                    <hr class="mb-3">
+                            
+                                    <div class="chart-content">
+                            
+                                        <p-chart [ngClass]="{'chart-busy': isBusyChart}" type="horizontalBar" [data]="charts.risks.bar"
+                                            [options]="optionsBarDefault">
+                                        </p-chart>
+                            
+                                        <dashboard-spinner *ngIf="isBusyChart" class="dashboard-spinner"></dashboard-spinner>
+                            
+                                    </div>
+                                </div>
+                            </div>
+                            <!--END RIKS-->
+                            
+                            <!--START SECTORS-->
+                            <div class="row">
+                            
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6 px-2">
+                            
+                                    <h5 class="d-block text-center text-dark font-weight-bold mt-2 mb-3">
+                                        Alertas de Situaciones Conflictivas según el Nivel de Atención de los Sectores
+                                    </h5>
+                            
+                                    <hr>
+                            
+                                    <p-table class="dashboard-table" [value]="sectors" [rows]="10000" [paginator]="false" [lazy]="true" [scrollable]="true"
+                                        ScrollWidth="100%" [responsive]="false" [resizableColumns]="false" [loading]="isLoading">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th class="dashboard-table-header">
+                                                    SECTORES
+                                                </th>
+                                                <th class="dashboard-table-header">
+                                                    TOTAL
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr [hidden]="record.isHidden">
+                                                <td class="dashboard-table-row">
+                                                    <span class="d-block">
+                                                        {{record.name}}
+                                                    </span>
+                                                </td>
+                                                <td class="dashboard-table-row">
+                                                    <span class="d-block text-center">
+                                                        {{ formatNumber(record.count,0) }}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                            
+                                        <ng-template pTemplate="emptymessage">
+                                            <tr>
+                                                <td class="dashboard-table-row">
+                                                    Sin información
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                            
+                                        <ng-template pTemplate="summary">
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="dashboard-table-summary text-left">
+                                                            <span class="d-block">
+                                                                Total
+                                                            </span>
+                                                        </td>
+                                                        <td class="dashboard-table-summary">
+                                                            <span class="d-block text-center">
+                                                                {{summaries.sectors}}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </ng-template>
+                            
+                                    </p-table>
+                                    <p-paginator class="dashboard-paginator" #sectorsPaginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                        (onPageChange)="getSectors($event)" [totalRecords]="sectors.length"></p-paginator>
+                                </div>
+                            
+                                <div *ngIf="charts.sectors.type == chartTypes.pie" class="col-sm-12 col-md-12 col-lg-12 col-xl-6 px-2">
+                            
+                                    <h5 class="d-block text-center text-dark font-weight-bold mt-2 mb-3">
+                                        Alerta de Situaciones Conflictivas según el Nivel de Atención de los Sectores
+                                    </h5>
+                            
+                                    <hr class="mb-3">
+                            
+                                    <div class="chart-content">
+                            
+                                        <p-chart [ngClass]="{'chart-busy': isBusyChart}" type="pie" [data]="charts.sectors.pie"
+                                            [options]="optionsPieDefault">
+                                        </p-chart>
+                            
+                                        <dashboard-spinner *ngIf="isBusyChart" class="dashboard-spinner"></dashboard-spinner>
+                            
+                                    </div>
+                                </div>
+                            
+                                <div *ngIf="charts.sectors.type == chartTypes.bar" class="col-sm-12 col-md-12 col-lg-12 col-xl-6 px-2">
+                            
+                                    <h5 class="d-block text-center text-dark font-weight-bold mt-2 mb-3">
+                                        Alerta de Situaciones Conflictivas según el Nivel de Atención de los Sectores
+                                    </h5>
+                            
+                                    <hr class="mb-3">
+                            
+                                    <div class="chart-content">
+                            
+                                        <p-chart [ngClass]="{'chart-busy': isBusyChart}" type="horizontalBar" [data]="charts.sectors.bar"
+                                            [options]="optionsBarDefault">
+                                        </p-chart>
+                            
+                                        <dashboard-spinner *ngIf="isBusyChart" class="dashboard-spinner"></dashboard-spinner>
+                            
+                                    </div>
+                                </div>
+                            </div>
+                            <!--END SECTORS-->
+                            
+                            <!--START STATES-->
+                            <div class="row">
+                            
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6 px-2">
+                            
+                                    <h5 class="d-block text-center text-dark font-weight-bold mt-2 mb-3">
+                                        Alertas de Situaciones Conflictivas por Estado de Cierre
+                                    </h5>
+                            
+                                    <hr>
+                            
+                                    <p-table class="dashboard-table" [value]="states" [rows]="10000" [paginator]="false" [lazy]="true" [scrollable]="true"
+                                        ScrollWidth="100%" [responsive]="false" [resizableColumns]="false" [loading]="isLoading">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th class="dashboard-table-header">
+                                                    ESTADO DE CIERRE
+                                                </th>
+                                                <th class="dashboard-table-header">
+                                                    TOTAL
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr [hidden]="record.isHidden">
+                                                <td class="dashboard-table-row">
+                                                    <span class="d-block">
+                                                        {{record.name}}
+                                                    </span>
+                                                </td>
+                                                <td class="dashboard-table-row">
+                                                    <span class="d-block text-center">
+                                                        {{ formatNumber(record.count,0) }}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                            
+                                        <ng-template pTemplate="emptymessage">
+                                            <tr>
+                                                <td class="dashboard-table-row">
+                                                    Sin información
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                            
+                                        <ng-template pTemplate="summary">
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="dashboard-table-summary text-left">
+                                                            <span class="d-block">
+                                                                Total
+                                                            </span>
+                                                        </td>
+                                                        <td class="dashboard-table-summary">
+                                                            <span class="d-block text-center">
+                                                                {{summaries.states}}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </ng-template>
+                            
+                                    </p-table>
+                                    <p-paginator class="dashboard-paginator" #statesPaginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                        (onPageChange)="getStates($event)" [totalRecords]="states.length"></p-paginator>
+                                </div>
+                            
+                                <div *ngIf="charts.states.type == chartTypes.pie" class="col-sm-12 col-md-12 col-lg-12 col-xl-6 px-2">
+                            
+                                    <h5 class="d-block text-center text-dark font-weight-bold mt-2 mb-3">
+                                        Alertas de Situaciones Conflictivas por Estado de Cierre
+                                    </h5>
+                            
+                                    <hr class="mb-3">
+                            
+                                    <div class="chart-content">
+                            
+                                        <p-chart [ngClass]="{'chart-busy': isBusyChart}" type="pie" [data]="charts.states.pie"
+                                            [options]="optionsPieDefault">
+                                        </p-chart>
+                            
+                                        <dashboard-spinner *ngIf="isBusyChart" class="dashboard-spinner"></dashboard-spinner>
+                            
+                                    </div>
+                                </div>
+                            
+                                <div *ngIf="charts.states.type == chartTypes.bar" class="col-sm-12 col-md-12 col-lg-12 col-xl-6 px-2">
+                            
+                                    <h5 class="d-block text-center text-dark font-weight-bold mt-2 mb-3">
+                                        Alertas de Situaciones Conflictivas por Estado de Cierre
+                                    </h5>
+                            
+                                    <hr class="mb-3">
+                            
+                                    <div class="chart-content">
+                            
+                                        <p-chart [ngClass]="{'chart-busy': isBusyChart}" type="horizontalBar" [data]="charts.states.bar"
+                                            [options]="optionsBarDefault">
+                                        </p-chart>
+                            
+                                        <dashboard-spinner *ngIf="isBusyChart" class="dashboard-spinner"></dashboard-spinner>
+                            
+                                    </div>
+                                </div>
+                            </div>
+                            <!--END STATES-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

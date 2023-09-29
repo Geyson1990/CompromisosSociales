@@ -1,0 +1,165 @@
+.row-container-over {
+    overflow: auto;
+}
+
+.col-container-over {
+    min-width: 1024px;
+}
+
+.searchbar-button {
+    border-radius: 0 5px 5px 0 !important;
+}
+
+.ui-state-highlight>td {
+    background: #E3F2FD !important;
+}
+
+.ui-state-highlight {
+    transition: box-shadow 0.2s;
+    outline-color: #8dcdff;
+}
+
+.departments-body {
+    background: #e8e8e8;
+    padding-top: 15px;
+    border-radius: 10px;
+    min-height: 640px !important;
+    -moz-height: -moz-fit-content !important;
+    height: fit-content !important;
+}
+
+.c-region-title span {
+    display: inline-block;
+    font-size: 22px;
+}
+
+.c-region-subtitle span {
+    display: inline-block;
+    font-size: 18px;
+}
+
+.c-region-title span:hover {
+    cursor: pointer;
+    color: #e74c3c;
+    text-decoration: underline;
+}
+
+.c-region-enabled {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.regions-options {
+    display: inline-block;
+}
+
+.regions-options button {
+    position: relative;
+    display: inline-block;
+    top: 0;
+    bottom: 0;
+    padding: 3px;
+    cursor: pointer;
+    background-color: white;
+    width: 28px;
+    height: 28px;
+    margin-left: 3px;
+    color: #95a5a6;
+    font-size: 17px;
+    border: none !important;
+}
+
+.regions-options .pi-trash:hover {
+    color: #e74c3c;
+}
+
+span.r-enabled {
+    padding: 5px 12px;
+    border-radius: 4px;
+    background-color: #37BA32;
+    color: white;
+    font-family: 'Poppins', 'Helvetica', "sans-serif";
+    font-size: 13px;
+}
+
+span.r-disabled {
+    padding: 5px 12px;
+    border-radius: 4px;
+    background-color: #e74c3c;
+    color: white;
+    font-family: 'Poppins', 'Helvetica', "sans-serif";
+    font-size: 13px;
+}
+
+td.tdRemove {
+    text-align: center;
+    color: #e74c3c;
+    transition: all .3s ease;
+}
+
+td.tdRemove button {
+    padding: 3px;
+    cursor: pointer;
+    background-color: transparent;
+    color: #95a5a6;
+    border: none !important;
+}
+
+td.tdRemove button:hover {
+    color: #e74c3c;
+}
+
+.column-province {
+    background: #8F9FB0 !important;
+    color: white !important;
+}
+
+.td-button-expand button {
+    background-color: #8F9FB0 !important;
+    border-radius: 50% !important;
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 10px !important;
+    border: none !important;
+    text-align: center;
+}
+
+.td-button-expand button span {
+    padding-top: 1.5px !important;
+    color: #6c757d !important;
+}
+
+.td-button-expand button:focus {
+    box-shadow: none !important;
+}
+
+.primeng-datatable-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-body {
+    display: flex;
+    flex-direction: column;
+}
+
+p-table.expand-table {
+    flex-grow: 1;
+    background: white;
+}
+
+.province-title span {
+    display: inline-block;
+}
+
+.province-title span:hover {
+    cursor: pointer;
+    color: #e74c3c;
+    text-decoration: underline;
+}
+
+.hidden-content {
+    visibility: hidden;
+    display: none;
+}

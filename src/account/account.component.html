@@ -1,0 +1,38 @@
+<div [ngClass]="{'kt-grid kt-grid--ver kt-grid--root': !useFullWidthLayout(), 'kt-content': useFullWidthLayout() }" [style.text-align]="useFullWidthLayout() ? 'center' : 'left'">
+    <div [ngClass]="{'kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v1': !useFullWidthLayout(), 'row':useFullWidthLayout()}" id="kt_login">
+        <div [ngClass]="{'kt-grid__item kt-grid__item--fluid kt-grid kt-grid--desktop kt-grid--ver-desktop kt-grid--hor-tablet-and-mobile': !useFullWidthLayout(), 'col-md-12': useFullWidthLayout()}">
+            <div class="position-relative kt-grid__item kt-grid__item--order-tablet-and-mobile-2 kt-grid kt-grid--hor kt-login__aside" *ngIf="!useFullWidthLayout()" style="background:#ACDEFF;">
+
+                <div class="kt-grid__item text-center">
+                    <a (click)="goToHome()" class="kt-account-icon" href="">
+                        <img [src]="appRootUrl() + 'assets/common/images/jpg/account-icon.jpg'" alt="logo" />
+                    </a>
+                </div>
+
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver">
+
+                    <div class="w-100 kt-grid__item kt-grid__item--top kt-login__title-container">
+                        <h2 class="d-block mx-5 text-center kt-login__title mt-5 font-weight-bold">
+                            SISTEMA GESTIÓN DE CONFLICTOS SOCIALES
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="kt-account-image">
+                    <img aria-label="App Logo" [src]="appRootUrl() +'assets/common/images/svg/office-meeting.svg'">
+                </div>
+            </div>
+
+            <div
+                class="kt-grid__item kt-grid__item--fluid  kt-grid__item--order-tablet-and-mobile-1  kt-login__wrapper d-block">
+
+                <div class="kt-login__body d-flex mt-3 mr-auto ml-auto">
+                    <div class="flex-grow-1">
+                        <router-outlet></router-outlet>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

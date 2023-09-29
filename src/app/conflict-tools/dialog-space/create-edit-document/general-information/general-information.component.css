@@ -1,0 +1,65 @@
+.installation-status,
+.alert-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    text-align: center;
+    border: 1px solid gray;
+    font-weight: bold;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.installation-status-0 {
+    background: #00B050;
+    color: white;
+}
+
+.installation-status-1 {
+    background: #FFFF00;
+    color: black;
+}
+
+.installation-status-2 {
+    background: #FF0000;
+    color: white;
+}
+
+.installation-complete,
+.installation-vigency-avaliable,
+.installation-vigency-out,
+.alert-status-dialog {
+    width: 250px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    border-width: 1px 1px 1px 0;
+    border-style: solid;
+    border-color: gray;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.installation-complete label,
+.installation-vigency-avaliable label,
+.installation-vigency-out label,
+.alert-status-dialog label {
+    text-align: center;
+    margin: 0;
+}
+
+.alert-status-0 {
+    background: #00B050;
+    color: white;
+}
+
+.alert-status-1 {
+    background: #FFFF00;
+    color: black;
+}
+
+.alert-status-2 {
+    background: #FF0000;
+    color: white;
+}

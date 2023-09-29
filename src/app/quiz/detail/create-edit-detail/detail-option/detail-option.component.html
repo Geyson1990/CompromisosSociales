@@ -1,0 +1,54 @@
+<div class="col-12 mb-2">
+
+    <label class="d-block text-dark fw-500 mb-3">
+        {{form.name}}
+    </label>
+
+    <ng-container *ngIf="form.options.length > 1">
+        <div class="checkbox-column">
+            <ng-container *ngFor="let option of form.options; index as i">
+
+                <div class="checkbox-item" [ngClass]="{'selected' : form.selectedOptionId == option.quizOptionReferenceId }">
+                    <div class="checkbox-container">
+                        <div class="checkbox-content"></div>
+                    </div>
+                    <label class="checkbox-label">
+                        {{option.name}}
+                    </label>
+                </div>
+
+                <div *ngIf="option.extra && form.selectedOptionId == option.quizOptionReferenceId">
+                    <div class="input-group mt-3 w-100">
+                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                            cdkAutosizeMaxRows="10" #extraDescription #extraDescriptionInput="ngModel"
+                            id="ResponseOption{{form.id}}{{i}}" [(ngModel)]="option.response"
+                            name="ResponseOption{{form.id}}{{i}}" placeholder="Escriba su respuesta" class="form-control"
+                            readonly maxlength="3000"></textarea>
+                        <validation-messages [formCtrl]="extraDescriptionInput"></validation-messages>
+                        <span class="input-legth">
+                            {{extraDescription.value ?
+                            extraDescription.value.length :
+                            0}}/{{extraDescription.maxLength}}
+                        </span>
+                    </div>
+                </div>
+                
+            </ng-container>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="form.options.length == 1">
+        <div class="input-group mt-3 w-100">
+            <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3" cdkAutosizeMaxRows="10"
+                #extraDescription #extraDescriptionInput="ngModel" id="ResponseOption{{form.id}}{{form.options[0].id}}"
+                [(ngModel)]="form.options[0].response" name="ResponseOption{{form.id}}{{form.options[0].id}}" readonly
+                placeholder="Escriba su respuesta" class="form-control" maxlength="3000"></textarea>
+            <validation-messages [formCtrl]="extraDescriptionInput"></validation-messages>
+            <span class="input-legth">
+                {{extraDescription.value ?
+                extraDescription.value.length :
+                0}}/{{extraDescription.maxLength}}
+            </span>
+        </div>
+    </ng-container>
+
+</div>

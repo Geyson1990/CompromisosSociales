@@ -1,0 +1,332 @@
+<detail-box-project-risk [item]="historyDetail"></detail-box-project-risk>
+
+<div class="row mb-4">
+
+    <div class="col-12 mt-3">
+        <label class="fz-16 font-weight-bold">
+            DESCRIPCIÓN DEL PROYECTO
+        </label>
+        <hr>
+    </div>
+
+    <div class="col-sm-8 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="ProjectRiskCode">
+                Código Proyecto (*)
+            </label>
+            <div class="input-group">
+                <input disabled #projectRiskCodeInput value="{{projectRisk.code}}" id="ProjectRiskCode"
+                    name="ProjectRiskCode" class="form-control" type="text" disabled>
+                <span class="input-legth">
+                    {{projectRiskCodeInput.value ?
+                    projectRiskCodeInput.value.length :0}}/{{projectRiskCodeInput.maxLength}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <div class="mb-2 form-group">
+            <label for="ProjectRiskEvaluationTime">
+                Fecha de análisis
+            </label>
+            <input disabled id="ProjectRiskEvaluationTime" class="form-control"
+                value="{{historyDetail?.evaluatedTime | momentFormat: 'L'}}">
+        </div>
+    </div>
+
+    <div class="col-sm-12">
+        <div class="mb-2 form-group">
+            <label for="ProjectRiskName">
+                Proyecto estratégico (*)
+            </label>
+            <div class="input-group">
+                <textarea disabled #projectRiskNameInput value="{{projectRisk.name}}" id="ProjectRiskName"
+                    name="ProjectRiskName" class="form-control" type="text" required maxlength="500"></textarea>
+                <span class="input-legth">
+                    {{projectRiskNameInput.value ?
+                    projectRiskNameInput.value.length :0}}/{{projectRiskNameInput.maxLength}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mt-3">
+        <label class="fz-16 font-weight-bold">
+            FACTOR DE CORRECIÓN
+        </label>
+        <hr>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <div class="mb-2 form-group">
+            <label for="ProjectRiskFCImpact">
+                FC Impacto
+            </label>
+            <div class="input-group">
+                <select disabled [(ngModel)]="historyDetail.fixImpactRate" id="ProjectRiskFCImpact"
+                    name="ProjectRiskFCImpact" class="form-control">
+                    <option value="2">
+                        (+) Valor 5
+                    </option>
+                    <option value="1.8">
+                        (+) Valor 4
+                    </option>
+                    <option value="1.6">
+                        (+) Valor 3
+                    </option>
+                    <option value="1.4">
+                        (+) Valor 2
+                    </option>
+                    <option value="1.2">
+                        (+) Valor 1
+                    </option>
+                    <option value="1">
+                        Neutro
+                    </option>
+                    <option value="0.8">
+                        (-) Valor 1
+                    </option>
+                    <option value="0.6">
+                        (-) Valor 2
+                    </option>
+                    <option value="0.4">
+                        (-) Valor 3
+                    </option>
+                    <option value="0.2">
+                        (-) Valor 4
+                    </option>
+                    <option value="0.1">
+                        (-) Valor 5
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <div class="mb-2 form-group">
+            <label for="ProjectRiskFCProbability">
+                FC Probabilidad
+            </label>
+            <div class="input-group">
+                <select disabled [(ngModel)]="historyDetail.fixProbabilityRate" id="ProjectRiskFCProbability"
+                    name="ProjectRiskFCProbability" class="form-control">
+                    <option value="2">
+                        (+) Valor 5
+                    </option>
+                    <option value="1.8">
+                        (+) Valor 4
+                    </option>
+                    <option value="1.6">
+                        (+) Valor 3
+                    </option>
+                    <option value="1.4">
+                        (+) Valor 2
+                    </option>
+                    <option value="1.2">
+                        (+) Valor 1
+                    </option>
+                    <option value="1">
+                        Neutro
+                    </option>
+                    <option value="0.8">
+                        (-) Valor 1
+                    </option>
+                    <option value="0.6">
+                        (-) Valor 2
+                    </option>
+                    <option value="0.4">
+                        (-) Valor 3
+                    </option>
+                    <option value="0.2">
+                        (-) Valor 4
+                    </option>
+                    <option value="0.1">
+                        (-) Valor 5
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mt-3">
+        <label class="fz-16 font-weight-bold">
+            UBICACIÓN
+        </label>
+        <hr>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <div class="mb-2 form-group">
+            <label for="ProjectRiskDepartment">
+                Departamento
+            </label>
+            <div class="input-group">
+                <input disabled id="ProjectRiskDepartment" class="form-control"
+                    value="{{projectRisk?.department?.name}}">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <div class="mb-2 form-group">
+            <label for="ProjectRiskProvince">
+                Provincia
+            </label>
+            <div class="input-group">
+                <input disabled id="ProjectRiskProvince" class="form-control" value="{{projectRisk?.province?.name}}">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="ProjectRiskTerritorialUnits">
+                Unidades territoriales
+            </label>
+            <div class="input-group">
+                <textarea id="ProjectRiskTerritorialUnits" value="{{projectRisk.territorialUnitText}}"
+                    name="ProjectRiskTerritorialUnits" class="form-control" type="text" disabled></textarea>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-12 mt-3">
+        <label class="fz-16 font-weight-bold">
+            EVALUACIÓN
+        </label>
+        <hr>
+    </div>
+
+    <div class="stage-container">
+        <div class="stage-content">
+            <h5 class="stage-title">
+                <b>Fase del proyecto:&nbsp;</b> {{historyDetail?.stage?.name}}
+            </h5>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <p-tabView class="mt-4">
+            <p-tabPanel *ngFor="let detail of historyDetail?.stage?.details; index as vi;"
+                header="{{detail.staticVariable.name}}">
+                <div class="tab-container">
+                    <div class="variable-container my-2 mx-0 row">
+
+                        <div class="col-12">
+                            <h5 class="my-3 d-block text-center text-dark font-weight-bold">
+                                Variables de impacto
+                            </h5>
+                        </div>
+
+                        <ng-container *ngFor="let option of detail.staticVariable.options; index as oi">
+                            <div *ngIf="option.site == sites.impact"
+                                class="variable-box-width col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4">
+                                <div class="variable-content">
+                                    <div class="variable-box">
+                                        <label>
+                                            {{option.name}}
+                                        </label>
+                                    </div>
+
+                                    <div class="variable-selection">
+                                        <div class="form-group">
+                                            <select disabled aria-label="selection" class="form-control"
+                                                id="StaticVariableTypeA{{vi}}_{{oi}}"
+                                                name="StaticVariableTypeA{{vi}}_{{oi}}" [(ngModel)]="option.relationId">
+                                                <option *ngFor="let detail of option.details; index as i"
+                                                    [value]="detail.id">
+                                                    {{detail.name}} - {{option.value | number: '1.2-2' : 'en-us'}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <div class="col-12">
+                            <h5 class="my-3 d-block text-center text-dark font-weight-bold">
+                                Variables de probabilidad
+                            </h5>
+                        </div>
+
+                        <ng-container *ngFor="let option of detail.staticVariable.options; index as oi">
+                            <div *ngIf="option.site == sites.probability"
+                                class="variable-box-width col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4">
+                                <div class="variable-content">
+                                    <div class="variable-box">
+                                        <label>
+                                            {{option.name}}
+                                        </label>
+                                    </div>
+
+                                    <div class="variable-selection">
+                                        <div class="form-group">
+                                            <select disabled aria-label="selection" class="form-control"
+                                                id="StaticVariableTypeB{{vi}}_{{oi}}"
+                                                name="StaticVariableTypeB{{vi}}_{{oi}}" [(ngModel)]="option.relationId">
+                                                <option *ngFor="let detail of option.details; index as i"
+                                                    [value]="detail.id">
+                                                    {{detail.name}} - {{option.value| number: '1.2-2' : 'en-us'}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </p-tabPanel>
+
+        </p-tabView>
+    </div>
+</div>
+
+<div class="row" *ngIf="historyDetail?.creationUser">
+
+    <div class="col-12">
+        <h5 class="fz-16 d-block text-left text-dark font-weight-bold">
+            INFORMACIÓN ADICIONAL
+        </h5>
+        <hr>
+    </div>
+
+    <div class="col-sm-12 col-md-8 col-lg-9 col-xl-9">
+        <div class="mb-2 form-group">
+            <label for="filterText">
+                Registrado por
+            </label>
+            <div class="input-group">
+                <input placeholder="Usuario que creó el registro"
+                    value="{{historyDetail.creationUser.name}} {{historyDetail.creationUser.surname}} - {{historyDetail.creationUser.emailAddress}}"
+                    class="form-control" type="text" readonly>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="filterText">
+                Fecha de registro
+            </label>
+            <div class="input-group input-group-right">
+                <input placeholder="Fecha que se creó el registro"
+                    value="{{historyDetail.creationTime | momentFormat: 'DD/MM/YYYY HH:mm:ss'}}" class="form-control"
+                    type="text" readonly>
+                <span class="input-group-text">
+                    <i class="far fa-calendar-alt"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+
+</div>

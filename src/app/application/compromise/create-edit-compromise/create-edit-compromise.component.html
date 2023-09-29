@@ -1,0 +1,123 @@
+<div [@routerTransition]>
+    <div *ngIf="loaded" class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <button type="button" class="btn btn-light back-button mt-2" (click)="backButtonPressed()">
+                        {{backButtonText}}
+                    </button>
+                    <h3 class="kt-subheader__title">
+                        {{id ? 'Editar Compromiso' : 'Registrar Compromiso'}}
+                    </h3>
+                </div>
+
+                <div class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <button (click)="save()" *ngIf="('Pages.Application.Compromise.Create' | permission) && id" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Guardar
+                        </button>
+                        <button (click)="save()" *ngIf="('Pages.Application.Compromise.Edit' | permission) && !id" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="kt-container kt-grid__item kt-grid__item--fluid">
+
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row m-0">
+                                <label class="font-weight-bold m-0">
+                                    Código: <span class="title-dark">{{compromise.code}}</span>
+                                </label> 
+                                <label class="mx-2"></label>
+                                <label class="font-weight-bold my-0 mr-2">
+                                    Estado Actual: <span *ngIf="compromise.compromiseState" class="title-dark">{{compromise.compromiseState.name}}</span> 
+                                </label> 
+                                <label class="mx-2"></label>
+                                <label class="font-weight-bold my-0 mr-2">
+                                    Fecha del acta: <span *ngIf="compromise.record" class="title-dark">{{compromise.record.recordTime | momentFormat: 'DD/MM/YYYY'}}</span> 
+                                </label> 
+                            </div>
+                        </div>
+                        <div class="col-12 label-title">
+                            <label class="font-weight-bold m-0">
+                                Caso: <span *ngIf="compromise.record" class="title-dark">{{compromise.record.socialConflict?.caseName}}</span>
+                            </label> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <p-tabView #primeTabView [(activeIndex)]="activeIndex">
+
+                        <p-tabPanel header="Aspectos generales">
+                            <compromise-general-information 
+                                [compromise]="compromise" 
+                                [labels]="utilities.labels"
+                                (openFindRecord)="findRecordModal.show()">
+                            </compromise-general-information>
+                        </p-tabPanel>
+
+                        <p-tabPanel header="Responsables">
+                            <div class="tab-container">                                
+                                <compromise-responsible-actor 
+                                    [responsibleActors]="utilities.responsibleActors" 
+                                    [responsibleTypes]="utilities.responsibleTypes" 
+                                    [compromise]="compromise">
+                                </compromise-responsible-actor>   
+                                <compromise-responsible-actor-old
+                                    [responsibleActors]="utilities.responsibleActors" 
+                                    [responsibleTypes]="utilities.responsibleTypes" 
+                                    [compromise]="compromise">                                    
+                                </compromise-responsible-actor-old>                             
+                                <compromise-involved 
+                                    [responsibleActors]="utilities.responsibleActors" 
+                                    [responsibleTypes]="utilities.responsibleTypes" 
+                                    [compromise]="compromise">
+                                </compromise-involved>
+                            </div>
+                        </p-tabPanel>
+
+                        <p-tabPanel header="PIP" *ngIf="compromise.type == compromiseTypes.pip">
+                            <compromise-pip 
+                                #pipInformation
+                                [pipPhases]="utilities.pipPhases" 
+                                [pipMilestones]="utilities.pipMilestones" 
+                                [compromise]="compromise"
+                                (addCompromise)="addTimeline()"
+                                (editCompromise)="showTimelineEdition($event)"></compromise-pip>
+                        </p-tabPanel>
+
+                        <p-tabPanel header="Criterios de seguimiento">
+                            <compromise-tracing 
+                                [statuses]="utilities.statuses"
+                                [states]="utilities.states"
+                                [compromise]="compromise">
+                            </compromise-tracing>
+                        </p-tabPanel>
+
+                        <p-tabPanel header="Gestión de tareas" *ngIf="compromise.isPriority && compromise.id">
+                            <compromise-task-management 
+                                [compromise]="compromise">
+                            </compromise-task-management>
+                        </p-tabPanel>
+
+                    </p-tabView>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <find-record #findRecordModal (modalSave)="selectRecord($event)"></find-record>
+    <create-edit-phase-milestone #createEditPhaseMilestoneModal (modalSave)="saveTimeline($event)"></create-edit-phase-milestone>
+</div>

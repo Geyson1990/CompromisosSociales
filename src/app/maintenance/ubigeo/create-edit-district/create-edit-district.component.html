@@ -1,0 +1,68 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #userForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="item.id">
+                            Editar distrito: {{item.name}}
+                        </span>
+                        <span *ngIf="!item.id">
+                            Crear distrito
+                        </span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-sm-12">
+                        <label for="Code">
+                            Código (*)
+                        </label>
+                        <div class="input-group mb-0">
+                            <span class="input-group-text" style="border-radius: 5px 0 0 5px;">{{department?.code}}{{province?.code}}</span>
+                            <input id="Code" #codeInput="ngModel" class="form-control" type="text" name="Code"
+                                [(ngModel)]="item.code" required minlength="2" maxlength="2">
+                        </div>
+                        <validation-messages [formCtrl]="codeInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="Name">
+                            Distrito (*)
+                        </label>
+                        <input id="Name" #nameInput="ngModel" class="form-control" type="text" name="Name"
+                            [(ngModel)]="item.name" required maxlength="255">
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+
+                    <div class="col-12 mt-4 checkbox-list">
+                        <label for="EnabledNationality" class="checkbox">
+                            <input id="EnabledNationality" type="checkbox" name="EnabledNationality"
+                                [(ngModel)]="item.enabled">
+                            <span></span>
+                            Habilitado
+                        </label>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!userForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

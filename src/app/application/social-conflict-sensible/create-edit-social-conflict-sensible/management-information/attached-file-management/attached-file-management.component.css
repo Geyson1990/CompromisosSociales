@@ -1,0 +1,28 @@
+.close:before {
+    cursor: pointer !important;
+    font-size: 1.3rem;
+    content: "";
+}
+
+.close {
+    outline: none !important;
+    color: #74788d;
+    font-family: "LineAwesome";
+    text-decoration: inherit;
+    text-rendering: optimizeLegibility;
+    text-transform: none;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    padding: 1.25rem;
+    margin: -1rem -1rem -1rem auto;
+}
+
+hr {
+    background: #8DA1B5 !important;
+    height: 1px;
+    width: 100%;
+    margin-bottom: 0.5rem !important;
+    margin-top: 0.5rem !important;
+}

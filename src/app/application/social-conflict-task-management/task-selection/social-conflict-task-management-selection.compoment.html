@@ -1,0 +1,182 @@
+<div [hidden]="step == 2">
+    <div class="row mb-4">
+
+        <div class="col-12 my-2">
+
+            <div class="kt-checkbox-list">
+
+                <label for="Date_Filter" class="kt-checkbox">
+                    <input id="Date_Filter" type="checkbox" name="ActiveFilter" [(ngModel)]="filterByDate">
+                    Filtrar por fecha de registro
+                    <span></span>
+                </label>
+
+            </div>
+
+        </div>
+
+        <ng-container *ngIf="filterByDate">
+
+            <div class="col-12"></div>
+
+            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                <div class="mb-2 form-group">
+                    <label for="StartEndRange">
+                        Fecha de registro
+                    </label>
+                    <input class="form-control" id="StartEndRange" name="StartEndRange" #drp="bsDaterangepicker"
+                        readonly="readonly" bsDaterangepicker dateRangePickerMomentModifier [(date)]="dateRange" />
+                </div>
+            </div>
+
+        </ng-container>
+
+        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="mb-2 form-group">
+                <label for="territorialUnitSelect">
+                    Tipo
+                </label>
+                <div class="input-group">
+                    <select [(ngModel)]="site" id="territorialUnitSelect" name="territorialUnitSelect"
+                        class="form-control" type="text">
+                        <option [value]="sites.all">
+                            Todas
+                        </option>
+                        <option [value]="sites.conflict">
+                            Caso
+                        </option>
+                        <option [value]="sites.alert">
+                            Alerta
+                        </option>
+                        <option [value]="sites.sensible">
+                            Situación sensible
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="mb-2 form-group">
+                <label for="RecordCodeInput">
+                    Código de Caso / Alerta / Situación sensible al conflicto
+                </label>
+                <div class="input-group">
+                    <input [(ngModel)]="codes" id="RecordCodeInput" name="RecordCodeInput" class="form-control"
+                        [placeholder]="l('SearchWithThreeDot')" type="text">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="mb-2 form-group">
+                <label for="CompromiseCodeInput">
+                    Caso / Alerta / Situación sensible al conflicto
+                </label>
+                <div class="input-group">
+                    <input [(ngModel)]="names" id="CompromiseCodeInput" name="CompromiseCodeInput" class="form-control"
+                        [placeholder]="l('SearchWithThreeDot')" type="text">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 text-right">
+            <button (click)="getData()" class="btn btn-primary mt-auto mb-2" type="submit">
+                <i class="flaticon-search-1" [attr.aria-label]="l('Search')"></i>
+                Buscar
+            </button>
+        </div>
+
+    </div>
+    <div class="row">
+        <ng-container *ngFor="let conflict of primengTableHelper.records">
+            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-3 col-xxl-2">
+
+                <div class="compromise-container my-4">
+
+                    <div class="compromise-header">
+                        <div class="compromise-label">
+                            <label class="compromise-site compromise-site-{{conflict.type}}">
+                                {{
+                                conflict.type == sites.sensible ? 'Situación sensible' :
+                                conflict.type == sites.alert ? 'Alerta' :
+                                'Caso'
+                                }}
+                            </label>
+                        </div>
+                        <label class="compromise-title">
+                            <b>CÓDIGO: </b>
+                            <span class="compromise-fw-t">
+                                {{conflict.code}}
+                            </span>
+                        </label>
+                        <label class="compromise-description">
+                            {{conflict.name}}
+                        </label>
+                    </div>
+
+                    <div class="compromise-divider"></div>
+
+                    <div class="compromise-body">
+
+                        <label class="compromise-body-title">
+                            <b>TAREAS:</b>
+                            <span class="compromise-fw-t">
+                                {{conflict.tasks}}
+                            </span>
+                        </label>
+
+                        <div class="compromise-divider ml-0"></div>
+
+                        <label class="compromise-body-time">
+                            <b>FECHA DE CREACIÓN: </b>
+                            <span class="compromise-fw-t">
+                                {{conflict.creationTime | momentFormat: 'DD/MM/YYYY'}}
+                            </span>
+                        </label>
+
+                    </div>
+
+                    <div class="compromise-footer">
+                        <button class="compromise-button" type="button" (click)="selectConflict(conflict)">
+                            Ir al tablero
+                            <i class="ml-2 fas fa-arrow-alt-circle-right"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </ng-container>
+    </div>
+    <div class="row align-items-center mx-0">
+        <!--<Primeng-TurboTable-Start>-->
+        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                {{'NoData' | localize}}
+            </div>
+            <div class="primeng-paging-container">
+                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                    (onPageChange)="getData($event)" [totalRecords]="primengTableHelper.totalRecordsCount"
+                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+
+                </p-paginator>
+                <span class="total-records-count">
+                    {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-container *ngIf="step == 2">
+    <social-conflict-task-management-board 
+        #taskBoard 
+        [conflict]="selectedConflict" 
+        (taskLoaded)="tasks = $event"
+        (onShowExpandDeadLine)="openExpandDeadLine($event)" 
+        (onShowPerson)="openPersons($event)"
+        (onShowSender)="openSender($event)" 
+        (onShowEmail)="openEmail($event)"
+        (back)="onBackPressed($event)">
+    </social-conflict-task-management-board>
+</ng-container>

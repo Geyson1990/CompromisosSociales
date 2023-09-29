@@ -1,0 +1,101 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #userForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="item.id">
+                            Editar coordinador: {{item.name}}
+                        </span>
+                        <span *ngIf="!item.id">
+                            Crear coordinador
+                        </span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div *ngIf="active" class="modal-body row">
+
+                    <div class="form-group col-sm-12">
+                        <label for="CoordinatorDocument">
+                            DNI
+                        </label>
+                        <input #coordinatorDocumentInput="ngModel" id="CoordinatorDocument" name="CoordinatorDocument"
+                            class="form-control" type="text" [(ngModel)]="item.document"
+                            (keyup)="keyUpOnlyInteger($event)" (keypress)="keyPressOnlyNumbers($event)" minlength="8"
+                            maxlength="8">
+                        <validation-messages [formCtrl]="coordinatorDocumentInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="CoordinatorName">
+                            Nombres (*)
+                        </label>
+                        <input id="CoordinatorName" #nameInput="ngModel" class="form-control text-uppercase" type="text"
+                            name="CoordinatorName" [(ngModel)]="item.names" required maxlength="255">
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="CoordinatorSurname">
+                            Apellido paterno (*)
+                        </label>
+                        <input id="CoordinatorSurname" #coordinatorSurnameInput="ngModel"
+                            class="form-control text-uppercase" type="text" name="CoordinatorSurname"
+                            [(ngModel)]="item.surname" required maxlength="255">
+                        <validation-messages [formCtrl]="coordinatorSurnameInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="CoordinatorSurname2">
+                            Apellido materno
+                        </label>
+                        <input id="CoordinatorSurname2" #coordinatorSurname2Input="ngModel"
+                            class="form-control text-uppercase" type="text" name="CoordinatorSurname2"
+                            [(ngModel)]="item.surname2" maxlength="255">
+                        <validation-messages [formCtrl]="coordinatorSurname2Input"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="CoordinatorEmailAddress">
+                            Correo electrónico
+                        </label>
+                        <input id="CoordinatorEmailAddress" name="CoordinatorEmailAddress" #emailAddressInput="ngModel"
+                            type="email" class="form-control" [(ngModel)]="item.emailAddress" maxlength="256" email />
+                        <validation-messages [formCtrl]="emailAddressInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="CoordinatorState">
+                            Estado (*)
+                        </label>
+                        <select class="form-control" id="CoordinatorState" name="CoordinatorState" [(ngModel)]="state">
+                            <option value="false">
+                                Inactivo
+                            </option>
+                            <option value="true">
+                                Activo
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!userForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

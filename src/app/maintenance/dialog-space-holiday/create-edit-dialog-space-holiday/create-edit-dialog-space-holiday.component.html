@@ -1,0 +1,88 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #userForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="item.id">
+                            Editar día feriado: {{item.name}}
+                        </span>
+                        <span *ngIf="!item.id">
+                            Crear día feriado
+                        </span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-sm-12">
+                        <label for="Name">
+                            Nombre (*)
+                        </label>
+                        <input id="Name" #nameInput="ngModel" class="form-control" type="text" name="Name"
+                            [(ngModel)]="item.name" required maxlength="255">
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="DialogSpaceDocumentTypeState">
+                            Tipo (*)
+                        </label>
+                        <select class="form-control" id="DialogSpaceDocumentTypeState" name="DialogSpaceDocumentTypeState" [(ngModel)]="item.type">
+                            <option [value]="holidayTypes.none">
+                                Seleccione
+                            </option>
+                            <option [value]="holidayTypes.static">
+                                Fijo (Una sola vez)
+                            </option>
+                            <option [value]="holidayTypes.dinamic">
+                                Repetitivo (Cada año)
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="HolidayTime">
+                            Fecha
+                        </label>
+                        <div class="input-group fix-border">
+                            <input #datePicker="bsDatepicker" id="HolidayTime" name="HolidayTime" type="text"
+                                class="form-control" bsDatepicker datePickerMomentModifier
+                                [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }" [(ngModel)]="holidayTime">
+                            <span (click)="datePicker.toggle()" class="input-group-text">
+                                <i class="far fa-calendar-alt"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <span> 
+                            Tipos de días disponibles:
+                            <br>
+                            <b>Fijo:</b> El feriado se aplicará una sola vez en la fecha específica.
+                            <br>
+                            <b>Repetitivo:</b> La fecha se repetirá cada año en el mismo día.
+                        </span>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!userForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

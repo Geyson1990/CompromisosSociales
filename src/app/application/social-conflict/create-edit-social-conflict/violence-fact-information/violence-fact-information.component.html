@@ -1,0 +1,240 @@
+<div class="row mt-4">
+
+    <div class="row col-sm-12 col-md-6 col-lg-3 col-xl-3 mb-2 mx-0">
+        <button *ngIf="hasPermission" type="button" (click)="addFact.emit()" class="mb-0 mt-auto btn btn-primary">
+            <i class="fa fa-plus"></i>
+            Agregar hecho de violencia
+        </button>
+    </div>
+
+</div>
+
+<div class="row align-items-center mt-4 mx-0">
+    <!--<Primeng-TurboTable-Start>-->
+    <div class="primeng-datatable-container ui-table-border ui-table-small-details"
+        [busyIf]="primengTableHelper.isLoading">
+        <p-table #dataTable sortMode="multiple" [value]="socialConflict.violenceFacts"
+            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+            [resizableColumns]="primengTableHelper.resizableColumns">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th rowspan="2" style="width: 50px">
+                        Nº
+                    </th>
+                    <th rowspan="2" style="width: 200px">
+                        Tipo de hecho
+                    </th>
+                    <th rowspan="2" style="width: 300px">
+                        Hecho
+                    </th>
+                    <th rowspan="2" style="width: 200px">
+                        Reponsable del hecho
+                    </th>
+                    <th rowspan="2" style="width: 200px">
+                        Departamento
+                    </th>
+                    <th rowspan="2" style="width: 200px">
+                        Provincia
+                    </th>
+                    <th rowspan="2" style="width: 200px">
+                        Distrito
+                    </th>
+                    <th rowspan="2" style="width: 200px">
+                        Centro poblado
+                    </th>
+                    <th rowspan="2" style="width: 200px">
+                        Localidad - Comunidad - Otros
+                    </th>
+                    <th rowspan="2" style="width: 250px">
+                        Acciones realizadas para la atención del hecho de violencia
+                    </th>
+                    <th rowspan="2" style="width: 200px">
+                        Responsable de información (PCM)
+                    </th>
+                    <th colspan="2" style="width: 200px">
+                        Inicio
+                    </th>
+                    <th colspan="2" style="width: 200px">
+                        Fin
+                    </th>
+                    <th colspan="3" style="width: 300px">
+                        Personas heridas por género
+                    </th>
+                    <th colspan="3" style="width: 300px">
+                        Personas fallecidas por género
+                    </th>
+                    <th *ngIf="hasPermission" rowspan="2" style="width: 100px">
+                    </th>
+                </tr>
+                <tr>
+                    <th style="width: 100px">
+                        Fecha
+                    </th>
+                    <th style="width: 100px">
+                        Hora
+                    </th>
+                    <th style="width: 100px">
+                        Fecha
+                    </th>
+                    <th style="width: 100px">
+                        Hora
+                    </th>
+
+                    <th style="width: 100px">
+                        Nº Hombres
+                    </th>
+                    <th style="width: 100px">
+                        Nº Mujeres
+                    </th>
+                    <th style="width: 100px">
+                        Total
+                    </th>
+
+                    <th style="width: 100px">
+                        Nº Hombres
+                    </th>
+                    <th style="width: 100px">
+                        Nº Mujeres
+                    </th>
+                    <th style="width: 100px">
+                        Total
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-record="$implicit" let-rowIndex="rowIndex">
+                <tr [hidden]="record.isHidden">
+                    <td style="width: 50px">
+                        <span class="ui-column-title">
+                            Nº
+                        </span> {{(rowIndex + 1) | number: '2.0-0'}}
+                    </td>
+                    <td style="width: 200px">
+                        <span class="ui-column-title">
+                            Tipo de hecho
+                        </span> {{record.fact ? record.fact.name : ''}}
+                    </td>
+                    <td style="width: 300px">
+                        <span class="ui-column-title">
+                            Hecho
+                        </span> {{record.description}}
+                    </td>
+                    <td style="width: 200px">
+                        <span class="ui-column-title">
+                            Reponsable del hecho
+                        </span> {{record.responsible}}
+                    </td>
+                    <td style="width: 200px">
+                        <span class="ui-column-title">
+                            Departamento
+                        </span> {{record.departments}}
+                    </td>
+                    <td style="width: 200px">
+                        <span class="ui-column-title">
+                            Provincia
+                        </span> {{record.provinces}}
+                    </td>
+                    <td style="width: 200px">
+                        <span class="ui-column-title">
+                            Distrito
+                        </span> {{record.districts}}
+                    </td>
+                    <td style="width: 200px">
+                        <span class="ui-column-title">
+                            Centro poblado
+                        </span> {{record.regions}}
+                    </td>
+                    <td style="width: 200px">
+                        <span class="ui-column-title">
+                            Localidad - Comunidad - Otros
+                        </span> {{record.ubications}}
+                    </td>
+                    <td style="width: 250px">
+                        <span class="ui-column-title">
+                            Acciones realizadas para la atención del hecho de violencia
+                        </span> {{record.actions}}
+                    </td>
+                    <td style="width: 200px">
+                        <span class="ui-column-title">
+                            Responsable de información (PCM)
+                        </span> {{record.manager ? record.manager.name : ''}}
+                    </td>
+                    <td style="width: 100px">
+                        <span class="ui-column-title">
+                            Fecha de inicio
+                        </span> {{record.startTime | momentFormat: 'DD/MM/YYYY'}}
+                    </td>
+                    <td style="width: 100px">
+                        <span class="ui-column-title">
+                            Hora de inicio
+                        </span> {{record.startTime | momentFormat: 'HH:mm:ss'}}
+                    </td>
+                    <td style="width: 100px">
+                        <span class="ui-column-title">
+                            Fecha de finalización
+                        </span> {{record.endTime | momentFormat: 'DD/MM/YYYY'}}
+                    </td>
+                    <td style="width: 100px">
+                        <span class="ui-column-title">
+                            Hora de finalización
+                        </span> {{record.endTime | momentFormat: 'HH:mm:ss'}}
+                    </td>
+                    <td style="width: 100px">
+                        <span class="ui-column-title">
+                            Personas heridas (hombres)
+                        </span> {{record.injuredMen}}
+                    </td>
+                    <td style="width: 100px">
+                        <span class="ui-column-title">
+                            Personas heridas (mujeres)
+                        </span> {{record.injuredWomen}}
+                    </td>
+                    <td style="width: 100px">
+                        <span class="ui-column-title">
+                            Personas heridas (total)
+                        </span> {{record.totalInjured}}
+                    </td>
+                    <td style="width: 100px">
+                        <span class="ui-column-title">
+                            Personas fallecidas (hombres)
+                        </span> {{record.deadMen}}
+                    </td>
+                    <td style="width: 100px">
+                        <span class="ui-column-title">
+                            Personas fallecidas (mujeres)
+                        </span> {{record.deadWomen}}
+                    </td>
+                    <td style="width: 100px">
+                        <span class="ui-column-title">
+                            Personas fallecidas (total)
+                        </span> {{record.totalDead}}
+                    </td>
+                    <td *ngIf="hasPermission" style="width: 100px">
+                        <button type="button" pButton icon="pi pi-pencil" class="ui-button-primary mr-2"
+                            data-toggle="tooltip" title="Editar hecho de violencia" data-placement="top"
+                            (click)="editEvent(record, rowIndex)"></button>
+                        <button *ngIf="!record.remove" type="button" pButton icon="pi pi-trash" class="ui-button-danger"
+                            data-toggle="tooltip" title="Eliminar hecho de violencia" data-placement="top"
+                            (click)="removeItem(record, rowIndex)"></button>
+                        <button *ngIf="record.remove" type="button" pButton icon="pi pi-undo" class="ui-button-warning"
+                            data-toggle="tooltip" title="Deshacer la eliminación del hecho de violencia" data-placement="top"
+                            (click)="cancelRemove(record)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <div class="primeng-no-data" *ngIf="socialConflict.violenceFacts.length == 0">
+            Aún no agregó ningún hecho de violencia
+        </div>
+        <div class="primeng-paging-container">
+            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                (onPageChange)="getData($event)" [totalRecords]="socialConflict.violenceFacts.length"
+                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+            </p-paginator>
+            <span class="total-records-count">
+                {{'TotalRecordsCount' | localize:socialConflict.violenceFacts.length}}
+            </span>
+        </div>
+    </div>
+    <!--<Primeng-TurboTable-End>-->
+</div>

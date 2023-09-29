@@ -1,0 +1,91 @@
+<div class="row mb-5">
+    <div class="col-12">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Actor Responsable (Provisional)
+        </h5>
+        
+        <hr>
+    </div>
+    
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="ResponsibleTypeSelect">
+                Tipo
+            </label>
+            <div class="input-group">
+                <select name="ResponsibleTypeSelect" id="ResponsibleTypeSelect" [(ngModel)]="responsibleTypeId"
+                    (change)="onResponsibleTypeChange($event)" class="form-control" type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let responsibleType of responsibleTypes" [value]="responsibleType.id">
+                        {{responsibleType.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="ResponsibleSubTypeSelect">
+                Sub tipo
+            </label>
+            <div class="input-group">
+                <select [disabled]="responsibleTypeId == -1" id="ResponsibleSubTypeSelect"
+                    name="ResponsibleSubTypeSelect" [(ngModel)]="responsibleSubTypeId"
+                    (change)="onResponsibleSubTypeChange($event)" class="form-control" type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let selectedResponsibleSubType of selectedResponsibleSubTypes"
+                        [value]="selectedResponsibleSubType.id">
+                        {{selectedResponsibleSubType.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="ResponsibleActorSelect">
+                Responsable
+            </label>
+            <div class="input-group">
+                <select [disabled]="responsibleSubTypeId == -1" (change)="onResponsibleActorChange($event)"
+                    id="ResponsibleActorSelect" name="ResponsibleActorSelect"
+                    [(ngModel)]="compromise.responsibleActor.id" class="form-control" type="text">
+                    <option value="-1">
+                        Ninguno
+                    </option>
+                    <option *ngFor="let responsibleActor of selectedResponsibleActors" [value]="responsibleActor.id">
+                        {{responsibleActor.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="ResponsibleSubActorSelect">
+                Responsable Específico
+            </label>
+            <div class="input-group">
+                <select [disabled]="compromise.responsibleActor.id == -1" id="ResponsibleSubActorSelect"
+                    name="ResponsibleSubActorSelect" [(ngModel)]="compromise.responsibleSubActor.id"
+                    class="form-control" type="text">
+                    <option value="-1">
+                        Ninguno
+                    </option>
+                    <option *ngFor="let responsibleSubActor of selectedResponsibleSubActors"
+                        [value]="responsibleSubActor.id">
+                        {{responsibleSubActor.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+</div>

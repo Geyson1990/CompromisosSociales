@@ -1,0 +1,30 @@
+<div class="row mt-3">
+
+
+    <div class="col-12 mb-3">
+        <h5 class="d-block text-left text-dark font-weight-bold mt-4">
+            Recursos adjuntos desde la aplicación móvil
+        </h5>
+        <hr>
+    </div>
+
+    <div class="col-12" *ngIf="socialConflictSensible?.resources?.length == 0">
+
+        <img class="d-block mx-auto mt-4" aria-label="empty-resource-image"
+            src="/assets/common/images/empty-content.png">
+
+        <label class="font-weight-bold h4 text-center d-block">
+            Aún no se ha agregado ningún archivo adjunto
+        </label>
+
+    </div>
+
+    <div class="col-12">
+        <file-resource-item *ngFor="let resource of socialConflictSensible.resources; index as i;" [resource]="resource"
+            [removeDisabled]="false" (restoreResource)="restoreResource(resource)"
+            (removeResource)="removeResource(resource, i)">
+        </file-resource-item>
+    </div>
+
+
+</div>

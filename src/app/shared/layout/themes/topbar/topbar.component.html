@@ -1,0 +1,82 @@
+<!-- BEGIN: Topbar -->
+<div class="kt-header__topbar">
+
+    <div class="kt-header__topbar-item kt-header__topbar-item--user ng-star-inserted  dropdown" dropdown
+        placement="bottom-right">
+        <div class="kt-header__topbar-wrapper dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+            dropdownToggle>
+            <div class="kt-header__topbar-user">
+                <span class="kt-header__topbar-username kt-hidden-mobile">
+                    {{names}}
+                </span>
+                <img *ngIf="profilePicture" class="m--img-rounded m--marginless m--img-centered profile-picture"
+                    alt="Pic" [src]="profilePicture">
+            </div>
+        </div>
+
+        <div *dropdownMenu
+            class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround dropdown-menu-xl"
+            x-placement="bottom-right"
+            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(1253px, 64px, 0px);">
+            <div class="kt-user-card kt-user-card--skin-dark kt-notification-item-padding-x"
+                [ngStyle]="{ 'background': 'url(' + appRootUrl() + 'assets/metronic/themes/' + currentTheme.baseSettings.theme + '/images/bg/bg-1.jpg)', 'background-size': 'cover'}">
+                <div class="kt-user-card__avatar">
+                    <img class="profile-picture" alt="Pic" [src]="profilePicture">
+                </div>
+                <div>
+                    <div class="kt-user-card__name fz-16">
+                        {{names}}
+                    </div>
+                    <div class="kt-user-card__name fz-14">
+                        {{emailAddress}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="kt-notification user-profile-menu">               
+                <a href="javascript:;" class="kt-notification__item" (click)="changePassword()">
+                    <div class="kt-notification__item-icon">
+                        <i class="flaticon-more-v6"></i>
+                    </div>
+                    <div class="kt-notification__item-details">
+                        <div class="kt-notification__item-title kt-font-bold">
+                            <span>
+                                Cambiar contraseña
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                <a href="javascript:;" class="kt-notification__item" (click)="changeProfilePicture()">
+                    <div class="kt-notification__item-icon">
+                        <i class="flaticon-profile-1"></i>
+                    </div>
+                    <div class="kt-notification__item-details">
+                        <div class="kt-notification__item-title kt-font-bold">
+                            <span>
+                                Cambiar imagen de perfil
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                <a href="javascript:;" class="kt-notification__item" (click)="changeMySettings()">
+                    <div class="kt-notification__item-icon">
+                        <i class="flaticon-cogwheel"></i>
+                    </div>
+                    <div class="kt-notification__item-details">
+                        <div class="kt-notification__item-title kt-font-bold">
+                            <span>
+                                Información personal
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                <div class="kt-notification__custom">
+                    <a (click)="logout()" class="btn btn-label-brand btn-sm btn-bold">
+                        Cerrar sesión
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END: Topbar -->

@@ -1,0 +1,150 @@
+<div [@routerTransition]>
+    <ng-container *ngIf="loaded">
+
+        <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+            <div class="kt-subheader kt-grid__item">
+                <div class="kt-container">
+                    <div class="kt-subheader__main">
+                        <button (click)="backButtonPressed()" type="button" class="btn btn-light back-button mt-2">
+                            {{backButtonText}}
+                        </button>
+                        <h3 class="kt-subheader__title">
+                            Configuración de mensaje de respuesta automática
+                        </h3>
+                    </div>
+                    <div class="kt-subheader__toolbar">
+                        <div class="kt-subheader__wrapper">
+                            <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.."
+                                *ngIf="'Pages.Quiz.Platform.Edit' | permission" class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kt-container kt-grid__item kt-grid__item--fluid">
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body">
+
+                        <div class="row">
+
+                            <div class="col-12 mt-2 mb-2">
+                                <h5 class="d-block text-center text-dark font-weight-bold">
+                                    Formulario
+                                </h5>
+
+                                <h6 class="d-block text-center text-dark font-weight-bold">
+                                    Experiencia del usuario con el manejo de la Plataforma Digital de Gestión de
+                                    Conflictos
+                                    Sociales
+                                </h6>
+
+                                <hr>
+                            </div>
+
+                            <div class="col-sm-12 offset-md-6 col-md-6 offset-lg-9 col-lg-3 offset-xl-9 col-xl-3 mb-4">
+                                <div class="mb-2 form-group">
+                                    <label for="QuizState">
+                                        Estado
+                                    </label>
+                                    <div class="input-group">
+                                        <select [(ngModel)]="quiz.quizState.id" id="QuizState" name="QuizState"
+                                            class="form-control" type="text">
+                                            <option value="-1">
+                                                Seleccione
+                                            </option>
+                                            <option *ngFor="let state of quizStates" [value]="state.id">
+                                                {{state.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-2 mb-2">
+                                <h6 class="d-block text-left text-dark font-weight-bold">
+                                    Datos personales
+                                </h6>
+
+                                <hr>
+                            </div>
+
+                            <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 col-xxl-6">
+                                <div class="form-group">
+                                    <label for="Name">
+                                        Nombre
+                                    </label>
+                                    <input type="text" id="Name" name="Name" class="form-control" maxlength="256"
+                                        value="{{name}}" readonly/>
+                                </div>
+                            </div>
+
+                            <div class="col-12"></div>
+
+                            <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 col-xxl-6">
+                                <div class="form-group">
+                                    <label for="Surname">
+                                        Apellido Paterno
+                                    </label>
+                                    <input type="text" id="Surname" name="Surname" class="form-control" maxlength="256"
+                                        value="{{surname}}" readonly/>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 col-xxl-6">
+                                <div class="form-group">
+                                    <label for="SecondSurname">
+                                        Apellido Materno
+                                    </label>
+                                    <input type="text" id="SecondSurname" name="SecondSurname" class="form-control"
+                                        maxlength="256" value="{{secondSurname}}" readonly/>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
+                                <div class="form-group">
+                                    <label for="EmailAddress">
+                                        Correo electrónico
+                                    </label>
+                                    <input type="email" id="EmailAddress" name="EmailAddress" class="form-control"
+                                        maxlength="256" value="{{emailAddress}}" readonly/>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-2 mb-2">
+                                <h6 class="d-block text-left text-dark font-weight-bold">
+                                    Respuestas de la encuesta
+                                </h6>
+
+                                <hr>
+                            </div>
+
+                            <div *ngFor="let form of quiz.forms" class="col-12">
+                                <quiz-detail-form-option [form]="form"></quiz-detail-form-option>
+                            </div>
+
+                            <ng-container *ngIf="quiz.resources.length > 0">
+                                <div class="col-12 mb-3">
+                                    <h5 class="d-block text-left text-dark font-weight-bold mt-4">
+                                        Archivos adjuntos
+                                    </h5>
+                                    <hr>
+                                </div>
+
+                                <div class="col-12" *ngFor="let resource of quiz.resources">
+                                    <file-resource-item [resource]="resource" [removeDisabled]="true">
+                                    </file-resource-item>
+                                </div>
+                            </ng-container>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </ng-container>
+</div>

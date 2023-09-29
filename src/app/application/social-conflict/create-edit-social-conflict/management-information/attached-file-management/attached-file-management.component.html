@@ -1,0 +1,40 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <div class="modal-body row">
+                <div class="col-12">
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <ng-container *ngIf="item.resources?.length > 0">
+
+                    <div class="col-12">
+                        <h5 class="d-block text-left text-dark font-weight-bold mt-2">
+                            Archivos publicados
+                        </h5>
+                        <hr>
+                    </div>
+
+                    <div class="col-12">
+                        <file-resource-item *ngFor="let resource of item.resources; index as i;" [resource]="resource"
+                            (restoreResource)="restoreResource(resource)"
+                            (removeResource)="removeResource(resource, i)"></file-resource-item>
+                    </div>
+
+                </ng-container>
+
+                <div class="col-12 px-0">
+                    <file-uploader #fileUploadItems class="w-100 my-3" [(attachments)]="item.uploadFiles"
+                        [hideUploader]="true"></file-uploader>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" (click)="close()">
+                    Salir
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

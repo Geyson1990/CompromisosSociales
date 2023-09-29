@@ -1,0 +1,72 @@
+<div appBsModal #mySettingsModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #mySettingsModalForm="ngForm" (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span>
+                            Información Personal
+                        </span>
+                    </h5>
+                    <button type="button" class="close" [attr.aria-label]="l('Close')" (click)="close()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" *ngIf="user">
+                    <tabset>
+                        <tab heading="Perfil">
+                            <div class="row">
+                                <div class="form-group col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
+                                    <label for="UserDocument">
+                                        DNI
+                                    </label>
+                                    <input #userDocumentInput="ngModel" id="UserDocument" name="UserDocument"
+                                        class="form-control" type="text" [(ngModel)]="user.document"
+                                        (keyup)="keyUpOnlyInteger($event)" (keypress)="keyPressOnlyNumbers($event)"
+                                        minlength="8" maxlength="8">
+                                    <validation-messages [formCtrl]="userDocumentInput"></validation-messages>
+                                </div>
+    
+                                <div class="form-group col-sm-12 col-md-8 col-lg-8 col-xl-8 col-xxl-8">
+                                    <label for="Name">Nombres (*)</label>
+                                    <input id="Name" #nameInput="ngModel" class="form-control text-uppercase"
+                                        type="text" name="Name" [(ngModel)]="user.name" required maxlength="64">
+                                    <validation-messages [formCtrl]="nameInput"></validation-messages>
+                                </div>
+    
+                                <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                                    <label for="Surname">Apellido Paterno (*)</label>
+                                    <input id="Surname" #surnameInput="ngModel" type="text" name="Surname"
+                                        class="form-control text-uppercase" [(ngModel)]="user.surname" required
+                                        maxlength="64">
+                                    <validation-messages [formCtrl]="surnameInput"></validation-messages>
+                                </div>
+    
+                                <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                                    <label for="Surname2">Apellido Materno (*)</label>
+                                    <input id="Surname2" #surname2Input="ngModel" type="text" name="Surname2"
+                                        class="form-control text-uppercase" [(ngModel)]="user.surname2" required
+                                        maxlength="64">
+                                    <validation-messages [formCtrl]="surname2Input"></validation-messages>
+                                </div>
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="close()" [disabled]="saving">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary"
+                        [disabled]="!mySettingsModalForm.form.valid || saving">
+                        <i class="fa fa-save"></i> 
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

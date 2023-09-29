@@ -1,0 +1,234 @@
+hr {
+    background: #8da1b5 !important;
+    height: 1px;
+    width: 100%;
+    margin-bottom: 0.5rem !important;
+    margin-top: 0.5rem !important;
+}
+
+.input-group-text {
+    background: transparent !important;
+    border-left: 0 !important;
+}
+
+input:disabled,
+textarea:disabled {
+    background: #dadada !important;
+    border-color: #c4c4c4 !important;
+}
+
+.c-options {
+    width: 100%;
+    height: auto;
+}
+
+.c-option {
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin-bottom: 30px;
+}
+
+.c-option:last-child {
+    margin-bottom: 0px !important;
+}
+
+.c-info-option {
+    position: relative;
+    padding-left: 46px;
+}
+
+.option-nro {
+    position: absolute;
+    display: block;
+    width: 32px;
+    height: 32px;
+    top: 0px;
+    left: 0;
+    line-height: 32px;
+    font-size: 14px;
+    text-align: center;
+    border-radius: 50px;
+    color: white;
+    background-color: #8f9fb0;
+    font-weight: bolder;
+}
+
+.option-title {
+    position: relative;
+    display: block;
+    width: 100%;
+    color: black;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.option-text {
+    margin-right: 80px;
+    display: block;
+}
+
+.options-buttons {
+    display: block;
+    position: absolute;
+    top: 1px;
+    right: 0;
+    width: 56px;
+    height: 28px;
+}
+
+.options-buttons button {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto 0px;
+    padding: 3px;
+    cursor: pointer;
+    background-color: white;
+    width: 28px;
+    height: 28px;
+    color: #95a5a6;
+    font-size: 24px;
+    border: none !important;
+}
+
+.options-buttons .pi-pencil {
+    right: 40px;
+}
+
+.options-buttons .pi-trash {
+    right: 12px;
+}
+
+.options-buttons button:hover {
+    color: #3498db;
+}
+
+.option-description span {
+    font-size: 14px;
+    padding: 15px 10px;
+    border-radius: 5px;
+}
+
+.tbproperties-header th {
+    border: none !important;
+    text-align: center;
+}
+
+.tbproperties-row td {
+    border-collapse: separate;
+    border: none !important;
+}
+
+.tbproperties-row {
+    border-bottom: 1px solid #cdd4db;
+}
+
+.tbproperties-index {
+    width: 50px;
+}
+
+.tbproperties-index span.tbproperties-index-container {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 12px;
+    text-align: center;
+    border-radius: 50px;
+    background-color: rgb(240, 240, 240);
+}
+
+.tbproperties-delete {
+    width: 50px;
+    text-align: center;
+}
+
+.tbproperties-row td {
+    border-collapse: separate;
+    border: none !important;
+}
+
+.tbproperties-value {
+    width: 200px;
+}
+
+.tr-footer {
+    border-bottom: 1px solid #cdd4db !important;
+}
+
+.tr-footer td {
+    font-size: 14px;
+    text-align: center;
+    font-weight: normal;
+    color: rgb(150, 150, 150);
+    border-width: 0px;
+    padding: 10px 0px;
+}
+
+.tr-footer-orders>td>span {
+    display: block;
+    padding: 4px 4px 4px 0px;
+}
+
+.tr-footer-orders>td:first-child {
+    padding-left: 15px;
+    border-radius: 0px 0px 0px 10px;
+}
+
+@media (max-width: 640px) {
+    .c-info-option {
+        padding-left: 0 !important;
+    }
+
+    .option-text,
+    .option-description span {
+        font-size: 12px !important;
+    }
+
+    .option-text,
+    .option-description {
+        margin-left: 50px !important;
+    }
+
+    .option-description {
+        margin-top: 5px !important;
+        margin-bottom: 5px !important;
+    }
+
+    .delete-option-detail:hover {
+        color: #fff !important;
+        background-color: #fd1361 !important;
+        border-color: #fc0758 !important;
+    }
+
+    .delete-option-detail {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        background-color: #fd397a;
+        border-color: #fd397a;
+        color: #ffffff;
+        width: 100%;
+        border-radius: 5px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .delete-option-detail:active {
+        color: #fff !important;
+        background-color: #fc0758 !important;
+        border-color: #f40252 !important;
+    }
+}
+
+@media (min-width: 641px) {
+    .delete-option-detail {
+        padding: 3px;
+        cursor: pointer;
+        background-color: white;
+        color: #95a5a6;
+        border: none !important;
+        font-size: 24px;
+    }
+}

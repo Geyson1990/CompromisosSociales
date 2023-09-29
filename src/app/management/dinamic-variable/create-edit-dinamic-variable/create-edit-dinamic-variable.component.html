@@ -1,0 +1,189 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div class="kt-container">
+                <div class="kt-subheader__main">
+                    <button (click)="backButtonPressed()" type="button" class="btn btn-light back-button mt-2">
+                        {{backButtonText}}
+                    </button>
+                    <h3 class="kt-subheader__title">
+                        Gestión de variables cuantitativas
+                    </h3>
+                </div>
+                <div *ngIf="loaded" class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <button (click)="save()" [disabled]="editing" [buttonBusy]="busy" busyText="Guardando.."
+                            *ngIf="('Pages.Management.DinamicVariable.Create' | permission) && id"
+                            class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Guardar
+                        </button>
+                        <button (click)="save()" [disabled]="editing" [buttonBusy]="busy" busyText="Guardando.."
+                            *ngIf="('Pages.Management.DinamicVariable.Edit' | permission) && !id"
+                            class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="kt-container kt-grid__item kt-grid__item--fluid">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <h5 class="d-block text-left text-dark font-weight-bold">
+                        Información de la variable
+                    </h5>
+
+                    <hr>
+
+                    <div class="row mt-2">
+
+                        <div class="col-12">
+                            <div class="mb-2 form-group">
+                                <label for="DinamicVariableName">
+                                    Nombre (*)
+                                </label>
+                                <div class="input-group">
+                                    <textarea #dinamicVariableInput id="DinamicVariableName" name="DinamicVariableName"
+                                        [(ngModel)]="item.name" class="form-control" type="text"
+                                        placeholder="Ingrese el nombre de la variable dinámica" required
+                                        maxlength="1000"></textarea>
+                                    <span class="input-legth">
+                                        {{
+                                        dinamicVariableInput.value ?
+                                        dinamicVariableInput.value.length : 0
+                                        }}/{{dinamicVariableInput.maxLength}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5 class="d-block text-left text-dark font-weight-bold mt-4">
+                        Valores de la variable
+                    </h5>
+
+                    <hr>
+
+                    <form class="kt-form mt-4">
+                        <div class="row align-items-center mb-2">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" placeholder="Buscar..." type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getData()" aria-label="Buscar" class="btn btn-primary"
+                                                type="submit">
+                                                <i class="flaticon-search-1"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row align-items-center mx-0">
+                        <!--<Primeng-TurboTable-Start>-->
+                        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable sortMode="multiple" (onLazyLoad)="getData($event)"
+                                (onEditInit)="initEdition($event)" (onEditCancel)="cancelEdition($event)"
+                                (onEditComplete)="completeEdition($event)" [value]="primengTableHelper.records"
+                                sortMode="multiple" rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                [paginator]="false" [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns" stateStorage="local"
+                                stateKey="dinamic_variable_detail" dataKey="id">
+                                <ng-template pTemplate="colgroup">
+                                    <colgroup>
+                                        <col>
+                                        <col>
+                                        <col>
+                                        <col>
+                                        <col>
+                                    </colgroup>
+                                </ng-template>
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th class="ui-resizable-column" pResizableColumn>
+                                            Unidad territorial
+                                        </th>
+                                        <th class="ui-resizable-column" pResizableColumn
+                                            pSortableColumn="Department.Name">
+                                            Departamento
+                                            <p-sortIcon field="Department.Name"></p-sortIcon>
+                                        </th>
+                                        <th class="ui-resizable-column" pResizableColumn
+                                            pSortableColumn="Province.Name">
+                                            Provincia
+                                            <p-sortIcon field="Province.Name"></p-sortIcon>
+                                        </th>
+                                        <th class="ui-resizable-column" pResizableColumn pSortableColumn="Value">
+                                            Índice
+                                            <p-sortIcon field="Value"></p-sortIcon>
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record let-index="rowIndex">
+                                    <tr>
+                                        <td class="ui-resizable-column">
+                                            <span class="ui-column-title">
+                                                Unidad territorial
+                                            </span> {{record.territorialUnitText}}
+                                        </td>
+                                        <td class="ui-resizable-column">
+                                            <span class="ui-column-title">
+                                                Departamento
+                                            </span> {{record.department?.name}}
+                                        </td>
+                                        <td class="ui-resizable-column">
+                                            <span class="ui-column-title">
+                                                Provincia
+                                            </span> {{record.province?.name}}
+                                        </td>
+                                        <td class="ui-resizable-column" pEditableColumn [pEditableColumn]="record"
+                                            [pEditableColumnRowIndex]="index">
+                                            <span class="ui-column-title">
+                                                Índice
+                                            </span>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText placeholder="Ingresar índice" type="text"
+                                                        [(ngModel)]="record.value" (focus)="onFocus($event)"
+                                                        (keypress)="keyPressDecimal($event)"
+                                                        (keyup)="keyUpDecimal($event)">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{record.value}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{'NoData' | localize}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                    (onPageChange)="getData($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                                </span>
+                            </div>
+                        </div>
+                        <!--<Primeng-TurboTable-End>-->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

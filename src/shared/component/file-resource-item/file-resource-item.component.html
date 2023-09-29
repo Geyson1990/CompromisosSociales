@@ -1,0 +1,28 @@
+<div class="row upload-file-row py-3 mx-0">
+    <i (click)="openInNewTab()" [class]="resource.className + ' cursor-pointer'"></i>
+    <div class="d-flex flex-column upload-file-body">
+        <label (click)="openInNewTab()" class="title cursor-pointer">
+            {{resource.name}} <span class="text-danger">{{resource.remove ? '(Marcado para eliminar)' : ''}}</span>
+        </label>
+        <label (click)="openInNewTab()" class="metadata">
+            <span *ngIf="resource.creatorUserName" class="uploader-user">
+                {{resource.creatorUserName}}&nbsp;
+            </span> <span class="cursor-pointer">{{resource.creationTime | momentFormat: 'DD-MM-YYYY HH:mm:ss'}}</span>
+        </label>
+        <label (click)="openInNewTab()" class="size cursor-pointer">
+            {{resource.size}}
+        </label>
+    </div>
+    <ng-container *ngIf="!removeDisabled">
+        <div class="upload-file-trash my-auto pr-4" *ngIf="!resource.remove">
+            <button type="button" pButton icon="pi pi-trash" class="ui-button-danger p-0" data-toggle="tooltip"
+                title="Eliminar el fichero" data-placement="top" (click)="removeResource.emit()"></button>
+    
+        </div>
+        <div class="upload-file-trash my-auto pr-4" *ngIf="resource.remove">
+            <button type="button" pButton icon="pi pi-undo" class="ui-button-warning p-0" data-toggle="tooltip"
+                title="Deshacer la eliminación del fichero" data-placement="top"
+                (click)="restoreResource.emit()"></button>
+        </div>
+    </ng-container>
+</div>

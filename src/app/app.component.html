@@ -1,0 +1,10 @@
+<div [ngClass]="{'subscription-bar-visible': subscriptionStatusBarVisible()}">
+    <theme-layout></theme-layout>
+</div>
+
+<mySettingsModal #mySettingsModal></mySettingsModal>
+<changePasswordModal #changePasswordModal></changePasswordModal>
+<changeProfilePictureModal #changeProfilePictureModal></changeProfilePictureModal>
+<notificationSettingsModal #notificationSettingsModal></notificationSettingsModal>
+<commonLookupModal #userLookupModal (itemSelected)="chatBarComponent.addFriendSelected($event)"></commonLookupModal>
+<session-timeout #sessionTimeout *ngIf="IsSessionTimeOutEnabled"></session-timeout>

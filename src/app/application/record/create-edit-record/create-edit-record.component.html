@@ -1,0 +1,201 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <button type="button" class="btn btn-light back-button mt-2" (click)="backButtonPressed()">
+                        {{backButtonText}}
+                    </button>
+                    <h3 class="kt-subheader__title">
+                        Bandeja de Actas
+                    </h3>
+                </div>
+                <div class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <button (click)="save()" *ngIf="('Pages.Application.Record.Create' | permission) && id"
+                            class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Guardar
+                        </button>
+                        <button (click)="save()" *ngIf="('Pages.Application.Record.Edit' | permission) && !id"
+                            class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+
+                    <h5 class="d-block text-left text-dark font-weight-bold">
+                        Información del acta
+                    </h5>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-2 form-group">
+                                <label for="RecordSocialCondlictCode">
+                                    Caso conflictivo
+                                </label>
+                                <div class="input-group input-group-right">
+                                    <input id="RecordSocialCondlictCode" name="RecordSocialCondlictCode"
+                                        class="form-control" type="text"
+                                        value="{{record.socialConflict ? record.socialConflict.code + ' - ' + record.socialConflict.caseName : 'Presione el botón de búsqueda para seleccionar un caso conflictivo'}}"
+                                        disabled>
+                                    <span *ngIf="!record.id" class="input-group-text border-0"
+                                        (click)="showFindSocialConflict()">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                            <div class="mb-2 form-group">
+                                <label for="RecordCode">
+                                    Código {{record.id ? '' : '(generado automáticamente)'}}
+                                </label>
+                                <input type="text" id="RecordCode" name="RecordCode" class="form-control"
+                                    [(ngModel)]="record.code" disabled>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                            <div class="mb-2 form-group">
+                                <label for="RecordRegisterTime">
+                                    Fecha de acta
+                                </label>
+                                <input type="text" id="RecordRegisterTime" name="RecordRegisterTime"
+                                    class="form-control" bsDatepicker datePickerMomentModifier
+                                    [(date)]="record.recordTime"
+                                    [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', customTodayClass: 'datepicker-today' }">
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="mb-2 form-group">
+                                <label for="RecordTitle">
+                                    Título del acta
+                                </label>
+                                <input type="text" id="RecordTitle" name="RecordTitle" class="form-control"
+                                    [(ngModel)]="record.title">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+                            <div class="mb-2 form-group">
+                                <label for="RecordWomanCompromiseTitle">
+                                    Temática mujer
+                                </label>
+                                <input type="text" id="RecordWomanCompromiseTitle" name="RecordWomanCompromiseTitle"
+                                    class="form-control" readonly disabled
+                                    [value]="record.womanCompromise ? 'SI' : 'NO'">
+                            </div>
+                        </div>
+
+                        <div class="col-12"></div>
+
+                        <ng-container *ngIf="record.resources.length > 0">
+                            <div class="col-12 mb-3">
+                                <h5 class="d-block text-left text-dark font-weight-bold mt-4">
+                                    Archivos adjuntos
+                                </h5>
+                                <hr>
+                            </div>
+
+                            <div class="col-12">
+                                <file-resource-item [resource]="resource" (restoreResource)="restoreResource(resource)"
+                                    (removeResource)="removeResource(resource, i)"
+                                    *ngFor="let resource of record.resources; index as i;"></file-resource-item>
+                            </div>
+                        </ng-container>
+
+                        <file-uploader #fileUploadItems class="w-100 my-3" [recordResourceTypes]="recordResourceTypes"
+                            [(attachments)]="record.uploadFiles" (saveAttachment)="saveAttach($event)"></file-uploader>
+
+                        <ng-container *ngIf="record.creatorUser">
+
+                            <div class="col-12">
+                                <h5 class="d-block text-left text-dark font-weight-bold">
+                                    Información de registro
+                                </h5>
+                                <hr>
+                            </div>
+
+                            <div class="col-sm-12 col-md-8 col-lg-9 col-xl-9">
+                                <div class="mb-2 form-group">
+                                    <label for="CreatorUser">
+                                        Registrado por
+                                    </label>
+                                    <div class="input-group">
+                                        <input id="CreatorUser" name="CreatorUser" class="form-control"
+                                            value="{{getUserName(record.creatorUser)}}" type="text" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+                                <div class="mb-2 form-group">
+                                    <label for="CreatorUserTime">
+                                        Fecha de registro
+                                    </label>
+                                    <div class="input-group">
+                                        <input id="CreatorUserTime" name="CreatorUserTime" class="form-control"
+                                            value="{{record.creationTime | momentFormat: 'L'}}" type="text" readonly>
+                                        <span class="input-group-text">
+                                            <i class="far fa-calendar-alt"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12"></div>
+
+                            <ng-container *ngIf="record.editUser">
+
+                                <div class="col-sm-12 col-md-8 col-lg-9 col-xl-9">
+                                    <div class="mb-2 form-group">
+                                        <label for="LastUpdateUser">
+                                            Última actualización
+                                        </label>
+                                        <div class="input-group">
+                                            <input id="LastUpdateUser" name="LastUpdateUser" class="form-control"
+                                                value="{{getUserName(record.editUser)}}" type="text" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+                                    <div class="mb-2 form-group">
+                                        <label for="LastUpdateTimeUser">
+                                            Fecha de actualización
+                                        </label>
+                                        <div class="input-group">
+                                            <input id="LastUpdateTimeUser" name="LastUpdateTimeUser"
+                                                class="form-control"
+                                                value="{{record.lastModificationTime | momentFormat: 'L'}}" type="text"
+                                                readonly>
+                                            <span class="input-group-text">
+                                                <i class="far fa-calendar-alt"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </ng-container>
+
+                        </ng-container>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <find-social-conflict #findSocialConflictModal (modalSave)="selectSocialConflict($event)"></find-social-conflict>
+</div>

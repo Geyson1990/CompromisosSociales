@@ -1,0 +1,237 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div class="kt-container">
+                <div class="kt-subheader__main">
+                    <button (click)="backButtonPressed()" type="button" class="btn btn-light back-button mt-2">
+                        {{backButtonText}}
+                    </button>
+                    <h3 class="kt-subheader__title">
+                        Dimensiones de riesgo
+                    </h3>
+                </div>
+                <div *ngIf="loaded" class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <button (click)="save()" [disabled]="editing" [buttonBusy]="busy" busyText="Guardando.."
+                            *ngIf="('Pages.Management.StaticVariable.Create' | permission) && id"
+                            class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Guardar
+                        </button>
+                        <button (click)="save()" [disabled]="editing" [buttonBusy]="busy" busyText="Guardando.."
+                            *ngIf="('Pages.Management.StaticVariable.Edit' | permission) && !id"
+                            class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="kt-container kt-grid__item kt-grid__item--fluid">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <h5 class="d-block text-left text-dark font-weight-bold">
+                        Información de la dimensión de riesgo
+                    </h5>
+
+                    <hr>
+
+                    <div class="row mt-2">
+
+                        <div class="col-12">
+                            <div class="mb-2 form-group">
+                                <label for="StaticVariableName">
+                                    Nombre (*)
+                                </label>
+                                <div class="input-group">
+                                    <textarea #staticVariableInput id="StaticVariableName" name="StaticVariableName"
+                                        [(ngModel)]="item.name" class="form-control" type="text"
+                                        placeholder="Ingrese el nombre de la dimensión de riesgo" required
+                                        maxlength="1000"></textarea>
+                                    <span class="input-legth">
+                                        {{
+                                        staticVariableInput.value ?
+                                        staticVariableInput.value.length : 0
+                                        }}/{{staticVariableInput.maxLength}}
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group mb-0 col-sm-12 col-md-12 col-lg-6 col-xl-4 col-xxl-4">
+                            <label for="StaticVariableTypeB">
+                                Peso (total)
+                            </label>
+                            <input class="form-control" placeholder="Peso de la dimensión de riesgo" type="text"
+                                id="StaticVariableTypeB" value="{{item.weight | number: '1.2-2': 'en-US'}}" disabled>
+                            <span>Sumatoria total de los pesos de todas las variables.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="kt-container kt-grid__item kt-grid__item--fluid">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+
+                    <h5 class="d-block text-left text-dark font-weight-bold">
+                        Listado de variables
+                    </h5>
+
+                    <hr>
+
+                    <div class="row mt-2">
+
+                        <div class="col-12 text-left">
+                            <button (click)="addOption()" class="btn btn-primary">
+                                <i class="fa fa-plus"></i>
+                                Agregar variable
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-4 col-12"></div>
+
+                    <div class="c-option" *ngFor="let option of options; index as i;">
+                        <div class="c-info-option">
+
+                            <span class="option-nro">
+                                {{i + 1}}
+                            </span>
+
+                            <span class="option-title">
+                                <span class="option-text">
+                                    {{ option.name }}
+                                </span>
+                                <div class="options-buttons">
+                                    <button (click)="deleteOption(option, i)" class="pi pi-trash"
+                                        aria-label="delete-button"></button>
+                                    <button (click)="editOption(option, i)" class="pi pi-pencil"
+                                        aria-label="edit-button"></button>
+                                </div>
+                            </span>
+
+                            <p class="option-description">
+                                <span class="kt-badge kt-badge--success kt-badge--inline"
+                                    *ngIf="option.type == types.cualitative">
+                                    Cualitativa
+                                </span>
+                                <span class="kt-badge kt-badge--dark kt-badge--inline"
+                                    *ngIf="option.type == types.cuantitative">
+                                    Cuantitativa
+                                </span>
+                                <span class="kt-badge kt-badge--warning kt-badge--inline"
+                                    *ngIf="option.type == types.cuantitative">
+                                    {{option.dinamicVariable?.name}}
+                                </span>
+                                <span class="kt-badge kt-badge--primary kt-badge--inline" *ngIf="option.enabled">
+                                    Activo
+                                </span>
+                                <span class="kt-badge kt-badge--danger kt-badge--inline" *ngIf="!option.enabled">
+                                    Inactivo
+                                </span>
+                                <span class="kt-badge kt-badge--secondary kt-badge--inline">
+                                    Peso {{option.value | number: '1.2-2' : 'en-US'}}
+                                </span>
+                                <ng-container *ngIf="item.family == families.projectRisk">
+                                    <span class="kt-badge kt-badge--danger kt-badge--inline"
+                                        *ngIf="option.site == sites.none">
+                                        Seleccionar segmento
+                                    </span>
+                                    <span class="kt-badge kt-badge--tertiary kt-badge--inline"
+                                        *ngIf="option.site == sites.impact">
+                                        Impacto
+                                    </span>
+                                    <span class="kt-badge kt-badge--blue kt-badge--inline"
+                                        *ngIf="option.site == sites.probability">
+                                        Probabilidad
+                                    </span>
+                                </ng-container>
+                            </p>
+
+                            <p-table [value]="option.details" [responsive]="primengTableHelper.isResponsive">
+                                <ng-template pTemplate="header">
+                                    <tr class="tbproperties-header">
+                                        <th class="tbproperties-index"></th>
+                                        <th>
+                                            Categoría
+                                        </th>
+                                        <th class="tbproperties-value">
+                                            Puntaje
+                                        </th>
+                                        <th class="tbproperties-delete"></th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-detail let-index="rowIndex">
+                                    <tr class="tbproperties-row">
+                                        <td class="tbproperties-index">
+                                            <span class="ui-column-title">
+                                                índice
+                                            </span>
+                                            <span class="tbproperties-index-container">
+                                                {{index + 1}}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="ui-column-title">
+                                                Categoría
+                                            </span>
+                                            <input type="text" id="name{{i}}a_{{index}}" [disabled]="busy"
+                                                autocomplete="off" [(ngModel)]="detail.name"
+                                                placeholder="Ingresar descripción" class="form-control" maxlength="255"
+                                                (focus)="onFocus($event)">
+                                        </td>
+                                        <td class="tbproperties-value">
+                                            <span class="ui-column-title">
+                                                Puntaje
+                                            </span>
+                                            <input type="text" id="name{{i}}b_{{index}}" [disabled]="busy"
+                                                [(ngModel)]="detail.value" autocomplete="off" class="form-control"
+                                                placeholder="Ingresar puntaje" (keyup)="keyUpDecimal($event)"
+                                                (keypress)="keyPressDecimal($event)" (focus)="onFocus($event)"
+                                                maxlength="6">
+                                        </td>
+                                        <td class="tbproperties-delete">
+                                            <button class="delete-option-detail pi pi-trash"
+                                                aria-label="delete-option-detail"
+                                                (click)="deleteOptionDetail(detail, i, index)"></button>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+
+                            <table class="w-100" *ngIf="option.details.length == 0">
+                                <tbody>
+                                    <tr class="tr-footer">
+                                        <td colspan="5">
+                                            La opción no tiene detalle.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="mt-4 col-12 text-right px-0">
+                                <button class="btn btn-primary" [disabled]="busy" (click)="addOptionDetail(i)">
+                                    <i class="fa fa-plus"></i>
+                                    Agregar categoría
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <create-edit-option-variable #createEditOptionVariableModal (searchDinamicVariable)="findDinamicVariable()"
+        (modalSave)="optionSave($event)"></create-edit-option-variable>
+    <find-dinamic-variable #findDinamicVariableModal (modalSave)="selectDinamicVariable($event)">
+    </find-dinamic-variable>
+</div>

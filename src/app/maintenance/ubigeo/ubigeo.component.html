@@ -1,0 +1,297 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        <span>Ubigeo</span>
+                    </h3>
+                    <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                    <span class="kt-subheader__desc">
+                        Mantenimiento de departamentos, provincias y distritos de la aplicación
+                    </span>
+                </div>
+                <div class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <button *ngIf="'Pages.Maintenance.Ubigeo.Create' | permission" (click)="createDepartment()"
+                            class="btn btn-primary">
+                            <i class="fa fa-plus"></i>
+                            Crear departamento
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div [class]="containerClass">
+            <div class="row row-container-over">
+                <div class="col-12 col-container-over">
+                    <div class="card card-custom gutter-b">
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-3 departments-body flex-body">
+                                    <form class="form" autocomplete="filter-departments">
+                                        <div class="form-group m-form__group align-items-center">
+                                            <label for="departmentFilterTextInput">
+                                                Buscar en departamentos
+                                            </label>
+                                            <div class="input-group">
+                                                <input [(ngModel)]="departmentFilterText"
+                                                    name="departmentFilterTextInput" autoFocus
+                                                    class="form-control m-input" placeholder="Buscar..." type="text">
+                                                <span class="input-group-btn">
+                                                    <button (click)="getDataDepartments()"
+                                                        class="btn btn-primary searchbar-button" type="submit">
+                                                        <i class="flaticon-search-1" aria-label="Buscar"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                                        <p-table #dataTableDeparment sortMode="single"
+                                            (onLazyLoad)="getDataDepartments($event)" [value]="departments"
+                                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                            [lazy]="true" [scrollable]="true" ScrollWidth="100%" [responsive]="false"
+                                            [resizableColumns]="false" selectionMode="single"
+                                            (onRowSelect)="onDepartmentSelect($event)"
+                                            [(selection)]="selectedDepartment" dataKey="id">
+                                            <ng-template pTemplate="header">
+                                                <tr>
+                                                    <th pSortableColumn="Name">
+                                                        Departamentos
+                                                        <p-sortIcon field="Name"></p-sortIcon>
+                                                    </th>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="body" let-record>
+                                                <tr [pSelectableRow]="record">
+                                                    <td>
+                                                        {{record.name}}
+                                                    </td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+                                        <div class="primeng-no-data" *ngIf="departmentTotalRecordsCount == 0">
+                                            Sin registros
+                                        </div>
+                                        <span class="d-block py-3" *ngIf="departmentTotalRecordsCount > 0">
+                                            Registros: {{departmentTotalRecordsCount}}
+                                        </span>
+                                        <div class="primeng-paging-container">
+                                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                                #paginatorDeparment (onPageChange)="getDataDepartments($event)"
+                                                [totalRecords]="departmentTotalRecordsCount" dropdownAppendTo="body"
+                                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                            </p-paginator>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-9"
+                                    [ngClass]="{'hidden-content': !selectedDepartment}">
+                                    <div class="row mx-0 px-5">
+                                        <div class="col-8 mb-2 c-region-title px-0">
+                                            <span *ngIf="'Pages.Maintenance.Ubigeo.Edit' | permission"
+                                                (click)="editCurrentDepartment()">
+                                                Departamento de <b>{{ selectedDepartment?.name }}</b></span>
+                                            <span *ngIf="!('Pages.Maintenance.Ubigeo.Edit' | permission)">
+                                                Departamento de <b>{{ selectedDepartment?.name }}</b>
+                                            </span>
+                                            <div class="regions-options"
+                                                *ngIf="'Pages.Maintenance.Ubigeo.Delete' | permission">
+                                                <button class="pi pi-trash" [title]="'Delete' | localize"
+                                                    (click)="deleteCurrentDepartment()"></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 mb-2 c-region-enabled">
+                                            <span class="r-enabled" *ngIf="selectedDepartment?.enabled">
+                                                Habilitado
+                                            </span>
+                                            <span class="r-disabled" *ngIf="!selectedDepartment?.enabled">
+                                                Deshabilitado
+                                            </span>
+                                        </div>
+                                        <div class="col-12 mb-2 c-region-subtitle px-0">
+                                            <span>
+                                                Código: <b>{{ selectedDepartment?.code }}</b>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mx-0 px-5 pt-2">
+                                        <div class="primeng-datatable-container"
+                                            [busyIf]="primengTableHelper.isLoading">
+                                            <p-table #dataTableProvince sortMode="single"
+                                                (onLazyLoad)="getDataProvinces($event)" [value]="provinces"
+                                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                                [paginator]="false" [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                                [responsive]="false" [resizableColumns]="false" dataKey="id">
+                                                <ng-template pTemplate="header">
+                                                    <tr>
+                                                        <th class="column-province" style="width: 4rem"></th>
+                                                        <th class="column-province text-center" pSortableColumn="Name">
+                                                            Provincia
+                                                            <p-sortIcon field="Name"></p-sortIcon>
+                                                        </th>
+                                                        <th class="column-province text-center" style="width: 150px"
+                                                            pSortableColumn="Enabled">
+                                                            Habilitado
+                                                            <p-sortIcon field="Enabled"></p-sortIcon>
+                                                        </th>
+                                                        <th class="column-province" style="width: 50px"
+                                                            *ngIf="'Pages.Maintenance.Ubigeo.Delete' | permission"></th>
+                                                    </tr>
+                                                </ng-template>
+                                                <ng-template pTemplate="body" let-record let-expanded="expanded">
+                                                    <tr>
+                                                        <td class="td-button-expand" style="width: 4rem">
+                                                            <button type="button" pButton [pRowToggler]="record"
+                                                                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <ng-container
+                                                                *ngIf="'Pages.Maintenance.Ubigeo.Edit' | permission">
+                                                                <div class="province-title">
+                                                                    <span (click)="editProvince(record)">
+                                                                        {{record.name}} - ({{record.districts.length}} distritos)
+                                                                    </span>
+                                                                </div>
+                                                            </ng-container>
+                                                            <ng-container
+                                                                *ngIf="!('Pages.Maintenance.Ubigeo.Edit' | permission)">
+                                                                {{record.name}}
+                                                            </ng-container>
+                                                        </td>
+                                                        <td class="text-center" style="width: 150px">
+                                                            <span class="label label-success label-inline"
+                                                                *ngIf="record.enabled">
+                                                                Si
+                                                            </span>
+                                                            <span class="label label-dark label-inline"
+                                                                *ngIf="!record.enabled">
+                                                                No
+                                                            </span>
+                                                        </td>
+                                                        <td class="tdRemove" style="width: 50px"
+                                                            *ngIf="'Pages.Maintenance.Ubigeo.Delete' | permission">
+                                                            <button class="pi pi-trash"
+                                                                (click)="deleteProvince(record)"></button>
+                                                        </td>
+                                                    </tr>
+                                                </ng-template>
+                                                <ng-template pTemplate="rowexpansion" let-record>
+                                                    <tr>
+                                                        <td style="background: #E4E4E4;" colspan="4">
+                                                            <div [busyIf]="primengTableHelper.isLoading">
+                                                                <p-table #dataTableProvince sortMode="single"
+                                                                    [value]="record.districts"
+                                                                    rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                                                    [paginator]="false" [lazy]="true"
+                                                                    [scrollable]="true" ScrollWidth="100%"
+                                                                    [responsive]="false" [resizableColumns]="false">
+                                                                    <ng-template pTemplate="header">
+                                                                        <tr>
+                                                                            <th class="column-province text-center" pSortableColumn="Name">
+                                                                                Distrito
+                                                                                <p-sortIcon field="Name"></p-sortIcon>
+                                                                            </th>
+                                                                            <th class="column-province text-center" style="width: 150px"
+                                                                                pSortableColumn="Enabled">
+                                                                                Habilitado
+                                                                                <p-sortIcon field="Enabled"></p-sortIcon>
+                                                                            </th>
+                                                                            <th class="column-province" style="width: 50px"
+                                                                                *ngIf="'Pages.Maintenance.Ubigeo.Delete' | permission"></th>
+                                                                        </tr>
+                                                                    </ng-template>
+                                                                    <ng-template pTemplate="body" let-district>
+                                                                        <tr>
+                                                                            <td class="text-left">
+                                                                                <ng-container
+                                                                                    *ngIf="'Pages.Maintenance.Ubigeo.Edit' | permission">
+                                                                                    <div class="province-title">
+                                                                                        <span (click)="editDistrict(record, district)">
+                                                                                            {{district.name}}
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </ng-container>
+                                                                                <ng-container
+                                                                                    *ngIf="!('Pages.Maintenance.Ubigeo.Edit' | permission)">
+                                                                                    {{district.name}}
+                                                                                </ng-container>
+                                                                            </td>
+                                                                            <td class="text-center" style="width: 150px">
+                                                                                <span class="label label-success label-inline"
+                                                                                    *ngIf="district.enabled">
+                                                                                    Si
+                                                                                </span>
+                                                                                <span class="label label-dark label-inline"
+                                                                                    *ngIf="!district.enabled">
+                                                                                    No
+                                                                                </span>
+                                                                            </td>
+                                                                            <td class="tdRemove" style="width: 50px"
+                                                                                *ngIf="'Pages.Maintenance.Ubigeo.Delete' | permission">
+                                                                                <button class="pi pi-trash"
+                                                                                    (click)="deleteDistrict(district)"></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </ng-template>
+                                                                </p-table>
+                                                                <div class="primeng-no-data" *ngIf="record.districts.length == 0">
+                                                                    Sin registros
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mx-0 p-5 d-flex justify-content-end">
+                                                                <button *ngIf="'Pages.Maintenance.Ubigeo.Create' | permission"
+                                                                    (click)="createDistrict(record)" class="btn btn-primary">
+                                                                    <i class="fa fa-plus"></i>
+                                                                    Crear distrito
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </ng-template>
+                                            </p-table>
+                                        <div class="primeng-no-data" *ngIf="provinceTotalRecordsCount == 0">
+                                            Sin registros
+                                        </div>
+                                        <span class="d-block py-3" *ngIf="provinceTotalRecordsCount > 0">
+                                            Registros: {{provinceTotalRecordsCount}}
+                                        </span>
+                                        <div class="primeng-paging-container">
+                                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                                #paginatorProvince (onPageChange)="getDataProvinces($event)"
+                                                [totalRecords]="provinceTotalRecordsCount" dropdownAppendTo="body"
+                                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                                            </p-paginator>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mx-0 p-5 d-flex justify-content-end">
+                                    <button *ngIf="'Pages.Maintenance.Ubigeo.Create' | permission"
+                                        (click)="createProvince()" class="btn btn-primary">
+                                        <i class="fa fa-plus"></i>
+                                        Crear provincia
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <create-edit-department #createOrEditModalDepartment (modalSave)="getDataDepartments()"
+        (onDepartmentSave)="onSelectedDepartmentUpdate($event)"></create-edit-department>
+    <create-edit-province #createOrEditModalProvince (modalSave)="getDataProvinces()"></create-edit-province>
+    <create-edit-district #createOrEditModalDisctrict (modalSave)="getDataProvinces()"></create-edit-district>
+
+</div>
+</div>

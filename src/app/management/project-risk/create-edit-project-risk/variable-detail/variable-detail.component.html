@@ -1,0 +1,139 @@
+<div *ngIf="projectRisk.provinceId == -1" class="row">
+    <h5>
+        Estimado usuario debe seleccionar la provincia antes de continuar
+    </h5>
+</div>
+<div *ngIf="projectRisk.stageId == -1" class="row">
+    <h5>
+        Estimado usuario debe seleccionar la etapa del proyecto antes de continuar
+    </h5>
+</div>
+<ng-container *ngIf="projectRisk.provinceId != -1 && projectRisk.stageId != -1" class="row">
+
+    <detail-box-project-risk [item]="projectRisk"></detail-box-project-risk>
+
+    <div class="row">
+        <div class="stage-container">
+            <div class="stage-content">
+                <h5 class="stage-title">
+                    <b>Fase del proyecto:&nbsp;</b> {{projectRisk.stage?.name}}
+                </h5>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <p-tabView class="mt-4" [(activeIndex)]="tabIndex">
+                <p-tabPanel *ngFor="let detail of projectRisk.stage.details; index as vi;"
+                    [header]="detail.staticVariable.name">
+                    <div class="tab-container">
+                        <div class="variable-container my-2 mx-0 row">
+
+                            <div class="col-12">
+                                <h5 class="my-3 d-block text-center text-dark font-weight-bold">
+                                    Variables de impacto
+                                </h5>
+                            </div>
+
+                            <ng-container *ngFor="let option of detail.staticVariable.options; index as oi">
+                                <div *ngIf="option.site == sites.impact"
+                                    class="variable-box-width col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4">
+                                    <div class="variable-content">
+                                        <div class="variable-box">
+                                            <label>
+                                                {{option.name}}
+                                            </label>
+                                        </div>
+
+                                        <div class="variable-selection" *ngIf="option?.details?.length > 0; else emptyVariableA">
+                                            <div class="form-group">
+                                                <select [disabled]="option.type == optionTypes.cuantitative"
+                                                    aria-label="selection" class="form-control"
+                                                    id="StaticVariableTypeA{{vi}}_{{oi}}"
+                                                    name="StaticVariableTypeA{{vi}}_{{oi}}"
+                                                    [(ngModel)]="option.relationId"
+                                                    (change)="optionChange(detail, option, $event)">
+                                                    <option *ngFor="let detail of option.details; index as i"
+                                                        [value]="detail.id">
+                                                        {{detail.name}} - {{(option.type == optionTypes.cuantitative ?
+                                                        option.relationValue : detail.value)| number: '1.2-2' :
+                                                        'en-us'}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <ng-template #emptyVariableA>
+                                            <div class="variable-selection">
+                                                <div class="form-group">
+                                                    <select disabled aria-label="selection" class="form-control"
+                                                        id="StaticVariableTypeAB{{vi}}_{{oi}}"
+                                                        name="StaticVariableTypeAB{{vi}}_{{oi}}" value="-1">
+                                                        <option value="-1">
+                                                            Variable sin detalles
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </ng-container>
+
+                            <div class="col-12">
+                                <h5 class="my-3 d-block text-center text-dark font-weight-bold">
+                                    Variables de probabilidad
+                                </h5>
+                            </div>
+
+                            <ng-container *ngFor="let option of detail.staticVariable.options; index as oi">
+                                <div *ngIf="option.site == sites.probability"
+                                    class="variable-box-width col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4">
+                                    <div class="variable-content">
+                                        <div class="variable-box">
+                                            <label>
+                                                {{option.name}}
+                                            </label>
+                                        </div>
+
+                                        <div class="variable-selection" *ngIf="option?.details?.length > 0; else emptyVariableB">
+                                            <div class="form-group">
+                                                <select [disabled]="option.type == optionTypes.cuantitative"
+                                                    aria-label="selection" class="form-control"
+                                                    id="StaticVariableTypeB{{vi}}_{{oi}}"
+                                                    name="StaticVariableTypeB{{vi}}_{{oi}}"
+                                                    [(ngModel)]="option.relationId"
+                                                    (change)="optionChange(detail, option, $event)">
+                                                    <option *ngFor="let detail of option.details; index as i"
+                                                        [value]="detail.id">
+                                                        {{detail.name}} - {{(option.type == optionTypes.cuantitative ?
+                                                        option.relationValue : detail.value)| number: '1.2-2' :
+                                                        'en-us'}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <ng-template #emptyVariableB>
+                                            <div class="variable-selection">
+                                                <div class="form-group">
+                                                    <select disabled aria-label="selection" class="form-control"
+                                                        id="StaticVariableTypeBB{{vi}}_{{oi}}"
+                                                        name="StaticVariableTypeBB{{vi}}_{{oi}}" value="-1">
+                                                        <option value="-1">
+                                                            Variable sin detalles
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </p-tabPanel>
+
+            </p-tabView>
+        </div>
+    </div>
+
+</ng-container>

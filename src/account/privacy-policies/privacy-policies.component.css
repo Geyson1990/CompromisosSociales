@@ -1,0 +1,56 @@
+.privacy-policies-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.privacy-policies-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.privacy-policies-content::-webkit-scrollbar {
+    display: none;
+}
+
+.privacy-policies-body {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.privacy-policies-title {
+    display: block;
+    text-align: center;
+    color: #222428;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.privacy-policies-subtitle {
+    padding-left: 10px;
+    color: #222428;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.privacy-policies-description {
+    text-align: justify;
+    color: #222428;
+}
+
+.privacy-policies-list_item {
+    text-align: justify;
+    color: #222428;
+}

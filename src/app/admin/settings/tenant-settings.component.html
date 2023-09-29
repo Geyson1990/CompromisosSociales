@@ -1,0 +1,515 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        <span>{{"Settings" | localize}}</span>
+                    </h3>
+                    <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                    <span class="kt-subheader__desc">
+                        {{"SettingsHeaderInfo" | localize}}
+                    </span>
+                </div>
+                <div class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <button class="btn btn-primary" (click)="saveAll()"><i class="la la-floppy-o"></i>
+                            {{"SaveAll" | localize}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet">
+                <div class="kt-portlet__body">
+                    <tabset *ngIf="settings">
+                        <tab *ngIf="true" heading="{{'UserManagement' | localize}}">
+                            <div class="kt-form">
+
+                                <h5 class="d-block mb-2">
+                                    Opciones de inicio de sesión
+                                </h5>
+
+                                <label for="Setting_UseCaptchaOnLogin" class="kt-checkbox d-block">
+                                    <input id="Setting_UseCaptchaOnLogin" type="checkbox" name="UseCaptchaOnLogin"
+                                        [(ngModel)]="settings.userManagement.useCaptchaOnLogin">
+                                    Utilizar captcha v3 en inicio de sesión
+                                    <span></span>
+                                </label>
+
+                                <h5 class="d-block mt-3 mb-2">
+                                    Configuración de cookies
+                                </h5>
+
+                                <label for="Settings_IsCookieConsentEnabled" class="kt-checkbox d-block">
+                                    <input id="Settings_IsCookieConsentEnabled" class="md-check" type="checkbox"
+                                        name="IsCookieConsentEnabled"
+                                        [(ngModel)]="settings.userManagement.isCookieConsentEnabled">
+                                    Mostrar dialogo de aceptación de cookies
+                                    <span></span>
+                                </label>
+
+                                <h5 class="d-block mt-3 mb-2">
+                                    Límite de inactividad
+                                </h5>
+
+                                <label for="Setting_IsSessionTimeOutEnabled" class="kt-checkbox d-block">
+                                    <input id="Setting_IsSessionTimeOutEnabled" class="md-check" type="checkbox"
+                                        name="IsEnabled"
+                                        [(ngModel)]="settings.userManagement.sessionTimeOutSettings.isEnabled">
+                                    Habilitar tiempo límite de inactividad
+                                    <span></span>
+                                </label>
+
+                                <div class="form-group mb-2"
+                                    *ngIf="settings.userManagement.sessionTimeOutSettings.isEnabled">
+                                    <label for="Setting_SessionTimeOutSecond">
+                                        Tiempo límite en segundos permitido de inactividad antes de cerrar la sesión
+                                    </label>
+                                    <input id="Setting_SessionTimeOutSecond" type="number" name="TimeOutSecond"
+                                        class="form-control" min="1"
+                                        [ngClass]="{'edited':settings.userManagement.sessionTimeOutSettings.timeOutSecond}"
+                                        [(ngModel)]="settings.userManagement.sessionTimeOutSettings.timeOutSecond">
+                                </div>
+
+                                <div class="form-group mb-2"
+                                    *ngIf="settings.userManagement.sessionTimeOutSettings.isEnabled">
+                                    <label for="Setting_ShowTimeOutNotificationSecond">
+                                        Tiempo que se mostrará el diálogo de advertencia por inactividad en segundos
+                                    </label>
+                                    <input id="Setting_ShowTimeOutNotificationSecond" type="number"
+                                        name="ShowTimeOutNotificationSecond" class="form-control" min="1"
+                                        [ngClass]="{'edited':settings.userManagement.sessionTimeOutSettings.showTimeOutNotificationSecond}"
+                                        [(ngModel)]="settings.userManagement.sessionTimeOutSettings.showTimeOutNotificationSecond">
+                                </div>
+
+                            </div>
+                        </tab>
+                        <tab *ngIf="true" heading="{{'Security' | localize}}">
+                            <!-- *ngIf="true" is a workaround for https://github.com/valor-software/ng2-bootstrap/issues/823 -->
+                            <div>
+                                <h5>{{"PasswordComplexity" | localize}}</h5>
+                                <label for="Setting_PasswordComplexity_UseDefaultSettings" class="kt-checkbox">
+                                    <input id="Setting_PasswordComplexity_UseDefaultSettings" type="checkbox"
+                                        name="Setting_PasswordComplexity_UseDefaultSettings"
+                                        [(ngModel)]="settings.security.useDefaultPasswordComplexitySettings">
+                                    {{"UseDefaultSettings" | localize}}
+                                    <span></span>
+                                </label>
+                                <div class="kt-checkbox-list">
+                                    <label for="Setting_PasswordComplexity_RequireDigit" class="kt-checkbox">
+                                        <input id="Setting_PasswordComplexity_RequireDigit" type="checkbox"
+                                            name="Setting_PasswordComplexity_RequireDigit"
+                                            [(ngModel)]="settings.security.passwordComplexity.requireDigit"
+                                            *ngIf="!settings.security.useDefaultPasswordComplexitySettings">
+                                        <input id="Setting_PasswordComplexity_RequireDigit" type="checkbox"
+                                            name="Setting_PasswordComplexity_RequireDigit"
+                                            [(ngModel)]="settings.security.defaultPasswordComplexity.requireDigit"
+                                            *ngIf="settings.security.useDefaultPasswordComplexitySettings" disabled>
+                                        {{"PasswordComplexity_RequireDigit" | localize}}
+                                        <span></span>
+                                    </label>
+                                    <label for="Setting_PasswordComplexity_RequireLowercase" class="kt-checkbox">
+                                        <input id="Setting_PasswordComplexity_RequireLowercase" type="checkbox"
+                                            name="Setting_PasswordComplexity_RequireLowercase"
+                                            [(ngModel)]="settings.security.passwordComplexity.requireLowercase"
+                                            *ngIf="!settings.security.useDefaultPasswordComplexitySettings">
+                                        <input id="Setting_PasswordComplexity_RequireLowercase" type="checkbox"
+                                            name="Setting_PasswordComplexity_RequireLowercase"
+                                            [(ngModel)]="settings.security.defaultPasswordComplexity.requireLowercase"
+                                            *ngIf="settings.security.useDefaultPasswordComplexitySettings" disabled>
+                                        {{"PasswordComplexity_RequireLowercase" | localize}}
+                                        <span></span>
+                                    </label>
+                                    <label for="Setting_PasswordComplexity_RequireNonAlphanumeric" class="kt-checkbox">
+                                        <input id="Setting_PasswordComplexity_RequireNonAlphanumeric" type="checkbox"
+                                            name="Setting_PasswordComplexity_RequireNonAlphanumeric"
+                                            [(ngModel)]="settings.security.passwordComplexity.requireNonAlphanumeric"
+                                            *ngIf="!settings.security.useDefaultPasswordComplexitySettings">
+                                        <input id="Setting_PasswordComplexity_RequireNonAlphanumeric" type="checkbox"
+                                            name="Setting_PasswordComplexity_RequireNonAlphanumeric"
+                                            [(ngModel)]="settings.security.defaultPasswordComplexity.requireNonAlphanumeric"
+                                            *ngIf="settings.security.useDefaultPasswordComplexitySettings" disabled>
+                                        {{"PasswordComplexity_RequireNonAlphanumeric" | localize}}
+                                        <span></span>
+                                    </label>
+                                    <label for="Setting_PasswordComplexity_RequireUppercase" class="kt-checkbox">
+                                        <input id="Setting_PasswordComplexity_RequireUppercase" type="checkbox"
+                                            name="Setting_PasswordComplexity_RequireUppercase"
+                                            [(ngModel)]="settings.security.passwordComplexity.requireUppercase"
+                                            *ngIf="!settings.security.useDefaultPasswordComplexitySettings">
+                                        <input id="Setting_PasswordComplexity_RequireUppercase" type="checkbox"
+                                            name="Setting_PasswordComplexity_RequireUppercase"
+                                            [(ngModel)]="settings.security.defaultPasswordComplexity.requireUppercase"
+                                            *ngIf="settings.security.useDefaultPasswordComplexitySettings" disabled>
+                                        {{"PasswordComplexity_RequireUppercase" | localize}}
+                                        <span></span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>{{"PasswordComplexity_RequiredLength" | localize}}</label>
+                                    <input type="number" name="RequiredLength" class="form-control"
+                                        [ngClass]="{'edited':settings.security.passwordComplexity.requiredLength}"
+                                        [(ngModel)]="settings.security.passwordComplexity.requiredLength"
+                                        *ngIf="!settings.security.useDefaultPasswordComplexitySettings">
+                                    <input type="number" name="RequiredLength" class="form-control"
+                                        [ngClass]="{'edited':settings.security.defaultPasswordComplexity.requiredLength}"
+                                        [(ngModel)]="settings.security.defaultPasswordComplexity.requiredLength"
+                                        *ngIf="settings.security.useDefaultPasswordComplexitySettings" disabled>
+                                </div>
+                            </div>
+                            <div>
+                                <h5>{{"UserLockOut" | localize}}</h5>
+                                <div class="md-checkbox-list">
+                                    <div>
+                                        <label for="Setting_UserLockOut_IsEnabled" class="kt-checkbox">
+                                            <input id="Setting_UserLockOut_IsEnabled" type="checkbox"
+                                                name="Setting_UserLockOut_IsEnabled"
+                                                [(ngModel)]="settings.security.userLockOut.isEnabled">
+                                            {{"EnableUserAccountLockingOnFailedLoginAttemts" | localize}}
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group" *ngIf="settings.security.userLockOut.isEnabled">
+                                    <label
+                                        for="MaxFailedAccessAttemptsBeforeLockout">{{"MaxFailedAccessAttemptsBeforeLockout"
+                                        | localize}}</label>
+                                    <input id="MaxFailedAccessAttemptsBeforeLockout" type="number"
+                                        name="MaxFailedAccessAttemptsBeforeLockout" class="form-control"
+                                        [ngClass]="{'edited':settings.security.userLockOut.maxFailedAccessAttemptsBeforeLockout}"
+                                        [(ngModel)]="settings.security.userLockOut.maxFailedAccessAttemptsBeforeLockout">
+                                </div>
+                                <div class="form-group" *ngIf="settings.security.userLockOut.isEnabled">
+                                    <label for="DefaultAccountLockoutSeconds">{{"DefaultAccountLockoutDurationAsSeconds"
+                                        | localize}}</label>
+                                    <input id="DefaultAccountLockoutSeconds" type="number"
+                                        name="DefaultAccountLockoutSeconds" class="form-control"
+                                        [ngClass]="{'edited':settings.security.userLockOut.defaultAccountLockoutSeconds}"
+                                        [(ngModel)]="settings.security.userLockOut.defaultAccountLockoutSeconds">
+                                </div>
+                            </div>
+                            <div
+                                *ngIf="!isMultiTenancyEnabled || settings.security.twoFactorLogin.isEnabledForApplication">
+                                <h5>{{"TwoFactorLogin" | localize}}</h5>
+                                <div class="kt-checkbox-list">
+                                    <label for="Setting_TwoFactorLogin_IsEnabled" class="kt-checkbox">
+                                        <input id="Setting_TwoFactorLogin_IsEnabled" type="checkbox"
+                                            name="Setting_TwoFactorLogin_IsEnabled"
+                                            [(ngModel)]="settings.security.twoFactorLogin.isEnabled">
+                                        {{"EnableTwoFactorLogin" | localize}}
+                                        <span></span>
+                                    </label>
+                                    <label for="Setting_TwoFactorLogin_IsEmailProviderEnabled" class="kt-checkbox"
+                                        *ngIf="settings.security.twoFactorLogin.isEnabled && !isMultiTenancyEnabled">
+                                        <input id="Setting_TwoFactorLogin_IsEmailProviderEnabled" type="checkbox"
+                                            name="Setting_TwoFactorLogin_IsEmailProviderEnabled"
+                                            [(ngModel)]="settings.security.twoFactorLogin.isEmailProviderEnabled">
+                                        {{"IsEmailVerificationEnabled" | localize}}
+                                        <span></span>
+                                    </label>
+                                    <label for="Setting_TwoFactorLogin_IsSmsProviderEnabled" class="kt-checkbox"
+                                        *ngIf="settings.security.twoFactorLogin.isEnabled && !isMultiTenancyEnabled">
+                                        <input id="Setting_TwoFactorLogin_IsSmsProviderEnabled" type="checkbox"
+                                            name="Setting_TwoFactorLogin_IsSmsProviderEnabled"
+                                            [(ngModel)]="settings.security.twoFactorLogin.isSmsProviderEnabled">
+                                        {{"IsSmsVerificationEnabled" | localize}}
+                                        <span></span>
+                                    </label>
+                                    <label for="Setting_TwoFactorLogin_IsGoogleAuthenticatorEnabled" class="kt-checkbox"
+                                        *ngIf="settings.security.twoFactorLogin.isEnabled && !isMultiTenancyEnabled">
+                                        <input id="Setting_TwoFactorLogin_IsGoogleAuthenticatorEnabled" type="checkbox"
+                                            name="Setting_TwoFactorLogin_IsGoogleAuthenticatorEnabled"
+                                            [(ngModel)]="settings.security.twoFactorLogin.isGoogleAuthenticatorEnabled">
+                                        {{"IsGoogleAuthenticatorEnabled" | localize}}
+                                        <span></span>
+                                    </label>
+                                    <label for="Setting_TwoFactorLogin_IsRememberBrowserEnabled" class="kt-checkbox"
+                                        *ngIf="settings.security.twoFactorLogin.isEnabled">
+                                        <input id="Setting_TwoFactorLogin_IsRememberBrowserEnabled" type="checkbox"
+                                            name="Setting_TwoFactorLogin_IsRememberBrowserEnabled"
+                                            [(ngModel)]="settings.security.twoFactorLogin.isRememberBrowserEnabled">
+                                        {{"AllowToRememberBrowserForTwoFactorLogin" | localize}}
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div *ngIf="!isMultiTenancyEnabled">
+                                <h5>{{"OneConcurrentLoginPerUser" | localize}}</h5>
+                                <div class="kt-checkbox-list">
+                                    <label for="Setting_IsOneConcurrentLoginPerUserActive" class="kt-checkbox">
+                                        <input id="Setting_IsOneConcurrentLoginPerUserActive" type="checkbox"
+                                            name="Setting_IsOneConcurrentLoginPerUserActive"
+                                            [(ngModel)]="settings.security.allowOneConcurrentLoginPerUser">
+                                        {{"OneConcurrentLoginPerUserActive" | localize}}
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab heading="{{'EmailSmtp' | localize}}"
+                            *ngIf="!isMultiTenancyEnabled || appSession.application.allowTenantsToChangeEmailSettings">
+                            <div class="form-group m-form__group" *ngIf="isMultiTenancyEnabled">
+                                <label for="Settings_UseHostDefaultEmailSettings" class="kt-checkbox">
+                                    <input id="Settings_UseHostDefaultEmailSettings" type="checkbox"
+                                        name="UseHostDefaultEmailSettings"
+                                        [(ngModel)]="settings.email.useHostDefaultEmailSettings">
+                                    {{"UseHostDefaultEmailSettings" | localize}}
+                                    <span></span>
+                                </label>
+                            </div>
+                            <div [hidden]="settings.email.useHostDefaultEmailSettings">
+                                <div class="form-group">
+                                    <label for="DefaultFromAddress">{{"DefaultFromAddress" | localize}}</label>
+                                    <input id="DefaultFromAddress" type="email" name="DefaultFromAddress"
+                                        class="form-control" [ngClass]="{'edited':settings.email.defaultFromAddress}"
+                                        [(ngModel)]="settings.email.defaultFromAddress" maxlength="128">
+                                </div>
+                                <div class="form-group">
+                                    <label for="DefaultFromDisplayName">{{"DefaultFromDisplayName" | localize}}</label>
+                                    <input id="DefaultFromDisplayName" type="text" name="DefaultFromDisplayName"
+                                        class="form-control"
+                                        [ngClass]="{'edited':settings.email.defaultFromDisplayName}"
+                                        [(ngModel)]="settings.email.defaultFromDisplayName" maxlength="128">
+                                </div>
+                                <div class="form-group">
+                                    <label for="SmtpHost">{{"SmtpHost" | localize}}</label>
+                                    <input id="SmtpHost" type="text" name="SmtpHost" class="form-control"
+                                        [ngClass]="{'edited':settings.email.smtpHost}"
+                                        [(ngModel)]="settings.email.smtpHost" maxlength="64">
+                                </div>
+                                <div class="form-group">
+                                    <label for="SmtpPort">{{"SmtpPort" | localize}}</label>
+                                    <input id="SmtpPort" type="number" name="SmtpPort" class="form-control"
+                                        [ngClass]="{'edited':settings.email.smtpPort}"
+                                        [(ngModel)]="settings.email.smtpPort" maxlength="5">
+                                </div>
+                                <div class="kt-checkbox-list">
+                                    <label for="Settings_SmtpEnableSsl" class="kt-checkbox">
+                                        <input id="Settings_SmtpEnableSsl" type="checkbox" name="SmtpEnableSsl"
+                                            [(ngModel)]="settings.email.smtpEnableSsl"> {{"UseSsl" | localize}}
+                                        <span></span>
+                                    </label>
+                                    <label for="Settings_SmtpUseDefaultCredentials" class="kt-checkbox">
+                                        <input id="Settings_SmtpUseDefaultCredentials" type="checkbox"
+                                            name="SmtpUseDefaultCredentials"
+                                            [(ngModel)]="settings.email.smtpUseDefaultCredentials">
+                                        {{"UseDefaultCredentials" | localize}}
+                                        <span></span>
+                                    </label>
+                                </div>
+                                <div class="form-group" [hidden]="settings.email.smtpUseDefaultCredentials">
+                                    <label for="SmtpDomainName">{{"DomainName" | localize}}</label>
+                                    <input id="SmtpDomainName" type="text" name="SmtpDomainName" class="form-control"
+                                        [ngClass]="{'edited':settings.email.smtpDomain}"
+                                        [(ngModel)]="settings.email.smtpDomain" maxlength="128">
+                                </div>
+                                <div class="form-group" [hidden]="settings.email.smtpUseDefaultCredentials">
+                                    <label for="SmtpUserName">{{"UserName" | localize}}</label>
+                                    <input id="SmtpUserName" type="text" name="SmtpUserName" class="form-control"
+                                        [ngClass]="{'edited':settings.email.smtpUserName}"
+                                        [(ngModel)]="settings.email.smtpUserName" maxlength="128">
+                                </div>
+                                <div class="form-group" *ngIf="!setRandomPassword"
+                                    [hidden]="settings.email.smtpUseDefaultCredentials">
+                                    <label for="SmtpPassword">{{"Password" | localize}}</label>
+                                    <input id="SmtpPassword" type="password" name="SmtpPassword" class="form-control"
+                                        [ngClass]="{'edited':settings.email.smtpPassword}"
+                                        [(ngModel)]="settings.email.smtpPassword" maxlength="128">
+                                </div>
+                            </div>
+                            <hr />
+                            <h5>{{"TestEmailSettingsHeader" | localize}}</h5>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <input type="text" id="inputEmailAddressTest" name="inputEmailAddressTest"
+                                        class="form-control input-mini"
+                                        placeholder="Ingrese la dirección de correo electrónico"
+                                        [(ngModel)]="testEmailAddress">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <button class="btn btn-primary" type="button"
+                                        (click)="sendTestEmail()">{{"SendTestEmail" | localize}}</button>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab *ngIf="true" heading="Envío de alertas">
+
+                            <h5>Configuración de alertas de conflictividad</h5>
+
+                            <div class="form-group mt-3">
+                                <label for="socialConflictAlertTemplate">
+                                    Cuerpo del mensaje
+                                </label>
+                                <p-editor id="socialConflictAlertTemplate" name="socialConflictAlertTemplate"
+                                    type="text" [style]="{'height':'320px'}"
+                                    [ngClass]="{'edited':settings.extras.socialConflictAlertTemplate}"
+                                    [(ngModel)]="settings.extras.socialConflictAlertTemplate" maxlength="5000">
+                                </p-editor>
+                                <span class="d-block text-right">
+                                    {{settings?.extras?.socialConflictAlertTemplate ?
+                                    settings.extras.socialConflictAlertTemplate?.length :
+                                    0}}/5000
+                                </span>
+                            </div>
+
+                        </tab>
+                        <tab *ngIf="true" heading="Envío de tareas">
+
+                            <h5 class="mb-3">Configuración de alertas de compromisos</h5>
+
+                            <div class="form-group mb-0">
+                                <label for="taskManagementSubject">
+                                    Asunto de tarea creada
+                                </label>
+                                <input id="taskManagementSubject" type="text" name="taskManagementSubject"
+                                    class="form-control" maxlength="255"
+                                    [ngClass]="{'edited':settings.extras.taskManagementAlertSubject}"
+                                    [(ngModel)]="settings.extras.taskManagementAlertSubject">
+                                <span class="d-block text-right">
+                                    {{settings?.extras?.taskManagementAlertSubject ?
+                                    settings.extras.taskManagementAlertSubject?.length :
+                                    0}}/255
+                                </span>
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label for="taskManagementNotificationSubject">
+                                    Asunto de notificación de tarea
+                                </label>
+                                <input id="taskManagementNotificationSubject" type="text"
+                                    name="taskManagementNotificationSubject" class="form-control" maxlength="255"
+                                    [ngClass]="{'edited':settings.extras.taskManagementAlertNotificationSubject}"
+                                    [(ngModel)]="settings.extras.taskManagementAlertNotificationSubject">
+                                <span class="d-block text-right">
+                                    {{settings?.extras?.taskManagementAlertNotificationSubject ?
+                                    settings.extras.taskManagementAlertNotificationSubject?.length :
+                                    0}}/255
+                                </span>
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label for="taskManagementSubjectExpiration">
+                                    Asunto de tarea por expirar
+                                </label>
+                                <input id="taskManagementSubjectExpiration" type="text"
+                                    name="taskManagementSubjectExpiration" class="form-control" maxlength="255"
+                                    [ngClass]="{'edited':settings.extras.taskManagementAlertExpirationSubject}"
+                                    [(ngModel)]="settings.extras.taskManagementAlertExpirationSubject">
+                                <span class="d-block text-right">
+                                    {{settings?.extras?.taskManagementAlertExpirationSubject ?
+                                    settings.extras.taskManagementAlertExpirationSubject?.length :
+                                    0}}/255
+                                </span>
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label for="taskManagementAlertTemplate">
+                                    Cuerpo del mensaje
+                                </label>
+                                <p-editor id="taskManagementAlertTemplate" name="taskManagementAlertTemplate"
+                                    type="text" [style]="{'height':'320px'}"
+                                    [ngClass]="{'edited':settings.extras.taskManagementAlertTemplate}"
+                                    [(ngModel)]="settings.extras.taskManagementAlertTemplate" maxlength="5000">
+                                </p-editor>
+                                <span class="d-block text-right">
+                                    {{settings?.extras?.taskManagementAlertTemplate ?
+                                    settings.extras.taskManagementAlertTemplate?.length :
+                                    0}}/5000
+                                </span>
+                                <span>
+                                    Variables disponibles:<br><br>
+                                    Nombre de tarea: <b>{{variables.taskName}}</b><br>
+                                    Descripción de la tarea: <b>{{variables.taskDescription}}</b><br>
+                                    Fecha de creación de tarea: <b>{{variables.taskCreationTime}}</b><br>
+                                    Fecha de inicio de la tarea: <b>{{variables.taskStartTime}}</b><br>
+                                    Fecha de vencimiento de la tarea: <b>{{variables.tastDeadline}}</b><br>
+                                    Coordinador(es): <b>{{variables.taskCoordinators}}</b><br>
+                                    Gestor(es): <b>{{variables.taskManagers}}</b>
+                                </span>
+                            </div>
+
+                            <h5 class="my-3">Configuración de alertas de conflictos</h5>
+
+                            <div class="form-group mb-0">
+                                <label for="taskManagementSubject">
+                                    Asunto de tarea creada
+                                </label>
+                                <input id="socialConflictTaskManagementAlertSubject" type="text" maxlength="255"
+                                    name="socialConflictTaskManagementAlertSubject" class="form-control"
+                                    [ngClass]="{'edited':settings.extras.socialConflictTaskManagementAlertSubject}"
+                                    [(ngModel)]="settings.extras.socialConflictTaskManagementAlertSubject">
+                                <span class="d-block text-right">
+                                    {{settings?.extras?.socialConflictTaskManagementAlertSubject ?
+                                    settings.extras.socialConflictTaskManagementAlertSubject?.length :
+                                    0}}/255
+                                </span>
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label for="socialConflictTaskManagementNotificationSubject">
+                                    Asunto de notificación de tarea
+                                </label>
+                                <input id="socialConflictTaskManagementNotificationSubject" type="text"
+                                    name="socialConflictTaskManagementNotificationSubject" class="form-control"
+                                    maxlength="255"
+                                    [ngClass]="{'edited':settings.extras.socialConflictTaskManagementAlertNotificationSubject}"
+                                    [(ngModel)]="settings.extras.socialConflictTaskManagementAlertNotificationSubject">
+                                <span class="d-block text-right">
+                                    {{settings?.extras?.socialConflictTaskManagementAlertNotificationSubject ?
+                                    settings.extras.socialConflictTaskManagementAlertNotificationSubject?.length :
+                                    0}}/255
+                                </span>
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label for="socialConflictTaskManagementAlertExpirationSubject">
+                                    Asunto de tarea por expirar
+                                </label>
+                                <input id="socialConflictTaskManagementAlertExpirationSubject" type="text"
+                                    maxlength="255" name="socialConflictTaskManagementAlertExpirationSubject"
+                                    class="form-control"
+                                    [ngClass]="{'edited':settings.extras.socialConflictTaskManagementAlertExpirationSubject}"
+                                    [(ngModel)]="settings.extras.socialConflictTaskManagementAlertExpirationSubject">
+                                <span class="d-block text-right">
+                                    {{settings?.extras?.socialConflictTaskManagementAlertExpirationSubject ?
+                                    settings.extras.socialConflictTaskManagementAlertExpirationSubject?.length :
+                                    0}}/255
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="socialConflictTaskManagementAlertTemplate">
+                                    Cuerpo del mensaje
+                                </label>
+                                <p-editor id="socialConflictTaskManagementAlertTemplate"
+                                    name="socialConflictTaskManagementAlertTemplate" type="text"
+                                    [style]="{'height':'320px'}"
+                                    [ngClass]="{'edited':settings.extras.socialConflictTaskManagementAlertTemplate}"
+                                    [(ngModel)]="settings.extras.socialConflictTaskManagementAlertTemplate"
+                                    maxlength="5000">
+                                </p-editor>
+                                <span class="d-block text-right">
+                                    {{settings?.extras?.socialConflictTaskManagementAlertTemplate ?
+                                    settings.extras.socialConflictTaskManagementAlertTemplate?.length :
+                                    0}}/5000
+                                </span>
+                                <span>
+                                    Variables disponibles:<br><br>
+                                    Nombre de tarea: <b>{{variables.taskName}}</b><br>
+                                    Descripción de la tarea: <b>{{variables.taskDescription}}</b><br>
+                                    Fecha de creación de tarea: <b>{{variables.taskCreationTime}}</b><br>
+                                    Fecha de inicio de la tarea: <b>{{variables.taskStartTime}}</b><br>
+                                    Fecha de vencimiento de la tarea: <b>{{variables.tastDeadline}}</b><br>
+                                    Coordinador(es): <b>{{variables.taskCoordinators}}</b><br>
+                                    Gestor(es): <b>{{variables.taskManagers}}</b>
+                                </span>
+                            </div>
+
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #modalForm="ngForm" novalidate>
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>
+                            Envío de notificaciones de tareas
+                        </span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-sm-12 mb-2">
+                        <label for="socialConflictAlertSubject">
+                            Asunto
+                        </label>
+                        <input #subjectField id="socialConflictAlertSubject" type="text"
+                            name="socialConflictAlertSubject" class="form-control" [ngClass]="{'edited':subject}"
+                            [(ngModel)]="subject" maxlength="256">
+                        <span class="d-block text-right">
+                            {{subjectField?.value ? subjectField?.value.length : 0}}/{{subjectField.maxLength}}
+                        </span>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="alert alert-warning" role="alert">
+                            La notificación se enviará a la cola de procesamiento, se adjuntará a todos los responsables
+                            que esten asociados en la tarea
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!modalForm.form.valid"
+                        [buttonBusy]="saving" busyText="Enviando..." (click)="save()">
+                        <i class="fa fa-paper-plane"></i>
+                        <span>
+                            Enviar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

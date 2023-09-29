@@ -1,0 +1,250 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        <span>{{"Users" | localize}}</span>
+                    </h3>
+                    <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                    <span class="kt-subheader__desc">
+                        {{"UsersHeaderInfo" | localize}}
+                    </span>
+                </div>
+                <div class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <button (click)="createUser()" *ngIf="'Pages.Administration.Users.Create' | permission"
+                            class="btn btn-primary">
+                            <i class="fa fa-plus"></i>
+                            {{"CreateNewUser" | localize}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <form class="kt-form" autocomplete="new-password">
+                        <div>
+                            <div class="row align-items-center mb-4">
+                                <div class="col-xl-12">
+                                    <div class="form-group m-form__group align-items-center">
+                                        <div class="input-group">
+                                            <input [(ngModel)]="filterText" id="filterText" name="filterText" autoFocus
+                                                class="form-control m-input" placeholder="Buscar..." type="text">
+                                            <span class="input-group-btn">
+                                                <button (click)="getUsers()" aria-label="Buscar" class="btn btn-primary"
+                                                    type="submit">
+                                                    <i class="flaticon-search-1"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row align-items-center">
+                        <!--<Primeng-TurboTable-Start>-->
+                        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable sortMode="multiple" (onLazyLoad)="getUsers($event)"
+                                [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 130px"
+                                            [hidden]="!(['Pages.Administration.Users.Edit', 'Pages.Administration.Users.Delete'] | permissionAny)">
+                                            {{'Actions' | localize}}
+                                        </th>
+                                        <th style="width: 250px" pSortableColumn="Name">
+                                            Nombre
+                                            <p-sortIcon field="Name"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 200px" pSortableColumn="Surname">
+                                            Apellido Paterno
+                                            <p-sortIcon field="Surname"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 200px" pSortableColumn="Surname2">
+                                            Apellido Materno
+                                            <p-sortIcon field="Surname2"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="Document">
+                                            DNI
+                                            <p-sortIcon field="Document"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 150px">
+                                            Roles
+                                        </th>
+                                        <th style="width: 150px" pSortableColumn="Type">
+                                            Tipo
+                                            <p-sortIcon field="Type"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 250px" pSortableColumn="AlertResponsible">
+                                            Subsecretaría
+                                            <p-sortIcon field="AlertResponsible"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 250px" pSortableColumn="emailAddress">
+                                            Correo electrónico
+                                            <p-sortIcon field="emailAddress"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 100px" pSortableColumn="isActive">
+                                            {{'Active' | localize}}
+                                            <p-sortIcon field="isActive"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 200px" pSortableColumn="creationTime">
+                                            Fecha de creación
+                                            <p-sortIcon field="creationTime"></p-sortIcon>
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <td style="width: 130px"
+                                            [hidden]="!(['Pages.Administration.Users.Edit', 'Pages.Administration.Users.Delete'] | permissionAny)">
+                                            <div class="btn-group dropdown" dropdown container="body">
+                                                <button dropdownToggle class="dropdown-toggle btn btn-sm btn-primary">
+                                                    <i class="fa fa-cog"></i><span class="caret"></span>
+                                                    {{"Actions" | localize}}
+                                                </button>
+                                                <ul class="dropdown-menu" *dropdownMenu>
+                                                    <li *ngIf="record.type != types.adminitrative">
+                                                        <a href="javascript:;"
+                                                            *ngIf="'Pages.Administration.Users.Conflict' | permission"
+                                                            (click)="assignConflicts(record)">
+                                                            Asignar conflictos
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;"
+                                                            *ngIf="'Pages.Administration.Users.Edit' | permission"
+                                                            (click)="editUser(record)">
+                                                            Editar
+                                                        </a>
+                                                    </li>
+                                                    <li *ngIf="!record.isActive">
+                                                        <a href="javascript:;"
+                                                            *ngIf="'Pages.Administration.Users.Unlock' | permission"
+                                                            (click)="unlockUser(record)">
+                                                            Desbloquear
+                                                        </a>
+                                                    </li>
+                                                    <li *ngIf="record.isActive">
+                                                        <a href="javascript:;"
+                                                            *ngIf="'Pages.Administration.Users.Lock' | permission"
+                                                            (click)="lockUser(record)">
+                                                            Bloquear
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;"
+                                                            *ngIf="'Pages.Administration.Users.Delete' | permission"
+                                                            (click)="deleteUser(record)">
+                                                            {{'Delete' | localize}}
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td style="width: 250px">
+                                            <span class="ui-column-title">
+                                                Nombre
+                                            </span> {{record.name}}
+                                        </td>
+                                        <td style="width: 200px">
+                                            <span class="ui-column-title">
+                                                Apellido Paterno
+                                            </span> {{record.surname}}
+                                        </td>
+                                        <td style="width: 200px">
+                                            <span class="ui-column-title">
+                                                Apellido Materno
+                                            </span> {{record.surname2}}
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">
+                                                DNI
+                                            </span> {{record.document}}
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">
+                                                Roles
+                                            </span> {{getRolesAsString(record.roles)}}
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">
+                                                Tipo
+                                            </span>
+                                            <span class="kt-badge kt-badge--secondary kt-badge--inline"
+                                                *ngIf="record.type == types.adminitrative">
+                                                Administrativo
+                                            </span>
+                                            <span class="kt-badge kt-badge--primary kt-badge--inline"
+                                                *ngIf="record.type == types.coordinator">
+                                                Coordinador
+                                            </span>
+                                            <span class="kt-badge kt-badge--tertiary kt-badge--inline"
+                                                *ngIf="record.type == types.manager">
+                                                Gestor
+                                            </span>
+                                            <span class="kt-badge kt-badge--blue kt-badge--inline"
+                                                *ngIf="record.type == types.analyst">
+                                                Analista
+                                            </span>
+                                        </td>
+                                        <td style="width: 250px">
+                                            <span class="ui-column-title">
+                                                Subsecretaría
+                                            </span> {{record.alertResponsible ? record.alertResponsible.name : ''}}
+                                        </td>
+                                        <td style="width: 250px">
+                                            <span class="ui-column-title">
+                                                Correo electrónico
+                                            </span> {{record.emailAddress}}
+                                        </td>
+                                        <td style="width: 100px">
+                                            <span class="ui-column-title"> {{'Active' | localize}}</span>
+                                            <span class="kt-badge kt-badge--success kt-badge--inline"
+                                                *ngIf="record.isActive">{{'Yes' | localize}}</span>
+                                            <span class="kt-badge kt-badge--dark kt-badge--inline"
+                                                *ngIf="!record.isActive">{{'No' | localize}}</span>
+                                        </td>
+                                        <td style="width: 200px">
+                                            <span class="ui-column-title">
+                                                Fecha de creación
+                                            </span> {{record.creationTime | momentFormat:'DD/MM/YYYY HH:mm:ss'}}
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{'NoData' | localize}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                    (onPageChange)="getUsers($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                                </span>
+                            </div>
+                        </div>
+                        <!--<Primeng-TurboTable-End>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <create-edit-user #createOrEditUserModal (modalSave)="getUsers()" (findPerson)="showFindPerson()">
+        </create-edit-user>
+        <find-person #findPersonModal (modalSave)="savePerson($event)"></find-person>
+        <assign-conflict-user #assignConflictUser></assign-conflict-user>
+    </div>
+</div>

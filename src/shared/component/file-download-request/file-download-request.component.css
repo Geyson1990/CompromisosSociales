@@ -1,0 +1,67 @@
+.download-container.appeared {
+    opacity: 1;
+}
+
+.download-container {
+    position: fixed;
+    right: 80px;
+    bottom: 20px;
+    opacity: 0;
+    transition: 500ms all ease-in-out;
+}
+
+.download-content {
+    height: 60px;
+    width: 350px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: #006600;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.download-title {
+    display: block;
+    text-align: center;
+    font-weight: 500;
+    font-size: 14px;
+    color: white;
+}
+
+.download-progress-bar {
+    background-color: #d1d5db;
+    border-radius: 9999px;
+    height: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.download-progress-bar__progress {
+    /* Color */
+    background-color: #3880ff;
+
+    /* Rounded border */
+    border-radius: 9999px;
+
+    /* Absolute position */
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    width: 50%;
+
+    /* Move the bar infinitely */
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-name: download-progress-bar;
+}
+
+@keyframes download-progress-bar {
+    from {
+        left: -50%;
+    }
+
+    to {
+        left: 100%;
+    }
+}

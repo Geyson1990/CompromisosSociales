@@ -1,0 +1,14 @@
+@media (max-width: 640px) {
+    .risk-cell {
+        background-color: transparent !important;
+    }
+    .risk-color {
+        margin-top: 5px;
+    }
+}
+
+.risk-color {
+    border-radius: 10px;
+    min-width: 100px;
+    height: 18px;
+}

@@ -1,0 +1,79 @@
+<div [@routerTransition]>
+    <div *ngIf="loaded" class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div class="kt-container">
+                <div class="kt-subheader__main">
+                    <button (click)="backButtonPressed()" type="button" class="btn btn-light back-button mt-2">
+                        {{backButtonText}}
+                    </button>
+                    <h3 class="kt-subheader__title">
+                        Bandeja de Espacios de Diálogo
+                    </h3>
+                </div>
+                <div class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.." *ngIf="('Pages.ConflictTools.DialogSpace.Create' | permission) && !id" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Guardar
+                        </button>
+                        <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.." *ngIf="('Pages.ConflictTools.DialogSpace.Edit' | permission) && id" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="dialogSpace" class="kt-container kt-grid__item kt-grid__item--fluid">
+
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row m-0">
+                                <label class="font-weight-bold m-0">
+                                    Código: <span class="title-dark"> ED - {{dialogSpace.code}}</span>
+                                </label> 
+                            </div>
+                        </div>
+                        <div class="col-12 label-title">
+                            <label class="font-weight-bold m-0">
+                                Espacio de Diálogo: <span class="title-dark">{{dialogSpace.caseName}}</span>
+                            </label> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+
+                    <p-tabView [(activeIndex)]="tabIndex">
+                        <p-tabPanel header="Aspectos generales">
+                            <general-information-dialog-space
+                                #generalInformation
+                                [dialogSpace]="dialogSpace"
+                                [departments]="departments"
+                                [territorialUnits]="territorialUnits"
+                                [types]="types"
+                                [persons]="persons"
+                                (showSocialConflictSearch)="showConflictModal()"
+                                (showDirectoryGovernmentSearch)="showDirectoryGovernmentModal()"
+                                (showTeam)="showTeam($event)"
+                                (showAddDocument)="addDocument()"
+                                (showEditDocument)="editDocument($event)">
+                            </general-information-dialog-space>
+                        </p-tabPanel>
+                    </p-tabView>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <create-edit-team #teamInformationModal (modalSave)="saveTeam($event)"></create-edit-team>
+
+    <find-social-conflict #findSocialConflictModal (modalSave)="selectConflict($event)"></find-social-conflict>
+    <find-directory-government #findDirectoryGovernmentModal (modalSave)="saveDirectoryGoverment($event)"></find-directory-government>
+</div>

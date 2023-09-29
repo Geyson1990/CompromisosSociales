@@ -1,0 +1,269 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #modalForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="item.id">
+                            Editar responsable en el directorio de diálogo y conflictos sociales
+                        </span>
+                        <span *ngIf="!item.id">
+                            Registrar responsable en el directorio de diálogo y conflictos sociales
+                        </span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                        <div class="mb-2 form-group">
+                            <label for="ResponsibleSelect">
+                                Responsable (*)
+                            </label>
+                            <div class="input-group">
+                                <select (change)="onResponsibleChange($event)" [(ngModel)]="responsibleId"
+                                    id="ResponsibleSelect" name="ResponsibleSelect" class="form-control" type="text">
+                                    <option value="-1">
+                                        Seleccione
+                                    </option>
+                                    <option *ngFor="let responsible of responsibles" [value]="responsible.id">
+                                        {{responsible.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="Name">
+                            Nombres (*)
+                        </label>
+                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                            cdkAutosizeMaxRows="100" #nameField #nameInput="ngModel" [(ngModel)]="item.name" id="Name"
+                            name="Name" class="form-control" type="text" required maxlength="100"></textarea>
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                        <span class="input-legth mr-2">
+                            {{nameField.value ? nameField.value?.length :
+                            0}}/{{nameField.maxLength}}
+                        </span>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="FirstSurname">
+                            Apellido Parterno (*)
+                        </label>
+                        <input type="text" id="FirstSurname" name="FirstSurname" class="form-control" #firstSurnameField
+                            #firstSurnameInput="ngModel" [(ngModel)]="item.firstSurname" required maxlength="100">
+                        <validation-messages [formCtrl]="firstSurnameInput"></validation-messages>
+                        <span class="input-legth mr-2">
+                            {{firstSurnameField.value ? firstSurnameField.value.length :
+                            0}}/{{firstSurnameField.maxLength}}
+                        </span>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="SecondSurname">
+                            Apellido Materno
+                        </label>
+                        <input type="text" id="SecondSurname" name="SecondSurname" class="form-control"
+                            #secondtSurnameField #secondSurnameInput="ngModel" [(ngModel)]="item.secondSurname"
+                            maxlength="100">
+                        <validation-messages [formCtrl]="secondSurnameInput"></validation-messages>
+                        <span class="input-legth mr-2">
+                            {{secondtSurnameField.value ? secondtSurnameField.value.length :
+                            0}}/{{secondtSurnameField.maxLength}}
+                        </span>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="Job">
+                            Cargo
+                        </label>
+                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                            cdkAutosizeMaxRows="100" #jobField #jobInput="ngModel" [(ngModel)]="item.job" id="Address"
+                            name="Address" class="form-control" type="text" maxlength="300"></textarea>
+                        <validation-messages [formCtrl]="jobInput"></validation-messages>
+                        <span class="input-legth mr-2">
+                            {{jobField.value ? jobField.value?.length : 0}}/{{jobField.maxLength}}
+                        </span>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="EmailAddress">
+                            Correo electrónico
+                        </label>
+                        <input #emailAddressField #emailAddressInput="ngModel" id="EmailAddress" name="EmailAddress"
+                            class="form-control" type="email" [(ngModel)]="item.emailAddress" email maxlength="150">
+                        <validation-messages [formCtrl]="emailAddressInput"></validation-messages>
+                        <span class="input-legth mr-2">
+                            {{emailAddressField.value ? emailAddressField.value.length :
+                            0}}/{{emailAddressField.maxLength}}
+                        </span>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="PhoneNumber">
+                            Teléfono fijo
+                        </label>
+                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                            cdkAutosizeMaxRows="100" #phoneNumberField #phoneNumberInput="ngModel"
+                            [(ngModel)]="item.phoneNumber" id="PhoneNumber" name="PhoneNumber" class="form-control"
+                            type="text" maxlength="300"></textarea>
+                        <validation-messages [formCtrl]="phoneNumberInput"></validation-messages>
+                        <span class="input-legth mr-2">
+                            {{phoneNumberField.value ? phoneNumberField.value?.length :
+                            0}}/{{phoneNumberField.maxLength}}
+                        </span>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="MobilePhoneNumber">
+                            Teléfono celular
+                        </label>
+                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                            cdkAutosizeMaxRows="100" #mobilePhoneNumberField #mobilePhoneNumberInput="ngModel"
+                            [(ngModel)]="item.mobilePhoneNumber" id="MobilePhoneNumber" name="MobilePhoneNumber"
+                            class="form-control" type="text" maxlength="300"></textarea>
+                        <validation-messages [formCtrl]="mobilePhoneNumberInput"></validation-messages>
+                        <span class="input-legth mr-2">
+                            {{mobilePhoneNumberField.value ? mobilePhoneNumberField.value?.length :
+                            0}}/{{mobilePhoneNumberField.maxLength}}
+                        </span>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="AdditionalInformation">
+                            Información adicional
+                        </label>
+                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="4"
+                            cdkAutosizeMaxRows="100" #additionalInformationInput
+                            [(ngModel)]="item.additionalInformation" id="AdditionalInformation"
+                            name="AdditionalInformation" class="form-control" type="text" maxlength="500"></textarea>
+                        <span class="input-legth mr-2">
+                            {{additionalInformationInput.value ? additionalInformationInput.value?.length :
+                            0}}/{{additionalInformationInput.maxLength}}
+                        </span>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="State">
+                            Estado (*)
+                        </label>
+                        <select id="State" name="State" class="form-control" [(ngModel)]="state">
+                            <option value="false">
+                                Inactivo
+                            </option>
+                            <option value="true">
+                                Activo
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 mt-2 mb-2">
+                        <h5 class="d-block text-left text-dark font-weight-bold">
+                            Entidad del Estado Peruano
+                        </h5>
+
+                        <hr>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="mb-2 form-group">
+                            <label for="DirectoryGovernmentSearch">
+                                Entidad del Estado Peruano (*)
+                            </label>
+                            <div class="input-group input-group-right">
+                                <textarea id="DirectoryGovernmentSearch" name="DirectoryGovernmentSearch"
+                                    class="form-control" type="text" value="{{directoryGovernmentText}}"
+                                    disabled></textarea>
+                                <span class="input-group-text border-0" (click)="findDirectoryGovernment()">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                            </div>
+                            <div *ngIf="item.directoryGovernment" class="row col-12 mt-2 text-right mx-0 px-0">
+                                <button type="button" (click)="removeDirectoryGovernment()" aria-label="delete-button"
+                                    class="mb-2 ml-auto btn btn-danger">
+                                    <i class="fa fa-minus"></i>
+                                    Eliminar Entidad
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ng-container *ngIf="item.directoryGovernment">
+
+                        <div class="form-group col-sm-12">
+                            <label for="DirectoryGovernmentName">
+                                Nombre de la entidad
+                            </label>
+                            <textarea type="text" class="form-control" cdkTextareaAutosize
+                                #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3" cdkAutosizeMaxRows="100"
+                                value="{{item.directoryGovernment.name}}" id="DirectoryGovernmentName"
+                                name="DirectoryGovernmentName" readonly></textarea>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label for="DirectoryGovernmentShortName">
+                                Nombre corto Entidad
+                            </label>
+                            <input type="text" id="DirectoryGovernmentShortName" name="DirectoryGovernmentShortName"
+                                class="form-control" value="{{item.directoryGovernment.shortName}}" readonly>
+                        </div>
+
+                        <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                            <label for="DirectoryGovernmentDepartment">
+                                Departamento
+                            </label>
+                            <input type="text" id="DirectoryGovernmentDepartment" name="DirectoryGovernmentDepartment"
+                                class="form-control"
+                                value="{{item.directoryGovernment.district?.province?.department?.name}}" readonly>
+                        </div>
+
+                        <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                            <label for="DirectoryGovernmentProvince">
+                                Provincia
+                            </label>
+                            <input type="text" id="DirectoryGovernmentProvince" name="DirectoryGovernmentProvince"
+                                class="form-control" value="{{item.directoryGovernment.district?.province?.name}}"
+                                readonly>
+                        </div>
+
+                        <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                            <label for="DirectoryGovernmentDistrict">
+                                Distrito
+                            </label>
+                            <input type="text" id="DirectoryGovernmentDistrict" name="DirectoryGovernmentDistrict"
+                                class="form-control" value="{{item.directoryGovernment.district?.name}}" readonly>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label for="DirectoryGovernmentAddress">
+                                Dirección
+                            </label>
+                            <input type="text" id="DirectoryGovernmentAddress" name="DirectoryGovernmentAddress"
+                                class="form-control" value="{{item.directoryGovernment.address}}" readonly>
+                        </div>
+
+                    </ng-container>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!modalForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,105 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #riskForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="rowIndex || rowIndex == 0; else elseRowIndex">
+                            Editar nivel de riesgo
+                        </span>
+                        <ng-template #elseRowIndex>
+                            <span>
+                                Crear nivel de riesgo
+                            </span>
+                        </ng-template>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="RiskLevel">
+                            Nivel de Riesgo (*)
+                        </label>
+                        <select (change)="onRiskChange($event)" class="form-control" id="RiskLevel" name="RiskLevel"
+                            [(ngModel)]="item.alertRisk.id">
+                            <option value="-1">
+                                Seleccione
+                            </option>
+                            <option *ngFor="let risk of risks" [value]="risk.id">
+                                {{risk.name}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3 mb-2">
+                        <label for="RiskTime">
+                            Fecha (*)
+                        </label>
+                        <p-calendar [style]="{'width':'100%'}" [locale]="es" id="RiskTime" name="RiskTime"
+                            class="boostrap-dropdown" [(ngModel)]="riskTime" dateFormat="dd/mm/yy" [showTime]="false"
+                            inputId="RiskTimeInput">
+                        </p-calendar>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3 mb-2">
+                        <label for="RiskHour">
+                            Hora (*)
+                        </label>
+                        <p-calendar [style]="{'width':'100%'}" [locale]="es" id="RiskHour" name="RiskHour"
+                            class="boostrap-dropdown" [(ngModel)]="riskTime" hourFormat="HH:mm:ss" [timeOnly]="true"
+                            [hourFormat]="24" [showSeconds]="true" [showTime]="true" inputId="RiskHourInput">
+                        </p-calendar>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="RiskDescription">
+                            Descripción del Riesgo (*)
+                        </label>
+                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="4"
+                            cdkAutosizeMaxRows="100" id="RiskDescription" #alertDescription
+                            #alertRiskDescriptionInput="ngModel" class="form-control" type="text" name="RiskDescription"
+                            [(ngModel)]="item.description" required maxlength="2000"></textarea>
+                        <validation-messages [formCtrl]="alertRiskDescriptionInput"></validation-messages>
+                        <span class="input-legth">
+                            {{alertDescription.value ? alertDescription.value.length :
+                            0}}/{{alertDescription.maxLength}}
+                        </span>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="RiskObservation">
+                            Observación
+                        </label>
+                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="4"
+                            cdkAutosizeMaxRows="100" id="RiskObservation" #alertObservation
+                            #alertRiskObservationInput="ngModel" class="form-control" type="text" name="RiskObservation"
+                            [(ngModel)]="item.observation" maxlength="2000"></textarea>
+                        <validation-messages [formCtrl]="alertRiskObservationInput"></validation-messages>
+                        <span class="input-legth">
+                            {{alertObservation.value ? alertObservation.value.length :
+                            0}}/{{alertObservation.maxLength}}
+                        </span>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!riskForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

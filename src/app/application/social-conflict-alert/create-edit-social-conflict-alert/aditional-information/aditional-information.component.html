@@ -1,0 +1,324 @@
+<div class="row mt-3">
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictAlertDemandType">
+                Tipo de demanda
+            </label>
+            <div class="input-group">
+                <select [(ngModel)]="socialConflictAlert.alertDemand.id" id="SocialConflictAlertDemandType"
+                    name="SocialConflictAlertDemandType" class="form-control" type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let demand of demands" [value]="demand.id">
+                        {{demand.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12"></div>
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictAlertDemand">
+                Interés o Demanda
+            </label>
+            <div class="input-group">
+                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="4"
+                    cdkAutosizeMaxRows="100" #socialConflictAlertDemandInput [(ngModel)]="socialConflictAlert.demand"
+                    id="SocialConflictAlertDemand" name="SocialConflictAlertDemand" class="form-control" type="text"
+                    maxlength="5000"></textarea>
+                <span class="input-legth">
+                    {{socialConflictAlertDemandInput.value ? socialConflictAlertDemandInput.value.length :
+                    0}}/{{socialConflictAlertDemandInput.maxLength}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mt-2 mb-4">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Tipologías
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-4 col-xxl-4">
+        <label for="GeneralTypology">
+            Tipología del conflicto
+        </label>
+        <select (change)="onGeneralTypologyChange($event)" class="form-control" id="GeneralTypology"
+            name="GeneralTypology" [(ngModel)]="socialConflictAlert.typology.id">
+            <option value="-1">
+                Seleccione
+            </option>
+            <option *ngFor="let typology of typologies" [value]="typology.id">
+                {{typology.name}}
+            </option>
+        </select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-4 col-xxl-4">
+        <label for="DetailTypologhy">
+            Tipología detallada
+        </label>
+        <select [disabled]="socialConflictAlert.typology.id == -1" class="form-control" id="DetailTypologhy"
+            name="DetailTypologhy" [(ngModel)]="socialConflictAlert.subTypology.id">
+            <option value="-1">
+                Seleccione
+            </option>
+            <option *ngFor="let subTypology of selectedSubTypologies" [value]="subTypology.id">
+                {{subTypology.name}}
+            </option>
+        </select>
+    </div>
+
+    <div class="col-12 mt-4 mb-4">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Funcionarios
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictAlertResponsibleType">
+                Subsecretaría responsable
+            </label>
+            <div class="input-group">
+                <select [(ngModel)]="socialConflictAlert.alertResponsible.id" id="SocialConflictAlertResponsibleType"
+                    name="SocialConflictAlertResponsibleType" class="form-control" type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let responsible of responsibles" [value]="responsible.id">
+                        {{responsible.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12"></div>
+
+    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-4 col-xxl-4">
+        <label for="PersonAnalyst">
+            Responsable de la alerta
+        </label>
+        <select class="form-control" id="PersonAnalyst" name="PersonAnalyst"
+            [(ngModel)]="socialConflictAlert.analyst.id">
+            <option value="-1">
+                Seleccione
+            </option>
+            <option *ngFor="let analyst of analysts" [value]="analyst.id">
+                {{analyst.name}} {{
+                    analyst.type == personTypes.coordinator ? '(COORDINADOR)' :
+                    analyst.type == personTypes.analyst ? '(ANALISTA)' : '(GESTOR)'
+                }}
+            </option>
+        </select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-4 col-xxl-4">
+        <label for="PersonManager">
+            Responsable de la intervención
+        </label>
+        <select class="form-control" id="PersonManager" name="PersonManager"
+            [(ngModel)]="socialConflictAlert.manager.id">
+            <option value="-1">
+                Seleccione
+            </option>
+            <option *ngFor="let manager of managers" [value]="manager.id">
+                {{manager.name}} {{
+                    manager.type == personTypes.coordinator ? '(COORDINADOR)' :
+                    manager.type == personTypes.analyst ? '(ANALISTA)' : '(GESTOR)'
+                }}
+            </option>
+        </select>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-4 col-xxl-4">
+        <label for="PersonCoordinator">
+            Coordinador
+        </label>
+        <select class="form-control" id="PersonCoordinator" name="PersonCoordinator"
+            [(ngModel)]="socialConflictAlert.coordinator.id">
+            <option value="-1">
+                Seleccione
+            </option>
+            <option *ngFor="let coordinator of coordinators" [value]="coordinator.id">
+                {{coordinator.name}} {{
+                    coordinator.type == personTypes.coordinator ? '(COORDINADOR)' :
+                    coordinator.type == personTypes.analyst ? '(ANALISTA)' : '(GESTOR)'
+                }}
+            </option>
+        </select>
+    </div>
+
+    <div class="col-12 mt-4 mb-4">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Acciones del ejecutivo
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictAlertActions">
+                Acciones realizadas desde el ejecutivo
+            </label>
+            <div class="input-group">
+                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                    cdkAutosizeMaxRows="100" #socialConflictAlertActionsInput [(ngModel)]="socialConflictAlert.actions"
+                    id="SocialConflictAlertActions" name="SocialConflictAlertActions" class="form-control" type="text"
+                    maxlength="3000"></textarea>
+                <span class="input-legth">
+                    {{
+                    socialConflictAlertActionsInput.value ?
+                    socialConflictAlertActionsInput.value.length :
+                    0}}/{{socialConflictAlertActionsInput.maxLength}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictAlertRecomendations">
+                Recomendaciones
+            </label>
+            <div class="input-group">
+                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                    cdkAutosizeMaxRows="100" #socialConflictAlertRecomendationsInput
+                    [(ngModel)]="socialConflictAlert.recommendations" id="SocialConflictAlertRecomendations"
+                    name="SocialConflictAlertRecomendations" class="form-control" type="text"
+                    maxlength="3000"></textarea>
+                <span class="input-legth">
+                    {{
+                    socialConflictAlertRecomendationsInput.value ?
+                    socialConflictAlertRecomendationsInput.value.length:
+                    0}}/{{socialConflictAlertRecomendationsInput.maxLength}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mt-4 mb-4">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Información adicional
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictAlertAditionalInformation">
+                Información adicional
+            </label>
+            <div class="input-group">
+                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                    cdkAutosizeMaxRows="100" #socialConflictAlertAditionalInformationInput
+                    [(ngModel)]="socialConflictAlert.aditionalInformation" id="SocialConflictAlertAditionalInformation"
+                    name="SocialConflictAlertAditionalInformation" class="form-control" type="text"
+                    maxlength="3000"></textarea>
+                <span class="input-legth">
+                    {{socialConflictAlertAditionalInformationInput.value ?
+                    socialConflictAlertAditionalInformationInput.value.length :
+                    0}}/{{socialConflictAlertAditionalInformationInput.maxLength}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mt-4 mb-4">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Fuente
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictAlertSource">
+                Fuente
+            </label>
+            <div class="input-group">
+                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                    cdkAutosizeMaxRows="100" #SocialConflictAlertSourceInput [(ngModel)]="socialConflictAlert.source"
+                    id="SocialConflictAlertSource" name="SocialConflictAlertSource" class="form-control" type="text"
+                    maxlength="1000"></textarea>
+                <span class="input-legth">
+                    {{SocialConflictAlertSourceInput.value ? SocialConflictAlertSourceInput.value.length :
+                    0}}/{{SocialConflictAlertSourceInput.maxLength}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictAlertSourceType">
+                Tipo de fuente
+            </label>
+            <div class="input-group">
+                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                    cdkAutosizeMaxRows="100" #socialConflictAlertSourceTypeInput
+                    [(ngModel)]="socialConflictAlert.sourceType" id="SocialConflictAlertSourceType"
+                    name="SocialConflictAlertSourceType" class="form-control" type="text" maxlength="1000"></textarea>
+                <span class="input-legth">
+                    {{socialConflictAlertSourceTypeInput.value ? socialConflictAlertSourceTypeInput.value.length :
+                    0}}/{{socialConflictAlertSourceTypeInput.maxLength}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictAlertLink">
+                Link de consulta
+            </label>
+            <div class="input-group">
+                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                    cdkAutosizeMaxRows="100" #socialConflictAlertLinkInput [(ngModel)]="socialConflictAlert.link"
+                    id="SocialConflictAlertLink" name="SocialConflictAlertLink" class="form-control" type="text"
+                    maxlength="1000"></textarea>
+                <span class="input-legth">
+                    {{socialConflictAlertLinkInput.value ? socialConflictAlertLinkInput.value.length :
+                    0}}/{{socialConflictAlertLinkInput.maxLength}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <ng-container *ngIf="socialConflictAlert.resources.length > 0">
+        <div class="col-12 mb-3">
+            <h5 class="d-block text-left text-dark font-weight-bold mt-4">
+                Documentos de las fuentes
+            </h5>
+            <hr>
+        </div>
+
+        <div class="col-12">
+            <file-resource-item [resource]="resource" (restoreResource)="restoreResource(resource)"
+                (removeResource)="removeResource(resource, i)"
+                *ngFor="let resource of socialConflictAlert.resources; index as i;"></file-resource-item>
+        </div>
+    </ng-container>
+
+    <file-uploader header="Agregar documentos de las fuentes"
+        subtitle="Ud. puede seleccionar un archivo WORD (doc, docx), PDF (.pdf), Excel (.xslx, .xlsl) e imagenes (JPG, JPEG, PNG) con un tamaño máximo de 1.5MB y un máximo de 5 archivo."
+        [hideType]="true" [images]="true"
+        [disabled]="(socialConflictAlert.uploadFiles.length + socialConflictAlert.resources.length) >= 5"
+        #fileUploadItems class="w-100 my-3" [(attachments)]="socialConflictAlert.uploadFiles"
+        (saveAttachment)="saveAttach($event)" [size]="size"></file-uploader>
+
+</div>

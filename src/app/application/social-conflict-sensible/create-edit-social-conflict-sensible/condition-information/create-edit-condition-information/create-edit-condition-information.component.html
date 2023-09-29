@@ -1,0 +1,81 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #conditionForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="rowIndex || rowIndex == 0; else elseRowIndex" >
+                            Editar estado del caso
+                        </span>
+                        <ng-template #elseRowIndex>
+                            <span>
+                                Crear estado del caso
+                            </span>
+                        </ng-template>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="ConditionLevel">
+                            Estado (*)
+                        </label>
+                        <select class="form-control" id="ConditionLevel" name="ConditionLevel" [(ngModel)]="item.type">
+                            <option [value]="types.none">
+                                Seleccione
+                            </option>
+                            <option [value]="types.closed">
+                                Inactivo
+                            </option>
+                            <option [value]="types.open">
+                                Activo
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="ConditionTimeInput">
+                            Fecha de estado (*)
+                        </label>
+                        <div class="input-group fix-border">
+                            <input #datePicker="bsDatepicker" id="ConditionTimeInput" name="ConditionTimeInput" type="text" class="form-control" bsDatepicker datePickerMomentModifier [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }" [(ngModel)]="conditionTime">
+                            <span (click)="datePicker.toggle()" class="input-group-text">
+                                <i class="far fa-calendar-alt"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="ConditionDescription">
+                            Observación
+                        </label>
+                        <textarea #conditionDescriptionInput id="ConditionDescription" #nameInput="ngModel" class="form-control" type="text" name="Name"
+                            [(ngModel)]="item.description" rows="4" maxlength="1000"></textarea>
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                        <span class="input-legth">
+                            {{conditionDescriptionInput?.value ? conditionDescriptionInput?.value?.length : 0}}/{{conditionDescriptionInput.maxLength}}
+                        </span>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!conditionForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

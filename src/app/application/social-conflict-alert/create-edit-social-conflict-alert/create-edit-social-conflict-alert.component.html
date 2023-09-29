@@ -1,0 +1,179 @@
+<div [@routerTransition]>
+    <ng-container *ngIf="loaded">
+        <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+            <div class="kt-subheader kt-grid__item">
+                <div class="kt-container">
+                    <div class="kt-subheader__main">
+                        <button (click)="backButtonPressed()" type="button" class="btn btn-light back-button mt-2">
+                            {{backButtonText}}
+                        </button>
+                        <h3 class="kt-subheader__title">
+                            Bandeja de Alertas de Situaciones Conflictivas
+                        </h3>
+                    </div>
+                    <div class="kt-subheader__toolbar">
+                        <div class="kt-subheader__wrapper">
+                            <div *ngIf="id" class="btn-group mr-3" dropdown>
+                                <button *ngIf="('Pages.Report.SocialConflictAlert' | permission)" dropdownToggle type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="far fa-file-excel"></i>
+                                    Operaciones
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-excel-operations" *dropdownMenu>
+                                    <a class="dropdown-item align-items-center" id="ExportSocialConflictAlert" (click)="showDownloader()" href="javascript:;">
+                                        <i class="fa fa-download" style="font-size: 1rem;"></i>
+                                        Descargar
+                                    </a>
+                                    <a *ngIf="'Pages.Application.SocialConflictAlert.Send' | permission" class="dropdown-item align-items-center" id="ExportEmailSocialConflictAlert" (click)="showEmailSender()" href="javascript:;">
+                                        <i class="fa fa-paper-plane" style="font-size: 1rem;"></i>
+                                        Enviar correo electrónico
+                                    </a>
+                                </div>
+                            </div>
+                            <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.."
+                                *ngIf="('Pages.Application.SocialConflictAlert.Create' | permission) && !id"
+                                class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                                Guardar
+                            </button>
+                            <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.."
+                                *ngIf="('Pages.Application.SocialConflictAlert.Edit' | permission) && id"
+                                class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="socialConflictAlert" class="kt-container kt-grid__item kt-grid__item--fluid">
+
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row m-0">
+                                    <label class="font-weight-bold m-0">
+                                        Código: <span class="title-dark">{{socialConflictAlert.code}}</span>
+                                    </label> 
+                                    <label class="mx-2"></label>
+                                    <ng-container *ngIf="socialConflictAlert.lastRisk">
+                                        <div *ngIf="socialConflictAlert.lastRisk.alertRisk" [style.background]="socialConflictAlert.lastRisk.alertRisk.color" class="risk-color"></div>
+                                        <label class="font-weight-bold my-0 mx-2">
+                                            <span class="title-dark">{{socialConflictAlert.lastRisk.alertRisk.name}}</span>
+                                        </label>
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <div class="col-12 label-title">
+                                <label class="font-weight-bold m-0">
+                                    Alerta: <span class="title-dark">{{socialConflictAlert.description}}</span>
+                                </label> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body">
+
+                        <p-tabView [(activeIndex)]="tabIndex">
+
+                            <p-tabPanel header="Aspectos generales">
+                                <general-information-social-conflict-alert 
+                                    #generalInformation 
+                                    [(busy)]="busy"
+                                    [(socialConflictAlert)]="socialConflictAlert" 
+                                    [departments]="departments"
+                                    [territorialUnits]="territorialUnits"
+                                    (showSocialConflictSearch)="findSocialConflict()">
+                                </general-information-social-conflict-alert>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Información complementaria">
+                                <aditional-information-social-conflict-alert 
+                                    #aditionalInformation
+                                    [(busy)]="busy"
+                                    [(socialConflictAlert)]="socialConflictAlert" 
+                                    [persons]="persons"
+                                    [typologies]="typologies" 
+                                    [demands]="demands"
+                                    [responsibles]="responsibles">
+                                </aditional-information-social-conflict-alert>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Actores">
+                                <actor-information-social-conflict-alert 
+                                    #actorInformation
+                                    [(busy)]="busy"
+                                    [(socialConflictAlert)]="socialConflictAlert" 
+                                    (addActor)="addActor()"
+                                    (editActor)="editActor($event)">
+                                </actor-information-social-conflict-alert>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Nivel de riesgo">
+                                <risk-information-social-conflict-alert 
+                                    #riskInformation 
+                                    [(busy)]="busy"
+                                    [(socialConflictAlert)]="socialConflictAlert" 
+                                    (addRisk)="addRisk()"
+                                    (editRisk)="editRisk($event)">
+                                </risk-information-social-conflict-alert>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Atención de Sectores">
+                                <sector-information-social-conflict-alert 
+                                    #sectorInformation 
+                                    [(busy)]="busy"
+                                    [(socialConflictAlert)]="socialConflictAlert" 
+                                    (addSector)="addSector()"
+                                    (editSector)="editSector($event)">
+                                </sector-information-social-conflict-alert>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Actualización de alerta">
+                                <state-information-social-conflict-alert 
+                                    #stateInformation 
+                                    [(busy)]="busy"
+                                    [(socialConflictAlert)]="socialConflictAlert" 
+                                    (addState)="addState()"
+                                    (editState)="editState($event)">
+                                </state-information-social-conflict-alert>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Cierre de alerta">
+                                <seal-information-social-conflict-alert 
+                                    #sealInformation 
+                                    [(busy)]="busy"
+                                    [(socialConflictAlert)]="socialConflictAlert" 
+                                    (addSeal)="addSeal()"
+                                    (editSeal)="editSeal($event)">
+                                </seal-information-social-conflict-alert>
+                            </p-tabPanel>
+
+                            <p-tabPanel *ngIf="socialConflictAlert.id && ('Pages.Application.SocialConflictTaskManagement' |permission)" header="Gestión de tareas">
+                                <task-information-social-conflict-alert 
+                                    #taskInformation  
+                                    [(socialConflictAlert)]="socialConflictAlert">                                    
+                                </task-information-social-conflict-alert>
+                            </p-tabPanel>
+                            
+                        </p-tabView>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+    <find-social-conflict #findSocialConflictModal (modalSave)="selectSocialConflict($event)"></find-social-conflict>
+    <edit-actor-information-social-conflict-alert #createEditActorModal (modalSave)="saveActor($event)"></edit-actor-information-social-conflict-alert>
+    <create-edit-risk-information-social-conflict-alert #createEditRiskModal (modalSave)="saveRisk($event)"></create-edit-risk-information-social-conflict-alert>
+    <create-edit-sector-information-social-conflict-alert #createEditSectorModal (modalSave)="saveSector($event)"></create-edit-sector-information-social-conflict-alert>
+    <create-edit-state-information-social-conflict-alert #createEditStateModal (modalSave)="saveState($event)"></create-edit-state-information-social-conflict-alert>
+    <create-edit-seal-information-social-conflict-alert #createEditSealModal (modalSave)="saveSeal($event)"> </create-edit-seal-information-social-conflict-alert>
+    <email-sender-social-conflict-alert #emailSenderModal></email-sender-social-conflict-alert>
+    <file-download #fileDownloader (modalSave)="completeDownload($event)"></file-download>
+
+</div>

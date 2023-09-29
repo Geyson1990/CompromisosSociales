@@ -1,0 +1,229 @@
+<div [@routerTransition]>
+    <ng-container *ngIf="loaded">
+        <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+            <div class="kt-subheader kt-grid__item">
+                <div class="kt-container">
+                    <div class="kt-subheader__main">
+                        <button (click)="backButtonPressed()" type="button" class="btn btn-light back-button mt-2">
+                            {{backButtonText}}
+                        </button>
+                        <h3 class="kt-subheader__title">
+                            Bandeja de Casos de Conflictividad Social
+                        </h3>
+                    </div>
+                    <div class="kt-subheader__toolbar">
+                        <div class="kt-subheader__wrapper">
+                            <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.."
+                                *ngIf="hasCreationPermission && !id"
+                                class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                                Guardar
+                            </button>
+                            <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.."
+                                *ngIf="hasEditionPermission && id"
+                                class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div  *ngIf="socialConflict" class="kt-container kt-grid__item kt-grid__item--fluid">
+
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row m-0">
+                                    <label class="font-weight-bold m-0">
+                                        Código: <span class="title-dark">{{socialConflict.code}}</span>
+                                    </label> 
+                                    <label class="mx-2"></label>
+                                    <ng-container *ngIf="socialConflict.lastCondition">
+                                        <div *ngIf="socialConflict.lastCondition.type == conditionTypes.open" class="condition condition-open"></div>
+                                        <div *ngIf="socialConflict.lastCondition.type == conditionTypes.closed" class="condition condition-closed"></div>
+                                        <label class="font-weight-bold my-0 mx-2">
+                                            <span class="title-dark">{{socialConflict.lastCondition.type == conditionTypes.open ? 'Activo' : socialConflict.lastCondition.type == conditionTypes.closed ? 'Inactivo' : ''}}</span>
+                                        </label>
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <div class="col-12 label-title">
+                                <label class="font-weight-bold m-0">
+                                    Caso: <span class="title-dark">{{socialConflict.caseName}}</span>
+                                </label> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kt-portlet kt-portlet--mobile">
+                    
+                    <div class="kt-portlet__body">
+
+                        <p-tabView [(activeIndex)]="tabIndex">
+
+                            <p-tabPanel header="Aspectos generales">
+                                <general-information-social-conflict 
+                                    [(busy)]="busy"
+                                    [hasPermission]="hasPermission"
+                                    [socialConflict]="socialConflict"
+                                    [departments]="departments" 
+                                    [territorialUnits]="territorialUnits"
+                                    [persons]="persons" 
+                                    [typologies]="typologies" 
+                                    [sectors]="sectors">
+                                </general-information-social-conflict>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Actores">
+                                <actor-information-social-conflict 
+                                    #actorInformation 
+                                    [(busy)]="busy"
+                                    [hasPermission]="hasPermission"
+                                    [socialConflict]="socialConflict"
+                                    (addActor)="addActor()"
+                                    (editActor)="showActorEdition($event)">
+                                </actor-information-social-conflict>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Nivel de riesgo">
+                                <risk-information-social-conflict 
+                                    #riskInformation 
+                                    [(busy)]="busy"
+                                    [hasPermission]="hasPermission"
+                                    [socialConflict]="socialConflict" 
+                                    (addRisk)="addRisk()"
+                                    (editRisk)="showRiskEdition($event)">
+                                </risk-information-social-conflict>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Hechos relevantes">
+                                <fact-information-social-conflict 
+                                    #factInformation
+                                    [(busy)]="busy" 
+                                    [hasPermission]="hasPermission"
+                                    [socialConflict]="socialConflict"
+                                    (addFact)="addFact()"
+                                    (editFact)="showFactEdition($event)">
+                                </fact-information-social-conflict>
+                            </p-tabPanel>
+
+                            <p-tabPanel *ngIf="'Pages.Application.SocialConflict.Sugerence' | permission" header="Recomendaciones">
+                                <sugerence-information-social-conflict 
+                                    #sugerenceInformation
+                                    [(busy)]="busy"
+                                    [hasPermission]="hasPermission"
+                                    [socialConflict]="socialConflict"
+                                    (addSugerence)="addSugerence($event)"
+                                    (editSugerence)="showSugerenceEdition($event)">
+                                </sugerence-information-social-conflict>
+                            </p-tabPanel>
+
+                            <p-tabPanel *ngIf="socialConflict.id" header="Compromisos">
+                                <compromise-information-social-conflict 
+                                    [(busy)]="busy"
+                                    [hasPermission]="hasPermission"
+                                    [socialConflict]="socialConflict">
+                                </compromise-information-social-conflict>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Gestiones realizadas">
+                                <management-information-social-conflict 
+                                    #managementInformation 
+                                    [(busy)]="busy"
+                                    [hasPermission]="hasPermission"
+                                    [socialConflict]="socialConflict" 
+                                    (addManagement)="addManagement()"
+                                    (editManagement)="showManagementEdition($event)"
+                                    (showResources)="showManagementFiles($event)">
+                                </management-information-social-conflict>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Situación actual">
+                                <state-information-social-conflict 
+                                    #stateInformation 
+                                    [(busy)]="busy"
+                                    [hasPermission]="hasPermission"
+                                    [socialConflict]="socialConflict" 
+                                    (addState)="addState()"
+                                    (editState)="showStateEdition($event)">
+                                </state-information-social-conflict>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Hechos de violencia">
+                                <violence-fact-information-social-conflict 
+                                    #violenceFactInformation 
+                                    [(busy)]="busy"
+                                    [hasPermission]="hasPermission"
+                                    [socialConflict]="socialConflict" 
+                                    (addFact)="addViolenceFact()"
+                                    (editFact)="showViolenceFactEdition($event)">
+                                </violence-fact-information-social-conflict>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Estado del caso">
+                                <condition-information-social-conflict 
+                                    #conditionInformation 
+                                    [(busy)]="busy"
+                                    [hasPermission]="hasPermission"
+                                    [socialConflict]="socialConflict" 
+                                    (addCondition)="addCondition()"
+                                    (editCondition)="showConditionEdition($event)">
+                                </condition-information-social-conflict>
+                            </p-tabPanel>
+
+                            <p-tabPanel *ngIf="socialConflict.id && ('Pages.Application.SocialConflictTaskManagement' |permission)" header="Gestión de tareas">
+                                <task-information-social-conflict 
+                                    #taskInformation  
+                                    [hasPermission]="hasPermission"
+                                    [(socialConflict)]="socialConflict">                                    
+                                </task-information-social-conflict>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Recursos">
+                                <resource-information-social-conflict
+                                    [socialConflict]="socialConflict"
+                                    [hasPermission]="hasPermission"
+                                    [(busy)]="busy">                                    
+                                </resource-information-social-conflict>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Notas">
+                                <note-information-social-conflict
+                                    [socialConflict]="socialConflict"
+                                    [hasPermission]="hasPermission"
+                                    [(busy)]="busy">                                    
+                                </note-information-social-conflict>
+                            </p-tabPanel>
+
+                        </p-tabView>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <create-edit-risk-information-social-conflict #createEditRiskInformation (modalSave)="saveRisk($event)">
+        </create-edit-risk-information-social-conflict>
+        <edit-actor-information-social-conflict #editActorInformation (modalSave)="saveActorEdition($event)">
+        </edit-actor-information-social-conflict>
+        <create-edit-fact-information-social-conflict #createEditFactInformation (modalSave)="saveFactEdition($event)">
+        </create-edit-fact-information-social-conflict>
+        <create-edit-management-information-social-conflict #createEditManagementInformation
+            (modalSave)="saveManagement($event)">
+        </create-edit-management-information-social-conflict>
+        <create-edit-state-information-social-conflict #createEditStateInformation (modalSave)="saveState($event)">
+        </create-edit-state-information-social-conflict>
+        <create-edit-violence-fact-social-conflict #createEditViolenceFactInformation
+            (modalSave)="saveViolenceFact($event)">
+        </create-edit-violence-fact-social-conflict>
+        <create-edit-condition-information-social-conflict #createEditConditionInformation
+            (modalSave)="saveCondition($event)">
+        </create-edit-condition-information-social-conflict>
+        <attached-file-management-information-social-conflict #attachedFileManagementInformation>
+        </attached-file-management-information-social-conflict>
+        <create-edit-sugerence-information #createEditSugerenceInformation (modalSave)="saveSugerence($event)"></create-edit-sugerence-information>
+    </ng-container>
+</div>

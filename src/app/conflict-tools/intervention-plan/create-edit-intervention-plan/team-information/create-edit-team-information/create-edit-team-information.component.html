@@ -1,0 +1,205 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #teamForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="rowIndex || rowIndex == 0; else elseRowIndex">
+                            Editar equipo de intervención
+                        </span>
+                        <ng-template #elseRowIndex>
+                            <span>
+                                Crear equipo de intervención
+                            </span>
+                        </ng-template>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-sm-12">
+                        <label for="TeamDocument">
+                            DNI
+                        </label>
+                        <input #teamDocumentInput="ngModel" id="TeamDocument" name="TeamDocument"
+                            class="form-control" type="text" [(ngModel)]="item.document"
+                            (keyup)="keyUpOnlyInteger($event)" (keypress)="keyPressOnlyNumbers($event)" minlength="8"
+                            maxlength="8">
+                        <validation-messages [formCtrl]="teamDocumentInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="TeamName">
+                            Nombres (*)
+                        </label>
+                        <input #teamNameInput="ngModel" id="TeamName" name="TeamName"
+                            class="form-control text-uppercase" type="text" [(ngModel)]="item.name" required
+                            maxlength="255">
+                        <validation-messages [formCtrl]="teamNameInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 mb-2">
+                        <label for="TeamSurname">
+                            Apellido paterno (*)
+                        </label>
+                        <input #teamSurnameInput="ngModel" id="TeamSurname" name="TeamSurname"
+                            class="form-control text-uppercase" type="text" [(ngModel)]="item.surname" required
+                            maxlength="255">
+                        <validation-messages [formCtrl]="teamSurnameInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 mb-2">
+                        <label for="TeamSecordSurname">
+                            Apellido materno
+                        </label>
+                        <input #teamSecondSurnameInput="ngModel" id="TeamSecordSurname" name="TeamSecordSurname"
+                            class="form-control text-uppercase" type="text" [(ngModel)]="item.secondSurname"
+                            maxlength="255">
+                        <validation-messages [formCtrl]="teamSecondSurnameInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 mb-2">
+                        <label for="TeamEntity">
+                            Tipo de entidad (*)
+                        </label>
+                        <select (change)="onEntityChange($event)" class="form-control" id="TeamEntity"
+                            name="TeamEntity" [(ngModel)]="item.interventionPlanEntity.id">
+                            <option value="-1">
+                                Seleccione
+                            </option>
+                            <option *ngFor="let entity of entities" [value]="entity.id">
+                                {{entity.name}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <ng-container *ngIf="item.interventionPlanEntity.type == types.sector">
+                        <div class="form-group col-sm-12 my-2">
+                            <label for="DirectoryGovernmentSearch">
+                                Entidad responsable (*)
+                            </label>
+                            <div class="input-group input-group-right">
+                                <textarea id="DirectoryGovernmentSearch" name="DirectoryGovernmentSearch"
+                                    class="form-control" type="text" value="{{activityDirectoryGovernmentText}}"
+                                    disabled></textarea>
+                                <span class="input-group-text border-0" (click)="findDirectoryGovernmentEvent()">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                            </div>
+                            <div *ngIf="item.directoryGovernment" class="row col-12 mt-2 text-right mx-0 px-0">
+                                <button type="button" (click)="removeDirectoryGovernment()" aria-label="delete-button"
+                                    class="mb-2 ml-auto btn btn-danger">
+                                    <i class="fa fa-minus"></i>
+                                    Eliminar Entidad
+                                </button>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="item.interventionPlanEntity.type == types.responsible">
+                        <div class="form-group col-sm-12 my-2">
+                            <label for="TeamAlertResponsible">
+                                Entidad responsable (*)
+                            </label>
+                            <select (change)="onAlertResponsible($event)" class="form-control"
+                                id="TeamAlertResponsible" name="TeamAlertResponsible"
+                                [(ngModel)]="item.alertResponsible.id">
+                                <option value="-1">
+                                    Seleccione
+                                </option>
+                                <option *ngFor="let alertResponsible of alertResponsibles"
+                                    [value]="alertResponsible.id">
+                                    {{alertResponsible.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="item.interventionPlanEntity.type == types.other">
+
+                        <div class="form-group col-sm-12 my-2">
+                            <label for="TeamEntityDescription">
+                                Entidad responsable (*)
+                            </label>
+                            <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                                cdkAutosizeMaxRows="100" id="TeamEntityDescription" #entityInput
+                                #entityInputValidation="ngModel" class="form-control" type="text"
+                                name="TeamEntityDescription" [(ngModel)]="item.entity" required
+                                maxlength="5000"></textarea>
+                            <validation-messages [formCtrl]="entityInputValidation"></validation-messages>
+                            <span class="input-legth">
+                                {{entityInput.value ? entityInput.value?.length :
+                                0}}/{{entityInput.maxLength}}
+                            </span>
+                        </div>
+
+                    </ng-container>
+
+                    <div class="form-group col-sm-12 mt-2">
+                        <label for="TeamJobDescription">
+                            Cargo (*)
+                        </label>
+                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                            cdkAutosizeMaxRows="100" id="TeamJobDescription" #teamJobInput
+                            #teamJobInputValidation="ngModel" class="form-control" type="text"
+                            name="TeamJobDescription" [(ngModel)]="item.job" required
+                            maxlength="5000"></textarea>
+                        <validation-messages [formCtrl]="teamJobInputValidation"></validation-messages>
+                        <span class="input-legth">
+                            {{teamJobInput.value ? teamJobInput.value?.length :
+                            0}}/{{teamJobInput.maxLength}}
+                        </span>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 mb-2">
+                        <label for="TeamInterventionPlanRole">
+                            Rol en el proceso (*)
+                        </label>
+                        <select (change)="onRoleChange($event)" class="form-control" id="TeamInterventionPlanRole"
+                            name="TeamInterventionPlanRole" [(ngModel)]="item.interventionPlanRole.id">
+                            <option value="-1">
+                                Seleccione
+                            </option>
+                            <option *ngFor="let rol of roles" [value]="rol.id">
+                                {{rol.name}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div *ngIf="item.interventionPlanRole.showDescription" class="form-group col-sm-12 mt-2">
+                        <label for="TeamInterventionRoleDescription">
+                            Otros (*)
+                        </label>
+                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                            cdkAutosizeMaxRows="100" id="TeamInterventionRoleDescription" #roleInput
+                            #roleInputValidation="ngModel" class="form-control" type="text"
+                            name="TeamInterventionRoleDescription" [(ngModel)]="item.role" required
+                            maxlength="5000"></textarea>
+                        <validation-messages [formCtrl]="roleInputValidation"></validation-messages>
+                        <span class="input-legth">
+                            {{roleInput.value ? roleInput.value?.length :
+                            0}}/{{roleInput.maxLength}}
+                        </span>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!teamForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

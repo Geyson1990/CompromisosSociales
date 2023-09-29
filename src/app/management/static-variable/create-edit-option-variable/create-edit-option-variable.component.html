@@ -1,0 +1,159 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #saveForm="ngForm" novalidate>
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="editing">
+                            Editando variable
+                        </span>
+                        <span *ngIf="!editing">
+                            Creando variable
+                        </span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-12">
+                        <label for="Name">
+                           Nombre (*)
+                        </label>
+                        <textarea id="Name" name="Name" #nameInput class="form-control" type="text"
+                            [(ngModel)]="item.name" required maxlength="1000"></textarea>
+                        <span class="input-legth">
+                            {{
+                            nameInput.value ?
+                            nameInput.value.length : 0
+                            }}/{{nameInput.maxLength}}
+                        </span>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="StaticVariableEnabled">
+                            Estado (*)
+                        </label>
+                        <select class="form-control" id="StaticVariableEnabled" name="StaticVariableEnabled"
+                            [(ngModel)]="state">
+                            <option value="false">
+                                Inactivo
+                            </option>
+                            <option value="true">
+                                Activo
+                            </option>
+                        </select>
+                    </div>
+
+                    <div *ngIf="editing" class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <div class="mb-2 form-group" *ngIf="item.type == types.cualitative">
+                            <label for="StaticVariableTypeB">
+                                Tipo (*)
+                            </label>
+                            <input class="form-control" placeholder="Tipo de variable" type="text"
+                                id="StaticVariableTypeB" value="Cualitativa" disabled>
+                        </div>
+                        <div class="mb-2 form-group" *ngIf="item.type == types.cuantitative">
+                            <label for="StaticVariableTypeC">
+                                Tipo (*)
+                            </label>
+                            <input class="form-control" placeholder="Tipo de variable" type="text"
+                                id="StaticVariableTypeC" value="Cuantitativa" disabled>
+                        </div>
+                    </div>
+
+                    <div *ngIf="!editing" class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="StaticVariableTypeA">
+                            Tipo (*)
+                        </label>
+                        <select class="form-control" id="StaticVariableTypeA" placeholder="Seleccionar el tipo de variable" name="StaticVariableTypeA"
+                            [(ngModel)]="item.type">
+                            <option [value]="types.none">
+                                -- Seleccione --
+                            </option>
+                            <option [value]="types.cualitative">
+                                Cualitativa
+                            </option>
+                            <option [value]="types.cuantitative">
+                                Cuantitativa
+                            </option>
+                        </select>
+                        <span class="input-description">
+                            El valor no puede ser cambiado después de guardarlo
+                        </span>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="StaticVariableValue">
+                            Peso (*)
+                        </label>
+                        <input class="form-control" id="StaticVariableValue" name="StaticVariableValue"
+                            [(ngModel)]="item.value" (focus)="onFocus($event)" (keypress)="keyPressDecimal($event)"
+                            (keyup)="keyUpDecimal($event)" />
+                    </div>
+
+                    <div *ngIf="item.type == types.cuantitative"
+                        class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <div *ngIf="!editing" class="mb-2 form-group">
+                            <label for="DinamicVariableInputA">
+                                Variable cuantitativa (*)
+                            </label>
+                            <div class="input-group input-group-right">
+                                <input class="form-control" type="text" id="DinamicVariableInputA"
+                                    name="DinamicVariableInputA"
+                                    value="{{item.dinamicVariable ? item.dinamicVariable.name : 'Seleccione la variable asociada'}}"
+                                    disabled>
+                                <span class="input-group-text" (click)="searchVariable()">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div *ngIf="editing" class="mb-2 form-group">
+                            <label for="DinamicVariableInputB">
+                                Variable cuantitativa (*)
+                            </label>
+                            <input class="form-control" type="text" id="DinamicVariableInputB"
+                                value="{{item.dinamicVariable?.name}}" disabled>
+                        </div>
+                    </div>
+
+                    <div *ngIf="staticVariable.family == families.projectRisk" class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="StaticVariableSiteType">
+                            Segmento (*)
+                        </label>
+                        <select class="form-control" id="StaticVariableSiteType" name="StaticVariableSiteType"
+                            [(ngModel)]="item.site">
+                            <option [value]="sites.none">
+                                -- Seleccione --
+                            </option>
+                            <option [value]="sites.impact">
+                                Impacto
+                            </option>
+                            <option [value]="sites.probability">
+                                Probabilidad
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!saveForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+
+        </div>
+
+    </div>

@@ -1,0 +1,21 @@
+<div class="row upload-file-row py-3 mx-0">
+    <i [class]="attachment.className"></i>
+    <div class="d-flex flex-column upload-file-body">
+        <label class="title">
+            {{attachment.name}}
+        </label>
+        <label class="metadata">
+            <span class="uploader-user">
+                {{attachment.creatorUserName}}
+            </span> {{attachment.creationTime | momentFormat: 'DD-MM-YYYY HH:mm:ss'}}
+        </label>
+        <label class="size">
+            {{attachment.size}}
+        </label>
+    </div>
+    <div class="upload-file-trash my-auto pr-4">
+        <button class="btn btn-danger" type="button" (click)="removeAttachment.emit()">
+            <i class="fas fa-trash-alt"></i>
+        </button>
+    </div>
+</div>

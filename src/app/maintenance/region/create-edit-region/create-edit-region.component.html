@@ -1,0 +1,130 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #userForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="item.id">
+                            Editar centro poblado: {{item.name}}
+                        </span>
+                        <span *ngIf="!item.id">
+                            Crear centro poblado
+                        </span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="col-sm-12">
+                        <div class="mb-2 form-group">
+                            <label for="DepartmentUnitSelect">
+                                Departamento
+                            </label>
+                            <div class="input-group">
+                                <select (change)="onDepartmentChange($event)"
+                                    [(ngModel)]="item.district.province.department.id" id="DepartmentUnitSelect"
+                                    name="DepartmentUnitSelect" class="form-control" type="text">
+                                    <option value="-1">
+                                        Seleccione
+                                    </option>
+                                    <option *ngFor="let department of departments" [value]="department.id">
+                                        {{department.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="mb-2 form-group">
+                            <label for="ProvinceUnitSelect">
+                                Provincia
+                            </label>
+                            <div class="input-group">
+                                <select (change)="onProvinceChange($event)" [(ngModel)]="item.district.province.id"
+                                    id="ProvinceUnitSelect" name="ProvinceUnitSelect" class="form-control" type="text">
+                                    <option value="-1">
+                                        Seleccione
+                                    </option>
+                                    <option *ngFor="let province of selectedProvinces" [value]="province.id">
+                                        {{province.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="mb-2 form-group">
+                            <label for="DisctrictUnitSelect">
+                                Distrito
+                            </label>
+                            <div class="input-group">
+                                <select [(ngModel)]="item.district.id" id="DisctrictUnitSelect"
+                                    name="DisctrictUnitSelect" class="form-control" type="text">
+                                    <option value="-1">
+                                        Seleccione
+                                    </option>
+                                    <option *ngFor="let district of selectedDistricts" [value]="district.id">
+                                        {{district.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="Code">
+                            Código (*)
+                        </label>
+                        <div class="input-group mb-0">
+                            <input id="Code" #codeInput="ngModel" class="form-control" type="text" name="Code"
+                                [(ngModel)]="item.code" required minlength="6" maxlength="6">
+                        </div>
+                        <validation-messages [formCtrl]="codeInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="Name">
+                            Nombre (*)
+                        </label>
+                        <input id="Name" #nameInput="ngModel" class="form-control" type="text" name="Name"
+                            [(ngModel)]="item.name" required maxlength="255">
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="RiskState">
+                            Estado (*)
+                        </label>
+                        <select class="form-control" id="RiskState" name="RiskState" [(ngModel)]="state">
+                            <option value="false">
+                                Inactivo
+                            </option>
+                            <option value="true">
+                                Activo
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!userForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+<div [@routerTransition]>
+    <div id="kt_header_mobile" class="kt-header-mobile bg-light">
+        <div class="kt-header-mobile__logo">
+            <a routerLink="/" target="_blank">
+                <img [src]="defaultLogo" alt="logo" height="50" />
+            </a>
+        </div>
+        <div class="kt-header-mobile__toolbar">
+            <button type="button" class="kt-header-mobile__toolbar-toggler kt-header-mobile__toolbar-toggler--left" id="kt_aside_mobile_toggler" aria-label="Toggler">
+                <span></span>
+            </button>
+            <button type="button" ktToggle [options]="userMenuToggleOptions" class="kt-header-mobile__toolbar-topbar-toggler" id="kt_header_mobile_topbar_toggler" aria-label="Toggler">
+                <i class="flaticon-more-1"></i>
+            </button>
+        </div>
+    </div>
+    <div class="kt-grid kt-grid--hor kt-grid--root">
+        <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+                <!-- BEGIN: Header -->
+                <div class="kt-header kt-grid__item  kt-header--fixed" id="kt_header">
+                    <div [class]="containerClass">
+                        <!-- BEGIN: Brand -->
+                        <theme-brand></theme-brand>
+                        <!-- END: Brand -->
+                        <topbar></topbar>
+                    </div>
+                </div>
+                <div class="kt-body kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-grid--stretch" id="kt_body">
+                    <div [class]="containerClass + ' kt-grid kt-grid--ver'">
+                        <div id="kt_aside" ktOffcanvas [options]="menuCanvasOptions" class="kt-aside kt-aside--fixed kt-grid__item kt-grid kt-grid--desktop kt-grid--hor-desktop">
+                            <!-- BEGIN: Aside Menu -->
+                            <div id="kt_aside_menu_wrapper" class="kt-aside-menu-wrapper kt-grid__item kt-grid__item--fluid">
+                                <side-bar-menu *ngIf="currentTheme.isLeftMenuUsed"></side-bar-menu>
+                            </div>
+                            <!-- END: Aside Menu -->
+                        </div>
+                        <!-- END: Header -->
+                        <div class="kt-holder kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">  
+                            <router-outlet></router-outlet>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <kt-scroll-top></kt-scroll-top> 
+</div>

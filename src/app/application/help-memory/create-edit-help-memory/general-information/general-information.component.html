@@ -1,0 +1,203 @@
+<div class="row mt-3">
+
+    <div *ngIf="helpMemory.id" class="col-sm-8 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+        <div class="mb-2 form-group">
+            <label for="HelpMemoryCode">
+                Código
+            </label>
+            <div class="input-group">
+                <input id="HelpMemoryCode" name="HelpMemoryCode" value="{{helpMemory.code}}" class="form-control"
+                    type="text" maxlength="20" disabled>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!helpMemory.id" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+        <div class="mb-2 form-group">
+            <label for="HelpMemoryCodeInput">
+                Código
+            </label>
+            <div class="input-group">
+                <input id="HelpMemoryCodeInput" name="HelpMemoryCodeInput" value="Generado automáticamente"
+                    class="form-control" type="text" maxlength="20" disabled>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-12 col-md-6 offset-lg-6 col-lg-3 offset-xl-6 col-xl-3 offset-xxl-6 col-xxl-3">
+        <label for="HelpMemoryTime">
+            Fecha de actualización (*)
+        </label>
+        <p-calendar [style]="{'width':'100%'}" [(ngModel)]="helpMemoryDate" [locale]="es" id="RiskTime" name="RiskTime"
+            class="boostrap-dropdown" dateFormat="dd/mm/yy" [showTime]="false" inputId="RiskTimeInput">
+        </p-calendar>
+    </div>
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="DirectoryGovernmentInput">
+                Entidad solicitante (*)
+            </label>
+            <div class="input-group input-group-right">
+                <textarea id="DirectoryGovernmentInput" name="DirectoryGovernmentInput" class="form-control" type="text"
+                    value="{{directoryGovernmentTitle}}" disabled></textarea>
+                <span class="input-group-text border-0" (click)="showFindDirectoryGovernment()">
+                    <i class="fas fa-search"></i>
+                </span>
+            </div>
+            <div *ngIf="helpMemory.directoryGovernment" class="row col-12 mt-2 text-right mx-0 px-0">
+                <button (click)="removeDirectoryGovernment()" class="mb-2 ml-auto btn btn-danger">
+                    <i class="fa fa-minus"></i>
+                    Eliminar entidad
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="SocialConflictAlertInformation">
+                Persona solicitante (*)
+            </label>
+            <div class="input-group">
+                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                    cdkAutosizeMaxRows="100" #helpMemoryRequestInput #helpMemoryRequest="ngModel"
+                    [(ngModel)]="helpMemory.request" id="SocialConflictAlertInformation"
+                    name="SocialConflictAlertInformation" class="form-control" type="text" maxlength="500"
+                    required></textarea>
+                <span class="input-legth">
+                    {{helpMemoryRequestInput.value ? helpMemoryRequestInput.value.length :
+                    0}}/{{helpMemoryRequestInput.maxLength}}
+                </span>
+            </div>
+            <validation-messages [formCtrl]="helpMemoryRequest">
+            </validation-messages>
+        </div>
+    </div>
+
+    <div class="col-12 my-4">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Caso detallado o Situación sensible
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="ConflictInput">
+                Caso {{
+                helpMemory.socialConflict ?' (Conflicto social)' :
+                helpMemory.socialConflictSensible ? '(Situación sensible)' : '(*)'
+                }}
+            </label>
+            <div class="input-group input-group-right">
+                <textarea id="ConflictInput" name="ConflictInput" class="form-control" type="text"
+                    value="{{conflictTitle}}" disabled></textarea>
+                <span class="input-group-text border-0" (click)="showFindConflict()">
+                    <i class="fas fa-search"></i>
+                </span>
+            </div>
+            <div *ngIf="helpMemory.socialConflict || helpMemory.socialConflictSensible"
+                class="row col-12 mt-2 text-right mx-0 px-0">
+                <button (click)="removeConflict()" class="mb-2 ml-auto btn btn-danger">
+                    <i class="fa fa-minus"></i>
+                    Eliminar caso
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <ng-container *ngIf="helpMemory.resources.length > 0">
+        <div class="col-12 mb-3">
+            <h5 class="d-block text-left text-dark font-weight-bold mt-4">
+                Documentos de las fuentes
+            </h5>
+            <hr>
+        </div>
+
+        <div class="col-12">
+            <file-resource-item [resource]="resource" (restoreResource)="restoreResource(resource)"
+                (removeResource)="removeResource(resource, i)"
+                *ngFor="let resource of helpMemory.resources; index as i;"></file-resource-item>
+        </div>
+    </ng-container>
+
+    <file-uploader class="w-100 my-3" header="Agregar documentos de las fuentes"
+        subtitle="Ud. puede seleccionar un archivo WORD (doc, docx) con un tamaño máximo de 1.5MB y un máximo de 5 archivo."
+        [(attachments)]="helpMemory.uploadFiles" [hideType]="true" [images]="true"
+        [disabled]="(helpMemory.uploadFiles.length) >= 1 || (helpMemory.uploadFiles.length + helpMemory.resources.length) >= 2" #fileUploadItems
+        [extensions]="extensions" [extension]="extension" (saveAttachment)="saveAttach($event)" [size]="size">
+    </file-uploader>
+
+</div>
+
+<div class="row" *ngIf="helpMemory.creatorUser">
+
+    <div class="col-12 mt-4 mb-2">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Información de registro
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="col-sm-12 col-md-8 col-lg-9 col-xl-9">
+        <div class="mb-2 form-group">
+            <label for="UserRegisterInput">
+                Registrado por
+            </label>
+            <div class="input-group">
+                <input class="form-control" id="UserRegisterInput" value="{{getUserName(helpMemory.creatorUser)}}"
+                    type="text" readonly>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="UserRegisterDateInput">
+                Fecha de registro
+            </label>
+            <div class="input-group">
+                <input class="form-control" id="UserRegisterDateInput"
+                    value="{{helpMemory.creationTime | momentFormat: 'L'}}" type="text" readonly>
+                <span class="input-group-text">
+                    <i class="far fa-calendar-alt"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <ng-container *ngIf="helpMemory.editionUser">
+
+        <div class="col-sm-12 col-md-8 col-lg-9 col-xl-9">
+            <div class="mb-2 form-group">
+                <label for="UserUpdateInput">
+                    Última actualización
+                </label>
+                <div class="input-group">
+                    <input class="form-control" id="UserUpdateInput" value="{{getUserName(helpMemory.editionUser)}}"
+                        type="text" readonly>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+            <div class="mb-2 form-group">
+                <label for="UserUpdateDateInput">
+                    Fecha de actualización
+                </label>
+                <div class="input-group">
+                    <input id="UserUpdateDateInput" class="form-control"
+                        value="{{helpMemory.lastModificationTime | momentFormat: 'L'}}" type="text" readonly>
+                    <span class="input-group-text">
+                        <i class="far fa-calendar-alt"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    </ng-container>
+
+</div>

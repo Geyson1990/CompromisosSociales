@@ -1,0 +1,194 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #formInformation="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="rowIndex || rowIndex == 0; else elseRowIndex">
+                            Editar actor: {{item.name}}
+                        </span>
+                        <ng-template #elseRowIndex>
+                            <span>
+                                Crear actor
+                            </span>
+                        </ng-template>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-sm-12">
+                        <label for="ActorName">
+                            Nombres y apellidos (*)
+                        </label>
+                        <input #actorNameInput="ngModel" id="ActorName" name="ActorName"
+                            class="form-control text-uppercase" type="text" [(ngModel)]="item.name" required
+                            maxlength="255">
+                        <validation-messages [formCtrl]="actorNameInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="ActorType">
+                            Tipo de actor (*)
+                        </label>
+                        <select (change)="onActorTypeChange($event)" class="form-control" id="ActorType"
+                            name="ActorType" [(ngModel)]="item.actorType.id">
+                            <option value="-1">
+                                Seleccione
+                            </option>
+                            <option *ngFor="let type of actorTypes" [value]="type.id">
+                                {{type.name}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div *ngIf="item.actorType.showMovement"
+                        class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="ActorMovement">
+                            Capacidad de movilización (*)
+                        </label>
+                        <select (change)="onActorMovementChange($event)" class="form-control" id="ActorMovement"
+                            name="ActorMovement" [(ngModel)]="item.actorMovement.id">
+                            <option value="-1">
+                                Seleccione
+                            </option>
+                            <option *ngFor="let movement of actorMovements" [value]="movement.id">
+                                {{movement.name}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="ActorDocument">
+                            DNI
+                        </label>
+                        <input #actorDocumentInput="ngModel" id="ActorDocument" name="ActorDocument"
+                            class="form-control" type="text" [(ngModel)]="item.document"
+                            (keyup)="keyUpOnlyInteger($event)" (keypress)="keyPressOnlyNumbers($event)" minlength="8"
+                            maxlength="8">
+                        <validation-messages [formCtrl]="actorDocumentInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="ActorJob">
+                            Cargo
+                        </label>
+                        <input #actorJobInput="ngModel" id="ActorJob" name="ActorJob" class="form-control" type="text"
+                            [(ngModel)]="item.job" maxlength="500">
+                        <validation-messages [formCtrl]="actorJobInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="ActorCommunity">
+                            Institución (*)
+                        </label>
+                        <input #actorCommunityInput="ngModel" id="ActorCommunity" name="ActorCommunity"
+                            class="form-control" type="text" [(ngModel)]="item.community" maxlength="500" required>
+                        <validation-messages [formCtrl]="actorCommunityInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 mb-2">
+                        <label for="ActorPhoneNumber">
+                            Número de teléfono
+                        </label>
+                        <input #actorPhoneNumberInput="ngModel" id="ActorPhoneNumber" name="ActorPhoneNumber"
+                            class="form-control" type="text" (keyup)="keyUpPhoneNumber($event)"
+                            (keypress)="keyPressPhoneNumber($event)" [(ngModel)]="item.phoneNumber" maxlength="255">
+                        <validation-messages [formCtrl]="actorPhoneNumberInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 mb-2">
+                        <label for="ActorEmailAddress">
+                            Correo electrónico
+                        </label>
+                        <input #actorEmailAddressInput="ngModel" id="ActorEmailAddress" name="ActorEmailAddress"
+                            class="form-control" type="email" [(ngModel)]="item.emailAddress" email maxlength="255">
+                        <validation-messages [formCtrl]="actorEmailAddressInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="ActorTypeDetail">
+                            Pertenece o perteneció a algún partido político
+                        </label>
+                        <select class="form-control" id="ActorTypeDetail" name="ActorTypeDetail" [(ngModel)]="politic">
+                            <option value="false">
+                                No
+                            </option>
+                            <option value="true">
+                                Si
+                            </option>
+                        </select>
+                    </div>
+
+                    <div *ngIf="politic == 'true'" class="form-group col-sm-12">
+                        <label for="ActorPoliticalAssociation">
+                            Nombre del partido político
+                        </label>
+                        <input #actorPoliticalAssociationInput="ngModel" id="ActorPoliticalAssociation"
+                            name="ActorPoliticalAssociation" class="form-control" type="text"
+                            [(ngModel)]="item.politicalAssociation" maxlength="500">
+                        <validation-messages [formCtrl]="actorPoliticalAssociationInput"></validation-messages>
+                    </div>
+
+                    <ng-container *ngIf="item.actorType.showDetail">
+
+                        <div class="form-group col-sm-12">
+                            <label for="ActorPosition">
+                                Posición
+                            </label>
+                            <div class="input-group">
+                                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                                    cdkAutosizeMaxRows="100" #actorPosition #actorPositionInput="ngModel"
+                                    id="ActorPosition" [(ngModel)]="item.position" name="ActorPosition"
+                                    class="form-control" maxlength="3000"></textarea>
+                                <validation-messages [formCtrl]="actorPositionInput"></validation-messages>
+                                <span class="input-legth">
+                                    {{actorPosition.value ?
+                                    actorPosition.value.length :
+                                    0}}/{{actorPosition.maxLength}}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label for="ActorInterest">
+                                Interés
+                            </label>
+                            <div class="input-group">
+                                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                                    cdkAutosizeMaxRows="100" #actorInterest #actorInterestInput="ngModel"
+                                    id="ActorInterest" [(ngModel)]="item.interest" name="ActorInterest"
+                                    class="form-control" maxlength="3000"></textarea>
+                                <validation-messages [formCtrl]="actorInterestInput"></validation-messages>
+                                <span class="input-legth">
+                                    {{actorInterest.value ?
+                                    actorInterest.value.length :
+                                    0}}/{{actorInterest.maxLength}}
+                                </span>
+                            </div>
+                        </div>
+
+                    </ng-container>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold"
+                        [disabled]="!formInformation.form.valid" [buttonBusy]="saving" busyText="Guardar..."
+                        (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

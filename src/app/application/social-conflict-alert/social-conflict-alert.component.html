@@ -1,0 +1,517 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        Bandeja de Alertas de Situaciones Conflictivas
+                    </h3>
+                </div>
+
+                <div class="kt-subheader__toolbar">
+                    <div class="kt-subheader__wrapper">
+                        <div class="btn-group" dropdown>
+                            <button dropdownToggle type="button" class="btn btn-outline-success dropdown-toggle"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="far fa-file-excel"></i>
+                                Operaciones en excel
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-excel-operations" *dropdownMenu>
+                                <a class="dropdown-item" id="ExportMatrixToExcel" (click)="exportMatrizToExcel()" href="javascript:;">
+                                    <i class="fa fa-download"></i>
+                                    Exportar Matriz
+                                </a>
+                            </div>
+                        </div>
+                        <button (click)="createAlert()"
+                            *ngIf="'Pages.Application.SocialConflictAlert.Create' | permission" class="btn btn-primary">
+                            <i class="fa fa-plus"></i>
+                            Crear nueva alerta
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <form class="kt-form" autocomplete="new-password">
+                        <div>
+                            <div class="row mb-4">
+                                <div class="col-sm-12">
+                                    <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown=!advancedFiltersAreShown">
+                                        <i class="fa fa-angle-down"></i>
+                                        {{"ShowAdvancedFilters" | localize}}
+                                    </span>
+                                    <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown"
+                                        (click)="advancedFiltersAreShown=!advancedFiltersAreShown">
+                                        <i class="fa fa-angle-up"></i>
+                                        {{"HideAdvancedFilters" | localize}}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4" [hidden]="!advancedFiltersAreShown">
+
+                                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4">
+                                    <div class="mb-2 form-group">
+                                        <label for="filterText">
+                                            Código de la Alerta
+                                        </label>
+                                        <div class="input-group">
+                                            <input [(ngModel)]="socialConflictAlertCode" id="filterText"
+                                                name="filterText" autoFocus class="form-control"
+                                                [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8 col-xxl-8">
+                                    <div class="mb-2 form-group">
+                                        <label for="AlertNameFilter">
+                                            Nombre de la alerta
+                                        </label>
+                                        <div class="input-group">
+                                            <input [(ngModel)]="socialConflictAlertDescription" id="AlertNameFilter"
+                                                name="AlertNameFilter" class="form-control"
+                                                [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="mb-2 form-group">
+                                        <label for="GlobalFilter">
+                                            Información principal
+                                        </label>
+                                        <div class="input-group">
+                                            <input [(ngModel)]="socialConflictAlertInformation" id="GlobalFilter"
+                                                name="GlobalFilter" class="form-control"
+                                                [placeholder]="l('SearchWithThreeDot')" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12"></div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                                    <div class="mb-2 form-group">
+                                        <label for="TerritorialUnitSelect">
+                                            Unidad territorial
+                                        </label>
+                                        <div class="input-group">
+                                            <select (change)="onTerritorialUnitChange($event)"
+                                                [(ngModel)]="territorialUnitId" id="TerritorialUnitSelect"
+                                                name="TerritorialUnitSelect" class="form-control" type="text">
+                                                <option value="-1">
+                                                    (Todos)
+                                                </option>
+                                                <option *ngFor="let territorialUnit of territorialUnits"
+                                                    [value]="territorialUnit.id">
+                                                    {{territorialUnit.name}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                                    <div class="mb-2 form-group">
+                                        <label for="DepartmentUnitSelect">
+                                            Departamento
+                                        </label>
+                                        <div class="input-group">
+                                            <select [disabled]="territorialUnitId == -1"
+                                                (change)="onDepartmentChange($event)" [(ngModel)]="departmentId"
+                                                id="DepartmentUnitSelect" name="DepartmentUnitSelect"
+                                                class="form-control" type="text">
+                                                <option value="-1">
+                                                    (Todos)
+                                                </option>
+                                                <option *ngFor="let department of selectedDepartments"
+                                                    [value]="department.id">
+                                                    {{department.name}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                                    <div class="mb-2 form-group">
+                                        <label for="ProvinceUnitSelect">
+                                            Provincia
+                                        </label>
+                                        <div class="input-group">
+                                            <select [disabled]="departmentId == -1" (change)="onProvinceChange($event)"
+                                                [(ngModel)]="provinceId" id="ProvinceUnitSelect"
+                                                name="ProvinceUnitSelect" class="form-control" type="text">
+                                                <option value="-1">
+                                                    (Todos)
+                                                </option>
+                                                <option *ngFor="let province of selectedProvinces"
+                                                    [value]="province.id">
+                                                    {{province.name}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                                    <div class="mb-2 form-group">
+                                        <label for="DisctrictUnitSelect">
+                                            Distrito
+                                        </label>
+                                        <div class="input-group">
+                                            <select [disabled]="provinceId == -1" [(ngModel)]="districtId"
+                                                id="DisctrictUnitSelect" name="DisctrictUnitSelect" class="form-control"
+                                                type="text">
+                                                <option value="-1">
+                                                    (Todos)
+                                                </option>
+                                                <option *ngFor="let district of selectedDistricts"
+                                                    [value]="district.id">
+                                                    {{district.name}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12"></div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                                    <label for="GeneralTypology">
+                                        Tipología del conflicto
+                                    </label>
+                                    <select class="form-control" id="GeneralTypology" name="GeneralTypology"
+                                        [(ngModel)]="typologyId">
+                                        <option value="-1">
+                                            (Todos)
+                                        </option>
+                                        <option *ngFor="let typology of typologies" [value]="typology.id">
+                                            {{typology.name}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                                    <div class="mb-2 form-group">
+                                        <label for="SocialConflictAlertResponsibleType">
+                                            Subsecretaría responsable
+                                        </label>
+                                        <select [(ngModel)]="responsibleId" id="SocialConflictAlertResponsibleType"
+                                            name="SocialConflictAlertResponsibleType" class="form-control" type="text">
+                                            <option value="-1">
+                                                (Todos)
+                                            </option>
+                                            <option *ngFor="let responsible of responsibles" [value]="responsible.id">
+                                                {{responsible.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                                    <label for="PersonAnalyst">
+                                        Responsable de la alerta
+                                    </label>
+                                    <select class="form-control" id="PersonAnalyst" name="PersonAnalyst"
+                                        [(ngModel)]="personId">
+                                        <option value="-1">
+                                            (Todos)
+                                        </option>
+                                        <option *ngFor="let analyst of persons" [value]="analyst.id">
+                                            {{analyst.name}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                                    <label for="SealLevel">
+                                        Cierre de Alerta
+                                    </label>
+                                    <select class="form-control" id="SealLevel" name="SealLevel" [(ngModel)]="sealId">
+                                        <option value="-1">
+                                            (Todos)
+                                        </option>
+                                        <option *ngFor="let seal of seals" [value]="seal.id">
+                                            {{seal.name}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                                    <label for="RiskLevel">
+                                        Nivel de riesgo
+                                    </label>
+                                    <select class="form-control" id="RiskLevel" name="RiskLevel" [(ngModel)]="riskId">
+                                        <option value="-1">
+                                            (Todos)
+                                        </option>
+                                        <option *ngFor="let risk of risks" [value]="risk.id">
+                                            {{risk.name}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12"></div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 my-2">
+
+                                    <div class="kt-checkbox-list">
+
+                                        <label for="Date_Filter" class="kt-checkbox">
+                                            <input id="Date_Filter" type="checkbox" name="ActiveFilter"
+                                                [(ngModel)]="filterByDate">
+                                            Filtrar por fecha de emisión
+                                            <span></span>
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <ng-container *ngIf="filterByDate">
+
+                                    <div class="col-12"></div>
+
+                                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                                        <div class="mb-2 form-group mr-2">
+                                            <label for="SocialConflictAlertStartTime">
+                                                Fecha de emisión
+                                            </label>
+                                            <div class="input-group fix-border">
+                                                <input id="SocialConflictAlertStartTime"
+                                                    name="SocialConflictAlertStartTime" type="text" class="form-control"
+                                                    bsDatepicker datePickerMomentModifier
+                                                    [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }"
+                                                    [(ngModel)]="dateRange[0]">
+                                                <span class="input-group-text">
+                                                    <i class="far fa-calendar-alt"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                                        <div class="mb-2 form-group mr-2">
+                                            <label for="SocialConflictAlertEndTime">
+                                                Fecha final de emisión
+                                            </label>
+                                            <div class="input-group fix-border">
+                                                <input id="SocialConflictAlertEndTime" name="SocialConflictAlertEndTime"
+                                                    type="text" class="form-control" bsDatepicker
+                                                    datePickerMomentModifier
+                                                    [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }"
+                                                    [(ngModel)]="dateRange[1]">
+                                                <span class="input-group-text">
+                                                    <i class="far fa-calendar-alt"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </ng-container>
+
+                                <div class="col-12"></div>
+
+                                <div class="col-12 text-right">
+                                    <button (click)="resetFilters()" aria-label="Borrar filtros" class="btn btn-warning"
+                                        type="button">
+                                        <i class="fas fa-redo"></i>
+                                        Borrar
+                                    </button>
+                                    <button (click)="getData()" class="btn btn-primary" type="submit">
+                                        <i class="flaticon-search-1" [attr.aria-label]="l('Search')"></i>
+                                        Buscar
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </form>
+
+                    <div class="row align-items-center">
+                        <!--<Primeng-TurboTable-Start>-->
+                        <div class="primeng-datatable-container ui-table-border ui-table-small-details"
+                            [busyIf]="primengTableHelper.isLoading">
+                            <p-table #dataTable sortMode="multiple" (onLazyLoad)="getData($event)"
+                                [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                [responsive]="primengTableHelper.isResponsive"
+                                [resizableColumns]="primengTableHelper.resizableColumns">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 130px"
+                                            [hidden]="!(['Pages.Application.SocialConflictAlert.Edit', 'Pages.Report.SocialConflictAlert', 'Pages.Application.SocialConflictAlert.Delete'] | permissionAny)">
+                                            {{'Actions' | localize}}</th>
+                                        <th style="width: 150px" pSortableColumn="Code">
+                                            Código
+                                            <p-sortIcon field="Code"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 180px" pSortableColumn="AlertTime">
+                                            Fecha de emisión
+                                            <p-sortIcon field="AlertTime"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 350px" pSortableColumn="Description">
+                                            Nombre de la alerta
+                                            <p-sortIcon field="Description"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 400px">
+                                            Subsecretaría - Responsable - Región
+                                        </th>
+                                        <th style="width: 350px" pSortableColumn="Information">
+                                            Información principal
+                                            <p-sortIcon field="Information"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 350px">
+                                            Actores
+                                        </th>
+                                        <th style="width: 130px">
+                                            Nivel de riesgo
+                                        </th>
+                                        <th style="width: 250px">
+                                            Riesgo
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit">
+                                    <tr>
+                                        <td style="width: 130px"
+                                            [hidden]="!(['Pages.Application.SocialConflictAlert.Edit', 'Pages.Report.SocialConflictAlert', 'Pages.Application.SocialConflictAlert.Delete'] | permissionAny)">
+                                            <div class="btn-group dropdown" dropdown container="body">
+                                                <button dropdownToggle class="dropdown-toggle btn btn-sm btn-primary">
+                                                    <i class="fa fa-cog"></i><span class="caret"></span>
+                                                    {{"Actions" | localize}}
+                                                </button>
+                                                <ul class="dropdown-menu" *dropdownMenu>
+                                                    <li>
+                                                        <a href="javascript:;"
+                                                            *ngIf="'Pages.Report.SocialConflictAlert' | permission"
+                                                            (click)="showDownloaderNormal(record)">
+                                                            Generar reporte
+                                                        </a>
+                                                        <a href="javascript:;"
+                                                            *ngIf="'Pages.Report.SocialConflictAlertResume' | permission"
+                                                            (click)="showDownloaderResume(record)">
+                                                            Resumen ejecutivo
+                                                        </a>
+                                                        <a href="javascript:;"
+                                                            *ngIf="'Pages.Application.SocialConflictAlert.Send' | permission"
+                                                            (click)="showEmailSender(record)">
+                                                            Enviar correo electrónico
+                                                        </a>
+                                                        <a href="javascript:;"
+                                                            *ngIf="'Pages.Application.SocialConflictAlert.Edit' | permission"
+                                                            (click)="editAlert(record)">
+                                                            {{'Edit' | localize}}
+                                                        </a>
+                                                        <a href="javascript:;"
+                                                            *ngIf="'Pages.Application.SocialConflictAlert.Delete' | permission"
+                                                            (click)="deleteAlert(record)">
+                                                            {{'Delete' | localize}}
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">
+                                                Código
+                                            </span>
+                                            {{record.code}}
+                                        </td>
+                                        <td style="width: 180px">
+                                            <span class="ui-column-title">
+                                                Fecha de emisión
+                                            </span>
+                                            {{record.alertTime | momentFormat:'L'}}
+                                        </td>
+                                        <td style="width: 350px">
+                                            <span class="ui-column-title">
+                                                Nombre de la alerta
+                                            </span>
+                                            <div class="retricted-text">
+                                                {{record.description}}
+                                            </div>
+                                        </td>
+                                        <td style="width: 400px">
+                                            <span class="d-block mb-2">
+                                                Subsecretaría: <b>{{record.alertResponsible ?
+                                                    record.alertResponsible.name : ''}}</b>
+                                            </span>
+                                            <span class="d-block mb-2">
+                                                Responsable: <b>{{record.analyst ? record.analyst.name : ''}}</b>
+                                            </span>
+                                            <ng-container class="d-block">
+                                                Región: <b>{{record.regionsText}}</b>
+                                            </ng-container>
+                                        </td>
+                                        <td style="width: 350px">
+                                            <span class="ui-column-title">
+                                                Información principal
+                                            </span>
+                                            <div class="retricted-text">
+                                                {{record.information}}
+                                            </div>
+                                        </td>
+                                        <td style="width: 350px">
+                                            <span class="ui-column-title">
+                                                Actores
+                                            </span>
+                                            <span *ngFor="let actorText of record.actorsText" class="d-block mb-2">
+                                                {{actorText}}
+                                            </span>
+                                        </td>
+                                        <td style="width: 130px">
+                                            <span class="ui-column-title">
+                                                Nivel de riesgo
+                                            </span>
+                                            <div *ngIf="record.risk && record.risk.alertRisk" class="risk-color"
+                                                [style.background]="record.risk.alertRisk.color"></div>
+                                        </td>
+                                        <td style="width: 250px">
+                                            <span class="ui-column-title">
+                                                Riesgo
+                                            </span>
+                                            <div class="retricted-text">
+                                                {{record.risk?.alertRisk ? record.risk.alertRisk.name : ''}}
+                                                {{record.risk ? ' - ' + record.risk.description : ''}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                {{'NoData' | localize}}
+                            </div>
+                            <div class="primeng-paging-container">
+                                <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                                    (onPageChange)="getData($event)"
+                                    [totalRecords]="primengTableHelper.totalRecordsCount"
+                                    [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    {{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+                                </span>
+                            </div>
+                        </div>
+                        <!--<Primeng-TurboTable-End>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <file-download #fileDownloader (modalSave)="completeDownload($event)"></file-download>
+    <email-sender-social-conflict-alert #emailSenderModal></email-sender-social-conflict-alert>
+    <file-download-request #fileDownloadRequest></file-download-request>
+</div>

@@ -1,0 +1,33 @@
+.dashboard-table-header {
+    background-color: #F8F9FA !important;
+    border: none !important;
+    padding: 1rem 0 !important;
+    font-size: 15px !important;
+    text-align: center !important;
+    font-weight: 800;
+}
+
+.dashboard-table-row {
+    background-color: #F2F2F2 !important;
+    border: none !important;
+    padding: 4px !important;
+    font-size: 15px !important;
+    text-align: left !important;
+    font-weight: 500;
+}
+
+.dashboard-table-summary {
+    background-color: #F8F9FA !important;
+    border: none !important;
+    padding: 1rem 4px !important;
+    font-size: 15px !important;
+    text-align: center;
+    font-weight: 800;
+}
+
+.dashboard-subtitle {
+    color: #495057;
+    font-size: 15px;
+    padding: 1rem;
+    font-weight: 500;
+}

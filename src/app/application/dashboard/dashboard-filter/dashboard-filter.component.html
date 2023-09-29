@@ -1,0 +1,128 @@
+<div class="row">
+
+    <div class="col-sm-12 col-md-6 col-lg-12 col-xl-12 col-xxl-12">
+        <div class="mb-2 form-group">
+            <label for="TerritorialUnitSelect">
+                Unidad Territorial
+            </label>
+            <div class="input-group">
+
+                <select (change)="onTerritorialUnitChange($event)" [(ngModel)]="shared.filters.territorialUnitId"
+                    id="TerritorialUnitSelect" name="TerritorialUnitSelect" class="form-control" type="text">
+                    <optgroup label="Unidades territoriales">
+                        <option value="-1">
+                            Todos
+                        </option>
+                        <option *ngFor="let territorialUnit of shared.territorialUnits" [value]="territorialUnit.id">
+                            {{territorialUnit.name}}
+                        </option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-12 col-xl-12 col-xxl-12">
+        <div class="mb-2 form-group">
+            <label for="DepartmentSelect">
+                Departamento
+            </label>
+            <div class="input-group">
+                <select [disabled]="shared.filters.territorialUnitId == -1" (change)="onDepartmentChange($event)"
+                    [(ngModel)]="shared.filters.departmentId" id="DepartmentSelect" name="DepartmentSelect"
+                    class="form-control" type="text">
+                    <optgroup label="Departamentos">
+                        <option value="-1">
+                            Todos
+                        </option>
+                        <option *ngFor="let department of selectedDepartments" [value]="department.id">
+                            {{department.name}}
+                        </option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-12 col-xl-12 col-xxl-12">
+        <div class="mb-2 form-group">
+            <label for="ProvinceSelect">
+                Provincia
+            </label>
+            <div class="input-group">
+                <select [disabled]="shared.filters.departmentId == -1" (change)="onProvinceChange($event)"
+                    [(ngModel)]="shared.filters.provinceId" id="ProvinceSelect" name="ProvinceSelect"
+                    class="form-control" type="text">
+                    <optgroup label="Provincias">
+                        <option value="-1">
+                            Todos
+                        </option>
+                        <option *ngFor="let province of selectedProvinces" [value]="province.id">
+                            {{province.name}}
+                        </option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="menuIndex != indexes.sensibles" class="col-sm-12 col-md-6 col-lg-12 col-xl-12 col-xxl-12">
+        <div class="mb-2 form-group">
+            <label for="ConflictSelect">
+                Caso de Conflictividad Social
+            </label>
+            <div class="input-group">
+                <select (change)="onConflictChange($event)" [(ngModel)]="shared.filters.conflictId" id="ConflictSelect"
+                    name="ConflictSelect" class="form-control">
+                    <option value="-1">
+                        Todos
+                    </option>
+                    <option *ngFor="let conflict of selectedConflicts" [value]="conflict.id">
+                        {{conflict.caseName}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <ng-container *ngIf="menuIndex == indexes.conflictivity || menuIndex == indexes.sensibles">
+
+        <div class="col-sm-12 col-md-6 col-lg-12 col-xl-12 col-xxl-12">
+            <div class="mb-2 form-group">
+                <label for="RisksSelect">
+                    Nivel de Riesgo
+                </label>
+                <div class="input-group">
+                    <select (change)="onRiskChange($event)" [(ngModel)]="shared.filters.riskId" id="RisksSelect"
+                        name="RisksSelect" class="form-control">
+                        <option value="-1">
+                            Todos
+                        </option>
+                        <option *ngFor="let risk of shared.risks" [value]="risk.id">
+                            {{risk.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-12 col-xl-12 col-xxl-12">
+            <div class="mb-2 form-group">
+                <label for="GeographicSelect">
+                    Cobertura Geográfica
+                </label>
+                <div class="input-group">
+                    <select (change)="onGeographicChange($event)" [(ngModel)]="shared.filters.geographicId"
+                        id="GeographicSelect" name="GeographicSelect" class="form-control">
+                        <option *ngFor="let geographic of shared.geographics" [value]="geographic.id">
+                            {{geographic.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+    </ng-container>
+
+</div>

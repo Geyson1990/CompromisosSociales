@@ -1,0 +1,133 @@
+.box-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.box-content {
+    width: 100%;
+    background: #EBEDFA;
+    padding: 15px;
+    max-width: 350px !important;
+}
+
+.box-header>label {
+    display: block;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold !important;
+}
+
+.box-body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.box-body-item {
+    display: flex;
+    flex-direction: row;
+}
+
+.box-body-item:not(:last-child) {
+    padding-bottom: 5px;
+}
+
+.box-body-item:first-child {
+    padding-top: 5px;
+}
+
+.box-body-title {
+    width: 140px;
+}
+
+.box-body-title>label {
+    display: block;
+    text-align: left;
+}
+
+.box-body-text {
+    flex: 1 1 auto;
+}
+
+.box-body-text > label {
+    display: block;
+    text-align: right;
+}
+
+.variable-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.variable-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.variable-box {
+    padding: 15px;
+    background: #E2D9FC;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.variable-box > label {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+}
+
+.variable-selection {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.variable-box-width {
+    max-width: 250px;
+}
+
+hr {
+    background: #8da1b5 !important;
+    height: 1px;
+    width: 100%;
+    margin-bottom: 0.5rem !important;
+    margin-top: 0.5rem !important;
+}
+
+input:disabled,
+textarea:disabled {
+    background: #dadada !important;
+    border-color: #c4c4c4 !important;
+}
+
+
+.input-group-text {
+    background: #C4C4C4 !important;
+    border-left: 0 !important;
+}
+
+.input-group-right>.form-control:focus~span {
+    border-color: #9aabff;
+}
+
+.input-group-right>span {
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+
+.input-group-right>span:hover {
+    background: #dadada !important;
+}
+
+.input-group-right>span:active {
+    background: #ebebeb !important;
+}

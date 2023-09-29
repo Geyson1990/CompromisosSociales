@@ -1,0 +1,163 @@
+<div class="row mt-4">
+
+    <div class="row col-sm-12 col-md-6 col-lg-3 col-xl-3 mb-2 mx-0">
+        <button *ngIf="hasPermission" type="button" (click)="addManagement.emit()" class="mb-0 mt-auto btn btn-primary">
+            <i class="fa fa-plus"></i>
+            Agregar gestión realizada
+        </button>
+    </div>
+
+</div>
+
+<div class="row align-items-center mt-4 mx-0">
+    <!--<Primeng-TurboTable-Start>-->
+    <div class="primeng-datatable-container ui-table-border" [busyIf]="primengTableHelper.isLoading">
+        <p-table #dataTable sortMode="multiple" [value]="socialConflict.managements"
+            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+            [resizableColumns]="primengTableHelper.resizableColumns">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th rowspan="2" style="width: 130px">
+                        Fecha
+                    </th>
+                    <th rowspan="2" style="width: 150px">
+                        Tipo de gestión
+                    </th>
+                    <th rowspan="2" style="width: 300px">
+                        Gestión
+                    </th>
+                    <th colspan="2" style="width: 200px">
+                        Personas de la sociedad civil
+                    </th>
+                    <th colspan="2" style="width: 200px">
+                        Funcionarios del estado
+                    </th>
+                    <th colspan="2" style="width: 200px">
+                        Personas de la empresa
+                    </th>
+                    <th rowspan="2" style="width: 230px">
+                        Responsable de la gestión
+                    </th>
+                    <th rowspan="2" style="width: 240px">
+                        Estado
+                    </th>
+                    <th rowspan="2" style="width: 150px">
+                    </th>
+                </tr>
+                <tr>
+                    <th style="width: 100px">
+                        Nº Hombres
+                    </th>
+                    <th style="width: 100px">
+                        Nº Mujeres
+                    </th>
+                    <th style="width: 100px">
+                        Nº Hombres
+                    </th>
+                    <th style="width: 100px">
+                        Nº Mujeres
+                    </th>
+                    <th style="width: 100px">
+                        Nº Hombres
+                    </th>
+                    <th style="width: 100px">
+                        Nº Mujeres
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-record="$implicit" let-rowIndex="rowIndex">
+                <tr [hidden]="record.isHidden">
+                    <td style="width: 130px">
+                        <span class="ui-column-title">
+                            Fecha
+                        </span> {{record.managementTime | momentFormat:'L'}}
+                    </td>
+                    <td style="width: 150px">
+                        <span class="ui-column-title">
+                            Tipo de gestión
+                        </span> {{record.management?.name}}
+                    </td>
+                    <td style="width: 300px">
+                        <span class="ui-column-title">
+                            Gestión
+                        </span> {{record.description}}
+                    </td>
+                    <td style="width: 100px">
+                        <span class="ui-column-title">
+                            Personas de la sociedad civil (hombres)
+                        </span> {{record.civilMen}}
+                    </td>
+                    <td style="width: 100px">
+                        <span class="ui-column-title">
+                            Personas de la sociedad civil (mujeres)
+                        </span> {{record.civilWomen}}
+                    </td>
+                    <td style="width: 100px">
+                        <span class="ui-column-title">
+                            Funcionarios del estado (hombres)
+                        </span> {{record.stateMen}}
+                    </td>
+                    <td style="width: 100px">
+                        <span class="ui-column-title">
+                            Funcionarios del estado (mujeres)
+                        </span> {{record.stateWomen}}
+                    </td>
+                    <td style="width: 100px">
+                        <span class="ui-column-title">
+                            Personas de la empresa (hombres)
+                        </span> {{record.companyMen}}
+                    </td>
+                    <td style="width: 100px">
+                        <span class="ui-column-title">
+                            Personas de la empresa (mujeres)
+                        </span> {{record.companyWomen}}
+                    </td>
+                    <td style="width: 230px">
+                        <span class="ui-column-title">
+                            Gestor
+                        </span> {{record.manager?.name}}
+                    </td>
+                    <td style="width: 240px">
+                        <span class="ui-column-title">
+                            Estado
+                        </span>
+                        <p-selectButton [disabled]="!verificationEnabled" [options]="options"
+                            [(ngModel)]="record.verificationState" (onChange)="change(rowIndex)"></p-selectButton>
+                    </td>
+                    <td class="text-right" style="width: 150px">
+                        <button *ngIf="record?.uploadFiles?.length > 0 || record?.resources?.length > 0" type="button"
+                            pButton icon="pi pi-file-o" class="ui-button-success mr-2" data-toggle="tooltip"
+                            title="Descargar adjuntos" data-placement="top"
+                            (click)="showFiles(record, rowIndex)"></button>
+                        <ng-container *ngIf="!record.verificationLocation && hasPermission">
+                            <button type="button" pButton icon="pi pi-pencil" class="ui-button-primary mr-2"
+                                data-toggle="tooltip" title="Editar gestión" data-placement="top"
+                                (click)="editEvent(record, rowIndex)"></button>
+                            <button *ngIf="!record.remove" type="button" pButton icon="pi pi-trash"
+                                class="ui-button-danger" data-toggle="tooltip" title="Eliminar gestión"
+                                data-placement="top" (click)="removeItem(record, rowIndex)"></button>
+                            <button *ngIf="record.remove" type="button" pButton icon="pi pi-undo"
+                                class="ui-button-warning" data-toggle="tooltip"
+                                title="Deshacer la eliminación de la gestión" data-placement="top"
+                                (click)="cancelRemove(record)"></button>
+                        </ng-container>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <div class="primeng-no-data" *ngIf="socialConflict.managements.length == 0">
+            Aún no agregó ninguna observación
+        </div>
+        <div class="primeng-paging-container">
+            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                (onPageChange)="getData($event)" [totalRecords]="socialConflict.managements.length"
+                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+            </p-paginator>
+            <span class="total-records-count">
+                {{'TotalRecordsCount' | localize:socialConflict.managements.length}}
+            </span>
+        </div>
+    </div>
+    <!--<Primeng-TurboTable-End>-->
+</div>

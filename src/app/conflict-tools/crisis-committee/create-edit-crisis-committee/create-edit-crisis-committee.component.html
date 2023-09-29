@@ -1,0 +1,153 @@
+<div [@routerTransition]>
+    <ng-container *ngIf="loaded">
+        <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+            <div class="kt-subheader kt-grid__item">
+                <div class="kt-container">
+                    <div class="kt-subheader__main">
+                        <button (click)="backButtonPressed()" type="button" class="btn btn-light back-button mt-2">
+                            {{backButtonText}}
+                        </button>
+                        <h3 class="kt-subheader__title">
+                            Bandeja de Comité de Crisis
+                        </h3>
+                    </div>
+                    <div class="kt-subheader__toolbar">
+                        <div class="kt-subheader__wrapper">
+                            <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.."
+                                *ngIf="('Pages.ConflictTools.CrisisCommittee.Create' | permission) && !id"
+                                class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                                Guardar
+                            </button>
+                            <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.."
+                                *ngIf="('Pages.ConflictTools.CrisisCommittee.Edit' | permission) && id"
+                                class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="crisisCommittee" class="kt-container kt-grid__item kt-grid__item--fluid">
+
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row m-0">
+                                    <label class="font-weight-bold m-0">
+                                        Código: <span class="title-dark"> CC - {{crisisCommittee.code}}</span>
+                                    </label> 
+                                </div>
+                            </div>
+                            <div class="col-12 label-title">
+                                <label class="font-weight-bold m-0">
+                                    Comité de Crisis: <span class="title-dark">{{crisisCommittee.caseName}}</span>
+                                </label> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body">
+
+                        <p-tabView [(activeIndex)]="tabIndex">
+
+                            <p-tabPanel header="Aspectos generales">
+                                <general-information-crisis-committee 
+                                    #generalInformation
+                                    [crisisCommittee]="crisisCommittee" 
+                                    [persons]="persons"
+                                    (addTeam)="addTeam()"
+                                    (editTeam)="showTeam($event)"
+                                    (showInterventionPlanSearch)="showInterventionPlanSearch()">
+                                </general-information-crisis-committee>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Plan de contingencia">
+                                <plan-information-crisis-committee 
+                                    #planInformation
+                                    [crisisCommittee]="crisisCommittee" 
+                                    (addPlan)="addPlan()"
+                                    (editPlan)="showPlan($event)">
+                                </plan-information-crisis-committee>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Acciones">
+                                <action-information-crisis-committee 
+                                    #actionInformation
+                                    [crisisCommittee]="crisisCommittee" 
+                                    (addAction)="addAction()"
+                                    (editAction)="showAction($event)">
+                                </action-information-crisis-committee>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Mensajes centrales">
+                                <message-information-crisis-committee 
+                                    #messageInformation
+                                    [crisisCommittee]="crisisCommittee" 
+                                    (addMessage)="addMessage()"
+                                    (editMessage)="showMessage($event)">
+                                </message-information-crisis-committee>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Canales de comunicación">
+                                <channel-information-crisis-committee 
+                                    #channelInformation
+                                    [crisisCommittee]="crisisCommittee" 
+                                    (addChannel)="addChannel()"
+                                    (editChannel)="showChannel($event)">
+                                </channel-information-crisis-committee>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Sectores identificados">
+                                <sector-information-crisis-committee 
+                                    #sectorInformation
+                                    [crisisCommittee]="crisisCommittee" 
+                                    (addSector)="addSector()"
+                                    (editSector)="showSector($event)">
+                                </sector-information-crisis-committee>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Actividades críticas">
+                                <agreement-information-crisis-committee 
+                                    #agreementInformation
+                                    [crisisCommittee]="crisisCommittee" 
+                                    (addAgreement)="addAgreement()"
+                                    (editAgreement)="showAgreement($event)">
+                                </agreement-information-crisis-committee>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Tareas">
+                                <task-information-crisis-committee 
+                                    #taskInformation
+                                    [crisisCommittee]="crisisCommittee" 
+                                    (addTask)="addTask()"
+                                    (editTask)="showTask($event)">
+                                </task-information-crisis-committee>
+                            </p-tabPanel>
+
+                        </p-tabView>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ng-container>
+
+    <find-intervention-plan #findInterventionPlan (modalSave)="selectInterventionPlan($event)"></find-intervention-plan>
+    <find-directory-government #findDirectoryGovernment (modalSave)="saveDirectoryGovernment($event)"></find-directory-government>
+
+    <create-edit-general-information-crisis-committee #generalInformationModal (modalSave)="saveTeam($event)"></create-edit-general-information-crisis-committee>
+    <create-edit-plan-information-crisis-committee #planInformationModal (modalSave)="savePlan($event)"></create-edit-plan-information-crisis-committee>
+    <create-edit-action-information-crisis-committee #actionInformationModal (modalSave)="saveAction($event)"></create-edit-action-information-crisis-committee>
+    <create-edit-message-information-crisis-committee #messageInformationModal (modalSave)="saveMessage($event)"></create-edit-message-information-crisis-committee>
+    <create-edit-channel-information-crisis-committee #channelInformationModal (modalSave)="saveChannel($event)"></create-edit-channel-information-crisis-committee>
+    <create-edit-sector-information-crisis-committee #sectorInformationModal (showFindDirectoryGovernment)="showFindDirectoryGovernment()" (modalSave)="saveSector($event)"></create-edit-sector-information-crisis-committee>
+    <create-edit-agreement-information-crisis-committee #agreementInformationModal (modalSave)="saveAgreement($event)"></create-edit-agreement-information-crisis-committee>
+    <create-edit-task-information-crisis-committee #taskInformationModal (modalSave)="saveTask($event)"></create-edit-task-information-crisis-committee>
+</div>

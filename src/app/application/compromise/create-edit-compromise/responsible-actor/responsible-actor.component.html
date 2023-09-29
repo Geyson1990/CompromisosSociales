@@ -1,0 +1,178 @@
+<div class="row">
+
+    <div class="col-12">
+        <h5 class="d-block text-left text-dark font-weight-bold">
+            Actores responsables
+        </h5>
+
+        <hr>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="ResponsibleTypeSelect">
+                Tipo (*)
+            </label>
+            <div class="input-group">
+                <select id="ResponsibleTypeSelect" name="ResponsibleTypeSelect" [(ngModel)]="responsibleTypeId"
+                    (change)="onResponsibleTypeChange($event)" class="form-control" type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let responsibleType of responsibleTypes" [value]="responsibleType.id">
+                        {{responsibleType.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="ResponsibleSubTypeSelect">
+                Sub tipo (*)
+            </label>
+            <div class="input-group">
+                <select [disabled]="responsibleTypeId == -1" id="ResponsibleSubTypeSelect" name="ResponsibleSubTypeSelect"
+                    [(ngModel)]="responsibleSubTypeId" (change)="onResponsibleSubTypeChange($event)" class="form-control"
+                    type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let selectedResponsibleSubType of selectedResponsibleSubTypes"
+                        [value]="selectedResponsibleSubType.id">
+                        {{selectedResponsibleSubType.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="ResponsibleActorSelect">
+                Responsable (*)
+            </label>
+            <div class="input-group">
+                <select [disabled]="responsibleSubTypeId == -1" (change)="onResponsibleActorChange($event)"
+                    id="ResponsibleActorSelect" name="ResponsibleActorSelect" [(ngModel)]="responsibleActorId"
+                    class="form-control" type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let responsibleActor of selectedResponsibleActors" [value]="responsibleActor.id">
+                        {{responsibleActor.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="ResponsibleSubActorSelect">
+                Responsable Específico
+            </label>
+            <div class="input-group">
+                <select [disabled]="responsibleActorId == -1" id="ResponsibleSubActorSelect" name="ResponsibleSubActorSelect"
+                    [(ngModel)]="responsibleSubActorId" class="form-control" type="text">
+                    <option value="-1">
+                        Ninguno
+                    </option>
+                    <option *ngFor="let responsibleSubActors of selectedResponsibleSubActors" [value]="responsibleSubActors.id">
+                        {{responsibleSubActors.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row col-12 mx-0 mt-3">
+        <button [disabled]="responsibleActorId == -1" (click)="addResponsible()" class="mb-2 mt-auto btn btn-primary ml-auto">
+            <i class="fa fa-plus"></i>
+            Agregar
+        </button>
+    </div>
+
+</div>
+<div class="row align-items-center mt-4 mb-5 mx-0">
+    <!--<Primeng-TurboTable-Start>-->
+    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+        <p-table #dataTable sortMode="multiple" [value]="compromise.responsibles"
+            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+            [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
+            [resizableColumns]="primengTableHelper.resizableColumns">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 50px">
+                    </th>
+                    <th style="width: 150px">
+                        Tipo
+                    </th>
+                    <th style="width: 150px">
+                        Sub tipo
+                    </th>
+                    <th style="width: 300px">
+                        Responsable
+                    </th>
+                    <th style="width: 300px">
+                        Responsable Específico
+                    </th>
+                    <th style="width: 130px">
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-record="$implicit" let-rowIndex="rowIndex">
+                <tr [hidden]="record.isHidden">
+                    <td style="width: 50px">
+                        {{(rowIndex + 1) | number: '2.0-0'}}
+                    </td>
+                    <td style="width: 150px">
+                        <span class="ui-column-title">
+                            Tipo
+                        </span> {{record?.responsibleActor?.responsibleType ?
+                        record.responsibleActor.responsibleType.name : ''}}
+                    </td>
+                    <td style="width: 150px">
+                        <span class="ui-column-title">
+                            Sub tipo
+                        </span> {{record?.responsibleActor?.responsibleSubType ?
+                        record.responsibleActor.responsibleSubType.name : ''}}
+                    </td>
+                    <td style="width: 300px">
+                        <span class="ui-column-title">
+                            Responsable
+                        </span> {{ record?.responsibleActor ? record.responsibleActor.name : ''}}
+                    </td>
+                    <td style="width: 300px">
+                        <span class="ui-column-title">
+                            Responsable Específico
+                        </span> {{ record?.responsibleSubActor ? record.responsibleSubActor.name : ''}}
+                    </td>
+                    <td style="width: 130px">
+                        <button *ngIf="!record.remove" type="button" pButton icon="pi pi-trash" class="ui-button-danger"
+                            data-toggle="tooltip" title="Eliminar hecho" data-placement="top"
+                            (click)="removeItem(record, rowIndex)"></button>
+                        <button *ngIf="record.remove" type="button" pButton icon="pi pi-undo" class="ui-button-warning"
+                            data-toggle="tooltip" title="Deshacer la eliminación del hecho" data-placement="top"
+                            (click)="cancelRemove(record)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <div class="primeng-no-data" *ngIf="compromise.responsibles.length == 0">
+            Aún no agregó ningún hecho relevante
+        </div>
+        <div class="primeng-paging-container">
+            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                (onPageChange)="getData($event)" [totalRecords]="compromise.responsibles.length"
+                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+            </p-paginator>
+            <span class="total-records-count">
+                {{'TotalRecordsCount' | localize:compromise.responsibles.length}}
+            </span>
+        </div>
+    </div>
+    <!--<Primeng-TurboTable-End>-->
+</div>

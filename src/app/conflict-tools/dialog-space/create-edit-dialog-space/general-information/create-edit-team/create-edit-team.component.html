@@ -1,0 +1,69 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #modalForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="teamIndex || teamIndex == 0; else elseRowIndex">
+                            Editar órgano
+                        </span>
+                        <ng-template #elseRowIndex>
+                            <span>
+                                Crear órgano
+                            </span>
+                        </ng-template>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-12">
+                            <div class="mb-2 form-group">
+                                <label for="DialogSpaceTeamSector">
+                                    Sector
+                                </label>
+                                <div class="input-group input-group-right">
+                                    <textarea id="DialogSpaceTeamSector" name="DialogSpaceTeamSector" class="form-control" type="text"
+                                        value="{{leader.directoryGovernment?.name}}" disabled></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
+                            <label for="DialogSpaceTeamName">
+                                Órgano de Alta Dirección / Línea / Otro (*)
+                            </label>
+                            <input #DialogSpaceTeamName #DialogSpaceTeamNameInput="ngModel"
+                                id="DialogSpaceTeamName" name="DialogSpaceTeamName"
+                                class="form-control text-uppercase" type="text" [(ngModel)]="team.name" required
+                                maxlength="500">
+                            <validation-messages [formCtrl]="DialogSpaceTeamNameInput">
+                            </validation-messages>
+                            <span class="input-legth">
+                                {{DialogSpaceTeamName?.value?.length || 0}}/{{DialogSpaceTeamName.maxLength}}
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!modalForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

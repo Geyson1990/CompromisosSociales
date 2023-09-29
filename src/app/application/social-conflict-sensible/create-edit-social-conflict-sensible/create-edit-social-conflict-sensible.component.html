@@ -1,0 +1,197 @@
+<div [@routerTransition]>
+    <ng-container *ngIf="loaded">
+        <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+            <div class="kt-subheader kt-grid__item">
+                <div class="kt-container">
+                    <div class="kt-subheader__main">
+                        <button (click)="backButtonPressed()" type="button" class="btn btn-light back-button mt-2">
+                            {{backButtonText}}
+                        </button>
+                        <h3 class="kt-subheader__title">
+                            Bandeja de Situaciones Sensibles al Conflicto
+                        </h3>
+                    </div>
+                    <div class="kt-subheader__toolbar">
+                        <div class="kt-subheader__wrapper">
+                            <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.."
+                                *ngIf="('Pages.Application.SocialConflictSensible.Create' | permission) && !id"
+                                class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                                Guardar
+                            </button>
+                            <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.."
+                                *ngIf="('Pages.Application.SocialConflictSensible.Edit' | permission) && id"
+                                class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="socialConflictSensible" class="kt-container kt-grid__item kt-grid__item--fluid">
+
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row m-0">
+                                    <label class="font-weight-bold m-0">
+                                        Código: <span class="title-dark">{{socialConflictSensible.code}}</span>
+                                    </label> 
+                                    <label class="mx-2"></label>
+                                    <label class="font-weight-bold my-0 mr-2">
+                                        Estado: 
+                                    </label> 
+                                    <ng-container *ngIf="socialConflictSensible.lastCondition">
+                                        <div *ngIf="socialConflictSensible.lastCondition.type == conditionTypes.open" class="condition condition-open"></div>
+                                        <div *ngIf="socialConflictSensible.lastCondition.type == conditionTypes.closed" class="condition condition-closed"></div>
+                                        <label class="font-weight-bold my-0 mx-2">
+                                            <span class="title-dark">{{socialConflictSensible.lastCondition.type == conditionTypes.open ? 'Activo' : socialConflictSensible.lastCondition.type == conditionTypes.closed ? 'Inactivo' : ''}}</span>
+                                        </label>
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <div class="col-12 label-title">
+                                <label class="font-weight-bold m-0">
+                                    Situación Sensible: <span class="title-dark">{{socialConflictSensible.caseName}}</span>
+                                </label> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body">
+
+                        <p-tabView [(activeIndex)]="tabIndex">
+
+                            <p-tabPanel header="Aspectos generales">
+                                <general-information-social-conflict-sensible 
+                                    [(busy)]="busy"
+                                    [socialConflictSensible]="socialConflictSensible"
+                                    [departments]="departments" 
+                                    [territorialUnits]="territorialUnits"
+                                    [persons]="persons" 
+                                    [typologies]="typologies">
+                                </general-information-social-conflict-sensible>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Actores">
+                                <actor-information-social-conflict-sensible 
+                                    #actorInformation 
+                                    [(busy)]="busy"
+                                    [socialConflictSensible]="socialConflictSensible"
+                                    (addActor)="addActor()"
+                                    (editActor)="showActorEdition($event)">
+                                </actor-information-social-conflict-sensible>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Nivel de riesgo">
+                                <risk-information-social-conflict-sensible 
+                                    #riskInformation 
+                                    [(busy)]="busy"
+                                    [socialConflictSensible]="socialConflictSensible" 
+                                    (addRisk)="addRisk()"
+                                    (editRisk)="showRiskEdition($event)">
+                                </risk-information-social-conflict-sensible>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Hechos relevantes">
+                                <fact-information-social-conflict-sensible 
+                                    #factInformation
+                                    [(busy)]="busy" 
+                                    [socialConflictSensible]="socialConflictSensible"
+                                    (addFact)="addFact()"
+                                    (editFact)="showFactEdition($event)">
+                                </fact-information-social-conflict-sensible>
+                            </p-tabPanel>
+
+                            <p-tabPanel *ngIf="'Pages.Application.SocialConflictSensible.Sugerence' | permission" header="Recomendaciones">
+                                <sugerence-information-social-conflict-sensible 
+                                    #sugerenceInformation
+                                    [(busy)]="busy"
+                                    [socialConflictSensible]="socialConflictSensible"
+                                    (addSugerence)="addSugerence($event)"
+                                    (editSugerence)="showSugerenceEdition($event)">
+                                </sugerence-information-social-conflict-sensible>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Gestiones realizadas">
+                                <management-information-social-conflict-sensible 
+                                    #managementInformation 
+                                    [(busy)]="busy"
+                                    [socialConflictSensible]="socialConflictSensible" 
+                                    (addManagement)="addManagement()"
+                                    (editManagement)="showManagementEdition($event)"
+                                    (showResources)="showManagementFiles($event)">
+                                </management-information-social-conflict-sensible>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Situación actual">
+                                <state-information-social-conflict-sensible 
+                                    #stateInformation 
+                                    [(busy)]="busy"
+                                    [socialConflictSensible]="socialConflictSensible" 
+                                    (addState)="addState()"
+                                    (editState)="showStateEdition($event)">
+                                </state-information-social-conflict-sensible>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Estado de la situación sensible al conflicto">
+                                <condition-information-social-conflict-sensible 
+                                    #conditionInformation 
+                                    [(busy)]="busy"
+                                    [socialConflictSensible]="socialConflictSensible" 
+                                    (addCondition)="addCondition()"
+                                    (editCondition)="showConditionEdition($event)">
+                                </condition-information-social-conflict-sensible>
+                            </p-tabPanel>
+
+                            <p-tabPanel *ngIf="socialConflictSensible.id && ('Pages.Application.SocialConflictTaskManagement' | permission)" header="Gestión de tareas">
+                                <task-information-social-conflict-sensible 
+                                    #taskInformation  
+                                    [(socialConflictSensible)]="socialConflictSensible">                                    
+                                </task-information-social-conflict-sensible>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Recursos">
+                                <resource-information-social-conflict-sensible
+                                    [socialConflictSensible]="socialConflictSensible"
+                                    [(busy)]="busy">                                    
+                                </resource-information-social-conflict-sensible>
+                            </p-tabPanel>
+
+                            <p-tabPanel header="Notas">
+                                <note-information-social-conflict-sensible
+                                    [socialConflictSensible]="socialConflictSensible"
+                                    [(busy)]="busy">                                    
+                                </note-information-social-conflict-sensible>
+                            </p-tabPanel>
+
+                        </p-tabView>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <create-edit-risk-information-social-conflict-sensible #createEditRiskInformation (modalSave)="saveRisk($event)">
+        </create-edit-risk-information-social-conflict-sensible>
+        <edit-actor-information-social-conflict-sensible #editActorInformation (modalSave)="saveActorEdition($event)">
+        </edit-actor-information-social-conflict-sensible>
+        <create-edit-fact-information-social-conflict-sensible #createEditFactInformation (modalSave)="saveFactEdition($event)">
+        </create-edit-fact-information-social-conflict-sensible>
+        <create-edit-management-information-social-conflict-sensible #createEditManagementInformation
+            (modalSave)="saveManagement($event)">
+        </create-edit-management-information-social-conflict-sensible>
+        <create-edit-state-information-social-conflict-sensible #createEditStateInformation (modalSave)="saveState($event)">
+        </create-edit-state-information-social-conflict-sensible>
+        <create-edit-condition-information-social-conflict-sensible #createEditConditionInformation
+            (modalSave)="saveCondition($event)">
+        </create-edit-condition-information-social-conflict-sensible>
+        <attached-file-management-information-social-conflict-sensible #attachedFileManagementInformation>
+        </attached-file-management-information-social-conflict-sensible>
+        <create-edit-sugerence-information #createEditSugerenceInformation (modalSave)="saveSugerence($event)"></create-edit-sugerence-information>
+    </ng-container>
+</div>

@@ -1,0 +1,81 @@
+<div class="login-container" [@routerTransition]>
+    <div class="kt-login__form">
+        <div class="kt-login__title">
+            <h3 class="m-0">
+                Iniciar sesión
+            </h3>
+        </div>
+
+        <form #loginForm="ngForm" class="kt-form" method="post" novalidate (ngSubmit)="login()">
+
+            <div class="form-group">
+                <input #userNameOrEmailAddressInput="ngModel" (keyup)="keyUpOnlyValidTex($event)"
+                    (keypress)="keyPressWhiteSpace($event)"
+                    [(ngModel)]="loginService.authenticateModel.blankUserNameOrEmailAddress" autoFocus
+                    class="form-control m-input" type="text" autocomplete="new-password"
+                    placeholder="{{'UserNameOrEmail' | localize}} *" name="userNameOrEmailAddress" required />
+                <validation-messages [formCtrl]="userNameOrEmailAddressInput"
+                    *ngIf="!userNameOrEmailAddressInput.touched">
+                </validation-messages>
+            </div>
+
+            <div class="form-group">
+                <input #passwordInput="ngModel" [(ngModel)]="loginService.authenticateModel.blankPassword"
+                    class="form-control m-input" type="password" autocomplete="new-password"
+                    placeholder="{{'Password' | localize}} *" name="password" required maxlength="32" />
+                <validation-messages [formCtrl]="passwordInput" *ngIf="!passwordInput.touched"></validation-messages>
+            </div>
+
+            <div class="login-captcha__container">
+                <div *ngIf="!captchaLoadingException" class="login-captcha__content">
+                    <div *ngIf="captchaBusy" class="login-captcha__busy">
+                        <div class="lds-dual-ring"></div>
+                    </div>
+                    <div *ngIf="!captchaBusy" class="login-captcha__form">
+                        <div class="login-captcha__image">
+                            <div class="login-captcha__challenge">
+                                <img aria-label="captcha challenge" height="60"
+                                    [src]="captchaResourceImage | safeResource : 'url'">
+                            </div>
+                            <div class="login-captcha__refresh">
+                                <button (click)="refresh()" type="button" class="btn btn-light">
+                                    <i class="pl-1 fas fa-sync"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="login-captcha__input">
+                            <input class="form-control" id="captchaCode" name="captchaCode"
+                                placeholder="Ingresar código (*)" [(ngModel)]="loginService.authenticateModel.captchaKey" minlength="6" maxlength="6"
+                                required>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="captchaLoadingException" class="login-captcha__content">
+                    <div class="login-captcha__form">
+                        <div class="login-captcha__image">
+                            <div class="login-captcha__refresh">
+                                <button (click)="refresh()" type="button" class="btn btn-light">
+                                    <i class="pl-1 fas fa-sync"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kt-login__actions">
+                <button type="submit" class="btn btn-primary btn-elevate kt-login__btn-primary d-block w-100"
+                    [disabled]="!loginForm.form.valid">
+                    Iniciar sesión
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+    <div class="kt-login__account">
+        <a class="fz-14" routerLink="/account/send-reset-password">
+            ¿Olvidaste la contraseña?
+        </a>
+    </div>
+</div>
