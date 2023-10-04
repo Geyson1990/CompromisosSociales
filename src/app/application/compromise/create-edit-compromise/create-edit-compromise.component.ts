@@ -12,6 +12,7 @@ import { TabView } from 'primeng';
 import { finalize } from 'rxjs/operators';
 import { CompromiseCreateEditPhaseMilestoneModalComponent } from './phase-milestone-information/create-edit-phase-milestone/create-edit-phase-milestone.component';
 import { CompromisePipComponent } from './pip/pip.component';
+import * as moment from 'moment';
 
 @Component({
     templateUrl: 'create-edit-compromise.component.html',
@@ -33,6 +34,8 @@ export class CreateEditCompromiseComponent extends AppComponentBase implements O
     loaded: boolean = false;
 
     compromise: CompromiseDto = new CompromiseDto();
+    dueDate:Date;
+    deadLine:Date;
 
     isPip(): boolean {
         return this.compromise.type == CompromiseType.PIP;
@@ -245,7 +248,6 @@ export class CreateEditCompromiseComponent extends AppComponentBase implements O
     }
 
     private completeSave() {
-
         setTimeout(() => {
             if (this.compromise.id)
                 this._compromiseServiceProxy

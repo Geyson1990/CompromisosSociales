@@ -17,6 +17,8 @@ import * as moment from 'moment';
 export class CompromiseTracingComponent extends AppComponentBase implements AfterViewInit {
 
     @Input() compromise: CompromiseDto;
+    @Input() deadLine: Date;
+    @Input() dueDate: Date;
     @ViewChild('fileUploadItems', { static: false }) fileUploadItemContent: FileUploadComponent;
 
     @Input() statuses: UtilityParameterDto[] = [];
@@ -24,17 +26,23 @@ export class CompromiseTracingComponent extends AppComponentBase implements Afte
     subStates: CompromiseSubStateLocationDto[] = [];
 
     description: string;
+    esCierre: boolean = false;
 
     constructor(_injector: Injector, private _downloadServiceProxy: DownloadServiceProxy) {
         super(_injector);
     }
 
     ngAfterViewInit(): void {
+        this.esCierre = this.compromise.compromiseState.name === "Cerrado";
         if (this.compromise.compromiseState.id > 0) {
             const index: number = this.states.findIndex(p => p.id == this.compromise.compromiseState.id);
             if (index != -1)
                 this.subStates = this.states[index].subStates;
+            
         }
+
+        this.dueDate = this.compromise.dueDate?.toDate();
+        this.deadLine = this.compromise.deadLine?.toDate();
     }
 
     changeToPriority() {
@@ -56,6 +64,7 @@ export class CompromiseTracingComponent extends AppComponentBase implements Afte
         const index: number = this.states.findIndex(p => p.id == itemId);
 
         if (index != -1) {
+            this.esCierre = index === 1;
             this.compromise.compromiseState.name = this.states[index].name;
             this.subStates = this.states[index].subStates;
         } else {
@@ -76,6 +85,14 @@ export class CompromiseTracingComponent extends AppComponentBase implements Afte
         } else {
             this.compromise.compromiseSubState.name = undefined;
         }
+    }
+
+    onDeadLineChange(value: any){
+        this.compromise.deadLine = moment(value);
+    }
+
+    onDueDateChange(value: any){
+        this.compromise.dueDate = moment(value);
     }
 
     saveAttachment(attachment: AttachmentUploadDto) {

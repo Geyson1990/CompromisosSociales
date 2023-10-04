@@ -598,6 +598,8 @@ export interface ICompromiseDto {
     compromiseLabel: CompromiseLabelLocationDto;
     creatorUser: CompromiseUserDto;
     editUser: CompromiseUserDto;
+    deadLine:moment.Moment;
+    dueDate:moment.Moment;
 }
 
 export class CompromiseDto implements ICompromiseDto {
@@ -630,7 +632,8 @@ export class CompromiseDto implements ICompromiseDto {
     compromiseLabel: CompromiseLabelLocationDto;
     creatorUser: CompromiseUserDto;
     editUser: CompromiseUserDto;
-
+    deadLine:moment.Moment;
+    dueDate:moment.Moment;
     //readonly
     isWomanCompromise: string;
 
@@ -687,6 +690,8 @@ export class CompromiseDto implements ICompromiseDto {
             this.description = data["description"];
             this.transcription = data["transcription"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"]) : <any>undefined;
+            this.dueDate = data["dueDate"] ? moment(data["dueDate"]) : <any>undefined;
+            this.deadLine = data["deadLine"] ? moment(data["deadLine"]) : <any>undefined;
             this.lastModificationTime = data["lastModificationTime"] ? moment(data["lastModificationTime"]) : <any>undefined;
             this.record = data["record"] ? UtilityRecordDto.fromJS(data["record"]) : <any>undefined;
             this.type = data["type"];
@@ -759,6 +764,7 @@ export class CompromiseDto implements ICompromiseDto {
     }
 
     toJSON(data?: any) {
+        debugger;
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["code"] = this.code;
@@ -770,6 +776,9 @@ export class CompromiseDto implements ICompromiseDto {
         data["status"] = this.status ? this.status.toJSON() : <any>undefined;
         data["isPriority"] = this.isPriority;
         data["womanCompromise"] = this.womanCompromise;
+        debugger;
+        data["dueDate"] = this.dueDate ? this.dueDate.toISOString() : <any>undefined;
+        data["deadLine"] = this.deadLine ? this.deadLine.toISOString() : <any>undefined;
         data["priorityReference"] = this.priorityReference;
         data["responsibleActor"] = this.responsibleActor ? this.responsibleActor.toJSON() : <any>undefined;
         data["responsibleSubActor"] = this.responsibleSubActor ? this.responsibleSubActor.toJSON() : <any>undefined;
@@ -886,6 +895,7 @@ export class CompromiseTracingDto implements ICompromiseTracingDto {
 
     init(data?: any) {
         if (data) {
+            debugger;
             this.id = data["id"];
             this.description = data["description"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
