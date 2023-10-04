@@ -220,6 +220,25 @@
             </div>
         </div>
 
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="mb-2 form-group">
+                <label for="LabelCompromiseSelect">
+                    Unidad Territorial (UT)
+                </label>
+                <div class="input-group">
+                    <select name="LabelCompromiseSelect" id="LabelCompromiseSelect" class="form-control" type="text"
+                        [(ngModel)]="compromise.compromiseLabel.id">
+                        <option value="-1">
+                            Seleccione
+                        </option>
+                        <option *ngFor="let label of labels" [value]="label.id">
+                            {{label.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
         <div class="col-12"></div>
 
         <div class="row align-items-center my-4 mx-0">
