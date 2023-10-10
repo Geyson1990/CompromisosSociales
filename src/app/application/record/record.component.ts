@@ -123,4 +123,24 @@ export class RecordComponent extends AppComponentBase implements OnInit {
             }
         );
     }
+
+    exportActasMatrixToZip(): void {
+        this.fileDownloadRequest.show();
+        this._recordServiceProxy.getActasZip(
+            this.filterText,
+            this.advancedFiltersAreShown ? this.conflictCode : <any>undefined,
+            this.advancedFiltersAreShown ? this.recordCode : <any>undefined,
+            this.advancedFiltersAreShown ? this.territorialUnit : <any>undefined,
+            this.advancedFiltersAreShown && this.filterByDate ? moment(this.dateRange[0]).startOf('day') : <any>undefined,
+            this.advancedFiltersAreShown && this.filterByDate ? moment(this.dateRange[1]).endOf('day') : <any>undefined,
+            this.primengTableHelper.getSorting(this.dataTable),
+            this.primengTableHelper.getMaxResultCount(this.paginator, undefined),
+            this.primengTableHelper.getSkipCount(this.paginator, undefined)
+        ).pipe(finalize(() => {
+            this.primengTableHelper.hideLoadingIndicator();
+            this.fileDownloadRequest.hide();
+        })).subscribe(result => {
+            this._fileDownloadService.downloadTempFile(result);
+        });
+    }
 }

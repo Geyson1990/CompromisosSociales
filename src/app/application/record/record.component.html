@@ -24,11 +24,17 @@
                                 </a>
                             </div>
                         </div>
+                        <button (click)="exportActasMatrixToZip()" *ngIf="'Pages.Application.Record.Create' | permission"
+                        class="btn btn-outline-success">
+                        <i class="fa fa-download"></i>
+                        Descargar actas
+                        </button>
+                        <!---->
                         <button (click)="createRecord()" *ngIf="'Pages.Application.Record.Create' | permission"
                             class="btn btn-primary">
                             <i class="fa fa-plus"></i>
                             Crear nueva acta
-                        </button>
+                        </button>                        
                     </div>
                 </div>
 

@@ -351,6 +351,67 @@ export class RecordServiceProxy {
                 return <Observable<void>><any>_observableThrow(response_);
         }));
     }
+
+    getActasZip(
+        filter: string | undefined,
+        socialConflictCode: string | undefined,
+        recordcode: string | undefined,
+        territorialUnit: number | undefined,
+        startDate: moment.Moment | undefined,
+        endDate: moment.Moment | undefined,
+        sorting: string | undefined,
+        maxResultCount: number | undefined,
+        skipCount: number | undefined): Observable<FileDto> {
+        let url_ = this.baseUrl + "/api/services/app/Record/GetActasZip?";
+        if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (recordcode !== undefined)
+            url_ += "Code=" + encodeURIComponent("" + recordcode) + "&";
+        if (territorialUnit !== undefined)
+            url_ += "TerritorialUnitId=" + encodeURIComponent("" + territorialUnit) + "&";
+        if (socialConflictCode !== undefined)
+            url_ += "SocialConflictCode=" + encodeURIComponent("" + socialConflictCode) + "&";
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (startDate === null)
+            throw new Error("The parameter 'startDate' cannot be null.");
+        else if (startDate !== undefined)
+            url_ += "StartTime=" + encodeURIComponent(startDate ? "" + startDate.toJSON() : "") + "&";
+        if (endDate === null)
+            throw new Error("The parameter 'endDate' cannot be null.");
+        else if (endDate !== undefined)
+            url_ += "EndTime=" + encodeURIComponent(endDate ? "" + endDate.toJSON() : "") + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processGetExportToExcel(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetExportToExcel(<any>response_);
+                } catch (e) {
+                    return <Observable<FileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileDto>><any>_observableThrow(response_);
+        }));
+    }
 }
 
 export interface IPagedResultDtoOfRecordListDto {
