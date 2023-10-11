@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="col-12">
+        <h5 class="d-block text-left text-dark font-weight-bold mt-4">
+            Agregar archivos
+        </h5>
+        <hr>
+    </div>
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="SectorMeetSessionResourceTitle">
+                Nombre del archivo (*)
+            </label>
+            <div class="input-group">
+                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                    cdkAutosizeMaxRows="100" #SectorMeetSessionResourceTitleInput [(ngModel)]="title"
+                    id="SectorMeetSessionResourceTitle" name="SectorMeetSessionResourceTitle" class="form-control"
+                    type="text" required maxlength="500"></textarea>
+                <span class="input-legth">
+                    {{SectorMeetSessionResourceTitleInput.value ? SectorMeetSessionResourceTitleInput.value.length :
+                    0}}/{{SectorMeetSessionResourceTitleInput.maxLength}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mt-4">
+        <div class="form-uploader" id="drop_zone" (drop)="dropHandler($event)" (dragover)="dragOverHandler($event)">
+            <div class="form-uploader-message d-flex">
+                <i class="fas fa-cloud-upload-alt mr-2"></i>
+                <p class="h5 my-auto">
+                    {{
+                    attachment ?
+                    attachment.fileName :
+                    'Arrastra o presiona para subir un fichero'
+                    }}
+                </p>
+            </div>
+            <div *ngIf="attachment" class="form-uploader-remove">
+                <button type="button" class="close" (click)="removeCurrentFile()" aria-label="Remover archivo">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <input type="file" id="fileInput" aria-label="file-uploader" (change)="fileChangeEvent($event)">
+        </div>
+    </div>
+
+    <div class="col-12 mt-3">
+        <div class="alert alert-warning" role="alert">
+            Ud. puede seleccionar una imagen (jpg, jpe, jpeg, png) con un tamaño máximo de 5MB.
+        </div>
+    </div>
+
+    <div class="col-12 mt-4 text-right">
+        <button [disabled]="!attachment" class="btn btn-success" (click)="addAttachment()">
+            <i class="fa fa-plus"></i>
+            Subir archivo
+        </button>
+    </div>
+</div>

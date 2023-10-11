@@ -26,6 +26,9 @@ import { SectorMeetComponent } from './dashboard/sector-meet.component';
 import { SectorMeetRoutingModule } from './sector-meet-routing.module';
 import { SectorMeetStateService } from './shared/sector-meet-state.service';
 import { SectorSessionStateService } from './shared/sector-session-state.service';
+import { ResourceDocumentsComponent } from './create-edit-session/resource-documents/resource-documents.component';
+import { UploaderDocumentsComponent } from './create-edit-session/resource-documents/uploader-documents/uploader-documents.component';
+import { FileDocumentsComponent } from './create-edit-session/resource-documents/file-documents/file-documents.component';
 
 @NgModule({
     imports: [
@@ -55,7 +58,11 @@ import { SectorSessionStateService } from './shared/sector-session-state.service
         FileInformationComponent,
         CreateEditLeaderInformationComponent,
         TeamInformationComponent,
-        CreateEditTeamInformationComponent
+        CreateEditTeamInformationComponent,
+        ResourceDocumentsComponent,
+        UploaderDocumentsComponent,
+        FileDocumentsComponent
+
     ],
     providers: [
         SectorMeetStateService,
