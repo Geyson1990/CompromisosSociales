@@ -116,7 +116,28 @@
             </div>
         </div>
     </div>
-
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="SectorMeetSessionLatitude">
+                Latitud (*)
+            </label>
+            <div class="input-group">
+                <input [(ngModel)]="state.sectorMeetSession.latitude" id="SectorMeetSessionLatitude" name="SectorMeetSessionLatitude" autoFocus
+                    class="form-control" [placeholder]="l('Ingrese la latitud')" type="text">
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+        <div class="mb-2 form-group">
+            <label for="SectorMeetSessionLongitude ">
+                Longitud (*)
+            </label>
+            <div class="input-group">
+                <input [(ngModel)]="state.sectorMeetSession.longitude " id="SectorMeetSessionLongitude " name="SectorMeetSessionLongitude " autoFocus
+                    class="form-control" [placeholder]="l('Ingrese la longitud ')" type="text">
+            </div>
+        </div>
+    </div>
     <div class="col-12">
         <div class="mb-2 form-group">
             <label for="SectorMeetSessionLocation">
