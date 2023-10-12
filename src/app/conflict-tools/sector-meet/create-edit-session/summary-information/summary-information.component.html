@@ -1,4 +1,29 @@
 <div class="row">
+    <div class="form-group col-sm-12">
+        <label for="SummaryFull">
+            Resumen de la reunion
+        </label>
+        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+            cdkAutosizeMaxRows="100" id="SummaryFull" #FullInput
+            class="form-control" type="text"
+            name="SummaryFull" maxlength="5000"></textarea>
+        <span class="input-legth">
+            {{FullInput.value ? FullInput.value?.length :
+            0}}/{{FullInput.maxLength}}
+        </span>
+    </div>
+
+    <div class="col-12"></div>
+
+    <div class="form-group col-sm-12 mb-2">
+        <label for="AssignSummary" class="kt-checkbox">
+            <input id="AssignSummary" type="checkbox" name="AssignSummary">
+            Asignar resumen automaticamente a la situación actual
+            <span></span>
+        </label>
+    </div>
+
+    <div class="col-12"></div>
 
     <div class="col-12">
         <button (click)="addSummary.emit()" class="mb-0 mt-auto btn btn-primary">

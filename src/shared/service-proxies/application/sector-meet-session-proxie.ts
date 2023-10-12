@@ -495,6 +495,8 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
     province: SectorMeetSessionProvinceReverseDto;
     district: SectorMeetSessionDistrictReverseDto;
     location: string;
+    latitude: string;
+    longitude: string;
     side: string;
     personTime: moment.Moment;
     person: SectorMeetSessionPersonDto;

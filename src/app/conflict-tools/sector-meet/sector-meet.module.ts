@@ -26,6 +26,9 @@ import { SectorMeetComponent } from './dashboard/sector-meet.component';
 import { SectorMeetRoutingModule } from './sector-meet-routing.module';
 import { SectorMeetStateService } from './shared/sector-meet-state.service';
 import { SectorSessionStateService } from './shared/sector-session-state.service';
+import { FileagreementComponent } from './create-edit-session/agreement-information/create-edit-agreement/file-agreement/file-agreement.component';
+import { AttachmentagreementComponent } from './create-edit-session/agreement-information/create-edit-agreement/attachment-agreement/attachment-agreement.component';
+import { UploaderAgreementComponent } from './create-edit-session/agreement-information/create-edit-agreement/uploader-agreement/uploader-agreement.component';
 
 @NgModule({
     imports: [
@@ -55,7 +58,10 @@ import { SectorSessionStateService } from './shared/sector-session-state.service
         FileInformationComponent,
         CreateEditLeaderInformationComponent,
         TeamInformationComponent,
-        CreateEditTeamInformationComponent
+        CreateEditTeamInformationComponent,
+        FileagreementComponent,
+        AttachmentagreementComponent,
+        UploaderAgreementComponent
     ],
     providers: [
         SectorMeetStateService,
