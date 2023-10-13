@@ -633,6 +633,7 @@ export class CompromiseDto implements ICompromiseDto {
 
     //readonly
     isWomanCompromise: string;
+    //territorialUnit: string;
 
     constructor(data?: ICompromiseDto) {
         if (data) {

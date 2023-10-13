@@ -29,6 +29,10 @@ import { SectorSessionStateService } from './shared/sector-session-state.service
 import { FileagreementComponent } from './create-edit-session/agreement-information/create-edit-agreement/file-agreement/file-agreement.component';
 import { AttachmentagreementComponent } from './create-edit-session/agreement-information/create-edit-agreement/attachment-agreement/attachment-agreement.component';
 import { UploaderAgreementComponent } from './create-edit-session/agreement-information/create-edit-agreement/uploader-agreement/uploader-agreement.component';
+import { ResourceMeetComponent } from './create-edit-session/resource-meet/resource-meet.component';
+import { UploaderMeetComponent } from './create-edit-session/resource-meet/uploader-meet/uploader-meet.component';
+import { AttachmentMeetComponent } from './create-edit-session/resource-meet/attachment-meet/attachment-meet.component';
+import { FileMeetComponent } from './create-edit-session/resource-meet/file-meet/file-meet.component';
 
 @NgModule({
     imports: [
@@ -61,7 +65,12 @@ import { UploaderAgreementComponent } from './create-edit-session/agreement-info
         CreateEditTeamInformationComponent,
         FileagreementComponent,
         AttachmentagreementComponent,
-        UploaderAgreementComponent
+        UploaderAgreementComponent,
+        ResourceMeetComponent,
+        UploaderMeetComponent,
+        AttachmentMeetComponent,
+        FileMeetComponent
+
     ],
     providers: [
         SectorMeetStateService,
