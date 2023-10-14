@@ -158,7 +158,7 @@
             </div>
         </div>
 
-        <div class="col-12"></div>
+        <div class="col-12"></div>  
 
         <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
             <div class="mb-2 form-group">
@@ -233,6 +233,25 @@
                         </option>
                         <option *ngFor="let label of labels" [value]="label.id">
                             {{label.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12"></div>
+        
+        <div class="col-12">
+            <div class="mb-2 form-group">
+                <label for="TerritorialUnitSelect">
+                    Unidad Territorial
+                </label>
+                <div class="input-group">
+                    <select name="TerritorialUnitSelectt" id="TerritorialUnitSelect" class="form-control" type="text">
+                        <option value="-1">
+                            Seleccione
+                        </option>
+                        <option>
                         </option>
                     </select>
                 </div>

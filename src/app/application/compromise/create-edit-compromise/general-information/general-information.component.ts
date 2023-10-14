@@ -45,6 +45,7 @@ export class CompromiseGeneralInformationComponent extends AppComponentBase impl
     }
 
     onWomanCompromiseChange(event: any) {
+        debugger;
         this.compromise.womanCompromise = (event.target.value == 'true');
     }
     

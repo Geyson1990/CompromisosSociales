@@ -26,9 +26,13 @@ import { SectorMeetComponent } from './dashboard/sector-meet.component';
 import { SectorMeetRoutingModule } from './sector-meet-routing.module';
 import { SectorMeetStateService } from './shared/sector-meet-state.service';
 import { SectorSessionStateService } from './shared/sector-session-state.service';
-import { ResourceDocumentsComponent } from './create-edit-session/resource-documents/resource-documents.component';
-import { UploaderDocumentsComponent } from './create-edit-session/resource-documents/uploader-documents/uploader-documents.component';
-import { FileDocumentsComponent } from './create-edit-session/resource-documents/file-documents/file-documents.component';
+import { FileagreementComponent } from './create-edit-session/agreement-information/create-edit-agreement/file-agreement/file-agreement.component';
+import { AttachmentagreementComponent } from './create-edit-session/agreement-information/create-edit-agreement/attachment-agreement/attachment-agreement.component';
+import { UploaderAgreementComponent } from './create-edit-session/agreement-information/create-edit-agreement/uploader-agreement/uploader-agreement.component';
+import { ResourceMeetComponent } from './create-edit-session/resource-meet/resource-meet.component';
+import { UploaderMeetComponent } from './create-edit-session/resource-meet/uploader-meet/uploader-meet.component';
+import { AttachmentMeetComponent } from './create-edit-session/resource-meet/attachment-meet/attachment-meet.component';
+import { FileMeetComponent } from './create-edit-session/resource-meet/file-meet/file-meet.component';
 
 @NgModule({
     imports: [
@@ -59,9 +63,13 @@ import { FileDocumentsComponent } from './create-edit-session/resource-documents
         CreateEditLeaderInformationComponent,
         TeamInformationComponent,
         CreateEditTeamInformationComponent,
-        ResourceDocumentsComponent,
-        UploaderDocumentsComponent,
-        FileDocumentsComponent
+        FileagreementComponent,
+        AttachmentagreementComponent,
+        UploaderAgreementComponent,
+        ResourceMeetComponent,
+        UploaderMeetComponent,
+        AttachmentMeetComponent,
+        FileMeetComponent
 
     ],
     providers: [

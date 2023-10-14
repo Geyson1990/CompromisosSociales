@@ -636,6 +636,7 @@ export class CompromiseDto implements ICompromiseDto {
     dueDate:moment.Moment;
     //readonly
     isWomanCompromise: string;
+    //territorialUnit: string;
 
     constructor(data?: ICompromiseDto) {
         if (data) {
