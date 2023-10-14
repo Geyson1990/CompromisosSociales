@@ -31,10 +31,13 @@ export class CompromiseResponsibleActorComponent extends AppComponentBase implem
     selectedResponsibleSubActors: CompromiseResponsibleSubActorDto[];
     selectedResponsibleSubTypes: CompromiseResponsibleSubTypeDto[];
 
+    selectedResponsibleActorsAutoComplete: CompromiseResponsibleDto[]=[];
+
     responsibleTypeId: number = -1;
     responsibleSubTypeId: number = -1;
     responsibleActorId: number = -1;
     responsibleSubActorId: number = -1;
+    isAutoComplete : boolean = false;
 
     private skipCount: number = 0;
     private maxResultCount: number = 0;
@@ -48,6 +51,7 @@ export class CompromiseResponsibleActorComponent extends AppComponentBase implem
 
     ngOnInit() {
         this.formatPagination(this.skipCount, this.maxResultCount);
+        this.getDataAutoComplete();
     }
 
     getData(event?: LazyLoadEvent) {
@@ -56,7 +60,43 @@ export class CompromiseResponsibleActorComponent extends AppComponentBase implem
         this.formatPagination(this.skipCount, this.maxResultCount);
     }
 
+    getDataAutoComplete(){
+        let actores: CompromiseResponsibleActorDto[] = this.responsibleActors.filter(x=>x.responsibleSubType!== undefined && x.responsibleType!== undefined);
+        let listadoGeneral: CompromiseResponsibleDto[];
+
+
+        for(var i=0; i<actores.length; i++){
+            for(var x=0; x<actores[i].responsibleSubActors.length; x++){
+                let objeto = new CompromiseResponsibleDto;
+                objeto.id = undefined;
+                objeto.remove = false;
+                objeto.responsibleActor = actores[i];
+                objeto.responsibleSubActor = actores[i].responsibleSubActors[x];
+                debugger;
+                this.selectedResponsibleActorsAutoComplete.push(objeto);
+            }
+        }
+        debugger;
+        // actores.forEach(function(actor, i) {  
+        //     let listado: CompromiseResponsibleDto[];
+        // actor.responsibleSubActors.forEach(function(subactor, i){
+        //     let objeto = new CompromiseResponsibleDto;
+        //     objeto.id = undefined;
+        //     objeto.remove = false;
+        //     objeto.responsibleActor = actor;
+        //     objeto.responsibleSubActor = subactor;
+        //     debugger;
+        //     listado.push(objeto);
+        // });
+        // listadoGeneral=listadoGeneral.concat(listado);
+    // });
+
+    // this.selectedResponsibleActorsAutoComplete = [...listadoGeneral];
+
+    }
+
     onResponsibleTypeChange(event: any) {
+        debugger;
         const responsibleTypeId: number = +event.target.value;
         const responsibleTypeIndex: number = this.responsibleTypes.findIndex(p => p.id == responsibleTypeId);
 
@@ -71,6 +111,38 @@ export class CompromiseResponsibleActorComponent extends AppComponentBase implem
         this.responsibleSubTypeId = -1;
         this.responsibleActorId = -1;
         this.responsibleSubActorId = -1;
+    }
+
+    nameValue(event: any){
+
+    let responsable = this.selectedResponsibleActorsAutoComplete.find(x=>x.responsibleSubActor.name=event);  
+    this.responsibleActorId= responsable.responsibleActor.id;
+    const responsibleTypeId: number = responsable.responsibleActor.responsibleType.id;
+        const responsibleTypeIndex: number = this.responsibleTypes.findIndex(p => p.id == responsibleTypeId);
+
+        if (responsibleTypeIndex != -1) {
+            this.selectedResponsibleSubTypes = this.responsibleTypes[responsibleTypeIndex].subTypes;
+        } else {
+            this.selectedResponsibleSubTypes = [];
+        }
+
+    
+    const responsibleSubTypeId: number = responsable.responsibleActor.responsibleSubType.id;
+    const responsibleSubTypeIndex: number = this.selectedResponsibleSubTypes.findIndex(p => p.id == responsibleSubTypeId);
+    const subtype: CompromiseResponsibleSubTypeDto = this.selectedResponsibleSubTypes[responsibleSubTypeIndex];
+    this.selectedResponsibleActors = this.responsibleActors.filter(p => p.responsibleSubType?.id == subtype.id);
+
+    const responsibleActorIndex: number = this.selectedResponsibleActors.findIndex(p => p.id == responsable.responsibleActor.id);
+    if (responsibleActorIndex != -1) {
+        this.selectedResponsibleSubActors = this.selectedResponsibleActors[responsibleActorIndex].responsibleSubActors;
+    } else {
+        this.selectedResponsibleSubActors = [];
+    }
+    //this.responsibleSubActorId = -1;
+
+
+    this.responsibleSubActorId=responsable.responsibleSubActor.id;
+    this.isAutoComplete = true;
     }
 
     onResponsibleSubTypeChange(event: any) {
@@ -103,18 +175,21 @@ export class CompromiseResponsibleActorComponent extends AppComponentBase implem
     }
 
     addResponsible() {
-        if (this.responsibleTypeId == -1) {
-            this.message.info('Debe seleccionar el tipo de colaborador antes de guardar los cambios', 'Aviso');
-            return;
+        if(!this.isAutoComplete){
+            if (this.responsibleTypeId == -1) {
+                this.message.info('Debe seleccionar el tipo de colaborador antes de guardar los cambios', 'Aviso');
+                return;
+            }
+            if (this.responsibleSubTypeId == -1) {
+                this.message.info('Debe seleccionar el sub tipo de colaborador antes de guardar los cambios', 'Aviso');
+                return;
+            }
+            if (this.responsibleActorId == -1) {
+                this.message.info('Debe seleccionar el colaborador antes de guardar los cambios', 'Aviso');
+                return;
+            }
         }
-        if (this.responsibleSubTypeId == -1) {
-            this.message.info('Debe seleccionar el sub tipo de colaborador antes de guardar los cambios', 'Aviso');
-            return;
-        }
-        if (this.responsibleActorId == -1) {
-            this.message.info('Debe seleccionar el colaborador antes de guardar los cambios', 'Aviso');
-            return;
-        }
+        
 
         const responsibleActorIndex: number = this.selectedResponsibleActors.findIndex(p => p.id == this.responsibleActorId);
         const responsibleSubActorIndex: number = this.responsibleSubActorId < 0 ? -1 : this.selectedResponsibleSubActors.findIndex(p => p.id == this.responsibleSubActorId);
@@ -128,10 +203,10 @@ export class CompromiseResponsibleActorComponent extends AppComponentBase implem
             this.compromise.responsibles.findIndex(p => p.responsibleActor?.id == this.responsibleActorId && p.responsibleSubActor?.id == this.responsibleSubActorId) != -1 :
             this.compromise.responsibles.findIndex(p => p.responsibleActor?.id == this.responsibleActorId && !p.responsibleSubActor) != -1;
 
-        if (responsibleExists) {
-            this.message.info('El colaborador seleccionado ya existe', 'Aviso');
-            return;
-        }
+        //if (responsibleExists) {
+        //    this.message.info('El colaborador seleccionado ya existe', 'Aviso');
+        //    return;
+        //} 
 
         this.compromise.responsibles.push(new CompromiseResponsibleDto({
             id: undefined,
@@ -143,6 +218,7 @@ export class CompromiseResponsibleActorComponent extends AppComponentBase implem
         this.notify.success('Se agregó exitosamente el actor involucrado');
         this.formatPagination(this.skipCount, this.maxResultCount);
         this.onResponsibleSubTypeChange({ target: { value: this.responsibleSubTypeId } });
+        this.isAutoComplete = false;
     }
 
     removeItem(responsible: CompromiseResponsibleDto, index: number) {
