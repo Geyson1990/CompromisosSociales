@@ -119,7 +119,8 @@ export class AppNavigationService {
             new AppMenuItem('Catálogos', '', 'fas fa-address-book', '', [], [
                 new AppMenuItem('Entidades del Estado Peruano', 'Pages.Catalog.DirectoryGovernment', 'fas fa-city', '/app/maintenance/directory-governments'),
                 new AppMenuItem('Directorio de Empresas Privadas', 'Pages.Catalog.DirectoryIndustry', 'fas fa-industry', '/app/maintenance/directory-industries'),
-                new AppMenuItem('Directorio de Diálogo y Conflictos Sociales', 'Pages.Catalog.DirectoryDialog', 'fas fa-comment', '/app/maintenance/directory-dialogs')
+                new AppMenuItem('Directorio de Diálogo y Conflictos Sociales', 'Pages.Catalog.DirectoryDialog', 'fas fa-comment', '/app/maintenance/directory-dialogs'),
+                new AppMenuItem('Actores', '', 'fas fa-city', '/app/maintenance/actors')
             ]),
             new AppMenuItem('Satisfacción de usuario', '', 'fas fa-comment', '', [], [
                 new AppMenuItem('Bandeja de entrada de formularios', 'Pages.Quiz.Platform', 'fas fas fa-columns', '/app/quiz/platform', [
