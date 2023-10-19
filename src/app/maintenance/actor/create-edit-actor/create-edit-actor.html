@@ -1,0 +1,173 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #userForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="item.id">
+                            Editar actor: {{item.name}}
+                        </span>
+                        <span *ngIf="!item.id">
+                            Crear actor
+                        </span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-sm-12">
+                        <label for="Name">
+                            Nombres y Apellidos (*)
+                        </label>
+                        <input id="Name" #nameInput="ngModel" class="form-control" type="text" name="Name"
+                            [(ngModel)]="item.name" required maxlength="255">
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="ActorTypeState">
+                            Tipo Actor (*)
+                        </label>
+                        <select (change)="onActorTypeChange($event)" class="form-control" id="ActorType"
+                            name="ActorType">
+                            <!-- [(ngModel)]="item.actorType.id" -->
+                            <option value="-1">
+                                Seleccione
+                            </option>
+                            <option *ngFor="let type of actorTypes" [value]="type.id">
+                                {{type.name}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="ActorShowDetail">
+                            Capacidad de movilización (*)
+                        </label>
+                        <select class="form-control" id="ActorShowDetail" name="ActorShowDetail" [(ngModel)]="showDetail">
+                            <option value="false">
+                                No
+                            </option>
+                            <option value="true">
+                                Si
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="ActorShowDetail">
+                            DNI (*)
+                        </label>
+                        <!-- #DniInput="ngModel" -->
+                        <input id="UserDocument" name="UserDocument"
+                                        class="form-control" type="text"
+                                        (keyup)="keyUpOnlyInteger($event)" (keypress)="keyPressOnlyNumbers($event)"
+                                        minlength="8" maxlength="8">
+                        <!-- <validation-messages [formCtrl]="DniInput"></validation-messages> -->
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="ActorShowDetail">
+                            Cargo (*)
+                        </label>
+                        <select class="form-control" id="ActorShowDetail" name="ActorShowDetail" [(ngModel)]="showDetail">
+                            <option value="false">
+                                No
+                            </option>
+                            <option value="true">
+                                Si
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="ActorTypeState">
+                            Institución (*)
+                        </label>
+                        <select class="form-control" id="ActorTypeState" name="ActorTypeState" [(ngModel)]="state">
+                            <option value="false">
+                                Inactivo
+                            </option>
+                            <option value="true">
+                                Activo
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="ActorShowDetail">
+                           Número de Teléfono (*)
+                        </label>
+                        <select class="form-control" id="ActorShowDetail" name="ActorShowDetail" [(ngModel)]="showDetail">
+                            <option value="false">
+                                No
+                            </option>
+                            <option value="true">
+                                Si
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                        <label for="ActorShowMovement">
+                            Correo Electronico (*)
+                        </label>
+                        <select class="form-control" id="ActorShowMovement" name="ActorShowMovement" [(ngModel)]="showMovement">
+                            <option value="false">
+                                No
+                            </option>
+                            <option value="true">
+                                Si
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="ActorTypeState">
+                            Posición (*)
+                        </label>
+                        <select class="form-control" id="ActorTypeState" name="ActorTypeState" [(ngModel)]="state">
+                            <option value="false">
+                                Inactivo
+                            </option>
+                            <option value="true">
+                                Activo
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="ActorTypeState">
+                            Interés (*)
+                        </label>
+                        <select class="form-control" id="ActorTypeState" name="ActorTypeState" [(ngModel)]="state">
+                            <option value="false">
+                                Inactivo
+                            </option>
+                            <option value="true">
+                                Activo
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!userForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
