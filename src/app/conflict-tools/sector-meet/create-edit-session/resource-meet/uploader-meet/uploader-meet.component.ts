@@ -17,6 +17,7 @@ import * as moment from 'moment';
 export class UploaderMeetComponent extends AppComponentBase {
 
     private _attachments: AttachmentUploadDto[];
+    state: SectorSessionStateService;
 
     currentAttachment: AttachmentUploadDto;
     documentTitle: string;
@@ -48,9 +49,15 @@ export class UploaderMeetComponent extends AppComponentBase {
 
     constructor(_injector: Injector) {
         super(_injector);
+        this.state = _injector.get(SectorSessionStateService);
     }
 
     addAttachment(attachment: AttachmentUploadDto) {
+
+        if (!this.attachments) {
+            this.attachments = []; // Si this.attachments es undefined, inicialízalo como un array vacío.
+        }
+
         const index: number = this.attachments.findIndex(p => p.name == attachment.name);
 
         if (!this.hideTitle && index != -1) {
@@ -63,21 +70,10 @@ export class UploaderMeetComponent extends AppComponentBase {
             return;
         }
 
-        if (!this.hideType) {
-
-            const recordResourceTypeIndex: number = this.recordResourceTypes.findIndex(p => p.id == this.reportType);
-
-            if (recordResourceTypeIndex == -1) {
-                this.message.error('Seleccione el tipo de documento de sustento antes de continuar', 'Aviso');
-                return;
-            }
-
-            attachment.recordResourceType = this.recordResourceTypes[recordResourceTypeIndex];
-        }
-
         attachment.name = this.documentTitle;
 
-        this.saveAttachment.emit(attachment);
+        // this.saveAttachment.emit(attachment);
+        this.state.sectorMeetSession.uploadFiles.push(attachment);
         this.uploadFile();
     }
 

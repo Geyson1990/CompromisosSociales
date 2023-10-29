@@ -484,6 +484,7 @@ export class ISectorMeetSessionDto {
     resources: SectorMeetSessionResourceDto[];
     summaries: SectorMeetSessionSummaryLocationDto[];
     uploadFiles: SectorMeetSessionAttachmentUploadDto[];
+    UploadFilesPDF: SectorMeetSessionAttachmentUploadDto[];
 }
 
 export class SectorMeetSessionDto implements ISectorMeetSessionDto {
@@ -508,6 +509,7 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
     resources: SectorMeetSessionResourceDto[];
     summaries: SectorMeetSessionSummaryLocationDto[];
     uploadFiles: SectorMeetSessionAttachmentUploadDto[];
+    UploadFilesPDF: SectorMeetSessionAttachmentUploadDto[];
 
     constructor(data?: ISectorMeetSessionDto) {
         if (data) {
@@ -523,6 +525,7 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
             this.summaries = [];
             this.resources = [];
             this.uploadFiles = [];
+            this.UploadFilesPDF = [];
             this.leaders = [];
             this.department = new SectorMeetSessionDepartmentReverseDto({
                 id: -1,
@@ -671,6 +674,12 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
             data["uploadFiles"] = [];
             for (let item of this.uploadFiles)
                 data["uploadFiles"].push(item.toJSON());
+        }
+
+        if (Array.isArray(this.UploadFilesPDF)) {
+            data["UploadFilesPDF"] = [];
+            for (let item of this.UploadFilesPDF)
+                data["UploadFilesPDF"].push(item.toJSON());
         }
 
         return data;
