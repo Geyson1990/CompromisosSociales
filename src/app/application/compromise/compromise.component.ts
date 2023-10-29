@@ -18,7 +18,7 @@ import { finalize } from 'rxjs/operators';
     ]
 })
 export class CompromiseComponent extends AppComponentBase implements OnInit {
-
+   
     @ViewChild('dataTable', { static: true }) dataTable: Table;
     @ViewChild('paginator', { static: true }) paginator: Paginator;
 
@@ -30,6 +30,7 @@ export class CompromiseComponent extends AppComponentBase implements OnInit {
     socialCode: string;
     territorialUnit: number = -1;
     territorialUnits: UtilityTerritorialUnitDto[] = [];
+    selectedCompromises!: any;
     filterByDate: boolean = false;
     dateRange: Date[] = [moment().startOf('month').toDate(), moment().endOf('day').toDate()];
 
@@ -141,4 +142,9 @@ export class CompromiseComponent extends AppComponentBase implements OnInit {
     reloadPage(): void {
         this.paginator.changePage(this.paginator.getPage());
     }
+
+    deleteRecords() {
+        console.log("compromises",this.selectedCompromises);
+    }
+
 }

@@ -216,18 +216,30 @@
 
                         </div>
                     </form>
+                    <div class="row mb-2">
+                        <div class="col-12">
+                          <button  (click)="deleteRecords()" class="btn btn-danger" [disabled]="!selectedCompromises || selectedCompromises?.length === 0">
+                            <i class="fa fa-trash"></i>Eliminar
+                          </button>
+                        </div>
+                    </div>
 
                     <div class="row align-items-center mx-0">
                         <!--<Primeng-TurboTable-Start>-->
                         <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
                             <p-table #dataTable sortMode="multiple" (onLazyLoad)="getData($event)"
+                                [(selection)]="selectedCompromises"
                                 [value]="primengTableHelper.records"
                                 rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
                                 [lazy]="true" [scrollable]="true" ScrollWidth="100%"
                                 [responsive]="primengTableHelper.isResponsive"
                                 [resizableColumns]="primengTableHelper.resizableColumns">
                                 <ng-template pTemplate="header">
+                                    
                                     <tr>
+                                        <th style="width: 4rem">
+                                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                        </th>
                                         <th style="width: 130px"
                                             [hidden]="!(['Pages.Application.Compromise.Edit', 'Pages.Application.Compromise.Delete'] | permissionAny)">
                                             {{'Actions' | localize}}</th>
@@ -262,7 +274,11 @@
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record="$implicit">
+                                    
                                     <tr>
+                                        <td style="width: 4rem">
+                                            <p-tableCheckbox [value]="record"></p-tableCheckbox>
+                                        </td>
                                         <td style="width: 130px"
                                             [hidden]="!(['Pages.Application.Compromise.Edit', 'Pages.Application.Compromise.Delete'] | permissionAny)">
                                             <div class="btn-group dropdown" dropdown container="body">

@@ -4,10 +4,9 @@ import { Injectable, Inject, Optional } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
 import { API_BASE_URL, blobToText, throwException, processComplete } from '../service-proxies';
 import * as moment from 'moment';
-import { SocialConflictAlertActorTypeDto } from './social-conflict-alert-proxie';
 
 @Injectable()
-export class ActorTypeServiceProxy {
+export class ActorServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -17,7 +16,7 @@ export class ActorTypeServiceProxy {
         this.baseUrl = baseUrl ? baseUrl : "";
     }
 
-    getAll(filter: string | undefined, sorting: string | undefined, maxResultCount: number | undefined, skipCount: number | undefined): Observable<PagedResultDtoOfActorTypeListDto> {
+    getAll(filter: string | undefined, sorting: string | undefined, maxResultCount: number | undefined, skipCount: number | undefined): Observable<PagedResultDtoOfActorListDto> {
         let url_ = this.baseUrl + "/api/services/app/ActorType/GetAll?";
         if (filter !== undefined)
             url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
@@ -49,14 +48,14 @@ export class ActorTypeServiceProxy {
                 try {
                     return this.processGetAll(<any>response_);
                 } catch (e) {
-                    return <Observable<PagedResultDtoOfActorTypeListDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfActorListDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<PagedResultDtoOfActorTypeListDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfActorListDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfActorTypeListDto> {
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfActorListDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -67,7 +66,7 @@ export class ActorTypeServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = PagedResultDtoOfActorTypeListDto.fromJS(resultData200);
+                result200 = PagedResultDtoOfActorListDto.fromJS(resultData200);
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -75,10 +74,10 @@ export class ActorTypeServiceProxy {
                 return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<PagedResultDtoOfActorTypeListDto>(<any>null);
+        return _observableOf<PagedResultDtoOfActorListDto>(<any>null);
     }
 
-    get(id: number): Observable<ActorTypeDto> {
+    get(id: number): Observable<ActorDto> {
         let url_ = this.baseUrl + "/api/services/app/ActorType/Get?";
         if (id === null)
             throw new Error("The parameter 'Id' cannot be null.");
@@ -102,14 +101,14 @@ export class ActorTypeServiceProxy {
                 try {
                     return this.processGet(<any>response_);
                 } catch (e) {
-                    return <Observable<ActorTypeDto>><any>_observableThrow(e);
+                    return <Observable<ActorDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ActorTypeDto>><any>_observableThrow(response_);
+                return <Observable<ActorDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGet(response: HttpResponseBase): Observable<ActorTypeDto> {
+    protected processGet(response: HttpResponseBase): Observable<ActorDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -120,7 +119,7 @@ export class ActorTypeServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = ActorTypeDto.fromJS(resultData200);
+                result200 = ActorDto.fromJS(resultData200);
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -128,10 +127,10 @@ export class ActorTypeServiceProxy {
                 return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ActorTypeDto>(<any>null);
+        return _observableOf<ActorDto>(<any>null);
     }
 
-    create(variable: ActorTypeDto): Observable<ActorTypeDto> {
+    create(variable: ActorDto): Observable<ActorDto> {
         let url_ = this.baseUrl + "/api/services/app/ActorType/Create";
 
         let options_: any = {
@@ -151,14 +150,14 @@ export class ActorTypeServiceProxy {
                 try {
                     return this.processCreate(<any>response_);
                 } catch (e) {
-                    return <Observable<ActorTypeDto>><any>_observableThrow(e);
+                    return <Observable<ActorDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ActorTypeDto>><any>_observableThrow(response_);
+                return <Observable<ActorDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreate(response: HttpResponseBase): Observable<ActorTypeDto> {
+    protected processCreate(response: HttpResponseBase): Observable<ActorDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -169,7 +168,7 @@ export class ActorTypeServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = ActorTypeDto.fromJS(resultData200);
+                result200 = ActorDto.fromJS(resultData200);
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -177,10 +176,10 @@ export class ActorTypeServiceProxy {
                 return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ActorTypeDto>(<any>null);
+        return _observableOf<ActorDto>(<any>null);
     }
 
-    update(variable: ActorTypeDto): Observable<void> {
+    update(variable: ActorDto): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/ActorType/Update";
 
         let options_: any = {
@@ -238,16 +237,16 @@ export class ActorTypeServiceProxy {
     }
 }
 
-export interface IPagedResultDtoOfActorTypeListDto {
+export interface IPagedResultDtoOfActorListDto {
     totalCount: number;
-    items: ActorTypeDto[] | undefined;
+    items: ActorDto[] | undefined;
 }
 
-export class PagedResultDtoOfActorTypeListDto implements IPagedResultDtoOfActorTypeListDto {
+export class PagedResultDtoOfActorListDto implements IPagedResultDtoOfActorListDto {
     totalCount!: number;
-    items!: ActorTypeDto[] | undefined;
+    items!: ActorDto[] | undefined;
 
-    constructor(data?: IPagedResultDtoOfActorTypeListDto) {
+    constructor(data?: IPagedResultDtoOfActorListDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -262,14 +261,14 @@ export class PagedResultDtoOfActorTypeListDto implements IPagedResultDtoOfActorT
             if (Array.isArray(_data["items"])) {
                 this.items = [] as any;
                 for (let item of _data["items"])
-                    this.items!.push(ActorTypeDto.fromJS(item));
+                    this.items!.push(ActorDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): PagedResultDtoOfActorTypeListDto {
+    static fromJS(data: any): PagedResultDtoOfActorListDto {
         data = typeof data === 'object' ? data : {};
-        let result = new PagedResultDtoOfActorTypeListDto();
+        let result = new PagedResultDtoOfActorListDto();
         result.init(data);
         return result;
     }
@@ -286,24 +285,22 @@ export class PagedResultDtoOfActorTypeListDto implements IPagedResultDtoOfActorT
     }
 }
 
-export interface IActorTypeDto {
+export interface IActorDto {
     id: number;
     name: string;
-    actorType: SocialConflictAlertActorTypeDto;
     enabled: boolean;
     showDetail: boolean;
     showMovement: boolean;
 }
 
-export class ActorTypeDto implements IActorTypeDto {
+export class ActorDto implements IActorDto {
     id: number;
     name: string;
-    actorType: SocialConflictAlertActorTypeDto;
     enabled: boolean;
     showDetail: boolean;
     showMovement: boolean;
 
-    constructor(data?: IActorTypeDto) {
+    constructor(data?: IActorDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -316,16 +313,15 @@ export class ActorTypeDto implements IActorTypeDto {
         if (_data) {
             this.id = _data["id"];
             this.name = _data["name"];
-            this.actorType = _data["actorType"];
             this.enabled = _data["enabled"];
             this.showDetail = _data["showDetail"];
             this.showMovement = _data["showMovement"];
         }
     }
 
-    static fromJS(data: any): ActorTypeDto {
+    static fromJS(data: any): ActorDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ActorTypeDto();
+        let result = new ActorDto();
         result.init(data);
         return result;
     }
@@ -334,8 +330,6 @@ export class ActorTypeDto implements IActorTypeDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
-        data["actorType"] = this.actorType;
-
         data["enabled"] = this.enabled;
         data["showDetail"] = this.showDetail;
         data["showMovement"] = this.showMovement;
