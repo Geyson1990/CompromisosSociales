@@ -12,7 +12,6 @@ import { TabView } from 'primeng';
 import { finalize } from 'rxjs/operators';
 import { CompromiseCreateEditPhaseMilestoneModalComponent } from './phase-milestone-information/create-edit-phase-milestone/create-edit-phase-milestone.component';
 import { CompromisePipComponent } from './pip/pip.component';
-import * as moment from 'moment';
 
 @Component({
     templateUrl: 'create-edit-compromise.component.html',

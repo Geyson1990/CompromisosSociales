@@ -336,6 +336,31 @@ export class CompromiseServiceProxy {
         }));
     }
 
+    deleteCompromiseList(item: any): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Compromise/DeleteList";
+
+        let options_: any = {
+            observe: "response",
+            responseType: "blob",
+            body: item,
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return processComplete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return processComplete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
     update(item: CompromiseDto): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Compromise/Update";
 
@@ -1191,10 +1216,11 @@ export class CompromiseResponsibleDto implements ICompromiseResponsibleDto {
     }
 
     toJSON(data?: any) {
+        console.log("this.responsibleActor cccccccc:",this.responsibleActor)
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["responsibleActor"] = this.responsibleActor ? this.responsibleActor.toJSON() : <any>undefined;
-        data["responsibleSubActor"] = this.responsibleSubActor ? this.responsibleSubActor.toJSON() : <any>undefined;
+        data["responsibleActor"] = this.responsibleActor ? toJSON(this.responsibleActor) : <any>undefined;
+        data["responsibleSubActor"] = this.responsibleSubActor ? toJSON(this.responsibleSubActor) : <any>undefined;
         data["remove"] = this.remove;
 
         return data;
@@ -1253,6 +1279,15 @@ export class CompromiseResponsibleActorDto implements ICompromiseResponsibleActo
 
         return data;
     }
+}
+
+export function toJSON(data?: any) {
+    console.log("data:",data)
+    data = typeof data === 'object' ? data : {};
+    data["id"] = data.id;
+    data["name"] = data.name;
+
+    return data;
 }
 
 export interface ICompromiseResponsibleSubActorDto {
