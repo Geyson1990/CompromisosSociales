@@ -473,6 +473,8 @@ export class ISectorMeetSessionDto {
     province: SectorMeetSessionProvinceReverseDto;
     district: SectorMeetSessionDistrictReverseDto;
     location: string;
+    latitude: string;
+    longitude: string;
     side: string;
     personTime: moment.Moment;
     person: SectorMeetSessionPersonDto;
@@ -567,6 +569,8 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
                 province: undefined
             });
             this.location = data["location"];
+            this.latitude = data["latitude"];
+            this.longitude = data["longitude"];
             this.side = data["side"];
             this.personTime = data["personTime"] ? moment(data["personTime"].toString()) : <any>undefined;
             this.person = data["person"] ? SectorMeetSessionPersonDto.fromJS(data["person"]) : new SectorMeetSessionPersonDto({
@@ -629,6 +633,8 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
         data["province"] = this.province ? this.province.toJSON() : <any>undefined;
         data["district"] = this.district ? this.district.toJSON() : <any>undefined;
         data["location"] = this.location;
+        data["latitude"] = this.latitude;
+        data["longitude"] = this.longitude;
         data["side"] = this.side;
         data["personTime"] = this.personTime ? this.personTime.toISOString() : <any>undefined;
         data["person"] = this.person ? this.person.toJSON() : <any>undefined;
