@@ -72,11 +72,9 @@ export class CompromiseResponsibleActorComponent extends AppComponentBase implem
                 objeto.remove = false;
                 objeto.responsibleActor = actores[i];
                 objeto.responsibleSubActor = actores[i].responsibleSubActors[x];
-                debugger;
                 this.selectedResponsibleActorsAutoComplete.push(objeto);
             }
         }
-        debugger;
         // actores.forEach(function(actor, i) {  
         //     let listado: CompromiseResponsibleDto[];
         // actor.responsibleSubActors.forEach(function(subactor, i){
@@ -96,7 +94,6 @@ export class CompromiseResponsibleActorComponent extends AppComponentBase implem
     }
 
     onResponsibleTypeChange(event: any) {
-        debugger;
         const responsibleTypeId: number = +event.target.value;
         const responsibleTypeIndex: number = this.responsibleTypes.findIndex(p => p.id == responsibleTypeId);
 

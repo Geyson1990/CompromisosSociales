@@ -30,6 +30,7 @@ export class SummaryInformationComponent extends AppComponentBase implements OnI
     
     private skipCount: number;
     private maxResultCount: number;
+    public IsDescriptionSocialConflict: boolean = false;
 
     constructor(_injector: Injector) {
         super(_injector);
@@ -41,6 +42,7 @@ export class SummaryInformationComponent extends AppComponentBase implements OnI
 
     ngOnInit(): void {
         this.formatPagination(this.skipCount, this.maxResultCount);
+        this.IsDescriptionSocialConflict = this.state.sectorMeetSession.isDescriptionSocialConflict;
     }
 
     getData(event?: LazyLoadEvent) {

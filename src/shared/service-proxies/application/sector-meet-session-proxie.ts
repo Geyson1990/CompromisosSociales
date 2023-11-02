@@ -475,6 +475,8 @@ export class ISectorMeetSessionDto {
     location: string;
     latitude: string;
     longitude: string;
+    mainSummary: string;
+    isDescriptionSocialConflict: boolean;
     side: string;
     personTime: moment.Moment;
     person: SectorMeetSessionPersonDto;
@@ -499,6 +501,8 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
     location: string;
     latitude: string;
     longitude: string;
+    mainSummary: string;
+    isDescriptionSocialConflict: boolean;
     side: string;
     personTime: moment.Moment;
     person: SectorMeetSessionPersonDto;
@@ -571,6 +575,8 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
             this.location = data["location"];
             this.latitude = data["latitude"];
             this.longitude = data["longitude"];
+            this.mainSummary = data["mainSummary"];
+            this.isDescriptionSocialConflict = data["isDescriptionSocialConflict"];
             this.side = data["side"];
             this.personTime = data["personTime"] ? moment(data["personTime"].toString()) : <any>undefined;
             this.person = data["person"] ? SectorMeetSessionPersonDto.fromJS(data["person"]) : new SectorMeetSessionPersonDto({
@@ -635,6 +641,8 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
         data["location"] = this.location;
         data["latitude"] = this.latitude;
         data["longitude"] = this.longitude;
+        data["mainSummary"] = this.mainSummary;
+        data["isDescriptionSocialConflict"] = this.isDescriptionSocialConflict;
         data["side"] = this.side;
         data["personTime"] = this.personTime ? this.personTime.toISOString() : <any>undefined;
         data["person"] = this.person ? this.person.toJSON() : <any>undefined;

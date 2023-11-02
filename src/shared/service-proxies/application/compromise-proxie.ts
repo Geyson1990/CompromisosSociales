@@ -765,7 +765,6 @@ export class CompromiseDto implements ICompromiseDto {
     }
 
     toJSON(data?: any) {
-        debugger;
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["code"] = this.code;
@@ -777,7 +776,6 @@ export class CompromiseDto implements ICompromiseDto {
         data["status"] = this.status ? this.status.toJSON() : <any>undefined;
         data["isPriority"] = this.isPriority;
         data["womanCompromise"] = this.womanCompromise;
-        debugger;
         data["dueDate"] = this.dueDate ? this.dueDate.toISOString() : <any>undefined;
         data["deadLine"] = this.deadLine ? this.deadLine.toISOString() : <any>undefined;
         data["priorityReference"] = this.priorityReference;
@@ -896,7 +894,6 @@ export class CompromiseTracingDto implements ICompromiseTracingDto {
 
     init(data?: any) {
         if (data) {
-            debugger;
             this.id = data["id"];
             this.description = data["description"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
