@@ -23,7 +23,6 @@ export class ConflictPendingsComponent extends AppComponentBase implements OnIni
     @Input() type: number;
     @Output() listConflictPending: EventEmitter<void> = new EventEmitter<void>();
     @Output() listDataConflicts: EventEmitter<void> = new EventEmitter<void>();
-    initialValueForSecondColumn: number = 1;
 
     private _conflict: any;
     @Input() set conflicts(value: SectorMeetSessionAgreementDto[]) {
@@ -78,10 +77,6 @@ export class ConflictPendingsComponent extends AppComponentBase implements OnIni
         this.primengTableHelper.hideLoadingIndicator();
     }
 
-    incrementSecondColumnValue() {
-        this.initialValueForSecondColumn++;
-      }
-    
     deleteConflict(id:number) {
 
     this._sectorMeetSessionAgreementServiceProxy.delete(id).subscribe(resp => {
