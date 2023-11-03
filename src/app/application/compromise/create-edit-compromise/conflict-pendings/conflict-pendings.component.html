@@ -47,13 +47,14 @@
                         </th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-record="$implicit" let-index="index">
+                <ng-template pTemplate="body" let-record="$implicit" let-rowIndex="rowIndex">
                     
                     <tr>
                         <td style="width: 2rem" *ngIf="type == 1 ">
                             <p-tableCheckbox [value]="record"></p-tableCheckbox>
                         </td>
                         <td style="width: 20px"> 
+                            {{(rowIndex + 1)}}
                         </td>
                         <td style="width: 100px"> 
                             {{record?.description}}

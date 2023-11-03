@@ -15,10 +15,12 @@
                 <table id="EntityPropertyChangesTable" class="display table table-striped table-bordered table-hover dt-responsive">
                     <thead>
                         <tr>
-                            <th>Nombre</th>
+                            <th>Descripción </th>
+                            <th>Nombre </th>
                             <th>Acción</th>
                         </tr>
                         <tr *ngFor="let propertyChange of entityChange">
+                            <td><strong>{{propertyChange.name}}</strong></td>
                             <td><strong>{{propertyChange.fileName}}</strong></td>
                             <td><button type="submit" class="btn btn-primary font-weight-bold" busyText="Guardar..." (click)="openInNewTab(propertyChange)">
                                 <i class="fa fa-download"></i>
