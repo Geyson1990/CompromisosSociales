@@ -134,6 +134,7 @@ export class UploaderInformationComponent extends AppComponentBase {
             case 'jpeg': return 'fas fa-image';
             case 'jpe': return 'fas fa-image';
             case 'png': return 'fas fa-image';
+            case 'pdf': return 'fas fa-image';
             default: return 'fas fa-cloud-upload-alt';
         }
     }
@@ -149,6 +150,7 @@ export class UploaderInformationComponent extends AppComponentBase {
             case 'jpeg': return true;
             case 'jpe': return true;
             case 'png': return true;
+            case 'pdf': return true;
             default: return false;
         }
     }
