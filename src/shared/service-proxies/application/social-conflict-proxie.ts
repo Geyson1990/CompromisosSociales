@@ -94,6 +94,37 @@ export class SocialConflictServiceProxy {
         return _observableOf<PagedResultDtoOfSocialConflictListDto>(<any>null);
     }
 
+    // getConflictPendings(id: number): Observable<CompromiseGetDataDto> {
+    //     let url_ = this.baseUrl + "/api/services/app/Compromise/Get?";
+    //     if (id === null)
+    //         throw new Error("The parameter 'Id' cannot be null.");
+    //     else if (id !== undefined)
+    //         url_ += "Id=" + encodeURIComponent("" + id) + "&";
+    //     url_ = url_.replace(/[?&]$/, "");
+
+
+    //     let options_: any = {
+    //         observe: "response",
+    //         responseType: "blob",
+    //         headers: new HttpHeaders({
+    //             "Accept": "text/plain"
+    //         })
+    //     };
+
+    //     return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
+    //         return this.processGet(response_);
+    //     })).pipe(_observableCatch((response_: any) => {
+    //         if (response_ instanceof HttpResponseBase) {
+    //             try {
+    //                 return this.processGet(<any>response_);
+    //             } catch (e) {
+    //                 return <Observable<CompromiseGetDataDto>><any>_observableThrow(e);
+    //             }
+    //         } else
+    //             return <Observable<CompromiseGetDataDto>><any>_observableThrow(response_);
+    //     }));
+    // }
+
     getMatrizToExcel(filter: string | undefined, verification: ConflictVerificationState, code: string | undefined, territorialUnit: number | undefined, startDate: moment.Moment | undefined, endDate: moment.Moment | undefined, filterByDate: boolean | undefined, sorting: string | undefined, maxResultCount: number | undefined, skipCount: number | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/SocialConflict/GetMatrizToExcel?";
         if (filter !== undefined)

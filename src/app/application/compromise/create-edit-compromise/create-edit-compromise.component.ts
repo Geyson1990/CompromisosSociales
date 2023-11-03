@@ -6,12 +6,13 @@ import { FindRecordComponent } from '@shared/component/find-record/find-record.c
 import { CompromiseDto, CompromiseLocationDto, CompromiseServiceProxy, CompromiseTimelineDto, CompromiseType } from '@shared/service-proxies/application/compromise-proxie';
 import { PipMefDto } from '@shared/service-proxies/application/pip-mef-proxie';
 import { UploadServiceProxy } from '@shared/service-proxies/application/upload-proxie';
-import { UtilityParameterDto, UtilityRecordDto, UtilityServiceProxy } from '@shared/service-proxies/application/utility-proxie';
+import { UtilityParameterDto, UtilityRecordDto, UtilityServiceProxy, UtilitySocialConflictDto } from '@shared/service-proxies/application/utility-proxie';
 import { TokenService } from 'abp-ng2-module';
 import { TabView } from 'primeng';
 import { finalize } from 'rxjs/operators';
 import { CompromiseCreateEditPhaseMilestoneModalComponent } from './phase-milestone-information/create-edit-phase-milestone/create-edit-phase-milestone.component';
 import { CompromisePipComponent } from './pip/pip.component';
+import { SectorMeetSessionAgreementDto, SectorMeetSessionAgreementServiceProxy } from '@shared/service-proxies/application/sector-meet-session-agreement-proxie';
 
 @Component({
     templateUrl: 'create-edit-compromise.component.html',
@@ -35,11 +36,16 @@ export class CreateEditCompromiseComponent extends AppComponentBase implements O
     compromise: CompromiseDto = new CompromiseDto();
     dueDate:Date;
     deadLine:Date;
-
+    socialConflictId: any;
     isPip(): boolean {
         return this.compromise.type == CompromiseType.PIP;
     }
+    listSectorMeetSessionAgreementDto: SectorMeetSessionAgreementDto[] = [];
+    listConflictGeneral: SectorMeetSessionAgreementDto[] = [];
+    listConflictPendings: SectorMeetSessionAgreementDto[] = [];
 
+    type = 1;
+    typeTwo = 2;
     indexes = {
         generalInformation: 0,
         responsibleActors: 1,
@@ -56,7 +62,7 @@ export class CreateEditCompromiseComponent extends AppComponentBase implements O
         pipPhases: [],
         pipMilestones: [],
         labels: [],
-        states: []
+        states: [],
     }
 
     compromiseTypes = {
@@ -69,7 +75,8 @@ export class CreateEditCompromiseComponent extends AppComponentBase implements O
         private _tokenService: TokenService,
         private _uploadServiceProxy: UploadServiceProxy,
         private _utilityServiceProxy: UtilityServiceProxy,
-        private _compromiseServiceProxy: CompromiseServiceProxy) {
+        private _compromiseServiceProxy: CompromiseServiceProxy,
+        private _sectorMeetSessionAgreementServiceProxy: SectorMeetSessionAgreementServiceProxy) {
         super(_injector);
     }
 
@@ -122,9 +129,9 @@ export class CreateEditCompromiseComponent extends AppComponentBase implements O
                     this.utilities.responsibleTypes = response.responsibleTypes;
                     this.utilities.labels = response.labels;
                     this.utilities.states = response.states;
-
+                    this.socialConflictId = response?.compromise?.record?.socialConflict?.id;
                     this.loaded = true;
-
+                    this.listConflictPending(this.socialConflictId)
                     if (tabIndex && this.compromise.isPriority) {
                         setTimeout(() => this.activeIndex = 4, 500);
                     }
@@ -134,6 +141,27 @@ export class CreateEditCompromiseComponent extends AppComponentBase implements O
         }, 500)
     }
 
+    listConflictPending (id:number) {
+        this._sectorMeetSessionAgreementServiceProxy.get(id).pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator())).subscribe(result => {
+            this.listSectorMeetSessionAgreementDto = result;
+            this.filterConflictPending();
+            console.log(" this._listSectorMeetSessionAgreementDto kkk",this.listSectorMeetSessionAgreementDto)        
+            this.primengTableHelper.hideLoadingIndicator();
+        });
+    }    
+
+    filterConflictPending () {
+
+        this.listConflictPendings = this.listSectorMeetSessionAgreementDto.filter(item => (
+            (item.compromiseId === 0 )
+                ));
+
+        this.listConflictGeneral = this.listSectorMeetSessionAgreementDto.filter(item => (
+        (item.compromiseId !== 0 )
+            ));
+
+    }
+        
 
     selectRecord(record: UtilityRecordDto) {
         this.showMainSpinner('Cargando localizaciones del conflicto social...');

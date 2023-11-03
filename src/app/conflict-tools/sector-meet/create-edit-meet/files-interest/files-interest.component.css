@@ -1,0 +1,76 @@
+hr {
+    background: #8DA1B5 !important;
+    height: 1px;
+    width: 100%;
+    margin-bottom: 0.5rem !important;
+    margin-top: 0.5rem !important;
+}
+
+.form-uploader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    height: 70px;
+    padding: 5px 10px;
+    font-size: 14px;
+    line-height: 22px;
+    color: #777;
+    background-color: #FFF;
+    background-image: none;
+    text-align: center;
+    border: 2px solid #E5E5E5;
+    -webkit-transition: border-color .15s linear;
+    transition: border-color .15s linear;
+
+}
+
+.form-uploader>input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 5;
+}
+
+.form-uploader-message>i {
+    font-size: 40px;
+}
+
+.close:before {
+    cursor: pointer !important;
+    font-size: 1.3rem;
+    content: "";
+}
+
+.close {
+    outline: none !important;
+    color: #74788d;
+    font-family: "LineAwesome";
+    text-decoration: inherit;
+    text-rendering: optimizeLegibility;
+    text-transform: none;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    padding: 1.25rem;
+    margin: -1rem -1rem -1rem auto;
+}
+
+.form-uploader-remove {
+    z-index: 10;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 10px;
+}

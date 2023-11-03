@@ -63,8 +63,11 @@
                         <p-tabPanel header="Aspectos generales">
                             <compromise-general-information 
                                 [compromise]="compromise" 
+                                [conflicts]="listConflictGeneral"
+                                [type]="typeTwo"
                                 [labels]="utilities.labels"
-                                (openFindRecord)="findRecordModal.show()">
+                                (openFindRecord)="findRecordModal.show()"
+                                (listConflictPending)="listConflictPending(socialConflictId)">
                             </compromise-general-information>
                         </p-tabPanel>
 
@@ -104,6 +107,15 @@
                                 [states]="utilities.states"
                                 [compromise]="compromise">
                             </compromise-tracing>
+                        </p-tabPanel>
+
+                        <p-tabPanel header="Pendientes">
+                            <conflict-pendings
+                                [conflicts]="listConflictPendings"
+                                [type]="type"
+                                (listConflictPending)="listConflictPending(socialConflictId)"
+                                [compromise]="compromise">
+                            </conflict-pendings>
                         </p-tabPanel>
 
                         <p-tabPanel header="Gestión de tareas" *ngIf="compromise.isPriority && compromise.id">

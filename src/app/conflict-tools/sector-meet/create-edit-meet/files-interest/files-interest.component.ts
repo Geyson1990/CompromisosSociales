@@ -8,13 +8,13 @@ import { PersonType } from '@shared/service-proxies/service-proxies';
 import * as moment from 'moment';
 
 @Component({
-    selector: 'uploader-meet',
-    templateUrl: 'uploader-meet.component.html',
+    selector: 'files-interest',
+    templateUrl: 'files-interest.component.html',
     styleUrls: [
-        'uploader-meet.component.css'
+        'files-interest.component.css'
     ]
 })
-export class UploaderMeetComponent extends AppComponentBase {
+export class FilesInterestComponent extends AppComponentBase {
 
     private _attachments: AttachmentUploadDto[];
     state: SectorSessionStateService;
@@ -36,7 +36,7 @@ export class UploaderMeetComponent extends AppComponentBase {
     @Input() hideHeader: boolean = false;
     @Input() hideUploader: boolean = false;
     @Input() header: string = 'Agregar archivos';
-    @Input() subtitle: string = 'Ud. puede seleccionar un archivo PDF (.pdf) o una imágen (.jpg, .jpeg, .jpe, .png) con un tamaño máximo de 5MB.';
+    @Input() subtitle: string = 'Ud. puede seleccionar un archivo WORD (doc, docx), PDF (.pdf), Excel (.xslx, .xlsl) con un tamaño máximo de 5MB.';
     @Input() size: ResourceSizeType = ResourceSizeType.MB5;
     @Input() files: boolean = true;
     @Input() images: boolean = false;
@@ -73,7 +73,7 @@ export class UploaderMeetComponent extends AppComponentBase {
         attachment.name = this.documentTitle;
 
         // this.saveAttachment.emit(attachment);
-        this.state.sectorMeetSession.uploadFilesPDF.push(attachment);
+        this.state.sectorMeetSession.uploadFiles.push(attachment);
         this.uploadFile();
     }
 
@@ -212,7 +212,7 @@ export class UploaderMeetComponent extends AppComponentBase {
 
         if (this.extensions && this.extension)
             return extension == this.extension;
-        console.log("avaliableExtensions:",this.avaliableExtensions)
+
         if (this.avaliableExtensions.length > 0) {
             for (let extension of this.avaliableExtensions) {
                 if (extension == extension)
@@ -233,6 +233,12 @@ export class UploaderMeetComponent extends AppComponentBase {
         if (this.files) {
             switch (extension) {
                 case 'pdf': return true;
+                case 'xlsx': return true;
+                case 'xls': return true;
+                case 'csv': return true;
+                case 'doc': return true;
+                case 'docx': return true;
+                case 'odt': return true;
             }
         }
 

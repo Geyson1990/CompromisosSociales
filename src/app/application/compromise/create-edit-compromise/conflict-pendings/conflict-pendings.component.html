@@ -1,0 +1,85 @@
+<div class="tab-container">
+    <div class="row mb-4" *ngIf="type == 1 ">
+        <div class="col-sm-12">
+            <div class="kt-subheader__toolbar">
+                <div class="kt-subheader__wrapper">
+                    <button (click)="saveSocialConflict()" [disabled]="!selectedConflicts || selectedConflicts?.length === 0" class="btn btn-primary">
+                        <i class="fa fa-save"></i>
+                        Guardar
+                    </button>    
+                </div>
+            </div>        
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+            <p-table #dataTable sortMode="multiple"
+                [(selection)]="selectedConflicts"
+                [value]="conflicts"
+                [paginator]="false"
+                [scrollable]="true" ScrollWidth="100%"
+                [responsive]="primengTableHelper.isResponsive"
+                [resizableColumns]="primengTableHelper.resizableColumns">
+                <ng-template pTemplate="header">
+                    
+                    <tr>
+                        <th style="width: 2rem" *ngIf="type == 1 ">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th style="width: 20px">
+                            N°
+                        </th>
+                        <th style="width: 100px">
+                            Acuerdo
+                        </th>
+                        <th style="width: 50px">
+                            Fecha
+                        </th>
+                        <th style="width: 100px">
+                            Usuarios que intervienen
+                        </th>
+                        <th style="width: 2rem">
+                            Archivo
+                        </th>
+                        <th style="width: 2rem" *ngIf="type == 2 ">
+                            Acción
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-record="$implicit" let-index="index">
+                    
+                    <tr>
+                        <td style="width: 2rem" *ngIf="type == 1 ">
+                            <p-tableCheckbox [value]="record"></p-tableCheckbox>
+                        </td>
+                        <td style="width: 20px"> 
+                        </td>
+                        <td style="width: 100px"> 
+                            {{record?.description}}
+                        </td>
+                        <td style="width: 50px">
+                            {{record.creationTime | momentFormat:'L'}}
+                        </td>
+                        <td style="width: 100px">
+                            {{record?.person?.name}}
+                        </td>
+                        <td style="width: 2rem">
+                            <button class="btn btn-outline-primary btn-sm btn-icon"
+                            (click)="showResources(record?.resourceRelationDto)"
+                            title="descargar">
+                            <i class="la la-chevron-circle-right" [attr.aria-label]="l('Select')"></i>
+                            </button>
+                        </td>
+                        <td style="width: 2rem" *ngIf="type == 2 ">
+                            <button  (click)="deleteConflict(record?.id)" class="btn btn-danger">
+                                <i class="fa fa-trash"></i>
+                              </button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
+<resource-detail-modal #resourceDetailModal></resource-detail-modal>
