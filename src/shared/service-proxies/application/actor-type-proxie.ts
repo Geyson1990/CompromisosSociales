@@ -335,7 +335,7 @@ export class ActorTypeDto implements IActorTypeDto {
         data["id"] = this.id;
         data["name"] = this.name;
         data["actorType"] = this.actorType;
-
+        // data["dni"] = this.dni;
         data["enabled"] = this.enabled;
         data["showDetail"] = this.showDetail;
         data["showMovement"] = this.showMovement;

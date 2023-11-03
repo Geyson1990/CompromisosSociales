@@ -63,8 +63,11 @@
                         <p-tabPanel header="Aspectos generales">
                             <compromise-general-information 
                                 [compromise]="compromise" 
+                                [conflicts]="listConflictGeneral"
+                                [type]="typeTwo"
                                 [labels]="utilities.labels"
-                                (openFindRecord)="findRecordModal.show()">
+                                (openFindRecord)="findRecordModal.show()"
+                                (listConflictPending)="listConflictPending(socialConflictId)">
                             </compromise-general-information>
                         </p-tabPanel>
 
@@ -72,7 +75,7 @@
                             <div class="tab-container">                                
                                 <compromise-responsible-actor 
                                     [responsibleActors]="utilities.responsibleActors" 
-                                    [responsibleTypes]="utilities.responsibleTypes" 
+                                    [responsibleTypes]="utilities.responsibleTypes"
                                     [compromise]="compromise">
                                 </compromise-responsible-actor>   
                                 <compromise-responsible-actor-old
@@ -104,6 +107,15 @@
                                 [states]="utilities.states"
                                 [compromise]="compromise">
                             </compromise-tracing>
+                        </p-tabPanel>
+
+                        <p-tabPanel header="Pendientes">
+                            <conflict-pendings
+                                [conflicts]="listConflictPendings"
+                                [type]="type"
+                                (listConflictPending)="listConflictPending(socialConflictId)"
+                                [compromise]="compromise">
+                            </conflict-pendings>
                         </p-tabPanel>
 
                         <p-tabPanel header="Gestión de tareas" *ngIf="compromise.isPriority && compromise.id">

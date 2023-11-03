@@ -141,6 +141,9 @@ import { CompromiseResponsibleActorComponent } from './compromise/create-edit-co
 import { CompromiseResponsibleActorOldComponent } from './compromise/create-edit-compromise/responsible-actor-old/responsible-actor.component';
 import { NoteInformationSocialConflictComponent } from './social-conflict/create-edit-social-conflict/note-information/note-information.component';
 import { NoteInformationSocialConflictSensibleComponent } from './social-conflict-sensible/create-edit-social-conflict-sensible/note-information/note-information.component';
+import { NgxSelectModule } from 'ngx-select-ex';
+import { ConflictPendingsComponent } from './compromise/create-edit-compromise/conflict-pendings/conflict-pendings.component';
+import { ResourceDetailModalComponent } from './compromise/create-edit-compromise/conflict-pendings/resources/resource-detail-modal.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // suppressScrollX: true
@@ -182,7 +185,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         TooltipModule,
         CalendarModule,
         ChipsModule,
-        SelectButtonModule
+        SelectButtonModule,
+        NgxSelectModule
     ],
     declarations: [
         //SocialConflict
@@ -266,6 +270,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         CompromiseTaskManagementComponent,
         CompromisePhaseMilestoneInformationComponent,
         CompromiseCreateEditPhaseMilestoneModalComponent,
+        ConflictPendingsComponent,
+        ResourceDetailModalComponent,
         //Task Managements
         TaskManagementComponent,
         TaskListComponent,
