@@ -69,7 +69,7 @@ import { ManagementInformationSocialConflictComponent } from './social-conflict/
 import { CreateEditManagementInformationSocialConflictComponent } from './social-conflict/create-edit-social-conflict/management-information/create-edit-management/create-edit-management.component';
 import { StateInformationSocialConflictComponent } from './social-conflict/create-edit-social-conflict/state-information/state-information.component';
 import { CreateEditStateInformationSocialConflictComponent } from './social-conflict/create-edit-social-conflict/state-information/create-edit-state/create-edit-state.component';
-import { ActorComponent } from './actor/actor.component';
+import { ActorListComponent } from './actor/actor-list.component';
 import { ViolenceFactInformationSocialConflictComponent } from './social-conflict/create-edit-social-conflict/violence-fact-information/violence-fact-information.component';
 import { CreateEditViolenceFactSocialConflictComponent } from './social-conflict/create-edit-social-conflict/violence-fact-information/create-edit-violence-fact/create-edit-violence-fact.component';
 import { CalendarModule } from 'primeng';
@@ -297,7 +297,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         CreateEditOrderComponent,
         ComplianceComponent,
         ComplianceStateComponent,
-        ActorComponent,
+        ActorListComponent,
         LogoutComponent
     ],
     exports: [

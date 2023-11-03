@@ -42,6 +42,7 @@ import { DialogSpaceDocumentTypeComponent } from './dialog-space-document-type/d
 import { DialogSpaceHolidayComponent } from './dialog-space-holiday/dialog-space-holiday.component';
 import { DialogSpaceTypeComponent } from './dialog-space-type/dialog-space-type.component';
 import { DialogSpaceDocumentSituationComponent } from './dialog-space-document-situation/dialog-space-document-situation.component';
+import { ActorComponent } from './actor/actor.component';
 
 @NgModule({
     imports: [
@@ -91,6 +92,7 @@ import { DialogSpaceDocumentSituationComponent } from './dialog-space-document-s
                     { path: 'dialog-space-holidays', component: DialogSpaceHolidayComponent, data: { permission: 'Pages.Maintenance.DialogSpaceHoliday' } },
                     { path: 'dialog-space-types', component: DialogSpaceTypeComponent, data: { permission: 'Pages.Maintenance.DialogSpaceType' } },
                     { path: 'dialog-space-document-situations', component: DialogSpaceDocumentSituationComponent, data: { permission: 'Pages.Maintenance.DialogSpaceDocumentSituation' } },
+                    { path: 'actors', component: ActorComponent, data: { permission: 'Pages.Maintenance.Actor' } },
                     { path: '', redirectTo: '/app/admin/hostDashboard', pathMatch: 'full' },
                     { path: '**', redirectTo: '/app/admin/hostDashboard' }
                 ]

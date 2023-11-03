@@ -6,7 +6,7 @@ import { API_BASE_URL, blobToText, throwException, processComplete } from '../se
 import * as moment from 'moment';
 
 @Injectable()
-export class ManagerServiceProxy {
+export class ActorServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -16,8 +16,8 @@ export class ManagerServiceProxy {
         this.baseUrl = baseUrl ? baseUrl : "";
     }
 
-    getAll(filter: string | undefined, sorting: string | undefined, maxResultCount: number | undefined, skipCount: number | undefined): Observable<PagedResultDtoOfManagerListDto> {
-        let url_ = this.baseUrl + "/api/services/app/Manager/GetAll?";
+    getAll(filter: string | undefined, sorting: string | undefined, maxResultCount: number | undefined, skipCount: number | undefined): Observable<PagedResultDtoOfActorListDto> {
+        let url_ = this.baseUrl + "/api/services/app/Actor/GetAll?";
         if (filter !== undefined)
             url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
         if (sorting !== undefined)
@@ -47,14 +47,14 @@ export class ManagerServiceProxy {
                 try {
                     return this.processGetAll(<any>response_);
                 } catch (e) {
-                    return <Observable<PagedResultDtoOfManagerListDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfActorListDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<PagedResultDtoOfManagerListDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfActorListDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfManagerListDto> {
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfActorListDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -65,7 +65,7 @@ export class ManagerServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = PagedResultDtoOfManagerListDto.fromJS(resultData200);
+                result200 = PagedResultDtoOfActorListDto.fromJS(resultData200);
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -73,11 +73,11 @@ export class ManagerServiceProxy {
                 return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<PagedResultDtoOfManagerListDto>(<any>null);
+        return _observableOf<PagedResultDtoOfActorListDto>(<any>null);
     }
 
-    get(id: number): Observable<ManagerGetDataDto> {
-        let url_ = this.baseUrl + "/api/services/app/Manager/Get?";
+    get(id: number): Observable<ActorGetDataDto> {
+        let url_ = this.baseUrl + "/api/services/app/Actor/Get?";
         if (id === null)
             throw new Error("The parameter 'Id' cannot be null.");
         else if (id !== undefined)
@@ -100,14 +100,14 @@ export class ManagerServiceProxy {
                 try {
                     return this.processGet(<any>response_);
                 } catch (e) {
-                    return <Observable<ManagerGetDataDto>><any>_observableThrow(e);
+                    return <Observable<ActorGetDataDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ManagerGetDataDto>><any>_observableThrow(response_);
+                return <Observable<ActorGetDataDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGet(response: HttpResponseBase): Observable<ManagerGetDataDto> {
+    protected processGet(response: HttpResponseBase): Observable<ActorGetDataDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -118,8 +118,8 @@ export class ManagerServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = ManagerGetDataDto.fromJS(resultData200);
-                console.log("asd",result200)
+                result200 = ActorGetDataDto.fromJS(resultData200);
+                console.log("result200",result200)
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -127,11 +127,11 @@ export class ManagerServiceProxy {
                 return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ManagerGetDataDto>(<any>null);
+        return _observableOf<ActorGetDataDto>(<any>null);
     }
 
-    create(variable: ManagerDto): Observable<ManagerDto> {
-        let url_ = this.baseUrl + "/api/services/app/Manager/Create";
+    create(variable: ActorDto): Observable<ActorDto> {
+        let url_ = this.baseUrl + "/api/services/app/Actor/Create";
 
         let options_: any = {
             observe: "response",
@@ -150,14 +150,14 @@ export class ManagerServiceProxy {
                 try {
                     return this.processCreate(<any>response_);
                 } catch (e) {
-                    return <Observable<ManagerDto>><any>_observableThrow(e);
+                    return <Observable<ActorDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ManagerDto>><any>_observableThrow(response_);
+                return <Observable<ActorDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreate(response: HttpResponseBase): Observable<ManagerDto> {
+    protected processCreate(response: HttpResponseBase): Observable<ActorDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -168,7 +168,7 @@ export class ManagerServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = ManagerDto.fromJS(resultData200);
+                result200 = ActorDto.fromJS(resultData200);
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -176,12 +176,13 @@ export class ManagerServiceProxy {
                 return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ManagerDto>(<any>null);
+        return _observableOf<ActorDto>(<any>null);
     }
 
-    update(variable: ManagerDto): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/Manager/Update";
+    update(variable: ActorDto): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Actor/Update";
 
+        console.log("udpate",variable.toJSON())
         let options_: any = {
             observe: "response",
             responseType: "blob",
@@ -207,7 +208,7 @@ export class ManagerServiceProxy {
     }
 
     delete(id: number): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/Manager/Delete?";
+        let url_ = this.baseUrl + "/api/services/app/Actor/Delete?";
         if (id === null)
             throw new Error("The parameter 'Id' cannot be null.");
         else if (id !== undefined)
@@ -237,16 +238,16 @@ export class ManagerServiceProxy {
     }
 }
 
-export interface IPagedResultDtoOfManagerListDto {
+export interface IPagedResultDtoOfActorListDto {
     totalCount: number;
-    items: ManagerDto[] | undefined;
+    items: ActorDto[] | undefined;
 }
 
-export class PagedResultDtoOfManagerListDto implements IPagedResultDtoOfManagerListDto {
+export class PagedResultDtoOfActorListDto implements IPagedResultDtoOfActorListDto {
     totalCount!: number;
-    items!: ManagerDto[] | undefined;
+    items!: ActorDto[] | undefined;
 
-    constructor(data?: IPagedResultDtoOfManagerListDto) {
+    constructor(data?: IPagedResultDtoOfActorListDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -261,14 +262,14 @@ export class PagedResultDtoOfManagerListDto implements IPagedResultDtoOfManagerL
             if (Array.isArray(_data["items"])) {
                 this.items = [] as any;
                 for (let item of _data["items"])
-                    this.items!.push(ManagerDto.fromJS(item));
+                    this.items!.push(ActorDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): PagedResultDtoOfManagerListDto {
+    static fromJS(data: any): PagedResultDtoOfActorListDto {
         data = typeof data === 'object' ? data : {};
-        let result = new PagedResultDtoOfManagerListDto();
+        let result = new PagedResultDtoOfActorListDto();
         result.init(data);
         return result;
     }
@@ -285,16 +286,21 @@ export class PagedResultDtoOfManagerListDto implements IPagedResultDtoOfManagerL
     }
 }
 
-export interface IManagerGetDataDto {
-    manager: ManagerDto;
-    territorialUnits: ManagerTerritorialUnitDto[];
+export interface IActorGetDataDto {
+    actor: ActorDto;
+    actorTypes: ActorTypeDto[];
+    typologies: ActorTypologyDto[];
+    actorMovements: ActorMovementDto[];
 }
 
-export class ManagerGetDataDto implements IManagerGetDataDto {
-    manager: ManagerDto;
-    territorialUnits: ManagerTerritorialUnitDto[];
+export class ActorGetDataDto implements IActorGetDataDto {
+    actor: ActorDto;
+    actorTypes: ActorTypeDto[];
+    typologies: ActorTypologyDto[];
+    actorMovements: ActorMovementDto[];
 
-    constructor(data?: IManagerGetDataDto) {
+
+    constructor(data?: IActorGetDataDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -304,92 +310,139 @@ export class ManagerGetDataDto implements IManagerGetDataDto {
     }
 
     init(_data?: any) {
+
         if (_data) {
-            this.manager = _data["manager"] ? ManagerDto.fromJS(_data["manager"]) : <any>undefined;
-            if (Array.isArray(_data["territorialUnits"])) {
-                this.territorialUnits = [] as any;
-                for (let item of _data["territorialUnits"])
-                    this.territorialUnits!.push(ManagerTerritorialUnitDto.fromJS(item));
+            this.actor = _data["actor"] ? ActorDto.fromJS(_data["actor"]) : <any>undefined;
+            if (Array.isArray(_data["actorTypes"])) {
+                this.actorTypes = [] as any;
+                for (let item of _data["actorTypes"])
+                    this.actorTypes!.push(ActorTypeDto.fromJS(item));
+            }
+            if (Array.isArray(_data["typologies"])) {
+                this.typologies = [] as any;
+                for (let item of _data["typologies"])
+                    this.typologies!.push(ActorTypologyDto.fromJS(item));
+            }
+            if (Array.isArray(_data["actorMovements"])) {
+                this.actorMovements = [] as any;
+                for (let item of _data["actorMovements"])
+                    this.actorMovements!.push(ActorMovementDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): ManagerGetDataDto {
+    static fromJS(data: any): ActorGetDataDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ManagerGetDataDto();
+        let result = new ActorGetDataDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["manager"] = this.manager ? this.manager.toJSON() : <any>undefined;
-        if (Array.isArray(this.territorialUnits)) {
-            data["territorialUnits"] = [];
-            for (let item of this.territorialUnits)
-                data["territorialUnits"].push(item.toJSON());
+        data["actor"] = this.actor ? this.actor.toJSON() : <any>undefined;
+        if (Array.isArray(this.actorTypes)) {
+            data["actorTypes"] = [];
+            for (let item of this.actorTypes)
+                data["actorTypes"].push(item.toJSON());
+        }
+        console.log("typologies",this.typologies)
+        if (Array.isArray(this.typologies)) {
+            data["typologies"] = [];
+            for (let item of this.typologies)
+                data["typologies"].push(item.toJSON());
+        }
+        if (Array.isArray(this.actorMovements)) {
+            data["actorMovements"] = [];
+            for (let item of this.actorMovements)
+                data["actorMovements"].push(item.toJSON());
         }
         return data;
     }
 }
 
-export interface IManagerDto {
+export interface IActorDto {
     id: number;
-    document: string;
-    name: string;
-    names: string;
-    surname: string;
-    surname2: string;
+    fullName: string;
+    documentNumber: string;
+    jobPosition: string;
+    institution : string;
+    institutionAddress : string;
+    phoneNumber : string;   
     emailAddress: string;
+    position: string;
+    interest: string;
+    isPoliticalAssociation: boolean;
+    politicalAssociation: string;
     enabled: boolean;
-    territorialUnit: ManagerTerritorialUnitDto;
+    actorType: ActorTypeDto;
+    // actorTypology: ActorTypologyDto;
+    // actorSubTypology: ActorSubTypologyDto;
+    actorMovement: ActorMovementDto;
 }
 
-export class ManagerDto implements IManagerDto {
+export class ActorDto implements IActorDto {
     id: number;
-    document: string;
-    name: string;
-    names: string;
-    surname: string;
-    surname2: string;
+    fullName: string;
+    documentNumber: string;
+    jobPosition: string;
+    institution : string;
+    institutionAddress : string;
+    phoneNumber : string;   
     emailAddress: string;
+    position: string;
+    interest: string;
+    isPoliticalAssociation: boolean;
+    politicalAssociation: string;
     enabled: boolean;
-    territorialUnit: ManagerTerritorialUnitDto;
+    actorType: ActorTypeDto;
+    // actorTypology: ActorTypologyDto;
+    // actorSubTypology: ActorSubTypologyDto;
+    actorMovement: ActorMovementDto;
 
-    constructor(data?: IManagerDto) {
+    constructor(data?: IActorDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
                     (<any>this)[property] = (<any>data)[property];
             }
         } else {
-            this.territorialUnit = new ManagerTerritorialUnitDto({
-                id: -1,
-                name: undefined
-            });
+            this.actorType = new ActorTypeDto()
+            this.actorType.id = -1;
+            // this.actorTypology = new ActorTypologyDto();
+            // this.actorTypology.id = -1;
+            // this.actorSubTypology = new ActorSubTypologyDto();
+            // this.actorSubTypology.id = -1;
+            this.actorMovement = new ActorMovementDto();
+            this.actorMovement.id = -1;
         }
     }
 
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.document = _data["document"];
-            this.name = _data["name"];
-            this.names = _data["names"];
-            this.surname = _data["surname"];
-            this.surname2 = _data["surname2"];
+            this.fullName = _data["fullName"];
+            this.documentNumber = _data["documentNumber"];
+            this.jobPosition = _data["jobPosition"];
+            this.institution = _data["institution"];      
+            this.institutionAddress = _data["institutionAddress"];    
+            this.phoneNumber = _data["phoneNumber"];       
             this.emailAddress = _data["emailAddress"];
+            this.position = _data["position"];
+            this.interest = _data["interest"];
+            this.isPoliticalAssociation = _data["isPoliticalAssociation"];
+            this.politicalAssociation = _data["politicalAssociation"];
             this.enabled = _data["enabled"];
-            this.territorialUnit = _data["territorialUnit"] ? ManagerTerritorialUnitDto.fromJS(_data["territorialUnit"]) : new ManagerTerritorialUnitDto({
-                id: -1,
-                name: undefined
-            });
+            this.actorType = _data["actorType"] ? ActorTypeDto.fromJS(_data["actorType"]) : <any>undefined;
+            // this.actorTypology = _data["typology"] ? ActorTypologyDto.fromJS(_data["typology"]) : <any>undefined;
+            // this.actorSubTypology = _data["subTypology"] ? ActorSubTypologyDto.fromJS(_data["subTypology"]) : <any>undefined;
+            this.actorMovement = _data["actorMovement"] ? ActorMovementDto.fromJS(_data["actorMovement"]) : <any>undefined;
         }
     }
 
-    static fromJS(data: any): ManagerDto {
+    static fromJS(data: any): ActorDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ManagerDto();
+        let result = new ActorDto();
         result.init(data);
         return result;
     }
@@ -397,28 +450,135 @@ export class ManagerDto implements IManagerDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["document"] = this.document;
-        data["names"] = this.names;
-        data["surname"] = this.surname;
-        data["surname2"] = this.surname2;
+        data["fullName"] = this.fullName;
+        data["documentNumber"] = this.documentNumber;
+        data["jobPosition"] = this.jobPosition;
+        data["institution"] = this.institution;
+        data["institutionAddress"] = this.institutionAddress;
+        data["phoneNumber"] = this.phoneNumber;
         data["emailAddress"] = this.emailAddress;
+        data["position"] = this.position;
+        data["interest"] = this.interest;
+        data["isPoliticalAssociation"] = this.isPoliticalAssociation;
+        data["politicalAssociation"] = this.politicalAssociation;
         data["enabled"] = this.enabled;
-        data["territorialUnit"] = this.territorialUnit ? this.territorialUnit.toJSON() : <any>undefined;
+        data["actorType"] = this.actorType ? this.actorType.toJSON() : <any>undefined;
+        // data["actorTypology"] = this.actorTypology ? this.actorTypology.toJSON() : <any>undefined;
+        // data["actorSubTypology"] = this.actorSubTypology ? this.actorSubTypology.toJSON() : <any>undefined;
+        data["actorMovement"] = this.actorMovement ? this.actorMovement.toJSON() : <any>undefined;
 
         return data;
     }
 }
 
-export interface IManagerTerritorialUnitDto {
+export interface IActorTypeDto {
     id: number;
     name: string;
 }
 
-export class ManagerTerritorialUnitDto implements IManagerTerritorialUnitDto {
+export class ActorTypeDto implements IActorTypeDto {
+    id: number;
+    name: string;
+    showDetail: boolean;
+    showMovement: boolean;
+
+    constructor(data?: IActorTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+            this.showDetail = data["showDetail"];
+            this.showMovement = data["showMovement"];
+        }
+    }
+
+    static fromJS(data: any): ActorTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ActorTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["showDetail"] = this.showDetail;
+        data["showMovement"] = this.showMovement;
+        return data;
+    }
+}
+
+export interface IActorTypologyDto {
+    id: number;
+    name: string;
+    subTypologies: ActorSubTypologyDto[];
+}
+
+export class ActorTypologyDto implements IActorTypologyDto {
+    id: number;
+    name: string;
+    subTypologies: ActorSubTypologyDto[];
+
+    constructor(data?: IActorTypologyDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+            if (Array.isArray(data["subTypologies"])) {
+                this.subTypologies = [] as any;
+                for (let item of data["subTypologies"])
+                    this.subTypologies!.push(ActorSubTypologyDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ActorTypologyDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ActorTypologyDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        if (Array.isArray(this.subTypologies)) {
+            data["subTypologies"] = [];
+            for (let item of this.subTypologies)
+                data["subTypologies"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IActorSubTypologyDto {
+    id: number;
+    name: string;
+}
+
+export class ActorSubTypologyDto implements IActorSubTypologyDto {
     id: number;
     name: string;
 
-    constructor(data?: IManagerTerritorialUnitDto) {
+    constructor(data?: IActorSubTypologyDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -434,11 +594,10 @@ export class ManagerTerritorialUnitDto implements IManagerTerritorialUnitDto {
         }
     }
 
-    static fromJS(data: any): ManagerTerritorialUnitDto {
+    static fromJS(data: any): ActorSubTypologyDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ManagerTerritorialUnitDto();
+        let result = new ActorSubTypologyDto();
         result.init(data);
-
         return result;
     }
 
@@ -446,7 +605,46 @@ export class ManagerTerritorialUnitDto implements IManagerTerritorialUnitDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
+        return data;
+    }
+}
 
+export interface IActorMovementDto {
+    id: number;
+    name: string;
+}
+
+export class ActorMovementDto implements IActorMovementDto {
+    id: number;
+    name: string;
+
+    constructor(data?: IActorMovementDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+        }
+    }
+
+    static fromJS(data: any): ActorMovementDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ActorMovementDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
         return data;
     }
 }

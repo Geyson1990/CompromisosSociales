@@ -88,6 +88,7 @@ import { DialogSpaceDocumentServiceProxy } from './application/dialog-space-docu
 import { DialogSpaceHolidayServiceProxy } from './application/dialog-space-holiday-proxie';
 import { DialogSpaceTypeServiceProxy } from './application/dialog-space-type-proxie';
 import { DialogSpaceDocumentSituationServiceProxy } from './application/dialog-space-document-situation-proxie';
+import { ActorServiceProxy } from './application/actor-proxie';
 
 @NgModule({
     providers: [
@@ -220,6 +221,7 @@ import { DialogSpaceDocumentSituationServiceProxy } from './application/dialog-s
         DialogSpaceTypeServiceProxy,
         DialogSpaceDocumentSituationServiceProxy,
         PortalServiceProxy,
+        ActorServiceProxy,
         { provide: RefreshTokenService, useClass: ZeroRefreshTokenService },
         { provide: AbpHttpConfigurationService, useClass: ZeroTemplateHttpConfigurationService },
         { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true }
