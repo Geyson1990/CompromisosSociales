@@ -32,26 +32,22 @@ export class CreateEditActorComponent extends AppComponentBase {
         super(_injector);
     }
 
-    show(id?: number, item?: ActorDto): void {
+   show(id?: number, item?: ActorDto): void {
         this.item = new ActorDto(item);
         this.saving = false;
         this.state = 'true';
         
-        if (id) {
-            this._actorServiceProxy.get(id).subscribe(result => {
+        this._actorServiceProxy.get(id).subscribe(result => {
+            if (result.actor) {  
                 this.item = result.actor;
                 this.state = this.item.enabled ? 'true' : 'false';
-                this.active = true;
-                this.actorTypes = result.actorTypes;
-                this.actorTypologies = result.typologies;
-                this.actorMovements = result.actorMovements;
-                this.politic = this.item && this.item.isPoliticalAssociation ? 'true' : 'false';
-                this.modal.show();
-            });
-        } else {
+            }                
+            this.actorTypes = result.actorTypes;
+            this.actorMovements = result.actorMovements;
+            this.politic = this.item && this.item.isPoliticalAssociation ? 'true' : 'false';
             this.active = true;
             this.modal.show();
-        }
+        });
     }
 
     onActorTypeChange(event: any) {
