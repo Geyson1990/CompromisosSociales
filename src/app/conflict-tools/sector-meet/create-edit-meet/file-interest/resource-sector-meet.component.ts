@@ -5,10 +5,7 @@ import { SectorSessionStateService } from '../../shared/sector-session-state.ser
 
 @Component({
     selector: 'resource-sector-meet',
-    templateUrl: 'resource-sector-meet.component.html',
-    styleUrls: [
-        'resource-sector-meet.css'
-    ]
+    templateUrl: 'resource-sector-meet.component.html'
 })
 export class ResourceSectorMeetComponent extends AppComponentBase implements OnInit {
     
