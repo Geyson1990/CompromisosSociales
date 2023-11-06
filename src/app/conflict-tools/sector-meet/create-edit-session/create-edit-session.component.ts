@@ -279,14 +279,34 @@ export class CreateEditSessionComponent extends AppComponentBase implements OnIn
 
         this.showMainSpinner('Guardando información, por favor espere...');
 
-        if (this.state.sectorMeetSession.uploadFiles.length == 0) {
+        if (this.state.sectorMeetSession.uploadFiles.length == 0 && this.state.sectorMeetSession.uploadFilesPDF.length == 0) {
             this.completeSave();
             return;
         }
+        
+        if (this.state.sectorMeetSession.uploadFiles.length == 0 && this.state.sectorMeetSession.uploadFilesPDF.length > 0) {
+            this.uploadResourcesFilesPDF(() => {
+               this.completeSave();
+            });
+            return;
+        }
 
-        this.uploadResources(() => {
-            this.completeSave();
+        if (this.state.sectorMeetSession.uploadFilesPDF.length == 0 && this.state.sectorMeetSession.uploadFiles.length > 0) {
+            this.uploadResources(() => {
+               this.completeSave();
+            });
+            return;
+        }
+
+        if (this.state.sectorMeetSession.uploadFilesPDF.length > 0 && this.state.sectorMeetSession.uploadFiles.length > 0) {
+           this.uploadResources(() => {
+            this.uploadResourcesFilesPDF(() => {
+                this.completeSave();
+            });
         });
+            return;
+        }
+
     }
 
     backButtonPressed() {
@@ -317,6 +337,29 @@ export class CreateEditSessionComponent extends AppComponentBase implements OnIn
             });
     }
 
+    private uploadResourcesFilesPDF(callback: () => void) {
+
+        this._uploadServiceProxy
+            .uploadFiles(this.state.sectorMeetSession.uploadFilesPDF.map(p => p.file), this._tokenService.getToken())
+            .subscribe(event => {
+                if (event instanceof HttpResponse) {
+                    if (event.body.success) {
+                        let index: number = 0;
+                        for (let token of event.body.result.fileTokens) {
+                            this.state.sectorMeetSession.uploadFilesPDF[index].token = token;
+                            index++;
+                        }
+                        callback();
+                    } else {
+                        this.message.info(event.body.error?.details ? event.body.error?.details : 'No se pudo completar la transacción, intente nuevamente mas tarde', 'Aviso');
+                        setTimeout(() => this.hideMainSpinner(), 1500);
+                    }
+                }
+            }, (error) => {
+                this.message.error(error?.error?.error?.details ? error.error.error.details : 'No se pudo completar la transacción, intente nuevamente mas tarde', 'Aviso');
+                setTimeout(() => this.hideMainSpinner(), 1500);
+            });
+    }
 
     private completeSave() {
 

@@ -18,20 +18,20 @@ export class FileMeetComponent {
 
 
     openInNewTab(index: number) {
-        this._downloadServiceProxy.dowloadSource(this.state.sectorMeetSession.resources[index].resource, this.state.sectorMeetSession.resources[index].fileName).subscribe((response) => {
+        this._downloadServiceProxy.dowloadSource(this.state.sectorMeetSession.resourcesFile[index].resource, this.state.sectorMeetSession.resourcesFile[index].fileName).subscribe((response) => {
             const fileURL: any = URL.createObjectURL(response);
             const a = document.createElement("a");
             a.href = fileURL;
-            a.download = this.state.sectorMeetSession.resources[index].fileName;
+            a.download = this.state.sectorMeetSession.resourcesFile[index].fileName;
             a.click();
         });
     }
 
     removeResource(index: number) {
-        this.state.sectorMeetSession.resources[index].remove = true;
+        this.state.sectorMeetSession.resourcesFile[index].remove = true;
     }
 
     restoreResource(index: number) {
-        this.state.sectorMeetSession.resources[index].remove = false;
+        this.state.sectorMeetSession.resourcesFile[index].remove = false;
     }
 }

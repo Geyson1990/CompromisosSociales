@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Injector, Input, Output } from '@angular/core';
+import { SectorMeetStateService } from '@app/conflict-tools/sector-meet/shared/sector-meet-state.service';
 import { SectorSessionStateService } from '@app/conflict-tools/sector-meet/shared/sector-session-state.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ResourceSizeType } from '@shared/component/file-uploader/file-uploader.component';
@@ -17,10 +18,11 @@ import * as moment from 'moment';
 export class FilesInterestComponent extends AppComponentBase {
 
     private _attachments: AttachmentUploadDto[];
-    state: SectorSessionStateService;
+    state: SectorMeetStateService;
 
     currentAttachment: AttachmentUploadDto;
     documentTitle: string;
+    description: string;
     reportType: number = -1;
 
     @Input() get attachments(): AttachmentUploadDto[] {
@@ -49,7 +51,7 @@ export class FilesInterestComponent extends AppComponentBase {
 
     constructor(_injector: Injector) {
         super(_injector);
-        this.state = _injector.get(SectorSessionStateService);
+        this.state = _injector.get(SectorMeetStateService);
     }
 
     addAttachment(attachment: AttachmentUploadDto) {
@@ -70,10 +72,15 @@ export class FilesInterestComponent extends AppComponentBase {
             return;
         }
 
-        attachment.name = this.documentTitle;
+        if (!this.hideTitle && this.isNullEmptyOrWhiteSpace(this.description)) {
+            this.message.error('Ingrese una descripción referente al documento antes de continuar', 'Aviso');
+            return;
+        }
 
-        // this.saveAttachment.emit(attachment);
-        this.state.sectorMeetSession.uploadFiles.push(attachment);
+        attachment.name = this.documentTitle;
+        attachment.description = this.description;
+
+        this.state.sectorMeet.uploadFiles.push(attachment);
         this.uploadFile();
     }
 
@@ -81,6 +88,7 @@ export class FilesInterestComponent extends AppComponentBase {
 
     private uploadFile() {
         this.documentTitle = undefined;
+        this.description = undefined;
         this.reportType = -1;
         this.currentAttachment = undefined;
         (<any>document.getElementById('fileInput')).value = '';

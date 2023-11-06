@@ -507,6 +507,7 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
     criticalAspects: SectorMeetSessionCriticalAspectLocationDto[];
     leaders: SectorMeetSessionLeaderRelationDto[];
     resources: SectorMeetSessionResourceDto[];
+    resourcesFile: SectorMeetSessionResourceDto[];
     summaries: SectorMeetSessionSummaryLocationDto[];
     uploadFiles: SectorMeetSessionAttachmentUploadDto[];
     uploadFilesPDF: SectorMeetSessionAttachmentUploadDto[];
@@ -524,6 +525,7 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
             this.actions = [];
             this.summaries = [];
             this.resources = [];
+            this.resourcesFile = [];
             this.uploadFiles = [];
             this.uploadFilesPDF = [];
             this.leaders = [];
@@ -607,6 +609,12 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
                 for (let item of data["resources"])
                     this.resources!.push(SectorMeetSessionResourceDto.fromJS(item));
             }
+
+            if (Array.isArray(data["resourcesFile"])) {
+                this.resourcesFile = [] as any;
+                for (let item of data["resourcesFile"])
+                    this.resourcesFile!.push(SectorMeetSessionResourceDto.fromJS(item));
+            }
             if (Array.isArray(data["summaries"])) {
                 this.summaries = [] as any;
                 for (let item of data["summaries"])
@@ -664,6 +672,11 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
             data["resources"] = [];
             for (let item of this.resources)
                 data["resources"].push(item.toJSON());
+        }
+        if (Array.isArray(this.resourcesFile)) {
+            data["resourcesFile"] = [];
+            for (let item of this.resourcesFile)
+                data["resourcesFile"].push(item.toJSON());
         }
         if (Array.isArray(this.summaries)) {
             data["summaries"] = [];

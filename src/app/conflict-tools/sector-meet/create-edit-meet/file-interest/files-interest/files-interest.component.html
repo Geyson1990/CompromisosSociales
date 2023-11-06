@@ -19,6 +19,7 @@
                 </label>
                 <div class="input-group">
                     <textarea cdkTextareaAutosize cdkAutosizeMinRows="3"
+                        [(ngModel)]="description"
                         cdkAutosizeMaxRows="100" #SectorMeetSessionSideInput
                         id="SectorMeetSessionSide" name="SectorMeetSessionSide" class="form-control" type="text" required
                         maxlength="500"></textarea>
