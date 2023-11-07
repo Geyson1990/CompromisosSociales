@@ -33,8 +33,10 @@ import { ResourceMeetComponent } from './create-edit-session/resource-meet/resou
 import { UploaderMeetComponent } from './create-edit-session/resource-meet/uploader-meet/uploader-meet.component';
 import { AttachmentMeetComponent } from './create-edit-session/resource-meet/attachment-meet/attachment-meet.component';
 import { FileMeetComponent } from './create-edit-session/resource-meet/file-meet/file-meet.component';
-import { FilesInterestComponent } from './create-edit-meet/files-interest/files-interest.component';
-import { ListFilesInterestComponent } from './create-edit-meet/list-files-interest/list-files-interest.component';
+import { ResourceSectorMeetComponent } from './create-edit-meet/file-interest/resource-sector-meet.component';
+import { FilesInterestComponent } from './create-edit-meet/file-interest/files-interest/files-interest.component';
+import { ListFilesInterestComponent } from './create-edit-meet/file-interest/list-files-interest/list-files-interest.component';
+import { FilesAttachmentMeetComponent } from './create-edit-meet/file-interest/attachment-meet/attachment-meet.component';
 
 @NgModule({
     imports: [
@@ -69,11 +71,13 @@ import { ListFilesInterestComponent } from './create-edit-meet/list-files-intere
         AttachmentagreementComponent,
         UploaderAgreementComponent,
         ResourceMeetComponent,
+        ResourceSectorMeetComponent,
         UploaderMeetComponent,
         AttachmentMeetComponent,
         FileMeetComponent,
         FilesInterestComponent,
-        ListFilesInterestComponent
+        ListFilesInterestComponent,
+        FilesAttachmentMeetComponent
     ],
     providers: [
         SectorMeetStateService,

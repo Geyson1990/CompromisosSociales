@@ -494,6 +494,8 @@ export class DialogSpaceDocumentDto implements IDialogSpaceDocumentDto {
 
     resources: DialogSpaceDocumentResourceDto[];
     uploadFiles: AttachmentUploadDto[];
+    uploadFilesPDF: AttachmentUploadDto[];
+
 
     constructor(data?: IDialogSpaceDocumentDto) {
         if (data) {
@@ -518,6 +520,7 @@ export class DialogSpaceDocumentDto implements IDialogSpaceDocumentDto {
             this.days = 0;
             this.resources = [];
             this.uploadFiles = [];
+            this.uploadFilesPDF = [];
         }
     }
 
@@ -599,7 +602,12 @@ export class DialogSpaceDocumentDto implements IDialogSpaceDocumentDto {
             for (let item of this.uploadFiles)
                 data["uploadFiles"].push(item.toJSON());
         }
-
+        if (Array.isArray(this.uploadFilesPDF)) {
+            data["uploadFilesPDF"] = [];
+            for (let item of this.uploadFilesPDF)
+                data["uploadFilesPDF"].push(item.toJSON());
+        }
+        
         return data;
     }
 }

@@ -20,6 +20,7 @@
                 <div class="input-group">
                     <textarea cdkTextareaAutosize cdkAutosizeMinRows="3"
                         cdkAutosizeMaxRows="100" #SectorMeetSessionSideInput
+                        [(ngModel)]="description"
                         id="SectorMeetSessionSide" name="SectorMeetSessionSide" class="form-control" type="text" required
                         maxlength="500"></textarea>
                     <span class="input-legth">
@@ -29,10 +30,6 @@
                 </div>
             </div>
         </div>
-
-
-      
-
     </ng-container>
 
     <div class="col-12 mt-4">

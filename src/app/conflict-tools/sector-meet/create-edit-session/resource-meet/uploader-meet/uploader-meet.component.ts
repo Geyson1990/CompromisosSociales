@@ -21,6 +21,7 @@ export class UploaderMeetComponent extends AppComponentBase {
 
     currentAttachment: AttachmentUploadDto;
     documentTitle: string;
+    description: string;
     reportType: number = -1;
 
     @Input() get attachments(): AttachmentUploadDto[] {
@@ -53,7 +54,7 @@ export class UploaderMeetComponent extends AppComponentBase {
     }
 
     addAttachment(attachment: AttachmentUploadDto) {
-
+ 
         if (!this.attachments) {
             this.attachments = []; // Si this.attachments es undefined, inicialízalo como un array vacío.
         }
@@ -70,8 +71,13 @@ export class UploaderMeetComponent extends AppComponentBase {
             return;
         }
 
-        attachment.name = this.documentTitle;
+        if (!this.hideTitle && this.isNullEmptyOrWhiteSpace(this.description)) {
+            this.message.error('Ingrese una descripción referente al documento antes de continuar', 'Aviso');
+            return;
+        }
 
+        attachment.name = this.documentTitle;
+        attachment.description = this.description;
         // this.saveAttachment.emit(attachment);
         this.state.sectorMeetSession.uploadFilesPDF.push(attachment);
         this.uploadFile();
@@ -81,6 +87,7 @@ export class UploaderMeetComponent extends AppComponentBase {
 
     private uploadFile() {
         this.documentTitle = undefined;
+        this.description = undefined;
         this.reportType = -1;
         this.currentAttachment = undefined;
         (<any>document.getElementById('fileInput')).value = '';
@@ -121,7 +128,7 @@ export class UploaderMeetComponent extends AppComponentBase {
 
                 }
             }
-        }
+        } 
         this.removeDragData(event);
     }
 
@@ -139,7 +146,7 @@ export class UploaderMeetComponent extends AppComponentBase {
         let reader: FileReader = new FileReader();
 
         reader.onloadend = (e: any) => {
-
+ 
             if (this.fileIsValid(file.name)) {
                 this.currentAttachment = new AttachmentUploadDto({
                     fileName: file.name,
@@ -212,7 +219,7 @@ export class UploaderMeetComponent extends AppComponentBase {
 
         if (this.extensions && this.extension)
             return extension == this.extension;
-        console.log("avaliableExtensions:",this.avaliableExtensions)
+
         if (this.avaliableExtensions.length > 0) {
             for (let extension of this.avaliableExtensions) {
                 if (extension == extension)

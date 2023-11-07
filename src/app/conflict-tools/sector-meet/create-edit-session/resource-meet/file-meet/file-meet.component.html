@@ -1,4 +1,4 @@
-<div *ngIf="state.sectorMeetSession.resources.length > 0" class="row">
+<div *ngIf="state.sectorMeetSession.resourcesFile.length > 0" class="row">
     <div class="col-12 mb-3">
         <h5 class="d-block text-left text-dark font-weight-bold mt-4">
             Archivos adjuntos
@@ -6,7 +6,7 @@
         <hr>
     </div>
 </div>
-<div *ngFor="let resource of state.sectorMeetSession.resources; index as i;" class="row upload-file-row py-3 mx-0">
+<div *ngFor="let resource of state.sectorMeetSession.resourcesFile; index as i;" class="row upload-file-row py-3 mx-0">
     <i [class]="resource.className"></i>
     <div class="d-flex flex-column upload-file-body">
         <label class="title" (click)="openInNewTab(i)">

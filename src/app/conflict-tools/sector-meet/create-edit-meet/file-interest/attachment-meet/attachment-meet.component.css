@@ -1,0 +1,44 @@
+.upload-file-row {
+    position: relative;
+}
+
+.upload-file-row>i {
+    margin: auto 15px auto 10px;
+    font-size: 50px;
+}
+
+.upload-file-row .title {
+    font-size: 120%;
+    font-weight: 500 !important;
+    color: #343a40 !important;
+}
+
+.upload-file-row .title:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.upload-file-row .metadata {
+    font-size: 105%;
+}
+
+.uploader-user {
+    text-decoration: underline;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.upload-file-trash>button {
+    margin: 0;
+    padding: 8px 10px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.upload-file-trash>button>i {
+    padding: 0 !important;
+}
+
+.upload-file-body {
+    flex: 1 1 auto;
+}

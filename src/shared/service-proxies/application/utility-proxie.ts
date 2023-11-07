@@ -1329,6 +1329,7 @@ export interface IAttachmentUploadDto {
     extension: string;
     className: string;
     recordResourceType: AttachmentResourceTypeDto;
+    description?: string;
 }
 
 export class AttachmentUploadDto implements IAttachmentUploadDto {
@@ -1342,7 +1343,7 @@ export class AttachmentUploadDto implements IAttachmentUploadDto {
     extension: string;
     className: string;
     recordResourceType: AttachmentResourceTypeDto;
-
+    description?: string;
     constructor(data?: IAttachmentUploadDto) {
         if (data) {
             for (var property in data) {
@@ -1361,6 +1362,7 @@ export class AttachmentUploadDto implements IAttachmentUploadDto {
             this.className = _data["className"];
             this.token = _data["token"];
             this.recordResourceType = _data["recordResourceType"] ? AttachmentResourceTypeDto.fromJS(_data["recordResourceType"]) : <any>undefined;
+            this.description = _data["description"];
         }
     }
 
@@ -1380,7 +1382,7 @@ export class AttachmentUploadDto implements IAttachmentUploadDto {
         data["className"] = this.className;
         data["token"] = this.token;
         data["recordResourceType"] = this.recordResourceType ? this.recordResourceType.toJSON() : <any>undefined;
-
+        data["description"] = this.description;
         return data;
     }
 }

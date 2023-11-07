@@ -11,6 +11,9 @@ import { SectorMeetSessionDto } from '@shared/service-proxies/application/sector
 import { UtilitySocialConflictDto } from '@shared/service-proxies/application/utility-proxie';
 import { finalize } from 'rxjs/operators';
 import { SectorMeetStateService } from '../shared/sector-meet-state.service';
+import { UploadServiceProxy } from '@shared/service-proxies/application/upload-proxie';
+import { TokenService } from 'abp-ng2-module';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
     templateUrl: 'create-edit-sector-meet.component.html',
@@ -33,7 +36,11 @@ export class CreateEditSectorMeetComponent extends AppComponentBase implements O
 
     state: SectorMeetStateService;
 
-    constructor(_injector: Injector, private _activatedRoute: ActivatedRoute, private _sectorMeetServiceProxy: SectorMeetServiceProxy, private _reportServiceProxy: ReportServiceProxy) {
+    constructor(_injector: Injector, private _activatedRoute: ActivatedRoute, 
+        private _sectorMeetServiceProxy: SectorMeetServiceProxy,
+        private _uploadServiceProxy: UploadServiceProxy,
+        private _tokenService: TokenService,
+        private _reportServiceProxy: ReportServiceProxy) {
         super(_injector);
         this.state = _injector.get(SectorMeetStateService);
     }
@@ -132,9 +139,44 @@ export class CreateEditSectorMeetComponent extends AppComponentBase implements O
                 return;
             }
         }
-
+    
         this.showMainSpinner('Guardando información, por favor espere...');
-        this.completeSaving(callback);
+        if (this.state.sectorMeet.uploadFiles.length == 0) {
+            this.completeSaving(callback);
+            return;
+        }
+        
+        if (this.state.sectorMeet.uploadFiles.length > 0) {
+            this.uploadResources(() => {
+                this.completeSaving(callback);
+            });
+            return;
+        }
+        
+    }
+
+    private uploadResources(callback: () => void) {
+
+        this._uploadServiceProxy
+            .uploadFiles(this.state.sectorMeet.uploadFiles.map(p => p.file), this._tokenService.getToken())
+            .subscribe(event => {
+                if (event instanceof HttpResponse) {
+                    if (event.body.success) {
+                        let index: number = 0;
+                        for (let token of event.body.result.fileTokens) {
+                            this.state.sectorMeet.uploadFiles[index].token = token;
+                            index++;
+                        }
+                        callback();
+                    } else {
+                        this.message.info(event.body.error?.details ? event.body.error?.details : 'No se pudo completar la transacción, intente nuevamente mas tarde', 'Aviso');
+                        setTimeout(() => this.hideMainSpinner(), 1500);
+                    }
+                }
+            }, (error) => {
+                this.message.error(error?.error?.error?.details ? error.error.error.details : 'No se pudo completar la transacción, intente nuevamente mas tarde', 'Aviso');
+                setTimeout(() => this.hideMainSpinner(), 1500);
+            });
     }
 
     showDownloader(sectorMeetSession: SectorMeetSessionDto) {
