@@ -1443,7 +1443,6 @@ export class SectorMeetSessionLeaderRelationDto implements ISectorMeetSessionLea
     role: string;
     teams: SectorMeetSessionTeamRelationDto[];
     remove: boolean;
-
     //readonly
     isHidden: boolean;
 
@@ -1510,6 +1509,7 @@ export interface ISectorMeetSessionTeamRelationDto {
     job: string;
     emailAddress: string;
     phoneNumber: string;
+    gender: string;
 }
 
 export class SectorMeetSessionTeamRelationDto implements ISectorMeetSessionTeamRelationDto {
@@ -1522,7 +1522,7 @@ export class SectorMeetSessionTeamRelationDto implements ISectorMeetSessionTeamR
     emailAddress: string;
     phoneNumber: string;
     remove: boolean;
-
+    gender: string;
     //readonly
     isHidden: boolean;
 
@@ -1544,7 +1544,8 @@ export class SectorMeetSessionTeamRelationDto implements ISectorMeetSessionTeamR
             this.secondSurname = _data["secondSurname"];
             this.job = _data["job"];
             this.emailAddress = _data["emailAddress"];
-            this.phoneNumber = _data["phoneNumber"];
+            this.phoneNumber = _data["phoneNumber"]; 
+            this.gender = _data["gender"];
         }
     }
 
@@ -1565,7 +1566,8 @@ export class SectorMeetSessionTeamRelationDto implements ISectorMeetSessionTeamR
         data["job"] = this.job;
         data["emailAddress"] = this.emailAddress;
         data["phoneNumber"] = this.phoneNumber;
-        data["remove"] = this.remove;
+        data["remove"] = this.remove; 
+        data["gender"] = this.gender;
 
         return data;
     }
