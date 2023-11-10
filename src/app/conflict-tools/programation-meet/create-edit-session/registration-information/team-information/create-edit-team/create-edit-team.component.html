@@ -1,0 +1,175 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #modalForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="rowIndex || rowIndex == 0; else elseRowIndex">
+                            Editar participante
+                        </span>
+                        <ng-template #elseRowIndex>
+                            <span>
+                                Crear participante
+                            </span>
+                        </ng-template>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
+                            <label for="SectorMeetSessionTeamDocument">
+                                DNI
+                            </label>
+                            <input #SectorMeetSessionTeamDocument #SectorMeetSessionTeamDocumentInput="ngModel"
+                                id="SectorMeetSessionTeamDocument" name="SectorMeetSessionTeamDocument"
+                                class="form-control" type="text" [(ngModel)]="item.document"
+                                (keyup)="keyUpOnlyInteger($event)" (keypress)="keyPressOnlyNumbers($event)"
+                                minlength="8" maxlength="8">
+                            <validation-messages [formCtrl]="SectorMeetSessionTeamDocumentInput"></validation-messages>
+                            <span class="input-legth">
+                                {{SectorMeetSessionTeamDocument.value ?
+                                SectorMeetSessionTeamDocument.value.length :
+                                0}}/{{SectorMeetSessionTeamDocument.maxLength}}
+                            </span>
+                        </div>
+
+                        <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
+                            <label for="SectorMeetSessionTeamName">
+                                Nombres (*)
+                            </label>
+                            <input #SectorMeetSessionTeamName #SectorMeetSessionTeamNameInput="ngModel"
+                                id="SectorMeetSessionTeamName" name="SectorMeetSessionTeamName"
+                                class="form-control text-uppercase" type="text" [(ngModel)]="item.name" required
+                                maxlength="255">
+                            <validation-messages [formCtrl]="SectorMeetSessionTeamNameInput">
+                            </validation-messages>
+                            <span class="input-legth">
+                                {{SectorMeetSessionTeamName.value ?
+                                SectorMeetSessionTeamName.value.length :
+                                0}}/{{SectorMeetSessionTeamName.maxLength}}
+                            </span>
+                        </div>
+
+                        <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                            <label for="SectorMeetSessionTeamSurname">
+                                Apellido Paterno (*)
+                            </label>
+                            <input #SectorMeetSessionTeamSurname #SectorMeetSessionTeamSurnameInput="ngModel"
+                                id="SectorMeetSessionTeamSurname" name="SectorMeetSessionTeamSurname"
+                                class="form-control text-uppercase" type="text" [(ngModel)]="item.surname" required
+                                maxlength="255">
+                            <validation-messages [formCtrl]="SectorMeetSessionTeamNameInput">
+                            </validation-messages>
+                            <span class="input-legth">
+                                {{SectorMeetSessionTeamSurname.value ?
+                                SectorMeetSessionTeamSurname.value.length :
+                                0}}/{{SectorMeetSessionTeamSurname.maxLength}}
+                            </span>
+                        </div>
+
+                        <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                            <label for="SectorMeetSessionTeamSecondSurname">
+                                Apellido Materno
+                            </label>
+                            <input #SectorMeetSessionTeamSecondSurname
+                                #SectorMeetSessionTeamSecondSurnameInput="ngModel"
+                                id="SectorMeetSessionTeamSecondSurname" name="SectorMeetSessionTeamSecondSurname"
+                                class="form-control text-uppercase" type="text" [(ngModel)]="item.secondSurname"
+                                maxlength="255">
+                            <validation-messages [formCtrl]="SectorMeetSessionTeamSecondSurnameInput">
+                            </validation-messages>
+                            <span class="input-legth">
+                                {{SectorMeetSessionTeamSecondSurname.value ?
+                                SectorMeetSessionTeamSecondSurname.value.length :
+                                0}}/{{SectorMeetSessionTeamSecondSurname.maxLength}}
+                            </span>
+                        </div>
+
+                        <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
+                            <label for="SectorMeetSessionTeamJob">
+                                Cargo (*)
+                            </label>
+                            <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                                cdkAutosizeMaxRows="100" #SectorMeetSessionTeamJob
+                                #SectorMeetSessionTeamJobInput="ngModel" id="SectorMeetSessionTeamJob"
+                                [(ngModel)]="item.job" name="SectorMeetSessionTeamJob" class="form-control" required
+                                maxlength="500"></textarea>
+                            <validation-messages [formCtrl]="SectorMeetSessionTeamJobInput"></validation-messages>
+                            <span class="input-legth">
+                                {{SectorMeetSessionTeamJob.value ?
+                                SectorMeetSessionTeamJob.value.length :
+                                0}}/{{SectorMeetSessionTeamJob.maxLength}}
+                            </span>
+                        </div>
+
+                        <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                            <label for="SectorMeetSessionTeamPhoneNumber">
+                                Número de teléfono
+                            </label>
+                            <input #SectorMeetSessionTeamPhoneNumber #SectorMeetSessionTeamPhoneNumberInput="ngModel"
+                                id="SectorMeetSessionTeamPhoneNumber" name="SectorMeetSessionTeamPhoneNumber"
+                                class="form-control" type="text" (keyup)="keyUpPhoneNumber($event)"
+                                (keypress)="keyPressPhoneNumber($event)" [(ngModel)]="item.phoneNumber" maxlength="255">
+                            <validation-messages [formCtrl]="SectorMeetSessionTeamPhoneNumberInput">
+                            </validation-messages>
+                            <span class="input-legth">
+                                {{SectorMeetSessionTeamPhoneNumber.value ?
+                                SectorMeetSessionTeamPhoneNumber.value.length :
+                                0}}/{{SectorMeetSessionTeamPhoneNumber.maxLength}}
+                            </span>
+                        </div>
+
+                        <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                            <label for="SectorMeetSessionTeamEmailAddress">
+                                Correo electrónico
+                            </label>
+                            <input #SectorMeetSessionTeamEmailAddress #SectorMeetSessionTeamEmailAddressInput="ngModel"
+                                id="SectorMeetSessionTeamEmailAddress" name="SectorMeetSessionTeamEmailAddress"
+                                class="form-control" type="email" [(ngModel)]="item.emailAddress" email maxlength="255">
+                            <validation-messages [formCtrl]="SectorMeetSessionTeamEmailAddressInput">
+                            </validation-messages>
+                            <span class="input-legth">
+                                {{SectorMeetSessionTeamEmailAddress.value ?
+                                SectorMeetSessionTeamEmailAddress.value.length :
+                                0}}/{{SectorMeetSessionTeamEmailAddress.maxLength}}
+                            </span>
+                        </div>
+                        <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                            <label for="SectorMeetGender">
+                                Genero
+                            </label>
+                            <div class="input-group">
+                                <select id="SectorMeetGender" name="SectorMeetGender" class="form-control" type="text">
+                                    <option value="-1">
+                                        Seleccione
+                                    </option>
+                                    <!-- <option *ngFor="let GenderUnit of .GenderUnits" [value]="GenderUnit.id">
+                                        {{GenderUnit.name}}
+                                    </option> -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!modalForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

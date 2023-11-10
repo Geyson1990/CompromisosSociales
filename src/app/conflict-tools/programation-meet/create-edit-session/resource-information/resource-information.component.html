@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-xxl-2">
+        <div class="mb-2 form-group">
+            <label for="SectorMeetSessionPersonTime">
+                Fecha de elaboración (*)
+            </label>
+            <p-calendar [style]="{'width':'100%'}" [locale]="es" id="SectorMeetSessionPersonTime"
+                name="SectorMeetSessionPersonTime" class="boostrap-dropdown" [(ngModel)]="state.personTime"
+                dateFormat="dd/mm/yy" [showTime]="false" inputId="SectorMeetSessionResourceRegisterTimeInput">
+            </p-calendar>
+        </div>
+    </div>
+    
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4">
+        <div class="mb-2 form-group">
+            <label for="SectorMeetSessionPerson">
+                Responsable de la Elaboración (*)
+            </label>
+            <div class="input-group">
+                <select [(ngModel)]="state.sectorMeetSession.person.id" id="SectorMeetSessionPerson"
+                    name="SectorMeetSessionPerson" class="form-control">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let person of state.persons;" [value]="person.id">
+                        {{person.name}} {{
+                        person.type == personTypes.coordinator ? '(COORDINADOR)' :
+                        person.type == personTypes.analyst ? '(ANALISTA)' : '(GESTOR)'
+                        }}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="SectorMeetSessionSide">
+                Lugar (*)
+            </label>
+            <div class="input-group">
+                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                    cdkAutosizeMaxRows="100" #SectorMeetSessionSideInput [(ngModel)]="state.sectorMeetSession.side"
+                    id="SectorMeetSessionSide" name="SectorMeetSessionSide" class="form-control" type="text" required
+                    maxlength="500"></textarea>
+                <span class="input-legth">
+                    {{SectorMeetSessionSideInput.value ? SectorMeetSessionSideInput.value.length :
+                    0}}/{{SectorMeetSessionSideInput.maxLength}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<file-information></file-information>
+<uploader-information></uploader-information>
+<attachment-information></attachment-information>

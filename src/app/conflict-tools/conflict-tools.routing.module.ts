@@ -27,6 +27,11 @@ import { CrisisCommitteeComponent } from './crisis-committee/crisis-committee.co
                         loadChildren: () => import('./sector-meet/sector-meet.module').then(m => m.SectorMeetModule), //Lazy load admin module
                         data: { permission: 'Pages.ConflictTools.SectorMeet' }
                     },
+                    {
+                        path: 'programation-meet',
+                        loadChildren: () => import('./programation-meet/programation-meet.module').then(m => m.ProgramationMeetModule), //Lazy load admin module
+                        data: { permission: 'Pages.ConflictTools.ProgramationMeet' }
+                    },
                     { path: '', redirectTo: '/app/admin/hostDashboard', pathMatch: 'full' },
                     { path: '**', redirectTo: '/app/admin/hostDashboard' }
                 ]

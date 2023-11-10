@@ -1,0 +1,56 @@
+<div [@routerTransition]>
+    <ng-container *ngIf="loaded">
+        <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+            <div class="kt-subheader kt-grid__item">
+                <div class="kt-container">
+                    <div class="kt-subheader__main">
+                        <button (click)="backButtonPressed()" type="button" class="btn btn-light back-button mt-2">
+                            {{backButtonText}}
+                        </button>
+                        <h3 class="kt-subheader__title">
+                            Bandeja de Reuniones
+                        </h3>
+                    </div>
+                    <div class="kt-subheader__toolbar">
+                        <div class="kt-subheader__wrapper">
+                            <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.."
+                                *ngIf="('Pages.ConflictTools.SectorMeet.Create' | permission) && !id"
+                                class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                                Guardar
+                            </button>
+                            <button (click)="save()" [buttonBusy]="busy" busyText="Guardando.."
+                                *ngIf="('Pages.ConflictTools.SectorMeet.Edit' | permission) && id"
+                                class="btn btn-primary">
+                                <i class="fa fa-save"></i>
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="state.sectorMeet" class="kt-container kt-grid__item kt-grid__item--fluid">
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body">
+                        <p-tabView [(activeIndex)]="tabIndex">
+                            <p-tabPanel header="Aspectos generales">
+                                <general-information 
+                                    (showAddSession)="addSession()"
+                                    (showEditSession)="editSession($event)"
+                                    (showSocialConflictModal)="showSocialConflictModal()"
+                                    (showReport)="showDownloader($event)">
+                                </general-information>
+                            </p-tabPanel>
+                        </p-tabView>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ng-container>
+
+    <find-social-conflict #findSocialConflictModal (modalSave)="selectSocialConflict($event)"></find-social-conflict>
+    <file-download #fileDownloader (modalSave)="completeDownload($event)"></file-download>
+    <file-download-request #fileDownloadRequest></file-download-request>
+</div>
