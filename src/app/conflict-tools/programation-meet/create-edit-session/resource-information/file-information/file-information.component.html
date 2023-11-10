@@ -1,0 +1,31 @@
+<div *ngIf="state.sectorMeetSession.resources.length > 0" class="row">
+    <div class="col-12 mb-3">
+        <h5 class="d-block text-left text-dark font-weight-bold mt-4">
+            Archivos adjuntos
+        </h5>
+        <hr>
+    </div>
+</div>
+<div *ngFor="let resource of state.sectorMeetSession.resources; index as i;" class="row upload-file-row py-3 mx-0">
+    <i [class]="resource.className"></i>
+    <div class="d-flex flex-column upload-file-body">
+        <label class="title" (click)="openInNewTab(i)">
+            {{resource.name}} <span class="text-danger">{{resource.remove ? '(Marcado para eliminar)' : ''}}</span>
+        </label>
+        <label class="metadata">
+            {{resource.creationTime | momentFormat: 'DD/MM/YYYY HH:mm:ss'}}
+        </label>
+        <label class="size">
+            {{resource.size}}
+        </label>
+    </div>
+    <div class="upload-file-trash my-auto pr-4" *ngIf="!resource.remove">
+        <button type="button" pButton icon="pi pi-trash" class="ui-button-danger p-0" data-toggle="tooltip"
+            title="Eliminar el fichero" data-placement="top" (click)="removeResource(i)"></button>
+
+    </div>
+    <div class="upload-file-trash my-auto pr-4" *ngIf="resource.remove">
+        <button type="button" pButton icon="pi pi-undo" class="ui-button-warning p-0" data-toggle="tooltip"
+            title="Deshacer la eliminación del fichero" data-placement="top" (click)="restoreResource(i)"></button>
+    </div>
+</div>

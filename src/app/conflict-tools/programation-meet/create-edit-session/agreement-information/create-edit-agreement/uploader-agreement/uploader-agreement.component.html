@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-12">
+        <h5 class="d-block text-left text-dark font-weight-bold mt-4">
+            Agregar archivos PDF
+        </h5>
+        <hr>
+    </div>
+
+    <div class="col-12">
+        <div class="mb-2 form-group">
+            <label for="PdfTitle">
+                Título del PDF (*)
+            </label>
+            <div class="input-group">
+                <textarea cdkTextareaAutosize cdkAutosizeMinRows="3"
+                    cdkAutosizeMaxRows="100" #PdfTitleInput
+                    id="PdfTitle" name="PdfTitle" class="form-control"
+                    type="text" required maxlength="500"></textarea>
+                <span class="input-legth">
+                    {{PdfTitleInput.value ? PdfTitleInput.value.length : 0}}/{{PdfTitleInput.maxLength}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mt-4">
+        <div class="form-uploader" id="drop_zone">
+            <div class="form-uploader-message d-flex">
+                <i class="fas fa-cloud-upload-alt mr-2"></i>
+                <p class="h5 my-auto">
+                    {{'Arrastra o presiona para subir un archivo PDF' }}
+                </p>
+            </div>
+            <div  class="form-uploader-remove">
+                <button type="button" class="close"  aria-label="Remover archivo">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <input type="file" id="fileInput" aria-label="file-uploader" accept=".pdf">
+        </div>
+    </div>
+
+    <div class="col-12 mt-3">
+        <div class="alert alert-warning" role="alert">
+            Puedes seleccionar un archivo PDF con un tamaño máximo de 5MB.
+        </div>
+    </div>
+
+    <div class="col-12 mt-4 text-right">
+        <button class="btn btn-success">
+            <i class="fa fa-plus"></i>
+            Subir archivo PDF
+        </button>
+    </div>
+</div>                

@@ -81,6 +81,12 @@ export class AppNavigationService {
                     '/app/conflict-tools/sector-meet/edit-meet/',
                     '/app/conflict-tools/sector-meet/create-session/',
                     '/app/conflict-tools/sector-meet/edit-session/',
+                ]),
+                new AppMenuItem('Reuniones Programadas', 'Pages.ConflictTools.SectorMeet', 'fas fa-award', '/app/conflict-tools/programation-meet/dashboard', [
+                    '/app/conflict-tools/programation-meet/create-meet',
+                    '/app/conflict-tools/programation-meet/edit-meet/',
+                    '/app/conflict-tools/programation-meet/create-session/',
+                    '/app/conflict-tools/programation-meet/edit-session/',
                 ])
             ]),
             new AppMenuItem('Herramientas para Análisis de Riesgos', '', 'fas fa-project-diagram', '', [], [
