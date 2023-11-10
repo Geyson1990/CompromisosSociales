@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { SocialConflictDto, SocialConflictSugerenceDto, SocialConflictUserDto, SugerenceType } from '@shared/service-proxies/application/social-conflict-proxie';
+import { SocialConflictActorLocationDto, SocialConflictDto, SocialConflictSugerenceDto, SocialConflictUserDto, SugerenceType } from '@shared/service-proxies/application/social-conflict-proxie';
 import { LazyLoadEvent, Paginator } from 'primeng';
 
 @Component({
