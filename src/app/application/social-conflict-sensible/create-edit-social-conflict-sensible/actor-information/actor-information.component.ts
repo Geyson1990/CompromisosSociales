@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { SocialConflictSensibleDto, SocialConflictSensibleActorLocationDto } from '@shared/service-proxies/application/social-conflict-sensible-proxie';
+import { UtilityRecordDto } from '@shared/service-proxies/application/utility-proxie';
 import { LazyLoadEvent, Paginator } from 'primeng';
 
 @Component({
@@ -14,6 +15,7 @@ export class ActorInformationSocialConflictSensibleComponent extends AppComponen
 
     private _busy: boolean;
     private _socialConflictSensible: SocialConflictSensibleDto;
+    
 
     @ViewChild('paginator', { static: true }) paginator: Paginator;
 
@@ -34,7 +36,7 @@ export class ActorInformationSocialConflictSensibleComponent extends AppComponen
         this.formatPagination(this.skipCount, this.maxResultCount);
     }
 
-    @Output() addActor: EventEmitter<void> = new EventEmitter<void>();
+    @Output() openFindActor: EventEmitter<void> = new EventEmitter<void>();
     @Output() editActor: EventEmitter<{ index: number, value: SocialConflictSensibleActorLocationDto }> = new EventEmitter<{ index: number, value: SocialConflictSensibleActorLocationDto }>();
 
     private skipCount: number;
@@ -76,6 +78,11 @@ export class ActorInformationSocialConflictSensibleComponent extends AppComponen
         this.router.navigate(['/app/maintenance/actors'], { queryParams: { returnUrl: 'actors' } });
     }
 
+    addActorEvent() {
+        debugger;
+        this.openFindActor.emit();
+    }
+
     editEvent(value: SocialConflictSensibleActorLocationDto, index: number) {
         this.editActor.emit({ index: index, value: value });
     }
@@ -100,5 +107,22 @@ export class ActorInformationSocialConflictSensibleComponent extends AppComponen
             }
             index++;
         }
+    }
+    selectRecord(record: UtilityRecordDto) {
+        this.showMainSpinner('Cargando localizaciones del conflicto social...');
+
+        // this._utilityServiceProxy
+        //     .getAllSocialConflictLocations(record.socialConflict.id)
+        //     .pipe(finalize(() => setTimeout(() => this.hideMainSpinner(), 1000)))
+        //     .subscribe(response => {
+        //         this.compromise.record = record;
+        //         this.compromise.compromiseLocations = response.items.map(p => {
+        //             return new CompromiseLocationDto({
+        //                 id: undefined,
+        //                 socialConflictLocation: p,
+        //                 check: false
+        //             });
+        //         });
+        //     });
     }
 }

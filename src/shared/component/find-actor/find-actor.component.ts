@@ -13,19 +13,20 @@ import * as moment from 'moment';
         'find-actor.component.css'
     ]
 })
-export class FindDActorComponent extends AppComponentBase {
+export class FindActorComponent extends AppComponentBase {
 
     @ViewChild('findDataTable', { static: false }) dataTable: Table;
     @ViewChild('findPaginator', { static: false }) paginator: Paginator;
-    @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
+    @ViewChild('findActorModal', { static: true }) modal: ModalDirective;
 
     @Output() modalSave: EventEmitter<ActorDto> = new EventEmitter<ActorDto>();
 
     active: boolean = false;
-    // advancedFiltersAreShown: boolean = false;
-    // skippedDirectoryGovernmentsIds: number[];
-
+    advancedFiltersAreShown: boolean = false;
     filterText: string;
+    filterByDate: boolean;
+    name:string;
+    dateRange: moment.Moment[] = [moment().startOf('month'), moment().endOf('day')];
 
     constructor(_injector: Injector, private _actorServiceProxy: ActorServiceProxy) {
         super(_injector);
@@ -94,12 +95,7 @@ export class FindDActorComponent extends AppComponentBase {
     //     this.selectedDistricts = [];
     // }
 
-    // resetFilters() {
-    //     this.fullNamename = '';
-    //     this.shortName = '';
-    //     this.departmentId = -1;
-    //     this.provinceId = -1;
-    //     this.districtId = -1;
-    //     this.sectorId = -1;
-    // }
+     resetFilters() {
+         this.name = '';
+     }
 }
