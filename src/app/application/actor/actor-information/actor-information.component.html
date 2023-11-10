@@ -1,0 +1,61 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" *ngIf="active">
+            <form #descriptionForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="rowIndex || rowIndex == 0; else elseRowIndex">
+                            Editar sector identificado
+                        </span>
+                        <ng-template #elseRowIndex>
+                            <span>
+                                Crear sector identificado
+                            </span>
+                        </ng-template>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body row">
+
+                    <div class="form-group col-sm-12 my-2">
+                        <label for="ActorSearch">
+                            Entidad responsable (*)
+                        </label>
+                        <div class="input-group input-group-right">
+                            <textarea id="ActorSearch" name="ActorSearch"
+                                class="form-control" type="text" value="{{actortText}}"
+                                disabled></textarea>
+                            <!-- <span class="input-group-text border-0" (click)="findDirectoryGovernmentEvent()">
+                                <i class="fas fa-search"></i>
+                            </span> -->
+                        </div>
+                        <!-- <div *ngIf="item.directoryGovernment" class="row col-12 mt-2 text-right mx-0 px-0">
+                            <button type="button" (click)="removeDirectoryGovernment()" aria-label="delete-button"
+                                class="mb-2 ml-auto btn btn-danger">
+                                <i class="fa fa-minus"></i>
+                                Eliminar Entidad
+                            </button>
+                        </div> -->
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!descriptionForm.form.valid"
+                        [buttonBusy]="saving" busyText="Guardar..." (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>
+                            Guardar
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

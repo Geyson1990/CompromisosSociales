@@ -1634,6 +1634,7 @@ export interface ISocialConflictActorLocationDto {
 
 export class SocialConflictActorLocationDto implements ISocialConflictActorLocationDto {
     id: number;
+    actorId : number;
     name: string;
     document: string;
     job: string;

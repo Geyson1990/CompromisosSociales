@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 import { PersonType, API_BASE_URL, blobToText, throwException, processComplete, EntityDto } from '../service-proxies';
 import * as moment from 'moment';
 import { ResponsibleActorType } from './responsible-actor-proxie';
+import { ActorTypeDto,ActorMovementDto } from './actor-proxie';
 
 @Injectable()
 export class UtilityServiceProxy {

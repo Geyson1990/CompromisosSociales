@@ -37,21 +37,17 @@ export class CreateEditActorComponent extends AppComponentBase {
         this.saving = false;
         this.state = 'true';
         
-        if (id) {
-            this._actorServiceProxy.get(id).subscribe(result => {
+        this._actorServiceProxy.get(id).subscribe(result => {
+            if (result.actor) {  
                 this.item = result.actor;
                 this.state = this.item.enabled ? 'true' : 'false';
-                this.active = true;
-                this.actorTypes = result.actorTypes;
-                this.actorTypologies = result.typologies;
-                this.actorMovements = result.actorMovements;
-                this.politic = this.item && this.item.isPoliticalAssociation ? 'true' : 'false';
-                this.modal.show();
-            });
-        } else {
+            }                
+            this.actorTypes = result.actorTypes;
+            this.actorMovements = result.actorMovements;
+            this.politic = this.item && this.item.isPoliticalAssociation ? 'true' : 'false';
             this.active = true;
             this.modal.show();
-        }
+        });
     }
 
     onActorTypeChange(event: any) {
@@ -68,16 +64,6 @@ export class CreateEditActorComponent extends AppComponentBase {
             this.item.actorType.showDetail = false;
         }
     }
-
-    // onTypologyChange(event: any) {
-    //     const typolpgyId: number = +event.target.value;
-    //     const index: number = this.actorTypologies.findIndex(p => p.id == typolpgyId);
-    //     this.item.actorSubTypology.id = -1;
-    //     this.selectedSubTypologies = [];
-
-    //     if (index != -1)
-    //         this.selectedSubTypologies = this.actorTypologies[index].subTypologies;
-    // }
 
     onActorMovementChange(event: any) {
         const actorMovementId: number = +event.target.value;

@@ -141,6 +141,7 @@ import { CompromiseResponsibleActorComponent } from './compromise/create-edit-co
 import { CompromiseResponsibleActorOldComponent } from './compromise/create-edit-compromise/responsible-actor-old/responsible-actor.component';
 import { NoteInformationSocialConflictComponent } from './social-conflict/create-edit-social-conflict/note-information/note-information.component';
 import { NoteInformationSocialConflictSensibleComponent } from './social-conflict-sensible/create-edit-social-conflict-sensible/note-information/note-information.component';
+import { EditActorInformationComponent } from './actor/actor-information/actor-information.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // suppressScrollX: true
@@ -192,6 +193,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         RiskInformationSocialConflictComponent,
         CreateEditRiskInformationSocialConflictComponent,
         ActorInformationSocialConflictComponent,
+        EditActorInformationComponent,
         EditActorInformationSocialConflictComponent,
         FactInformationSocialConflictComponent,
         CreateEditFactInformationSocialConflictComponent,
