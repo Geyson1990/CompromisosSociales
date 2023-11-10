@@ -32,7 +32,7 @@ export class CreateEditActorComponent extends AppComponentBase {
         super(_injector);
     }
 
-    show(id?: number, item?: ActorDto): void {
+   show(id?: number, item?: ActorDto): void {
         this.item = new ActorDto(item);
         this.saving = false;
         this.state = 'true';
