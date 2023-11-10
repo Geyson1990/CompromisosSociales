@@ -46,7 +46,7 @@ export class FindActorComponent extends AppComponentBase {
     //         });
     // }
     show(): void {
-        this.filterText = undefined;
+        this.filterText = "";
         this.modal.show();
     }    
 
@@ -96,6 +96,7 @@ export class FindActorComponent extends AppComponentBase {
     // }
 
      resetFilters() {
-         this.name = '';
+         this.filterText = '';
+         this.getData();
      }
 }

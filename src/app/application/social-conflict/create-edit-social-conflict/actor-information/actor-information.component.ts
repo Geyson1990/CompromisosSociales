@@ -37,7 +37,7 @@ export class ActorInformationSocialConflictComponent extends AppComponentBase im
     @Input() hasPermission: boolean;
 
     @Output() addActor: EventEmitter<void> = new EventEmitter<void>();
-    @Output() editActor: EventEmitter<{ index: number, value: SocialConflictActorLocationDto }> = new EventEmitter<{ index: number, value: SocialConflictActorLocationDto }>();
+    @Output() showSocialFindActorModal: EventEmitter<void> = new EventEmitter<void>();
 
     private skipCount: number;
     private maxResultCount: number;
@@ -75,7 +75,7 @@ export class ActorInformationSocialConflictComponent extends AppComponentBase im
     }
 
     addEvent() {
-        this.editActor.emit();
+        this.showSocialFindActorModal.emit();
     }
 
     actorEvent() {
@@ -84,9 +84,9 @@ export class ActorInformationSocialConflictComponent extends AppComponentBase im
     }
 
 
-    editEvent(value: SocialConflictActorLocationDto, index: number) {
-        this.editActor.emit({ index: index, value: value });
-    }
+    // editEvent(value: SocialConflictActorLocationDto, index: number) {
+    //     this.editActor.emit({ index: index, value: value });
+    // }
 
     addOrUpdateItem(event: { value: SocialConflictActorLocationDto, index: number }) {
         if (event.index || event.index == 0) {

@@ -16,7 +16,7 @@
             <div class="modal-body">
                 <form class="kt-form" autocomplete="new-password">
                     <div>
-                        <div class="row mb-4">
+                        <!-- <div class="row mb-4">
                             <div class="col-sm-12">
                                 <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown"
                                     (click)="advancedFiltersAreShown=!advancedFiltersAreShown">
@@ -29,9 +29,9 @@
                                     {{"HideAdvancedFilters" | localize}}
                                 </span>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <div class="row mb-4" [hidden]="!advancedFiltersAreShown">
+                        <div class="row mb-4">
 
                             <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8 col-xxl-8">
                                 <div class="mb-2 form-group">
@@ -39,34 +39,13 @@
                                         Nombre
                                     </label>
                                     <div class="input-group">
-                                        <input [(ngModel)]="name" id="FullNameFilter" name="FullNameFilter" autoFocus
+                                        <input [(ngModel)]="filterText" id="FullNameFilter" name="FullNameFilter" autoFocus
                                             class="form-control" [placeholder]="l('SearchWithThreeDot')" type="text">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-12"></div>
-
-                            <!-- <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
-                                <div class="mb-2 form-group">
-                                    <label for="DepartmentUnitSelect">
-                                        Tipo
-                                    </label>
-                                    <div class="input-group">
-                                        <select (change)="onDepartmentChange($event)" [(ngModel)]="departmentId"
-                                            id="DepartmentUnitSelect" name="DepartmentUnitSelect" class="form-control"
-                                            type="text">
-                                            <option value="-1">
-                                                (Todos)
-                                            </option>
-                                            <option *ngFor="let department of selectedDepartments"
-                                                [value]="department.id">
-                                                {{department.name}}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div> -->
 
                             <div class="col-12 text-right">
                                 <button (click)="resetFilters()" aria-label="Borrar filtros" class="btn btn-warning"
@@ -85,7 +64,7 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-body" *ngIf="active">
+            <div class="modal-body">
 
                 <div class="primeng-datatable-container ui-table-border ui-table-small-details mx-2"
                     [busyIf]="primengTableHelper.isLoading">
@@ -135,12 +114,12 @@
                                 <td style="width: 250px">
                                     <span class="ui-column-title">
                                         Nombre
-                                    </span> {{record.name}}
+                                    </span> {{record.fullName}}
                                 </td>
                                 <td style="width: 150px">
                                     <span class="ui-column-title">
                                         N° Documento
-                                    </span> {{record.DocumentNumber}}
+                                    </span> {{record.documentNumber}}
                                 </td>
                                 <td style="width: 200px">
                                     <span class="ui-column-title">
@@ -155,7 +134,7 @@
                                 <td style="width: 200px">
                                     <span class="ui-column-title">
                                         Institución
-                                    </span> {{record.Institution}}
+                                    </span> {{record.institution}}
                                 </td>
                                 <td style="width: 130px">
                                     <span class="ui-column-title">

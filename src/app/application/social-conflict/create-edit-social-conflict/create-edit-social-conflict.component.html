@@ -85,7 +85,7 @@
                                     [hasPermission]="hasPermission"
                                     [socialConflict]="socialConflict"
                                     (addActor)="addActor()"
-                                    (editActor)="showActorEdition($event)">
+                                    (showSocialFindActorModal)="showSocialFindActorModal()">
                                 </actor-information-social-conflict>
                             </p-tabPanel>
 
@@ -225,5 +225,8 @@
         <attached-file-management-information-social-conflict #attachedFileManagementInformation>
         </attached-file-management-information-social-conflict>
         <create-edit-sugerence-information #createEditSugerenceInformation (modalSave)="saveSugerence($event)"></create-edit-sugerence-information>
+
+        <find-actor #findActorModal></find-actor>
+
     </ng-container>
 </div>
