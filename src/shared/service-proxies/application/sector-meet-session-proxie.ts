@@ -80,6 +80,8 @@ export class SectorMeetSessionServiceProxy {
     }
 
     getAllLeaders(filter: string | undefined, sectorMeetSessionId: number, sorting: string | undefined, maxResultCount: number | undefined, skipCount: number | undefined): Observable<PagedResultDtoOfSectorMeetSessionLeaderListDto> {
+        console.log("getall")
+       
         let url_ = this.baseUrl + "/api/services/app/SectorMeetSession/GetAllLeaders?";
         if (filter !== undefined)
             url_ += "Filter=" + encodeURIComponent("" + filter) + "&";

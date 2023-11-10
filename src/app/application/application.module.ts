@@ -69,7 +69,7 @@ import { ManagementInformationSocialConflictComponent } from './social-conflict/
 import { CreateEditManagementInformationSocialConflictComponent } from './social-conflict/create-edit-social-conflict/management-information/create-edit-management/create-edit-management.component';
 import { StateInformationSocialConflictComponent } from './social-conflict/create-edit-social-conflict/state-information/state-information.component';
 import { CreateEditStateInformationSocialConflictComponent } from './social-conflict/create-edit-social-conflict/state-information/create-edit-state/create-edit-state.component';
-import { ActorComponent } from './actor/actor.component';
+import { ActorListComponent } from './actor/actor-list.component';
 import { ViolenceFactInformationSocialConflictComponent } from './social-conflict/create-edit-social-conflict/violence-fact-information/violence-fact-information.component';
 import { CreateEditViolenceFactSocialConflictComponent } from './social-conflict/create-edit-social-conflict/violence-fact-information/create-edit-violence-fact/create-edit-violence-fact.component';
 import { CalendarModule } from 'primeng';
@@ -141,6 +141,7 @@ import { CompromiseResponsibleActorComponent } from './compromise/create-edit-co
 import { CompromiseResponsibleActorOldComponent } from './compromise/create-edit-compromise/responsible-actor-old/responsible-actor.component';
 import { NoteInformationSocialConflictComponent } from './social-conflict/create-edit-social-conflict/note-information/note-information.component';
 import { NoteInformationSocialConflictSensibleComponent } from './social-conflict-sensible/create-edit-social-conflict-sensible/note-information/note-information.component';
+import { EditActorInformationComponent } from './actor/actor-information/actor-information.component';
 import { NgxSelectModule } from 'ngx-select-ex';
 import { ConflictPendingsComponent } from './compromise/create-edit-compromise/conflict-pendings/conflict-pendings.component';
 import { ResourceDetailModalComponent } from './compromise/create-edit-compromise/conflict-pendings/resources/resource-detail-modal.component';
@@ -196,6 +197,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         RiskInformationSocialConflictComponent,
         CreateEditRiskInformationSocialConflictComponent,
         ActorInformationSocialConflictComponent,
+        EditActorInformationComponent,
         EditActorInformationSocialConflictComponent,
         FactInformationSocialConflictComponent,
         CreateEditFactInformationSocialConflictComponent,
@@ -303,7 +305,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         CreateEditOrderComponent,
         ComplianceComponent,
         ComplianceStateComponent,
-        ActorComponent,
+        ActorListComponent,
         LogoutComponent
     ],
     exports: [

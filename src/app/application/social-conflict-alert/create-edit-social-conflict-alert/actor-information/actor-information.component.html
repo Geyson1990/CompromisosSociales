@@ -3,7 +3,11 @@
     <div class="row col-sm-12 col-md-6 col-lg-3 col-xl-3 mb-2 mx-0">
         <button (click)="addActor.emit()" class="mb-0 mt-auto btn btn-primary">
             <i class="fa fa-plus"></i>
-            Agregar actor
+            Agregar actor1
+        </button>
+        <button (click)="actorEvent()" class="mb-0 mt-auto btn btn-primary">
+            <i class="fa fa-plus"></i>
+            Crear actor
         </button>
     </div>
 
@@ -154,4 +158,5 @@
         </div>
     </div>
     <!--<Primeng-TurboTable-End>-->
+        <find-actor #findActorModal (modalSave)="selectRecord($event)"></find-actor>
 </div>

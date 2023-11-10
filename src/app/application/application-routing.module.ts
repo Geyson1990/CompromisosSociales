@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { ActorComponent } from './actor/actor.component';
+import { ActorListComponent } from './actor/actor-list.component';
 import { ComplianceComponent } from './compliance/compliance.component';
 import { CompromiseComponent } from './compromise/compromise.component';
 import { CreateEditCompromiseComponent } from './compromise/create-edit-compromise/create-edit-compromise.component';
@@ -34,7 +34,7 @@ import { TaskManagementComponent } from './task-management/task-management.compo
                         loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
                     },
                     { path: 'social-conflicts', component: SocialConflictComponent, data: { permission: 'Pages.Application.SocialConflict' } },
-                    { path: 'social-conflict-actors', component: ActorComponent, data: { permission: 'Pages.Application.SocialConflict.Actor' } },
+                    { path: 'social-conflict-actors', component: ActorListComponent, data: { permission: 'Pages.Application.SocialConflict.Actor' } },
                     { path: 'create-social-conflict', component: CreateEditSocialConflictComponent, data: { permission: 'Pages.Application.SocialConflict.Create' } },
                     { path: 'edit-social-conflict/:id', component: CreateEditSocialConflictComponent, data: { permission: 'Pages.Application.SocialConflict' } },
                     { path: 'sensibles', component: SocialConflictSensibleComponent, data: { permission: 'Pages.Application.SocialConflictSensible' } },

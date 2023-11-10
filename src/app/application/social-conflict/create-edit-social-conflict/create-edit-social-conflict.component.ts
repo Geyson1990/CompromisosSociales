@@ -47,6 +47,8 @@ import { CreateEditSugerenceInformationSocialConflictComponent } from './sugeren
 import { SugerenceInformationSocialConflictComponent } from './sugerence-information/sugerence-information.component';
 import { CreateEditViolenceFactSocialConflictComponent } from './violence-fact-information/create-edit-violence-fact/create-edit-violence-fact.component';
 import { ViolenceFactInformationSocialConflictComponent } from './violence-fact-information/violence-fact-information.component';
+import { EditActorInformationComponent } from 'app/application/actor/actor-information/actor-information.component'
+// import { ActorDto } from '@shared/service-proxies/application/actor-proxie';
 
 enum UploadType {
     Management,
@@ -78,8 +80,8 @@ export class CreateEditSocialConflictComponent extends AppComponentBase implemen
     @ViewChild('conditionInformation', { static: false }) conditionInformation: ConditionInformationSocialConflictComponent;
     @ViewChild('sugerenceInformation', { static: false }) sugerenceInformation: SugerenceInformationSocialConflictComponent;
     @ViewChild('factInformation', { static: false }) factInformation: FactInformationSocialConflictComponent;
-
-    @ViewChild('editActorInformation', { static: false }) editActorInformation: EditActorInformationSocialConflictComponent;
+    // @ViewChild('editActorInformation', { static: false }) editActorInformation: EditActorInformationSocialConflictComponent;
+    @ViewChild('EditActorInformation', { static: false }) editActorInformation: EditActorInformationComponent;
     @ViewChild('createEditRiskInformation', { static: false }) createEditRiskInformation: CreateEditRiskInformationSocialConflictComponent;
     @ViewChild('createEditFactInformation', { static: false }) createEditFactInformation: CreateEditFactInformationSocialConflictComponent;
     @ViewChild('createEditManagementInformation', { static: false }) createEditManagementInformation: CreateEditManagementInformationSocialConflictComponent;
@@ -88,6 +90,7 @@ export class CreateEditSocialConflictComponent extends AppComponentBase implemen
     @ViewChild('createEditViolenceFactInformation', { static: false }) createEditViolenceFactInformation: CreateEditViolenceFactSocialConflictComponent;
     @ViewChild('createEditConditionInformation', { static: false }) createEditConditionInformation: CreateEditConditionInformationSocialConflictComponent;
     @ViewChild('createEditSugerenceInformation', { static: false }) createEditSugerenceInformation: CreateEditSugerenceInformationSocialConflictComponent;
+
 
     id: number;
     returnUrl: string;
@@ -181,12 +184,12 @@ export class CreateEditSocialConflictComponent extends AppComponentBase implemen
 
 
     addActor() {
-        this.editActorInformation.show(undefined, undefined, this.actorTypes, this.actorMovements);
+        this.editActorInformation.show(undefined, undefined);
     }
 
-    showActorEdition(event: { index: number, value: SocialConflictActorLocationDto }) {
-        this.editActorInformation.show(event.index, event.value, this.actorTypes, this.actorMovements);
-    }
+     showActorEdition(event: { index: number, value: SocialConflictActorLocationDto }) {
+        // this.editActorInformation.show(event.index, event.value);
+     }
 
     saveActorEdition(event: { index: number, value: SocialConflictActorLocationDto }) {
         this.actorInformation.addOrUpdateItem(event);

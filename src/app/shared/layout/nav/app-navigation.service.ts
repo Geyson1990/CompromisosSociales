@@ -184,6 +184,7 @@ export class AppNavigationService {
                     new AppMenuItem('Situaciones de Documentos', 'Pages.Maintenance.DialogSpaceDocumentSituation', 'fas fa-sitemap', '/app/maintenance/dialog-space-document-situations'),
                     new AppMenuItem('Días feriados', 'Pages.Maintenance.DialogSpaceHoliday', 'fas fa-calendar', '/app/maintenance/dialog-space-holidays'),
                 ]),
+                new AppMenuItem('Actores', 'Pages.Maintenance.Actor', 'fas fa-people-carry', '/app/maintenance/actors'),
                 new AppMenuItem('Ubigeos', 'Pages.Maintenance.Ubigeo', 'fas fa-map-marked-alt', '/app/maintenance/ubigeos'),
                 new AppMenuItem('Centros Poblados', 'Pages.Maintenance.Ubigeo', 'fas fa-map-marked-alt', '/app/maintenance/regions'),
                 new AppMenuItem('Unidades Territoriales', 'Pages.Maintenance.TerritorialUnit', 'fas fa-map-pin', '/app/maintenance/territorial-units')

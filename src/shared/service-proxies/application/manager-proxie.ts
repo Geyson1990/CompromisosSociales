@@ -119,6 +119,7 @@ export class ManagerServiceProxy {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
                 result200 = ManagerGetDataDto.fromJS(resultData200);
+                console.log("asd",result200)
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {

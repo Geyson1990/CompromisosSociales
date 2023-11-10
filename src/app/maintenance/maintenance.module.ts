@@ -130,8 +130,8 @@ import { DialogSpaceTypeComponent } from './dialog-space-type/dialog-space-type.
 import { CreateEditDialogSpaceTypeComponent } from './dialog-space-type/create-edit-dialog-space-type/create-edit-dialog-space-type.component';
 import { DialogSpaceDocumentSituationComponent } from './dialog-space-document-situation/dialog-space-document-situation.component';
 import { CreateEditDialogSpaceDocumentSituationComponent } from './dialog-space-document-situation/create-edit-dialog-space-document-situation/create-edit-dialog-space-document-situation.component';
-import { CreateEditActorComponent } from './actor/create-edit-actor/create-edit-actor';
 import { ActorComponent } from './actor/actor.component';
+import { CreateEditActorComponent } from './actor/create-edit-actor/create-edit-actor.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // suppressScrollX: true

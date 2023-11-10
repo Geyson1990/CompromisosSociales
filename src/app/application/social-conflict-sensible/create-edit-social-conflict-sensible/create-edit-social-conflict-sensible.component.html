@@ -76,6 +76,7 @@
                                     [persons]="persons" 
                                     [typologies]="typologies">
                                 </general-information-social-conflict-sensible>
+                                <find-actor #findActorModal (modalSave)="selectRecord($event)"></find-actor>
                             </p-tabPanel>
 
                             <p-tabPanel header="Actores">

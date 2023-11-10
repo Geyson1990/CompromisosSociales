@@ -4,26 +4,22 @@
             <div [class]="containerClass">
                 <div class="kt-subheader__main">
                     <h3 class="kt-subheader__title">
-                        <span>Actores de conflictividad social</span>
+                        <span>
+                            Actores
+                        </span>
                     </h3>
                     <span class="kt-subheader__separator kt-subheader__separator--v"></span>
                     <span class="kt-subheader__desc">
-                        Mantenimiento de los actores disponibles en el módulo de conflictividad
-                        social
+                        Mantenimiento de los actores
                     </span>
                 </div>
                 <div class="kt-subheader__toolbar">
                     <div class="kt-subheader__wrapper">
-                        <!-- <button *ngIf="'Pages.Maintenance.Actor.Create' | permission" (click)="createItem()"
+                        <button *ngIf="'Pages.Maintenance.Actor.Create' | permission" (click)="createItem()"
                             class="btn btn-primary">
                             <i class="fa fa-plus"></i>
                             Crear actor
-                        </button> -->
-                        <button (click)="createItem()"
-                        class="btn btn-primary">
-                        <i class="fa fa-plus"></i>
-                        Crear actor
-                    </button>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -38,10 +34,10 @@
                                 <div class="col-xl-12">
                                     <div class="form-group m-form__group align-items-center">
                                         <div class="input-group">
-                                            <input [(ngModel)]="filterText" placeholder="Buscar..." name="filterText"
-                                                autoFocus class="form-control m-input" type="text">
+                                            <input [(ngModel)]="filterText" name="filterText" autoFocus
+                                                class="form-control m-input" placeholder="Buscar..." type="text">
                                             <span class="input-group-btn">
-                                                <button (click)="getData()" aria-label="Buscar" class="btn btn-primary"
+                                                <button aria-label="Buscar" (click)="getData()" class="btn btn-primary"
                                                     type="submit">
                                                     <i class="flaticon-search-1"></i>
                                                 </button>
@@ -54,7 +50,6 @@
                     </form>
 
                     <div class="row align-items-center">
-                        <!--<Primeng-TurboTable-Start>-->
                         <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
                             <p-table #dataTable sortMode="multiple" (onLazyLoad)="getData($event)"
                                 [value]="primengTableHelper.records"
@@ -64,32 +59,42 @@
                                 [resizableColumns]="primengTableHelper.resizableColumns" dataKey="id">
                                 <ng-template pTemplate="header">
                                     <tr>
-                                        <th style="width: 130px"
-                                            [hidden]="!(['Pages.Maintenance.Actor.Edit', 'Pages.Maintenance.Actor.Delete'] | permissionAny)">
+                                        <th style="width: 130px" [hidden]="!(['Pages.Maintenance.Actor.Edit', 'Pages.Maintenance.Actor.Delete'] | permissionAny)">
                                             Acciones
                                         </th>
-                                        <th pSortableColumn="Name">
-                                            Nombres y Apellidos
-                                            <p-sortIcon field="Name"></p-sortIcon>
+                                        <th style="width: 150px" pSortableColumn="documentNumber">
+                                            Tipo
+                                            <p-sortIcon field="documentNumber"></p-sortIcon>
                                         </th>
-                                        <th style="width: 180px" pSortableColumn="Enabled">
-                                            Tipo Actor
-                                            <p-sortIcon field="Enabled"></p-sortIcon>
+                                        <th style="width: 150px" pSortableColumn="documentNumber">
+                                            N° Documento
+                                            <p-sortIcon field="documentNumber"></p-sortIcon>
                                         </th>
-                                        <th style="width: 180px" pSortableColumn="ShowDetail">
-                                            DNI
-                                            <p-sortIcon field="ShowDetail"></p-sortIcon>
+                                        <th pSortableColumn="fullName">
+                                            Nombre
+                                            <p-sortIcon field="fullName"></p-sortIcon>
                                         </th>
-                                        <th style="width: 180px" pSortableColumn="ShowMovement">
+                                        <th pSortableColumn="jobPosition">
                                             Cargo
-                                            <p-sortIcon field="ShowMovement"></p-sortIcon>
+                                            <p-sortIcon field="jobPosition"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="institution">
+                                            Institución
+                                            <p-sortIcon field="institution"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 200px" pSortableColumn="EmailAddress">
+                                            Correo electrónico
+                                            <p-sortIcon field="EmailAddress"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 130px" pSortableColumn="Enabled">
+                                            Habilitado
+                                            <p-sortIcon field="Enabled"></p-sortIcon>
                                         </th>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record let-expanded="expanded">
                                     <tr>
-                                        <td style="width: 130px"
-                                            [hidden]="!(['Pages.Maintenance.Actor.Edit', 'Pages.Maintenance.Actor.Delete'] | permissionAny)">
+                                        <td style="width: 130px" [hidden]="!(['Pages.Maintenance.Actor.Edit', 'Pages.Maintenance.Actor.Delete'] | permissionAny)">
                                             <div class="btn-group dropdown" dropdown container="body">
                                                 <button dropdownToggle class="dropdown-toggle btn btn-sm btn-primary">
                                                     <i class="fa fa-cog"></i><span class="caret"></span>
@@ -97,29 +102,49 @@
                                                 </button>
                                                 <ul class="dropdown-menu" *dropdownMenu>
                                                     <li>
-                                                        <a href="javascript:;"
-                                                            *ngIf="'Pages.Maintenance.Actor.Edit' | permission"
-                                                            (click)="editItem(record)">
-                                                            {{'Edit' | localize}}
+                                                        <a href="javascript:;" *ngIf="'Pages.Maintenance.Actor.Edit' | permission" (click)="editItem(record)">
+                                                            Editar
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="javascript:;"
-                                                            *ngIf="'Pages.Maintenance.Actor.Delete' | permission"
-                                                            (click)="deleteItem(record)">
-                                                            {{'Delete' | localize}}
+                                                        <a href="javascript:;" *ngIf="'Pages.Maintenance.Actor.Delete' | permission" (click)="deleteItem(record)">
+                                                            Eliminar
                                                         </a>
                                                     </li>
                                                 </ul>
                                             </div>
                                         </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">
+                                                Tipo
+                                            </span> {{record.actorType.name}}
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">
+                                                N° Documento
+                                            </span> {{record.documentNumber}}
+                                        </td>
                                         <td>
                                             <span class="ui-column-title">
                                                 Nombre
-                                            </span>
-                                            {{record.name}}
+                                            </span> {{record.fullName}}
                                         </td>
-                                        <td style="width: 180px">
+                                        <td>
+                                            <span class="ui-column-title">
+                                                Cargo
+                                            </span> {{record.jobPosition}}
+                                        </td>
+                                        <td>
+                                            <span class="ui-column-title">
+                                                Institución
+                                            </span> {{record.institution}}
+                                        </td>
+                                        <td style="width: 200px">
+                                            <span class="ui-column-title">
+                                                Correo electrónico
+                                            </span> {{record.emailAddress}}
+                                        </td>
+                                        <td style="width: 130px">
                                             <span class="ui-column-title">
                                                 Habilitado
                                             </span>
@@ -129,32 +154,6 @@
                                             </span>
                                             <span class="kt-badge kt-badge--dark kt-badge--inline"
                                                 *ngIf="!record.enabled">
-                                                No
-                                            </span>
-                                        </td>
-                                        <td style="width: 180px">
-                                            <span class="ui-column-title">
-                                                Datos de posición/interés
-                                            </span>
-                                            <span class="kt-badge kt-badge--success kt-badge--inline"
-                                                *ngIf="record.showDetail">
-                                                Si
-                                            </span>
-                                            <span class="kt-badge kt-badge--dark kt-badge--inline"
-                                                *ngIf="!record.showDetail">
-                                                No
-                                            </span>
-                                        </td>
-                                        <td style="width: 180px">
-                                            <span class="ui-column-title">
-                                                Mostrar capacidad de movilización
-                                            </span>
-                                            <span class="kt-badge kt-badge--success kt-badge--inline"
-                                                *ngIf="record.showMovement">
-                                                Si
-                                            </span>
-                                            <span class="kt-badge kt-badge--dark kt-badge--inline"
-                                                *ngIf="!record.showMovement">
                                                 No
                                             </span>
                                         </td>
@@ -175,13 +174,10 @@
                                 </span>
                             </div>
                         </div>
-                        <!--<Primeng-TurboTable-End>-->
                     </div>
                 </div>
             </div>
         </div>
-
-        <create-edit-actor #createEditModalActor (modalSave)="getData()"></create-edit-actor>
     </div>
-
+    <create-edit-actor #createEditModal (modalSave)="getData()"></create-edit-actor>
 </div>

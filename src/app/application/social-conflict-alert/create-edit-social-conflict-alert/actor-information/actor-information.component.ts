@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
+import { FindActorComponent } from '@shared/component/find-actor/find-actor.component';
 import { SocialConflictAlertDto, SocialConflictAlertActorLocationDto } from '@shared/service-proxies/application/social-conflict-alert-proxie';
+import { UtilityRecordDto } from '@shared/service-proxies/application/utility-proxie';
 import { LazyLoadEvent, Paginator } from 'primeng';
 
 @Component({
@@ -14,7 +16,8 @@ export class ActorInformationSocialConflictAlertComponent extends AppComponentBa
 
     private _busy: boolean;
     private _socialConflictAlert: SocialConflictAlertDto;
-
+    
+    @ViewChild('findActorModal', { static: true }) findRecord: FindActorComponent;
     @ViewChild('paginator', { static: true }) paginator: Paginator;
 
     @Input() get busy(): boolean {
@@ -72,6 +75,10 @@ export class ActorInformationSocialConflictAlertComponent extends AppComponentBa
         this.notify.success('Se deshizo el marcado de eliminar de la actor seleccionado');
     }
 
+    actorEvent() {
+        this.router.navigate(['/app/maintenance/actors'], { queryParams: { returnUrl: 'actors' } });
+    }
+
     editEvent(value: SocialConflictAlertActorLocationDto, index: number) {
         this.editActor.emit({ index: index, value: value });
     }
@@ -96,5 +103,23 @@ export class ActorInformationSocialConflictAlertComponent extends AppComponentBa
             }
             index++;
         }
+    }
+
+    selectRecord(record: UtilityRecordDto) {
+        this.showMainSpinner('Cargando localizaciones del conflicto social...');
+
+        // this._utilityServiceProxy
+        //     .getAllSocialConflictLocations(record.socialConflict.id)
+        //     .pipe(finalize(() => setTimeout(() => this.hideMainSpinner(), 1000)))
+        //     .subscribe(response => {
+        //         this.compromise.record = record;
+        //         this.compromise.compromiseLocations = response.items.map(p => {
+        //             return new CompromiseLocationDto({
+        //                 id: undefined,
+        //                 socialConflictLocation: p,
+        //                 check: false
+        //             });
+        //         });
+        //     });
     }
 }

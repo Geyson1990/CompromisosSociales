@@ -92,7 +92,7 @@ import { ActorComponent } from './actor/actor.component';
                     { path: 'dialog-space-holidays', component: DialogSpaceHolidayComponent, data: { permission: 'Pages.Maintenance.DialogSpaceHoliday' } },
                     { path: 'dialog-space-types', component: DialogSpaceTypeComponent, data: { permission: 'Pages.Maintenance.DialogSpaceType' } },
                     { path: 'dialog-space-document-situations', component: DialogSpaceDocumentSituationComponent, data: { permission: 'Pages.Maintenance.DialogSpaceDocumentSituation' } },
-                    { path: 'actors', component: ActorComponent, data: { permission: 'Pages.Catalog.Actor' } },
+                    { path: 'actors', component: ActorComponent, data: { permission: 'Pages.Maintenance.Actor' } },
                     { path: '', redirectTo: '/app/admin/hostDashboard', pathMatch: 'full' },
                     { path: '**', redirectTo: '/app/admin/hostDashboard' }
                 ]

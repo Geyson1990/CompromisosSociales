@@ -74,6 +74,16 @@ export class ActorInformationSocialConflictComponent extends AppComponentBase im
         this.notify.success('Se deshizo el marcado de eliminar de la actor seleccionado');
     }
 
+    addEvent() {
+        this.editActor.emit();
+    }
+
+    actorEvent() {
+        // this.editActor.emit({ index: index, value: value });
+        this.router.navigate(['/app/maintenance/actors'], { queryParams: { returnUrl: 'actors' } });
+    }
+
+
     editEvent(value: SocialConflictActorLocationDto, index: number) {
         this.editActor.emit({ index: index, value: value });
     }

@@ -182,6 +182,7 @@ export class CreateEditSessionComponent extends AppComponentBase implements OnIn
     }
 
     findSummaryDirectory() {
+        console.log("entra")
         this.findSectorMeetSessionModal.show(this.id);
     }
 
