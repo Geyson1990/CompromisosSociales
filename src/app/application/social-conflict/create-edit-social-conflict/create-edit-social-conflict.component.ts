@@ -282,15 +282,14 @@ export class CreateEditSocialConflictComponent extends AppComponentBase implemen
         this.sugerenceInformation.addOrUpdateItem(event);
     }
 
-    saveActor(event) {
-        console.log("ssssss",event)
+    saveActor(event: any) {
         let oSocialConflictActorLocationDto: SocialConflictActorLocationDto = new SocialConflictActorLocationDto();
-        oSocialConflictActorLocationDto.id = event.id;
+        oSocialConflictActorLocationDto.id = 0;
         oSocialConflictActorLocationDto.actorId = event.id;
         oSocialConflictActorLocationDto.name= event.fullName;
         oSocialConflictActorLocationDto.document= event.documentNumber;
         oSocialConflictActorLocationDto.job= event.jobPosition;
-        oSocialConflictActorLocationDto.community= '';
+        oSocialConflictActorLocationDto.community= event.institution;
         oSocialConflictActorLocationDto.phoneNumber= event.phoneNumber;
         oSocialConflictActorLocationDto.emailAddress= event.emailAddress;
         oSocialConflictActorLocationDto.isPoliticalAssociation= event.isPoliticalAssociation;
@@ -304,6 +303,10 @@ export class CreateEditSocialConflictComponent extends AppComponentBase implemen
         event.value = oSocialConflictActorLocationDto;
         console.log("event::::::::::::",event)
        this.actorInformation.addOrUpdateItem(event);
+    }
+
+    saveAfterAlert(event) {
+     // 
     }
 
     save() {

@@ -67,6 +67,7 @@ export class ActorInformationSocialConflictComponent extends AppComponentBase im
             this.socialConflict.actors.splice(index, 1);
             this.formatPagination(this.skipCount, this.maxResultCount);
         }
+        console.log("this.socialConflict.actors ::::",this.socialConflict.actors)
     }
 
     cancelRemove(actor: SocialConflictActorLocationDto) {

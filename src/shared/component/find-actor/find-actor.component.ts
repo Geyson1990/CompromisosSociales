@@ -20,7 +20,7 @@ export class FindActorComponent extends AppComponentBase {
     @ViewChild('findActorModal', { static: true }) modal: ModalDirective;
 
     @Output() modalSave: EventEmitter<ActorDto> = new EventEmitter<ActorDto>();
-
+    @Output() modalSaveAlert: EventEmitter<ActorDto> = new EventEmitter<ActorDto>();
     active: boolean = false;
     advancedFiltersAreShown: boolean = false;
     filterText: string;
