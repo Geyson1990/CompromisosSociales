@@ -67,6 +67,7 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-record="$implicit" let-rowIndex="rowIndex">
+                <tr [hidden]="record.isHidden">
                 <tr>
                     <td style="width: 250px">
                         <span class="ui-column-title">
