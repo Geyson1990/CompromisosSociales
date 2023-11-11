@@ -1,5 +1,5 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -82,7 +82,8 @@ export class CreateEditSocialConflictSensibleSensibleComponent extends AppCompon
     @ViewChild('createEditStateInformation', { static: false }) createEditStateInformation: CreateEditStateInformationSocialConflictSensibleComponent;
     @ViewChild('createEditConditionInformation', { static: false }) createEditConditionInformation: CreateEditConditionInformationSocialConflictSensibleComponent;
     @ViewChild('createEditSugerenceInformation', { static: false }) createEditSugerenceInformation: CreateEditSugerenceInformationSocialConflictSensibleComponent;
-
+    @Output() openFindActor: EventEmitter<void> = new EventEmitter<void>();
+    
     id: number;
     returnUrl: string;
 
@@ -350,4 +351,11 @@ export class CreateEditSocialConflictSensibleSensibleComponent extends AppCompon
         this.busy = false;
         this.ngOnInit();
     }
+
+    addActorEvent() {
+        debugger;
+        this.openFindActor.emit();
+    }
+
+    selectRecord(event:any){}
 }

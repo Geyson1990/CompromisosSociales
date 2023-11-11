@@ -35,6 +35,8 @@ import { FindConflictComponent } from './find-conflict/find-conflict.component';
 import { FindInterventionPlanComponent } from './find-intervention-plan/find-intervention-plan.component';
 import { FindDirectoryIndustryComponent } from './find-directory-industry/find-directory-industry.component';
 import { FileDownloadRequestComponent } from './file-download-request/file-download-request.component';
+import { FindActorComponent } from './find-actor/find-actor.component';
+import { AuditComponent } from './audit/audit.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // suppressScrollX: true
@@ -86,7 +88,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         FindConflictComponent,
         FindInterventionPlanComponent,
         FindDirectoryIndustryComponent,
-        FileDownloadRequestComponent
+        FileDownloadRequestComponent,
+        FindActorComponent,
+        AuditComponent
     ],
     declarations: [
         FileUploaderComponent,
@@ -104,7 +108,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         FindConflictComponent,
         FindInterventionPlanComponent,
         FindDirectoryIndustryComponent,
-        FileDownloadRequestComponent
+        FileDownloadRequestComponent,
+        FindActorComponent,
+        AuditComponent
     ],
     providers: [
         { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },

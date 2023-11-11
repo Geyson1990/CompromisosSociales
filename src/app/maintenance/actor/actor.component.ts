@@ -3,8 +3,9 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { LazyLoadEvent, Paginator, Table } from 'primeng';
 import { finalize } from 'rxjs/operators';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { ActorDto, ActorServiceProxy } from '@shared/service-proxies/application/actor-proxie';
+import { ActorDto, ActorUserDto, ActorServiceProxy } from '@shared/service-proxies/application/actor-proxie';
 import { CreateEditActorComponent } from './create-edit-actor/create-edit-actor.component';
+import { AuditComponent } from '@shared/component/audit/audit.component';
 
 @Component({
     templateUrl: 'actor.component.html',
@@ -19,8 +20,15 @@ export class ActorComponent extends AppComponentBase implements OnInit {
     @ViewChild('dataTable', { static: true }) dataTable: Table;
     @ViewChild('paginator', { static: true }) paginator: Paginator;
     @ViewChild('createEditModal', { static: true }) createEditModal: CreateEditActorComponent;
+    @ViewChild('auditModal', { static: true }) AuditModal: AuditComponent;
 
     filterText: string;
+    item: ActorDto = new ActorDto();
+    creationTime: moment.Moment;
+    lastModificationTime: moment.Moment;
+    creatorUser: string;
+    editUser: string;
+
 
     constructor(_injector: Injector, private _actorServiceProxy: ActorServiceProxy) {
         super(_injector);
@@ -37,9 +45,7 @@ export class ActorComponent extends AppComponentBase implements OnInit {
             this.paginator.changePage(0);
             return;
         }
-        this.primengTableHelper.showLoadingIndicator();
-        console.log('Valor de la datatable:', this.dataTable);
-        
+        this.primengTableHelper.showLoadingIndicator();       
         this._actorServiceProxy
             .getAll(
                 this.filterText,
@@ -49,7 +55,6 @@ export class ActorComponent extends AppComponentBase implements OnInit {
             .pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator()))
             .subscribe((result) => {
                 this.primengTableHelper.records = result.items;
-                console.log('resultados',result.items)
                 this.primengTableHelper.totalRecordsCount = result.totalCount;
                 this.primengTableHelper.hideLoadingIndicator();
             });
@@ -75,5 +80,18 @@ export class ActorComponent extends AppComponentBase implements OnInit {
                         });
             }
         );
+    }
+    auditItem(item?: ActorDto) {
+        // this._actorServiceProxy.get(item.id).subscribe(result => {
+        //     console.log("result",result)
+        //     this.creatorUser = result.actor.creatorUser.name;
+        //     this.creationTime = result.actor.creationTime;
+        //     this.editUser = result.actor.editUser.name;
+        //     this.lastModificationTime = result.actor.lastModificationTime;
+        // });
+        // console.log("creationTimeItem",this.creationTime)
+        // this.AuditModal.show(this.creatorUser,this.creationTime,this.editUser,this.lastModificationTime);
+        // this.AuditModal.show(this.creatorUser,this.editUser);
+        this.AuditModal.show();
     }
 }
