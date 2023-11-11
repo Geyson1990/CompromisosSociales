@@ -35,12 +35,7 @@ export class EditActorInformationComponent extends AppComponentBase {
         super(_injector);
     }
 
-    show(rowIndex: number, item: ActorDto): void {
-        this.rowIndex = rowIndex;
-        this.saving = false;
-        this.item = ActorDto.fromJS(item);
-
-        this.active = true;
+    show(): void {      
         this.modal.show();
     }
 

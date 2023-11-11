@@ -294,7 +294,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         HelpMemoryComponent,
         CreateEditHelpMemoryComponent,
         GeneralInformationHelpMemoryComponent,
-
         OrderComponent,
         CreateEditOrderComponent,
         ComplianceComponent,

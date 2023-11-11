@@ -67,7 +67,7 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-record="$implicit" let-rowIndex="rowIndex">
-                <tr [hidden]="record.isHidden">
+                <tr>
                     <td style="width: 250px">
                         <span class="ui-column-title">
                             Nombre del actor
@@ -137,7 +137,10 @@
                     <td *ngIf="hasPermission" style="width: 110px">
                         <button type="button" pButton icon="pi pi-pencil" class="ui-button-primary mr-2"
                             data-toggle="tooltip" title="Editar actor" data-placement="top"
-                            (click)="editEvent(record, rowIndex)"></button>
+                            >
+                            <!-- (click)="editEvent(record, rowIndex)"> -->
+
+                        </button>
                         <button *ngIf="!record.remove" type="button" pButton icon="pi pi-trash" class="ui-button-danger"
                             data-toggle="tooltip" title="Eliminar actor" data-placement="top"
                             (click)="removeItem(record, rowIndex)"></button>
