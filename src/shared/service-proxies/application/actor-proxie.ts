@@ -119,7 +119,6 @@ export class ActorServiceProxy {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
                 result200 = ActorGetDataDto.fromJS(resultData200);
-                console.log("result200",result200)
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -376,9 +375,11 @@ export interface IActorDto {
     politicalAssociation: string;
     enabled: boolean;
     actorType: ActorTypeDto;
-    // actorTypology: ActorTypologyDto;
-    // actorSubTypology: ActorSubTypologyDto;
     actorMovement: ActorMovementDto;
+    creatorUser: ActorUserDto;
+    editUser: ActorUserDto;
+    creationTime: moment.Moment;
+    lastModificationTime: moment.Moment;
 }
 
 export class ActorDto implements IActorDto {
@@ -396,9 +397,11 @@ export class ActorDto implements IActorDto {
     politicalAssociation: string;
     enabled: boolean;
     actorType: ActorTypeDto;
-    // actorTypology: ActorTypologyDto;
-    // actorSubTypology: ActorSubTypologyDto;
     actorMovement: ActorMovementDto;
+    creatorUser: ActorUserDto;
+    editUser: ActorUserDto;
+    creationTime: moment.Moment;
+    lastModificationTime: moment.Moment;
 
     constructor(data?: IActorDto) {
         if (data) {
@@ -409,10 +412,6 @@ export class ActorDto implements IActorDto {
         } else {
             this.actorType = new ActorTypeDto()
             this.actorType.id = -1;
-            // this.actorTypology = new ActorTypologyDto();
-            // this.actorTypology.id = -1;
-            // this.actorSubTypology = new ActorSubTypologyDto();
-            // this.actorSubTypology.id = -1;
             this.actorMovement = new ActorMovementDto();
             this.actorMovement.id = -1;
         }
@@ -434,9 +433,12 @@ export class ActorDto implements IActorDto {
             this.politicalAssociation = _data["politicalAssociation"];
             this.enabled = _data["enabled"];
             this.actorType = _data["actorType"] ? ActorTypeDto.fromJS(_data["actorType"]) : <any>undefined;
-            // this.actorTypology = _data["typology"] ? ActorTypologyDto.fromJS(_data["typology"]) : <any>undefined;
-            // this.actorSubTypology = _data["subTypology"] ? ActorSubTypologyDto.fromJS(_data["subTypology"]) : <any>undefined;
             this.actorMovement = _data["actorMovement"] ? ActorMovementDto.fromJS(_data["actorMovement"]) : <any>undefined;
+            this.creatorUser = _data["creatorUser"] ? ActorUserDto.fromJS(_data["creatorUser"]) : <any>undefined;
+            this.editUser = _data["editUser"] ? ActorUserDto.fromJS(_data["editUser"]) : <any>undefined;
+            this.creationTime = _data["creationTime"] ? moment(_data["creationTime"]) : <any>undefined;
+            this.lastModificationTime = _data["lastModificationTime"] ? moment(_data["lastModificationTime"]) : <any>undefined;
+
         }
     }
 
@@ -463,9 +465,11 @@ export class ActorDto implements IActorDto {
         data["politicalAssociation"] = this.politicalAssociation;
         data["enabled"] = this.enabled;
         data["actorType"] = this.actorType ? this.actorType.toJSON() : <any>undefined;
-        // data["actorTypology"] = this.actorTypology ? this.actorTypology.toJSON() : <any>undefined;
-        // data["actorSubTypology"] = this.actorSubTypology ? this.actorSubTypology.toJSON() : <any>undefined;
         data["actorMovement"] = this.actorMovement ? this.actorMovement.toJSON() : <any>undefined;
+        data["creatorUser"] = this.creatorUser ? this.creatorUser.toJSON() : <any>undefined;
+        data["editUser"] = this.editUser ? this.editUser.toJSON() : <any>undefined;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toISOString() : <any>undefined;
 
         return data;
     }
