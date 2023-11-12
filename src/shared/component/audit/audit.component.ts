@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { ActorDto } from '@shared/service-proxies/application/actor-proxie';
+import { Audit } from '@shared/service-proxies/application/utility-proxie';
 import { finalize } from 'rxjs/operators';
 
 @Component({
@@ -16,9 +16,6 @@ export class AuditComponent extends AppComponentBase {
     @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
-    item: ActorDto = new ActorDto();
-    state: string = 'true';
-    politic: string = 'false';
     active: boolean = false;
     saving: boolean = false;
     createUser: string;
@@ -30,21 +27,20 @@ export class AuditComponent extends AppComponentBase {
         super(_injector);
     }
 
-//    show(createUser: string,creationTime: moment.Moment,editUser?:string,lastModificationTime?:moment.Moment): void {
-    show(): void {
-        console.log("item de show")
-        // this.createUser = createUser;
-        // this.creationTime = creationTime;
-        // if (editUser) {  
-        //     this.editUser = editUser;
-        //     this.lastModificationTime = lastModificationTime;
-        // }                
+    show(item? : Audit): void {
+        if (item.creatorUser) { 
+            this.createUser = item.creatorUser;
+            this.creationTime = item.creationTime;
+        }
+        if (item.editUser) {  
+            this.editUser = item.editUser;
+            this.lastModificationTime = item.lastModificationTime;
+        }                
         this.active = true;
         this.modal.show();
     }
 
     onShown(): void {
-        document.getElementById('ActorName')?.focus();
     }
 
     close(): void {

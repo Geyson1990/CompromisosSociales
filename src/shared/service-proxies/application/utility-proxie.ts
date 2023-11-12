@@ -4053,6 +4053,13 @@ export class UtilityDialogSpaceTypeDto implements IUtilityDialogSpaceTypeDto {
     }
 }
 
+export class Audit {
+    creatorUser: string;
+    creationTime: moment.Moment;
+    editUser?: string;
+    lastModificationTime?: moment.Moment;
+}
+
 export enum ConflictSite {
     All,
     SocialConflict,
