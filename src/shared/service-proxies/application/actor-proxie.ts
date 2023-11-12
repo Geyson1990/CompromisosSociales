@@ -648,3 +648,43 @@ export class ActorMovementDto implements IActorMovementDto {
         return data;
     }
 }
+
+export interface IActorUserDto {
+    name: string;
+    surname: string;
+}
+
+export class ActorUserDto implements IActorUserDto {
+    name: string;
+    surname: string;
+
+    constructor(data?: IActorUserDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.surname = data["surname"];
+        }
+    }
+
+    static fromJS(data: any): ActorUserDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ActorUserDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["surname"] = this.surname;
+        return data;
+    }
+}
