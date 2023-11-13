@@ -2,12 +2,12 @@
 
     <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
         <div class="mb-2 form-group">
-            <label for="SectorMeetSessionType">
+            <label for="SectorMeetSessionEntityType">
                 Tipo de sesión (*)
             </label>
             <div class="input-group">
-                <select [(ngModel)]="state.sectorMeetSession.type" id="SectorMeetSessionType"
-                    name="SectorMeetSessionType" class="form-control" type="text">
+                <select [(ngModel)]="state.sectorMeetSession.type" id="SectorMeetSessionEntityType"
+                    name="SectorMeetSessionEntityType" class="form-control" type="text">
                     <option [value]="types.none">
                         Seleccione
                     </option>
@@ -167,28 +167,63 @@
 
         <hr>
     </div>
-    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                          
+    <div class="form-group col-sm-12 col-md-12 col-lg-2 col-xl-2">
+        <div class="mb-2 form-group">
+            <label for="SectorMeetSessionEntityType">
+                Tipo de institución
+            </label>
+            <div class="input-group">
+                <select (change)="onInstituteChange($event)" [(ngModel)]="state.sectorMeetSession.institutionType" id="SectorMeetSessionEntityType"
+                    name="SectorMeetSessionEntityType" class="form-control" type="text" >
+                    <option [value]="institutionTypes.none" disabled>
+                        Seleccione
+                    </option>
+                    <option [value]="institutionTypes.all">
+                        Todos
+                    </option>
+                    <option [value]="institutionTypes.company">
+                        Empresa
+                    </option>
+                    <option [value]="institutionTypes.entity">
+                        Entidad Estatal
+                    </option>
+                    <option [value]="institutionTypes.civilSociety">
+                        Sociedad Civil
+                    </option>
+                    <option [value]="institutionTypes.other">
+                        Otros
+                    </option>
+                </select>
+            </div>
+        </div>
+        
+    </div>
+    <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10"> 
+    </div>
+    <div *ngIf="charts.compromisGenderStates.type == chartTypes.pie" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
 
         <h6 class="d-block text-center text-dark font-weight-bold mt-5 text-accent-primary">
             Total Partcipantes por Género
         </h6>
 
-        <app-spinner class="d-block my-auto"></app-spinner>
+        <app-spinner *ngIf="busy" class="d-block my-auto"></app-spinner>
         
-        <p-chart type="pie">
+        <p-chart *ngIf="!busy" type="pie" [data]="charts.compromisGenderStates.pie" [options]="optionsPieDefault">
         </p-chart>
     </div>
-    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+    
+    <div *ngIf="charts.compromisInstitutionStates.type == chartTypes.pie" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
 
         <h6 class="d-block text-center text-dark font-weight-bold mt-5 text-accent-primary">
             Total Partcipantes por Institución
         </h6>
 
-        <app-spinner class="d-block my-auto"></app-spinner>
+        <app-spinner *ngIf="busy" class="d-block my-auto"></app-spinner>
         
-        <p-chart type="pie">
+        <p-chart *ngIf="!busy" type="pie" [data]="charts.compromisInstitutionStates.pie" [options]="optionsPieDefault">
         </p-chart>
-    </div>
+    </div> 
 
     <div class="col-12 text-right mb-2 mx-0">
         <button (click)="addLeader.emit()" class="mb-0 mt-auto btn btn-primary">
