@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { SectorMeetSessionDepartmentDto, SectorMeetSessionDto, SectorMeetSessionPersonDto } from "@shared/service-proxies/application/sector-meet-session-proxie";
+import { SectorMeetSessionDepartmentDto, SectorMeetSessionDto, SectorMeetSessionPersonDto, ISectorMeetSessionLeaderRelationDto } from "@shared/service-proxies/application/sector-meet-session-proxie";
 
 @Injectable()
 export class SectorSessionStateService {
@@ -11,5 +11,5 @@ export class SectorSessionStateService {
     sectorMeetSession: SectorMeetSessionDto;
     
     departments: SectorMeetSessionDepartmentDto[];
-    persons: SectorMeetSessionPersonDto[];
+    persons: SectorMeetSessionPersonDto[]; 
 }

@@ -491,6 +491,7 @@ export class ISectorMeetSessionDto {
     summaries: SectorMeetSessionSummaryLocationDto[];
     uploadFiles: SectorMeetSessionAttachmentUploadDto[];
     uploadFilesPDF: SectorMeetSessionAttachmentUploadDto[];
+    institutionType: SectorMeetSessionEntityType;  
 }
 
 export class SectorMeetSessionDto implements ISectorMeetSessionDto {
@@ -519,6 +520,7 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
     summaries: SectorMeetSessionSummaryLocationDto[];
     uploadFiles: SectorMeetSessionAttachmentUploadDto[];
     uploadFilesPDF: SectorMeetSessionAttachmentUploadDto[];
+    institutionType: SectorMeetSessionEntityType;
 
     constructor(data?: ISectorMeetSessionDto) {
         if (data) {
@@ -1809,11 +1811,12 @@ export const enum SectorMeetSessionEntityType {
     COMPANY,
     ESTATAL_ENTITY,
     CIVIL_SOCIETY,
-    OTHER
+    OTHER,
+    ALL
 }
 
 export const enum SectorMeetSessionType {
     NONE,
     PRESENTIAL,
     REMOTE
-}
+} 
