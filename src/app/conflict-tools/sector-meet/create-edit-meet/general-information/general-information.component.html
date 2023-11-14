@@ -1,5 +1,5 @@
 <div class="row mt-3">
-
+ 
     <ng-container *ngIf="!state.sectorMeet.replaceCode">
 
         <div *ngIf="state.sectorMeet.id" class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
@@ -178,8 +178,7 @@
 
 <div class="row align-items-center">
     <!--<Primeng-TurboTable-Start>-->
-    <div class="primeng-datatable-container ui-table-border ui-table-small-details"
-        [busyIf]="primengTableHelper.isLoading">
+    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
         <p-table #dataTable sortMode="multiple" (onLazyLoad)="getData($event)" [value]="primengTableHelper.records"
             rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
             [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"

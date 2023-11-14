@@ -95,7 +95,7 @@ export class CreateEditSocialConflictComponent extends AppComponentBase implemen
     returnUrl: string;
  
     socialConflict: SocialConflictDto;
-
+    type: string = 'conflict-social';
     actorTypes: SocialConflictActorTypeDto[];
     actorMovements: SocialConflictActorMovementDto[];
     departments: SocialConflictDepartmentDto[];
@@ -281,16 +281,15 @@ export class CreateEditSocialConflictComponent extends AppComponentBase implemen
     saveSugerence(event: { index: number, type: SugerenceType, value: SocialConflictSugerenceDto }) {
         this.sugerenceInformation.addOrUpdateItem(event);
     }
-
-    saveActor(event) {
-        console.log("ssssss",event)
+ 
+    saveActor(event: any) {
         let oSocialConflictActorLocationDto: SocialConflictActorLocationDto = new SocialConflictActorLocationDto();
-        oSocialConflictActorLocationDto.id = event.id;
+        oSocialConflictActorLocationDto.id = 0;
         oSocialConflictActorLocationDto.actorId = event.id;
         oSocialConflictActorLocationDto.name= event.fullName;
         oSocialConflictActorLocationDto.document= event.documentNumber;
         oSocialConflictActorLocationDto.job= event.jobPosition;
-        oSocialConflictActorLocationDto.community= '';
+        oSocialConflictActorLocationDto.community= event.institution;
         oSocialConflictActorLocationDto.phoneNumber= event.phoneNumber;
         oSocialConflictActorLocationDto.emailAddress= event.emailAddress;
         oSocialConflictActorLocationDto.isPoliticalAssociation= event.isPoliticalAssociation;
@@ -304,6 +303,10 @@ export class CreateEditSocialConflictComponent extends AppComponentBase implemen
         event.value = oSocialConflictActorLocationDto;
         console.log("event::::::::::::",event)
        this.actorInformation.addOrUpdateItem(event);
+    }
+
+    saveAfterAlert(event) {
+     // 
     }
 
     save() {

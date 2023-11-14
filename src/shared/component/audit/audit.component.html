@@ -1,0 +1,83 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static', keyboard: !saving}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #userForm="ngForm" novalidate>
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Auditoria de Registro
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div *ngIf="active" class="modal-body row">
+                    <div class="col-12 mt-4 mb-2">
+                        <h5 class="d-block text-left text-dark font-weight-bold">
+                            Información de registro
+                        </h5>                    
+                        <hr>
+                    </div>                    
+                    <div class="col-sm-12 col-md-8 col-lg-9 col-xl-9">
+                        <div class="mb-2 form-group">
+                            <label for="UserRegisterInput">
+                                Registrado por
+                            </label>
+                            <div class="input-group">
+                                <input class="form-control" id="UserRegisterInput" value="{{ createUser }}"
+                                    type="text" readonly>
+                            </div>
+                        </div>
+                    </div>                    
+                    <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+                        <div class="mb-2 form-group">
+                            <label for="UserRegisterDateInput">
+                                Fecha de registro
+                            </label>
+                            <div class="input-group">
+                                <input class="form-control" id="UserRegisterDateInput"
+                                    value="{{creationTime | momentFormat: 'L'}}" type="text" readonly>
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>                    
+                    <ng-container *ngIf="editUser">                    
+                        <div class="col-sm-12 col-md-8 col-lg-9 col-xl-9">
+                            <div class="mb-2 form-group">
+                                <label for="UserUpdateInput">
+                                    Última actualización
+                                </label>
+                                <div class="input-group">
+                                    <input class="form-control" id="UserUpdateInput" value="{{editUser}}"
+                                        type="text" readonly>
+                                </div>
+                            </div>
+                        </div>                    
+                        <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+                            <div class="mb-2 form-group">
+                                <label for="UserUpdateDateInput">
+                                    Fecha de actualización
+                                </label>
+                                <div class="input-group">
+                                    <input id="UserUpdateDateInput" class="form-control"
+                                        value="{{lastModificationTime | momentFormat: 'L'}}" type="text" readonly>
+                                    <span class="input-group-text">
+                                        <i class="far fa-calendar-alt"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>                    
+                    </ng-container>                
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
+                        (click)="close()">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Injector, Input, Output, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ActorServiceProxy, ActorDto} from '@shared/service-proxies/application/actor-proxie';
 import { ModalDirective } from 'ngx-bootstrap/modal';
@@ -20,7 +20,8 @@ export class FindActorComponent extends AppComponentBase {
     @ViewChild('findActorModal', { static: true }) modal: ModalDirective;
 
     @Output() modalSave: EventEmitter<ActorDto> = new EventEmitter<ActorDto>();
-
+    @Output() modalSaveAlert: EventEmitter<ActorDto> = new EventEmitter<ActorDto>();
+    @Input() type: string;
     active: boolean = false;
     advancedFiltersAreShown: boolean = false;
     filterText: string;
@@ -31,7 +32,7 @@ export class FindActorComponent extends AppComponentBase {
     constructor(_injector: Injector, private _actorServiceProxy: ActorServiceProxy) {
         super(_injector);
     }
-
+ 
     // show(skippedDirectoryGovernmentsIds?: number[]): void {
 
     //     this.showMainSpinner('Cargando información, por favor espere...');
@@ -82,7 +83,13 @@ export class FindActorComponent extends AppComponentBase {
     }
 
     selectActor(actor: ActorDto) {
-        this.modalSave.emit(actor);
+        if (this.type === 'conflict-social') {
+            this.modalSave.emit(actor);
+        }
+        if (this.type === 'conflict-social') {
+            this.modalSaveAlert.emit(actor);
+        }
+
         this.close();
     }
 

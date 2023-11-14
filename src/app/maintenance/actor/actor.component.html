@@ -111,6 +111,11 @@
                                                             Eliminar
                                                         </a>
                                                     </li>
+                                                    <li>
+                                                        <a href="javascript:;" *ngIf="'Pages.Maintenance.Actor.Edit' | permission" (click)="auditItem(record)">
+                                                            Ver Auditoria
+                                                        </a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </td>
@@ -180,4 +185,5 @@
         </div>
     </div>
     <create-edit-actor #createEditModal (modalSave)="getData()"></create-edit-actor>
+    <audit #auditModal (modalSave)="getData()"></audit>
 </div>

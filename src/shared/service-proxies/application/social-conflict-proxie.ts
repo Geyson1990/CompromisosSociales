@@ -1698,6 +1698,7 @@ export class SocialConflictActorLocationDto implements ISocialConflictActorLocat
     init(data?: any) {
         if (data) {
             this.id = data["id"];
+            this.actorId = data["actorId"];
             this.name = data["name"];
             this.document = data["document"];
             this.job = data["job"];
@@ -1723,6 +1724,7 @@ export class SocialConflictActorLocationDto implements ISocialConflictActorLocat
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["actorId"] = this.actorId;
         data["name"] = this.name;
         data["document"] = this.document;
         data["job"] = this.job;
@@ -1736,7 +1738,6 @@ export class SocialConflictActorLocationDto implements ISocialConflictActorLocat
         data["actorType"] = this.actorType ? this.actorType.toJSON() : <any>undefined;
         data["actorMovement"] = this.actorMovement ? this.actorMovement.toJSON() : <any>undefined;
         data["remove"] = this.remove;
-
         return data;
     }
 }
