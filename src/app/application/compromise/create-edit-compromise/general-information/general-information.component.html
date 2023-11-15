@@ -321,6 +321,18 @@
             <!--<Primeng-TurboTable-End>-->
         </div>
 
+        
+        <div class="col-12"></div>
+
+        <div class="row align-items-center my-4 mx-0">
+            <conflict-pendings
+            [conflicts]="conflicts"
+            [compromise]="compromise"
+            (listDataConflicts)="listDataConflicts()"
+            [type]="type"
+            ></conflict-pendings>
+        </div>
+
     </div>
 
 </div>

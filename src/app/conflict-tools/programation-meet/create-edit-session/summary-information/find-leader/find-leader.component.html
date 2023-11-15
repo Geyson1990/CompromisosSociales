@@ -1,0 +1,171 @@
+<div appBsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-xxl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>
+                        Seleccionar Participantes
+                    </span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Cerrar">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="kt-form" autocomplete="find-summary-directory">
+                    <div>
+                        <div class="row align-items-center mb-4">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input [(ngModel)]="filterText" id="filterText" name="filterText" autoFocus
+                                            class="form-control m-input" placeholder="Buscar..." type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getData()" aria-label="Buscar" class="btn btn-primary"
+                                                type="submit">
+                                                <i class="flaticon-search-1"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-body" *ngIf="active">
+
+                <div class="primeng-datatable-container ui-table-border ui-table-small-details mx-2"
+                    [busyIf]="primengTableHelper.isLoading">
+                    <p-table #dataTable sortMode="multiple" (onLazyLoad)="getData($event)"
+                        [value]="primengTableHelper.records" rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                        [paginator]="false" [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                        [responsive]="primengTableHelper.isResponsive"
+                        [resizableColumns]="primengTableHelper.resizableColumns">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 60px">
+                                </th>
+                                <th style="width: 150px" pSortableColumn="Type">
+                                    Tipo
+                                    <p-sortIcon field="Type"></p-sortIcon>
+                                </th>
+                                <th style="width: 350px"
+                                    pSortableColumn="DirectoryGoverment.Name,DirectoryIndustry.Name">
+                                    Institución
+                                    <p-sortIcon field="DirectoryGoverment.Name,DirectoryIndustry.Name"></p-sortIcon>
+                                </th>
+                                <th style="width: 350px" pSortableColumn="Entity">
+                                    Órgano/Área/Oficina/Dirección/Jefatura/Otros
+                                    <p-sortIcon field="Entity"></p-sortIcon>
+                                </th>
+                                <th style="width: 200px" pSortableColumn="District.Province.Department.Name">
+                                    Departamento
+                                    <p-sortIcon field="District.Province.Department.Name"></p-sortIcon>
+                                </th>
+                                <th style="width: 200px" pSortableColumn="District.Province.Name">
+                                    Provincia
+                                    <p-sortIcon field="District.Province.Name"></p-sortIcon>
+                                </th>
+                                <th style="width: 200px" pSortableColumn="District.Name">
+                                    Distrito
+                                    <p-sortIcon field="District.Name"></p-sortIcon>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-record="$implicit">
+                            <tr>
+                                <td style="width: 60px">
+                                    <button (click)="selectSocialConflict(record)"
+                                        class="btn btn-primary btn-selection">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </td>
+                                <td style="width: 150px">
+                                    <span class="ui-column-title">
+                                        Tipo
+                                    </span> {{
+                                    record.type == leaderTypes.company ? 'Empresa' :
+                                    record.type == leaderTypes.entity ? 'Entidad Estatal' :
+                                    record.type == leaderTypes.civilSociety ? 'Sociedad Civil' :
+                                    'Otros'
+                                    }}
+                                </td>
+                                <td style="width: 350px">
+                                    <span class="ui-column-title">
+                                        Institución
+                                    </span> {{
+                                        record.type == leaderTypes.company ? 
+                                            (record.directoryIndustry ? record.directoryIndustry.name : '') :
+                                        record.type == leaderTypes.entity ? 
+                                            (record.directoryGovernment ? record.directoryGovernment.name : '') :
+                                        record.role
+                                    }}
+                                </td>
+                                <td style="width: 350px">
+                                    <span class="ui-column-title">
+                                        Órgano/Área/Oficina/Dirección/Jefatura/Otros
+                                    </span>
+                                    <div class="retricted-text">
+                                        {{record?.entity}}
+                                    </div>
+                                </td>
+                                <td style="width: 200px">
+                                    <span class="ui-column-title">
+                                        Departamento
+                                    </span> {{
+                                    record.type == leaderTypes.company ?
+                                    record.directoryIndustry?.district?.province?.department?.name :
+                                    record.type == leaderTypes.entity ?
+                                    record.directoryGovernment?.district?.province?.department?.name :
+                                    ''
+                                    }}
+                                </td>
+                                <td style="width: 200px">
+                                    <span class="ui-column-title">
+                                        Provincia
+                                    </span> {{
+                                    record.type == leaderTypes.company ?
+                                    record.directoryIndustry?.district?.province?.name :
+                                    record.type == leaderTypes.entity ?
+                                    record.directoryGovernment?.district?.province?.name :
+                                    ''
+                                    }}
+                                </td>
+                                <td style="width: 200px">
+                                    <span class="ui-column-title">
+                                        Distrito
+                                    </span> {{
+                                    record.type == leaderTypes.company ? record.directoryIndustry?.district?.name :
+                                    record.type == leaderTypes.entity ? record.directoryGovernment?.district?.name :
+                                    ''
+                                    }}
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                        Sin registros
+                    </div>
+                    <div class="primeng-paging-container">
+                        <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+                            (onPageChange)="getData($event)" [totalRecords]="primengTableHelper.totalRecordsCount"
+                            [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                        </p-paginator>
+                        <span class="total-records-count">
+                            Registros: {{primengTableHelper.totalRecordsCount}}
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" (click)="close()">
+                    Salir
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

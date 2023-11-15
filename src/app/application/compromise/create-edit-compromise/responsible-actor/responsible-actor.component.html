@@ -75,7 +75,7 @@
                 Responsable Específico
             </label>
             <div class="input-group">
-                <select [disabled]="responsibleActorId == -1" id="ResponsibleSubActorSelect" name="ResponsibleSubActorSelect"
+                <select [disabled]="responsibleActorId == -1" (change)="onResponsibleActorSpecific()" id="ResponsibleSubActorSelect" name="ResponsibleSubActorSelect"
                     [(ngModel)]="responsibleSubActorId" class="form-control" type="text">
                     <option value="-1">
                         Ninguno
@@ -93,19 +93,29 @@
             <label for="ResponsibleActorSelect">
                 Nombre del Responsable Específico(*)
             </label>
-            <div class="input-group">
+            <!-- <div class="input-group">
                 <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search..."
                         (change)="nameValue($any($event.target).value)">
 
                 <datalist id="datalistOptions">
                 <option *ngFor="let post of selectedResponsibleActorsAutoComplete" [value]="post.responsibleSubActor.name">
                 </datalist>
-            </div>
+            </div> -->
+            <ngx-select  *ngIf="selectedResponsibleActorsAutoComplete"
+              [allowClear]="true" 
+              [(ngModel)]="actor"
+              [items]="selectedResponsibleActorsAutoComplete" 
+              optionValueField="id"
+              optionTextField="name"
+              placeholder="Seleccione"
+              (ngModelChange)="onResponsibleActorSpecificComplete()"
+              >
+            </ngx-select>
         </div>
     </div>
 
     <div class="row col-12 mx-0 mt-3">
-        <button [disabled]="responsibleActorId == -1" (click)="addResponsible()" class="mb-2 mt-auto btn btn-primary ml-auto">
+        <button [disabled]="responsibleActorId == -1 && !atucomplete" (click)="addResponsible()" class="mb-2 mt-auto btn btn-primary ml-auto">
             <i class="fa fa-plus"></i>
             Agregar
         </button>
@@ -164,7 +174,11 @@
                     <td style="width: 300px">
                         <span class="ui-column-title">
                             Responsable Específico
-                        </span> {{ record?.responsibleSubActor ? record.responsibleSubActor.name : ''}}
+                        </span>  
+                            <span>
+                                {{ record?.responsibleSubActor?.name }}
+                            </span>
+  
                     </td>
                     <td style="width: 130px">
                         <button *ngIf="!record.remove" type="button" pButton icon="pi pi-trash" class="ui-button-danger"

@@ -1,0 +1,90 @@
+<ng-container *ngIf="!hideUploader">
+
+    <div *ngIf="!hideTitle" class="col-12 mt-3">
+        <div class="mb-2 form-group">
+            <label for="RecordTitle">
+                Título del documento
+            </label>
+            <input [(ngModel)]="documentTitle" type="text" id="RecordTitle" name="RecordTitle" class="form-control"
+                maxlength="255">
+        </div>
+    </div>
+
+    <ng-container *ngIf="!hideType">
+
+        <div class="col-12 mt-3">
+            <div class="mb-2 form-group">
+                <label for="SectorMeetSessionSide">
+                    Descripcion (*)
+                </label>
+                <div class="input-group">
+                    <textarea cdkTextareaAutosize cdkAutosizeMinRows="3"
+                        [(ngModel)]="description"
+                        cdkAutosizeMaxRows="100" #SectorMeetSessionSideInput
+                        id="SectorMeetSessionSide" name="SectorMeetSessionSide" class="form-control" type="text" required
+                        maxlength="500"></textarea>
+                    <span class="input-legth">
+                        {{SectorMeetSessionSideInput.value ? SectorMeetSessionSideInput.value.length :
+                        0}}/{{SectorMeetSessionSideInput.maxLength}}
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+    </ng-container>
+
+    <div class="col-12 mt-4">
+        <div class="form-uploader" id="drop_zone" (drop)="dropHandler($event)" (dragover)="dragOverHandler($event)">
+            <div class="form-uploader-message d-flex">
+                <i class="fas fa-cloud-upload-alt mr-2"></i>
+                <p class="h5 my-auto">
+                    {{
+                    currentAttachment ?
+                    currentAttachment.fileName :
+                    'Arrastra o presiona para subir un fichero'
+                    }}
+                </p>
+            </div>
+            <div *ngIf="currentAttachment" class="form-uploader-remove">
+                <button type="button" class="close" (click)="removeCurrentFile()" aria-label="Remover archivo">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <input type="file" id="fileInput" aria-label="file-uploader" (change)="fileChangeEvent($event)">
+        </div>
+    </div>
+
+    <div class="col-12 mt-3">
+        <div class="alert alert-warning" role="alert">
+            {{subtitle}}
+        </div>
+    </div>
+
+    <div *ngIf="!disabled" class="col-12 mt-4 text-right">
+        <button [disabled]="!currentAttachment" class="btn btn-success" (click)="addAttachment(currentAttachment)">
+            <i class="fa fa-plus"></i>
+            Subir archivo
+        </button>
+    </div>
+
+    <div *ngIf="disabled" class="col-12 mt-4 text-right">
+        <label class="btn btn-danger">
+            Limite de archivos alcanzado
+        </label>
+    </div>
+</ng-container>
+
+<div class="col-12 mt-3" *ngIf="attachments && attachments.length > 0">
+    <h6 *ngIf="hideHeader" class="d-block text-left text-dark font-weight-bold mt-2">
+        Archivos por publicar
+    </h6>
+    <h5 *ngIf="!hideHeader" class="d-block text-left text-dark font-weight-bold mt-2">
+        Archivos por publicar
+    </h5>
+    <hr>
+</div>
+
+<div class="col-12">
+    <file-uploader-item [attachment]="attachment" (removeAttachment)="removeFile(i)"
+        *ngFor="let attachment of attachments; index as i"></file-uploader-item>
+</div>

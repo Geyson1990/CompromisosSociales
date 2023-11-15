@@ -7,7 +7,8 @@ import {UtilityServiceProxy, UtilityTerritorialUnitDto } from '@shared/service-p
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import * as moment from 'moment';
 import { LazyLoadEvent, Paginator, Table } from 'primeng';
-import { finalize } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
 
 @Component({
     templateUrl: 'compromise.component.html',
@@ -18,7 +19,7 @@ import { finalize } from 'rxjs/operators';
     ]
 })
 export class CompromiseComponent extends AppComponentBase implements OnInit {
-
+   
     @ViewChild('dataTable', { static: true }) dataTable: Table;
     @ViewChild('paginator', { static: true }) paginator: Paginator;
 
@@ -30,9 +31,10 @@ export class CompromiseComponent extends AppComponentBase implements OnInit {
     socialCode: string;
     territorialUnit: number = -1;
     territorialUnits: UtilityTerritorialUnitDto[] = [];
+    selectedCompromises!: any;
     filterByDate: boolean = false;
     dateRange: Date[] = [moment().startOf('month').toDate(), moment().endOf('day').toDate()];
-
+    arrayDelete: any[] = [];
     advancedFiltersAreShown: boolean = false;
     filterText: string;
 
@@ -95,7 +97,7 @@ export class CompromiseComponent extends AppComponentBase implements OnInit {
             }
         });
     }
-
+ 
     exportMatrixToExcel(): void {
         this.fileDownloadRequest.show();
         this._compromiseServiceProxy.getMatrixToExcel(
@@ -141,4 +143,29 @@ export class CompromiseComponent extends AppComponentBase implements OnInit {
     reloadPage(): void {
         this.paginator.changePage(this.paginator.getPage());
     }
+ 
+    deleteRecords() {
+        this.arrayDelete = this.selectedCompromises.map(item => ({ id: item.id }));
+        console.log("arrayDelete:",this.arrayDelete);
+        this.message.confirm(`¿Esta seguro de eliminar los registros seleccionados?`, 'Aviso', confirm => {
+            if(confirm) {
+                this.showMainSpinner('Eliminando información, por favor espere...');
+                this._compromiseServiceProxy
+                .deleteCompromiseList(this.arrayDelete)
+                .pipe(
+                    catchError((error) => {
+                      console.error('Error al eliminar:', error);
+                      setTimeout(() => this.hideMainSpinner(), 1500);
+                      return throwError(error);
+                    })
+                  )
+                .subscribe(() => {
+                    this.reloadPage();
+                    this.notify.error('Eliminado satisfactoriamente');
+                    setTimeout(() => this.hideMainSpinner(), 1500);
+                });
+            }
+        }); 
+    }
+
 }

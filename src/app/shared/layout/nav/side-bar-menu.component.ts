@@ -51,6 +51,7 @@ export class SideBarMenuComponent extends AppComponentBase implements OnInit, Af
 
     ngOnInit() {
         this.menu = this._appNavigationService.getMenu();
+        console.log("menu:",this.menu)
 
         this.currentRouteUrl = this.router.url.split(/[?#]/)[0];
 

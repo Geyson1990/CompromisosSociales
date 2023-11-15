@@ -4,6 +4,7 @@ import { Injectable, Inject, Optional } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
 import { API_BASE_URL, blobToText, throwException, processComplete } from '../service-proxies';
 import * as moment from 'moment';
+import { SocialConflictAlertActorTypeDto } from './social-conflict-alert-proxie';
 
 @Injectable()
 export class ActorTypeServiceProxy {
@@ -288,6 +289,7 @@ export class PagedResultDtoOfActorTypeListDto implements IPagedResultDtoOfActorT
 export interface IActorTypeDto {
     id: number;
     name: string;
+    actorType: SocialConflictAlertActorTypeDto;
     enabled: boolean;
     showDetail: boolean;
     showMovement: boolean;
@@ -296,6 +298,7 @@ export interface IActorTypeDto {
 export class ActorTypeDto implements IActorTypeDto {
     id: number;
     name: string;
+    actorType: SocialConflictAlertActorTypeDto;
     enabled: boolean;
     showDetail: boolean;
     showMovement: boolean;
@@ -313,6 +316,7 @@ export class ActorTypeDto implements IActorTypeDto {
         if (_data) {
             this.id = _data["id"];
             this.name = _data["name"];
+            this.actorType = _data["actorType"];
             this.enabled = _data["enabled"];
             this.showDetail = _data["showDetail"];
             this.showMovement = _data["showMovement"];
@@ -330,6 +334,8 @@ export class ActorTypeDto implements IActorTypeDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
+        data["actorType"] = this.actorType;
+        // data["dni"] = this.dni;
         data["enabled"] = this.enabled;
         data["showDetail"] = this.showDetail;
         data["showMovement"] = this.showMovement;

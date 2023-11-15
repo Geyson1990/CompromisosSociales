@@ -16,12 +16,13 @@ export class AttachmentMeetComponent extends AppComponentBase {
     constructor(_injector: Injector) {
         super(_injector);
         this.state = _injector.get(SectorSessionStateService);
+        console.log("state:",this.state)
     }
 
     removeAttachment(index: number) {
         this.message.confirm('¿Esta seguro de eliminar el registro seleccionado?', 'Aviso', confirmation => {
             if (confirmation) {
-                this.state.sectorMeetSession.uploadFiles.splice(index, 1);
+                this.state.sectorMeetSession.uploadFilesPDF.splice(index, 1);
             }
         });
     }

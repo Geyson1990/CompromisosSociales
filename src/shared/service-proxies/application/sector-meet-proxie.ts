@@ -4,6 +4,7 @@ import { Injectable, Inject, Optional } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
 import { API_BASE_URL, blobToText, throwException, processComplete, EntityDto } from '../service-proxies';
 import * as moment from 'moment';
+import { SectorMeetSessionAttachmentUploadDto, SectorMeetSessionResourceDto } from './sector-meet-session-proxie';
 
 @Injectable()
 export class SectorMeetServiceProxy {
@@ -392,6 +393,8 @@ export class SectorMeetDto implements ISectorMeetDto {
     replaceCode: boolean;
     replaceYear: number;
     replaceCount: number;
+    uploadFiles: SectorMeetSessionAttachmentUploadDto[];
+    resources: SectorMeetSessionResourceDto[];
 
     constructor(data?: ISectorMeetDto) {
         if (data) {
@@ -404,6 +407,8 @@ export class SectorMeetDto implements ISectorMeetDto {
                 id: -1,
                 name: undefined
             });
+            this.uploadFiles = [];
+            this.resources = [];
         }
     }
 
@@ -420,6 +425,11 @@ export class SectorMeetDto implements ISectorMeetDto {
             });
             this.socialConflict = _data["socialConflict"] ? SectorMeetSocialConflict.fromJS(_data["socialConflict"]) : <any>undefined;
             this.meetName = _data["meetName"];
+            if (Array.isArray(_data["resources"])) {
+                this.resources = [] as any;
+                for (let item of _data["resources"])
+                    this.resources!.push(SectorMeetSessionResourceDto.fromJS(item));
+            }
         }
     }
 
@@ -440,7 +450,16 @@ export class SectorMeetDto implements ISectorMeetDto {
         data["replaceCode"] = this.replaceCode;
         data["replaceYear"] = this.replaceYear;
         data["replaceCount"] = this.replaceCount;
-
+        if (Array.isArray(this.resources)) {
+            data["resources"] = [];
+            for (let item of this.resources)
+                data["resources"].push(item.toJSON());
+        }
+        if (Array.isArray(this.uploadFiles)) {
+            data["uploadFiles"] = [];
+            for (let item of this.uploadFiles)
+                data["uploadFiles"].push(item.toJSON());
+        }
         return data;
     }
 }

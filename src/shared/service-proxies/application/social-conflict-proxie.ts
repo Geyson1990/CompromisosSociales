@@ -94,6 +94,37 @@ export class SocialConflictServiceProxy {
         return _observableOf<PagedResultDtoOfSocialConflictListDto>(<any>null);
     }
 
+    // getConflictPendings(id: number): Observable<CompromiseGetDataDto> {
+    //     let url_ = this.baseUrl + "/api/services/app/Compromise/Get?";
+    //     if (id === null)
+    //         throw new Error("The parameter 'Id' cannot be null.");
+    //     else if (id !== undefined)
+    //         url_ += "Id=" + encodeURIComponent("" + id) + "&";
+    //     url_ = url_.replace(/[?&]$/, "");
+
+
+    //     let options_: any = {
+    //         observe: "response",
+    //         responseType: "blob",
+    //         headers: new HttpHeaders({
+    //             "Accept": "text/plain"
+    //         })
+    //     };
+
+    //     return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
+    //         return this.processGet(response_);
+    //     })).pipe(_observableCatch((response_: any) => {
+    //         if (response_ instanceof HttpResponseBase) {
+    //             try {
+    //                 return this.processGet(<any>response_);
+    //             } catch (e) {
+    //                 return <Observable<CompromiseGetDataDto>><any>_observableThrow(e);
+    //             }
+    //         } else
+    //             return <Observable<CompromiseGetDataDto>><any>_observableThrow(response_);
+    //     }));
+    // }
+
     getMatrizToExcel(filter: string | undefined, verification: ConflictVerificationState, code: string | undefined, territorialUnit: number | undefined, startDate: moment.Moment | undefined, endDate: moment.Moment | undefined, filterByDate: boolean | undefined, sorting: string | undefined, maxResultCount: number | undefined, skipCount: number | undefined): Observable<FileDto> {
         let url_ = this.baseUrl + "/api/services/app/SocialConflict/GetMatrizToExcel?";
         if (filter !== undefined)
@@ -890,6 +921,7 @@ export class SocialConflictDto implements ISocialConflictDto {
     conditions: SocialConflictConditionDto[];
     resources: SocialConflictResourceDto[];
     notes: SocialConflictNoteLocationDto[];
+    records: SocialConflictRecordDto[];
     latitude: number;
     longitude: number;
     published: number;
@@ -937,6 +969,7 @@ export class SocialConflictDto implements ISocialConflictDto {
             this.acceptedSugerences = [];
             this.resources = [];
             this.notes = [];
+            this.records = [];
         }
     }
 
@@ -1044,6 +1077,11 @@ export class SocialConflictDto implements ISocialConflictDto {
                 this.notes = [] as any;
                 for (let item of data["notes"])
                     this.notes!.push(SocialConflictNoteLocationDto.fromJS(item));
+            }   
+            if (Array.isArray(data["records"])) {
+                this.records = [] as any;
+                for (let item of data["records"])
+                    this.records!.push(SocialConflictRecordDto.fromJS(item));
             }            
         }
     }
@@ -1150,6 +1188,11 @@ export class SocialConflictDto implements ISocialConflictDto {
             data["notes"] = [];
             for (let item of this.notes)
                 data["notes"].push(item.toJSON());
+        }
+        if (Array.isArray(this.records)) {
+            data["records"] = [];
+            for (let item of this.records)
+                data["records"].push(item.toJSON());
         }
 
         return data;
@@ -3191,6 +3234,59 @@ export class SocialConflictNoteLocationDto implements ISocialConflictNoteLocatio
         data["description"] = this.description;
         data["remove"] = this.remove;
 
+        return data;
+    }
+}
+
+
+export interface ISocialConflictRecordDto {
+    code: string;
+    title: string;
+    filter: string;
+    recordTime: Date;
+    womanCompromise: boolean;
+}
+
+export class SocialConflictRecordDto implements ISocialConflictRecordDto {
+    code: string;
+    title: string;
+    filter: string;
+    recordTime: Date;
+    womanCompromise: boolean;
+
+    constructor(data?: ISocialConflictRecordDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.code = data["code"];
+            this.title = data["title"];
+            this.filter = data["filter"];
+            this.recordTime = data["recordTime"];
+            this.womanCompromise = data["womanCompromise"];
+        }
+    }
+
+    static fromJS(data: any): SocialConflictRecordDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SocialConflictRecordDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["title"] = this.title;
+        data["filter"] = this.filter;
+        data["recordTime"] = this.recordTime;
+        data["womanCompromise"] = this.womanCompromise;
         return data;
     }
 }

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { CompromiseDto, CompromiseLabelLocationDto } from '@shared/service-proxies/application/compromise-proxie';
+import { SectorMeetSessionAgreementDto } from '@shared/service-proxies/application/sector-meet-session-agreement-proxie';
 import { LazyLoadEvent, Paginator } from 'primeng';
 
 @Component({
@@ -16,6 +17,10 @@ export class CompromiseGeneralInformationComponent extends AppComponentBase impl
     
     @Input() compromise: CompromiseDto;
     @Input() labels: CompromiseLabelLocationDto[];
+    @Input() conflicts: SectorMeetSessionAgreementDto[];
+    @Input() type: number;
+    @Output() listConflictPending: EventEmitter<void> = new EventEmitter<void>();
+
     @Output() openFindRecord: EventEmitter<void> = new EventEmitter<void>();
 
     private skipCount: number = 0;
@@ -43,8 +48,11 @@ export class CompromiseGeneralInformationComponent extends AppComponentBase impl
         this.openFindRecord.emit();
     }
 
+    listDataConflicts() {
+        this.listConflictPending.emit();
+    }
+
     onWomanCompromiseChange(event: any) {
-        debugger;
         this.compromise.womanCompromise = (event.target.value == 'true');
     }
     

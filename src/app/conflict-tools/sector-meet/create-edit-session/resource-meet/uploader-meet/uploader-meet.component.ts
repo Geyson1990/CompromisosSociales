@@ -17,9 +17,11 @@ import * as moment from 'moment';
 export class UploaderMeetComponent extends AppComponentBase {
 
     private _attachments: AttachmentUploadDto[];
+    state: SectorSessionStateService;
 
     currentAttachment: AttachmentUploadDto;
     documentTitle: string;
+    description: string;
     reportType: number = -1;
 
     @Input() get attachments(): AttachmentUploadDto[] {
@@ -35,7 +37,7 @@ export class UploaderMeetComponent extends AppComponentBase {
     @Input() hideHeader: boolean = false;
     @Input() hideUploader: boolean = false;
     @Input() header: string = 'Agregar archivos';
-    @Input() subtitle: string = 'Ud. puede seleccionar un archivo WORD (doc, docx), PDF (.pdf), Excel (.xslx, .xlsl) con un tamaño máximo de 5MB.';
+    @Input() subtitle: string = 'Ud. puede seleccionar un archivo PDF (.pdf) o una imágen (.jpg, .jpeg, .jpe, .png) con un tamaño máximo de 5MB.';
     @Input() size: ResourceSizeType = ResourceSizeType.MB5;
     @Input() files: boolean = true;
     @Input() images: boolean = false;
@@ -48,9 +50,15 @@ export class UploaderMeetComponent extends AppComponentBase {
 
     constructor(_injector: Injector) {
         super(_injector);
+        this.state = _injector.get(SectorSessionStateService);
     }
 
     addAttachment(attachment: AttachmentUploadDto) {
+ 
+        if (!this.attachments) {
+            this.attachments = []; // Si this.attachments es undefined, inicialízalo como un array vacío.
+        }
+
         const index: number = this.attachments.findIndex(p => p.name == attachment.name);
 
         if (!this.hideTitle && index != -1) {
@@ -63,21 +71,15 @@ export class UploaderMeetComponent extends AppComponentBase {
             return;
         }
 
-        if (!this.hideType) {
-
-            const recordResourceTypeIndex: number = this.recordResourceTypes.findIndex(p => p.id == this.reportType);
-
-            if (recordResourceTypeIndex == -1) {
-                this.message.error('Seleccione el tipo de documento de sustento antes de continuar', 'Aviso');
-                return;
-            }
-
-            attachment.recordResourceType = this.recordResourceTypes[recordResourceTypeIndex];
+        if (!this.hideTitle && this.isNullEmptyOrWhiteSpace(this.description)) {
+            this.message.error('Ingrese una descripción referente al documento antes de continuar', 'Aviso');
+            return;
         }
 
         attachment.name = this.documentTitle;
-
-        this.saveAttachment.emit(attachment);
+        attachment.description = this.description;
+        // this.saveAttachment.emit(attachment);
+        this.state.sectorMeetSession.uploadFilesPDF.push(attachment);
         this.uploadFile();
     }
 
@@ -85,6 +87,7 @@ export class UploaderMeetComponent extends AppComponentBase {
 
     private uploadFile() {
         this.documentTitle = undefined;
+        this.description = undefined;
         this.reportType = -1;
         this.currentAttachment = undefined;
         (<any>document.getElementById('fileInput')).value = '';
@@ -125,7 +128,7 @@ export class UploaderMeetComponent extends AppComponentBase {
 
                 }
             }
-        }
+        } 
         this.removeDragData(event);
     }
 
@@ -143,7 +146,7 @@ export class UploaderMeetComponent extends AppComponentBase {
         let reader: FileReader = new FileReader();
 
         reader.onloadend = (e: any) => {
-
+ 
             if (this.fileIsValid(file.name)) {
                 this.currentAttachment = new AttachmentUploadDto({
                     fileName: file.name,
@@ -237,12 +240,6 @@ export class UploaderMeetComponent extends AppComponentBase {
         if (this.files) {
             switch (extension) {
                 case 'pdf': return true;
-                case 'xlsx': return true;
-                case 'xls': return true;
-                case 'csv': return true;
-                case 'doc': return true;
-                case 'docx': return true;
-                case 'odt': return true;
             }
         }
 

@@ -135,6 +135,10 @@ export class CreateEditDocumentComponent extends AppComponentBase implements OnI
         this.uploadResources(() => {
             this.completeSave();
         });
+
+        this.uploadResourcesFilesPDF(() => {
+            this.completeSave();
+        });
     }
 
     backButtonPressed() {
@@ -169,6 +173,36 @@ export class CreateEditDocumentComponent extends AppComponentBase implements OnI
                 });
         }
     }
+
+    private uploadResourcesFilesPDF(callback: () => void) {
+        const files: globalThis.File[] = this.dialogSpaceDocument.uploadFilesPDF.map(p => p.file);
+
+        if (files.length == 0) {
+            callback();
+        } else {
+            this._uploadServiceProxy
+                .uploadFiles(files, this._tokenService.getToken())
+                .subscribe(event => {
+                    if (event instanceof HttpResponse) {
+                        if (event.body.success) {
+                            let index: number = 0;
+                            for (let token of event.body.result.fileTokens) {
+                                this.dialogSpaceDocument.uploadFilesPDF[index].token = token;
+                                index++;
+                            }
+                            callback();
+                        } else {
+                            this.message.info(event.body.error?.details ? event.body.error?.details : 'No se pudo completar la transacción, intente nuevamente mas tarde', 'Aviso');
+                            setTimeout(() => this.hideMainSpinner(), 1500);
+                        }
+                    }
+                }, (error) => {
+                    this.message.error(error?.error?.error?.details ? error.error.error.details : 'No se pudo completar la transacción, intente nuevamente mas tarde', 'Aviso');
+                    setTimeout(() => this.hideMainSpinner(), 1500);
+                });
+        }
+    }
+
 
     private completeSave() {
         if (this.dialogSpaceDocument.id) {

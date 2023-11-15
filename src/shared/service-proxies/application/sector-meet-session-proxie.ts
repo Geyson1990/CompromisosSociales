@@ -475,6 +475,10 @@ export class ISectorMeetSessionDto {
     province: SectorMeetSessionProvinceReverseDto;
     district: SectorMeetSessionDistrictReverseDto;
     location: string;
+    latitude: string;
+    longitude: string;
+    mainSummary: string;
+    isDescriptionSocialConflict: boolean;
     side: string;
     personTime: moment.Moment;
     person: SectorMeetSessionPersonDto;
@@ -486,6 +490,8 @@ export class ISectorMeetSessionDto {
     resources: SectorMeetSessionResourceDto[];
     summaries: SectorMeetSessionSummaryLocationDto[];
     uploadFiles: SectorMeetSessionAttachmentUploadDto[];
+    uploadFilesPDF: SectorMeetSessionAttachmentUploadDto[];
+    institutionType: SectorMeetSessionEntityType;  
 }
 
 export class SectorMeetSessionDto implements ISectorMeetSessionDto {
@@ -499,6 +505,8 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
     location: string;
     latitude: string;
     longitude: string;
+    mainSummary: string;
+    isDescriptionSocialConflict: boolean;
     side: string;
     personTime: moment.Moment;
     person: SectorMeetSessionPersonDto;
@@ -508,8 +516,11 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
     criticalAspects: SectorMeetSessionCriticalAspectLocationDto[];
     leaders: SectorMeetSessionLeaderRelationDto[];
     resources: SectorMeetSessionResourceDto[];
+    resourcesFile: SectorMeetSessionResourceDto[];
     summaries: SectorMeetSessionSummaryLocationDto[];
     uploadFiles: SectorMeetSessionAttachmentUploadDto[];
+    uploadFilesPDF: SectorMeetSessionAttachmentUploadDto[];
+    institutionType: SectorMeetSessionEntityType;
 
     constructor(data?: ISectorMeetSessionDto) {
         if (data) {
@@ -524,7 +535,9 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
             this.actions = [];
             this.summaries = [];
             this.resources = [];
+            this.resourcesFile = [];
             this.uploadFiles = [];
+            this.uploadFilesPDF = [];
             this.leaders = [];
             this.department = new SectorMeetSessionDepartmentReverseDto({
                 id: -1,
@@ -569,6 +582,10 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
                 province: undefined
             });
             this.location = data["location"];
+            this.latitude = data["latitude"];
+            this.longitude = data["longitude"];
+            this.mainSummary = data["mainSummary"];
+            this.isDescriptionSocialConflict = data["isDescriptionSocialConflict"];
             this.side = data["side"];
             this.personTime = data["personTime"] ? moment(data["personTime"].toString()) : <any>undefined;
             this.person = data["person"] ? SectorMeetSessionPersonDto.fromJS(data["person"]) : new SectorMeetSessionPersonDto({
@@ -606,6 +623,12 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
                 for (let item of data["resources"])
                     this.resources!.push(SectorMeetSessionResourceDto.fromJS(item));
             }
+
+            if (Array.isArray(data["resourcesFile"])) {
+                this.resourcesFile = [] as any;
+                for (let item of data["resourcesFile"])
+                    this.resourcesFile!.push(SectorMeetSessionResourceDto.fromJS(item));
+            }
             if (Array.isArray(data["summaries"])) {
                 this.summaries = [] as any;
                 for (let item of data["summaries"])
@@ -631,6 +654,10 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
         data["province"] = this.province ? this.province.toJSON() : <any>undefined;
         data["district"] = this.district ? this.district.toJSON() : <any>undefined;
         data["location"] = this.location;
+        data["latitude"] = this.latitude;
+        data["longitude"] = this.longitude;
+        data["mainSummary"] = this.mainSummary;
+        data["isDescriptionSocialConflict"] = this.isDescriptionSocialConflict;
         data["side"] = this.side;
         data["personTime"] = this.personTime ? this.personTime.toISOString() : <any>undefined;
         data["person"] = this.person ? this.person.toJSON() : <any>undefined;
@@ -664,6 +691,11 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
             for (let item of this.resources)
                 data["resources"].push(item.toJSON());
         }
+        if (Array.isArray(this.resourcesFile)) {
+            data["resourcesFile"] = [];
+            for (let item of this.resourcesFile)
+                data["resourcesFile"].push(item.toJSON());
+        }
         if (Array.isArray(this.summaries)) {
             data["summaries"] = [];
             for (let item of this.summaries)
@@ -673,6 +705,12 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
             data["uploadFiles"] = [];
             for (let item of this.uploadFiles)
                 data["uploadFiles"].push(item.toJSON());
+        }
+
+        if (Array.isArray(this.uploadFilesPDF)) {
+            data["uploadFilesPDF"] = [];
+            for (let item of this.uploadFilesPDF)
+                data["uploadFilesPDF"].push(item.toJSON());
         }
 
         return data;
@@ -1409,7 +1447,6 @@ export class SectorMeetSessionLeaderRelationDto implements ISectorMeetSessionLea
     role: string;
     teams: SectorMeetSessionTeamRelationDto[];
     remove: boolean;
-
     //readonly
     isHidden: boolean;
 
@@ -1476,6 +1513,7 @@ export interface ISectorMeetSessionTeamRelationDto {
     job: string;
     emailAddress: string;
     phoneNumber: string;
+    gender: string;
 }
 
 export class SectorMeetSessionTeamRelationDto implements ISectorMeetSessionTeamRelationDto {
@@ -1488,7 +1526,7 @@ export class SectorMeetSessionTeamRelationDto implements ISectorMeetSessionTeamR
     emailAddress: string;
     phoneNumber: string;
     remove: boolean;
-
+    gender: string;
     //readonly
     isHidden: boolean;
 
@@ -1510,7 +1548,8 @@ export class SectorMeetSessionTeamRelationDto implements ISectorMeetSessionTeamR
             this.secondSurname = _data["secondSurname"];
             this.job = _data["job"];
             this.emailAddress = _data["emailAddress"];
-            this.phoneNumber = _data["phoneNumber"];
+            this.phoneNumber = _data["phoneNumber"]; 
+            this.gender = _data["gender"];
         }
     }
 
@@ -1531,7 +1570,8 @@ export class SectorMeetSessionTeamRelationDto implements ISectorMeetSessionTeamR
         data["job"] = this.job;
         data["emailAddress"] = this.emailAddress;
         data["phoneNumber"] = this.phoneNumber;
-        data["remove"] = this.remove;
+        data["remove"] = this.remove; 
+        data["gender"] = this.gender;
 
         return data;
     }
@@ -1771,11 +1811,12 @@ export const enum SectorMeetSessionEntityType {
     COMPANY,
     ESTATAL_ENTITY,
     CIVIL_SOCIETY,
-    OTHER
+    OTHER,
+    ALL
 }
 
 export const enum SectorMeetSessionType {
     NONE,
     PRESENTIAL,
     REMOTE
-}
+} 

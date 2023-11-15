@@ -199,6 +199,14 @@
                                 </note-information-social-conflict>
                             </p-tabPanel>
 
+                            <p-tabPanel header="Actas">
+                                <record-information-social-conflict
+                                    [socialConflict]="socialConflict"
+                                    [hasPermission]="hasPermission"
+                                    [(busy)]="busy">                                    
+                                </record-information-social-conflict>
+                            </p-tabPanel>
+
                         </p-tabView>
 
                     </div>

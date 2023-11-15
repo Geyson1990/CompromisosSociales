@@ -81,6 +81,12 @@ export class AppNavigationService {
                     '/app/conflict-tools/sector-meet/edit-meet/',
                     '/app/conflict-tools/sector-meet/create-session/',
                     '/app/conflict-tools/sector-meet/edit-session/',
+                ]),
+                new AppMenuItem('Reuniones Programadas', 'Pages.ConflictTools.SectorMeet', 'fas fa-award', '/app/conflict-tools/programation-meet/dashboard', [
+                    '/app/conflict-tools/programation-meet/create-meet',
+                    '/app/conflict-tools/programation-meet/edit-meet/',
+                    '/app/conflict-tools/programation-meet/create-session/',
+                    '/app/conflict-tools/programation-meet/edit-session/',
                 ])
             ]),
             new AppMenuItem('Herramientas para Análisis de Riesgos', '', 'fas fa-project-diagram', '', [], [
@@ -119,7 +125,8 @@ export class AppNavigationService {
             new AppMenuItem('Catálogos', '', 'fas fa-address-book', '', [], [
                 new AppMenuItem('Entidades del Estado Peruano', 'Pages.Catalog.DirectoryGovernment', 'fas fa-city', '/app/maintenance/directory-governments'),
                 new AppMenuItem('Directorio de Empresas Privadas', 'Pages.Catalog.DirectoryIndustry', 'fas fa-industry', '/app/maintenance/directory-industries'),
-                new AppMenuItem('Directorio de Diálogo y Conflictos Sociales', 'Pages.Catalog.DirectoryDialog', 'fas fa-comment', '/app/maintenance/directory-dialogs')
+                new AppMenuItem('Directorio de Diálogo y Conflictos Sociales', 'Pages.Catalog.DirectoryDialog', 'fas fa-comment', '/app/maintenance/directory-dialogs'),
+                new AppMenuItem('Actores', '', 'fas fa-city', '/app/maintenance/actors')
             ]),
             new AppMenuItem('Satisfacción de usuario', '', 'fas fa-comment', '', [], [
                 new AppMenuItem('Bandeja de entrada de formularios', 'Pages.Quiz.Platform', 'fas fas fa-columns', '/app/quiz/platform', [

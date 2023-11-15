@@ -48,7 +48,7 @@ import { UserNotificationHelper } from './shared/layout/notifications/UserNotifi
 import { ChangePasswordModalComponent } from './shared/layout/profile/change-password-modal/change-password-modal.component';
 import { ChangeProfilePictureModalComponent } from './shared/layout/profile/change-profile-picture-modal/change-profile-picture-modal.component';
 import { MySettingsModalComponent } from './shared/layout/profile/my-settings-modal/my-settings-modal.component';
-
+import { NgxSelectModule } from 'ngx-select-ex';
 
 @NgModule({
     imports: [
@@ -79,7 +79,8 @@ import { MySettingsModalComponent } from './shared/layout/profile/my-settings-mo
         ImageCropperModule,
         AutoCompleteModule,
         NgxSpinnerModule,
-        AppBsModalModule
+        AppBsModalModule,
+        NgxSelectModule
     ],
     declarations: [
         AppComponent,

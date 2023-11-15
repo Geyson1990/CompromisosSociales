@@ -89,6 +89,7 @@ import { DialogSpaceHolidayServiceProxy } from './application/dialog-space-holid
 import { DialogSpaceTypeServiceProxy } from './application/dialog-space-type-proxie';
 import { DialogSpaceDocumentSituationServiceProxy } from './application/dialog-space-document-situation-proxie';
 import { ActorServiceProxy } from './application/actor-proxie';
+import { SectorMeetSessionAgreementServiceProxy } from './application/sector-meet-session-agreement-proxie';
 
 @NgModule({
     providers: [
@@ -214,6 +215,7 @@ import { ActorServiceProxy } from './application/actor-proxie';
         CompromiseSubStateServiceProxy,
         SectorMeetServiceProxy,
         SectorMeetSessionServiceProxy,
+        SectorMeetSessionAgreementServiceProxy,
         DialogSpaceServiceProxy,
         DialogSpaceDocumentServiceProxy,
         DialogSpaceDocumentTypeServiceProxy,
