@@ -108,7 +108,7 @@
                                     [(busy)]="busy"
                                     [(socialConflictAlert)]="socialConflictAlert" 
                                     (addActor)="addActor()"
-                                    (editActor)="editActor($event)">
+                                    (showSocialFindActorModal)="showSocialFindActorModal()">
                                 </actor-information-social-conflict-alert>
                             </p-tabPanel>
 
@@ -175,5 +175,6 @@
     <create-edit-seal-information-social-conflict-alert #createEditSealModal (modalSave)="saveSeal($event)"> </create-edit-seal-information-social-conflict-alert>
     <email-sender-social-conflict-alert #emailSenderModal></email-sender-social-conflict-alert>
     <file-download #fileDownloader (modalSave)="completeDownload($event)"></file-download>
+    <find-actor #findActorModal (modalSave)="saveActor($event)"></find-actor> 
 
 </div>

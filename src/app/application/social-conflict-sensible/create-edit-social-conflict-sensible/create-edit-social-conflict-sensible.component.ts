@@ -43,6 +43,8 @@ import { CreateEditStateInformationSocialConflictSensibleComponent } from './sta
 import { StateInformationSocialConflictSensibleComponent } from './state-information/state-information.component';
 import { CreateEditSugerenceInformationSocialConflictSensibleComponent } from './sugerence-information/create-edit-sugerence/create-edit-sugerence-information.component';
 import { SugerenceInformationSocialConflictSensibleComponent } from './sugerence-information/sugerence-information.component';
+import { FindSocialConflictComponent } from '@shared/component/find-social-conflict/find-social-conflict.component';
+import { FindActorComponent } from '@shared/component/find-actor/find-actor.component';
 
 enum UploadType {
     Management,
@@ -73,7 +75,7 @@ export class CreateEditSocialConflictSensibleSensibleComponent extends AppCompon
     @ViewChild('conditionInformation', { static: false }) conditionInformation: ConditionInformationSocialConflictSensibleComponent;
     @ViewChild('sugerenceInformation', { static: false }) sugerenceInformation: SugerenceInformationSocialConflictSensibleComponent;
     @ViewChild('factInformation', { static: false }) factInformation: FactInformationSocialConflictSensibleComponent;
-
+    @ViewChild('findActorModal', { static: false }) findActorModal: FindActorComponent;
     @ViewChild('editActorInformation', { static: false }) editActorInformation: EditActorInformationSocialConflictSensibleComponent;
     @ViewChild('createEditRiskInformation', { static: false }) createEditRiskInformation: CreateEditRiskInformationSocialConflictSensibleComponent;
     @ViewChild('createEditFactInformation', { static: false }) createEditFactInformation: CreateEditFactInformationSocialConflictSensibleComponent;
@@ -159,6 +161,9 @@ export class CreateEditSocialConflictSensibleSensibleComponent extends AppCompon
         }, 500);
     }
 
+    showSocialFindActorModal() {
+        this.findActorModal.show();
+     }
 
     addActor() {
         this.editActorInformation.show(undefined, undefined, this.actorTypes, this.actorMovements);
@@ -246,6 +251,29 @@ export class CreateEditSocialConflictSensibleSensibleComponent extends AppCompon
 
     saveSugerence(event: { index: number, type: SugerenceType, value: SocialConflictSensibleSugerenceDto }) {
         this.sugerenceInformation.addOrUpdateItem(event);
+    }
+
+    saveActor(event: any) {
+        let oSocialConflictActorLocationDto: SocialConflictSensibleActorLocationDto = new SocialConflictSensibleActorLocationDto();
+        oSocialConflictActorLocationDto.id = 0;
+        oSocialConflictActorLocationDto.actorId = event.id;
+        oSocialConflictActorLocationDto.name= event.fullName;
+        oSocialConflictActorLocationDto.document= event.documentNumber;
+        oSocialConflictActorLocationDto.job= event.jobPosition;
+        oSocialConflictActorLocationDto.community= event.institution;
+        oSocialConflictActorLocationDto.phoneNumber= event.phoneNumber;
+        oSocialConflictActorLocationDto.emailAddress= event.emailAddress;
+        oSocialConflictActorLocationDto.isPoliticalAssociation= event.isPoliticalAssociation;
+        oSocialConflictActorLocationDto.politicalAssociation= event.politicalAssociation;
+        oSocialConflictActorLocationDto.position= event.position;
+        oSocialConflictActorLocationDto.interest= event.interest;
+        oSocialConflictActorLocationDto.actorType= event.actorType;
+        oSocialConflictActorLocationDto.actorMovement= event.actorMovement;
+        oSocialConflictActorLocationDto.remove= false;
+        oSocialConflictActorLocationDto.isHidden = false;
+        event.value = oSocialConflictActorLocationDto;
+        console.log("event::::::::::::",event)
+       this.actorInformation.addOrUpdateItem(event);
     }
 
     save() {
