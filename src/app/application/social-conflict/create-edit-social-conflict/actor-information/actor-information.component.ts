@@ -3,7 +3,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { FindActorComponent } from '@shared/component/find-actor/find-actor.component';
 import { SocialConflictDto, SocialConflictActorLocationDto } from '@shared/service-proxies/application/social-conflict-proxie';
 import { LazyLoadEvent, Paginator } from 'primeng';
-
+ 
 @Component({
     selector: 'actor-information-social-conflict',
     templateUrl: 'actor-information.component.html',
@@ -86,15 +86,12 @@ export class ActorInformationSocialConflictComponent extends AppComponentBase im
     }
 
     addOrUpdateItem(event: { value: SocialConflictActorLocationDto, index: number }) {
-        console.log("dccccccccccc:",event.value)
         if (event.index || event.index == 0) {
             this.socialConflict.actors[event.index] = event.value;
         } else {
             this.socialConflict.actors.push(event.value);
         }
         this.formatPagination(this.skipCount, this.maxResultCount);
-        console.log("dccccccccccc bbbbbbb:",this.socialConflict)
-
     }
 
     private formatPagination(skipCount: number, maxResultCount: number) {
