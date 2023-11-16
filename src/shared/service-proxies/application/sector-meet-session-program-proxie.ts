@@ -6,7 +6,7 @@ import { API_BASE_URL, blobToText, throwException, processComplete, EntityDto, P
 import * as moment from 'moment';
 
 @Injectable()
-export class SectorMeetSessionServiceProxy {
+export class SectorMeetSessionProgramServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;

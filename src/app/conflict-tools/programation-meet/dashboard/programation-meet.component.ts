@@ -1,12 +1,13 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { SectorMeetDto, SectorMeetServiceProxy } from '@shared/service-proxies/application/sector-meet-proxie';
+import { SectorMeetDto } from '@shared/service-proxies/application/sector-meet-proxie';
 import { SectorMeetSessionType } from '@shared/service-proxies/application/sector-meet-session-proxie';
 import { UtilityDepartmentDataDto, UtilityDistrictDataDto, UtilityPersonDto, UtilityProvinceDataDto, UtilityServiceProxy } from '@shared/service-proxies/application/utility-proxie';
 import { LazyLoadEvent, Paginator, Table } from 'primeng';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
+import { SectorMeetProgamServiceProxy } from '@shared/service-proxies/application/sector-meet-program-proxie';
 
 @Component({
     templateUrl: 'programation-meet.component.html',
@@ -42,7 +43,7 @@ export class ProgramationMeetComponent extends AppComponentBase implements OnIni
         remote: SectorMeetSessionType.REMOTE
     }
 
-    constructor(_injector: Injector, private _utilityServiceProxy: UtilityServiceProxy, private _sectorMeetServiceProxy: SectorMeetServiceProxy) {
+    constructor(_injector: Injector, private _utilityServiceProxy: UtilityServiceProxy, private _sectorMeetServiceProxy: SectorMeetProgamServiceProxy) {
         super(_injector);
     }
 

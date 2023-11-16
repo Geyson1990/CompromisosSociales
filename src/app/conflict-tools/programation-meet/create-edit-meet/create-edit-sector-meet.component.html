@@ -38,8 +38,7 @@
                                 <general-information 
                                     (showAddSession)="addSession()"
                                     (showEditSession)="editSession($event)"
-                                    (showSocialConflictModal)="showSocialConflictModal()"
-                                    (showReport)="showDownloader($event)">
+                                    (showSocialConflictModal)="showSocialConflictModal()">
                                 </general-information>
                             </p-tabPanel>
                         </p-tabView>
@@ -47,10 +46,8 @@
                 </div>
             </div>
         </div>
-
+ 
     </ng-container>
 
     <find-social-conflict #findSocialConflictModal (modalSave)="selectSocialConflict($event)"></find-social-conflict>
-    <file-download #fileDownloader (modalSave)="completeDownload($event)"></file-download>
-    <file-download-request #fileDownloadRequest></file-download-request>
 </div>

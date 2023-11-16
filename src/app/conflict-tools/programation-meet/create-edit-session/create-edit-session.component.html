@@ -79,20 +79,6 @@
                                     (editSchedule)="editSchedule($event)">
                                 </schedule-information>
                             </p-tabPanel>
-                            <!-- <p-tabPanel header="Resumen de la Reunión">
-                                <summary-information
-                                    #summaryInformation
-                                    (addSummary)="addSummary()"
-                                    (editSummary)="editSummary($event)">                                    
-                                </summary-information>
-                            </p-tabPanel>
-                            <p-tabPanel header="Acuerdos">
-                                <agreement-information
-                                    #agreementInformation
-                                    (addAgreement)="addAgreement()"
-                                    (editAgreement)="editAgreement($event)">
-                                </agreement-information>
-                            </p-tabPanel> -->
                             <p-tabPanel header="Aspectos Críticos">
                                 <critical-aspect-information
                                     #criticalAspectInformation
@@ -100,21 +86,13 @@
                                     (editCriticalAspect)="editCriticalAspect($event)">                                    
                                 </critical-aspect-information>
                             </p-tabPanel>
-                            <!-- <p-tabPanel header="Próximas Acciones">
-                                <action-information
-                                    #actionInformation
-                                    (addAction)="addAction()"
-                                    (editAction)="editAction($event)">                                    
-                                </action-information>
+                            <p-tabPanel header="Factores de riesgos de la semana">
+                                <risk-factors-week
+                                    #riskFactorWeekComponent
+                                    (addRiskFactorWeek)="addRiskFactorWeek()"
+                                    (editRiskFactorWeek)="editRiskFactorWeek($event)">                                    
+                                </risk-factors-week>
                             </p-tabPanel>
-                            <p-tabPanel header="Registro Fotográfico">
-                                <resource-information>                                    
-                                </resource-information>
-                            </p-tabPanel>
-                            <p-tabPanel header="Adjuntar archivos de evidencia">
-                                <resource-meet>                                    
-                                </resource-meet>
-                            </p-tabPanel> -->
                         </p-tabView>
                     </div>
                 </div>
@@ -122,9 +100,11 @@
         </div>
     </ng-container>
 
-    <create-edit-schedule #createEditScheduleModal (modalSave)="saveSchedule($event)"></create-edit-schedule>
-    <create-edit-agreement #createEditAgreementModal (modalSave)="saveAgreement($event)"></create-edit-agreement>
     <create-edit-critical-aspect #createEditCriticalAspectModal (modalSave)="saveCriticalAspect($event)"></create-edit-critical-aspect>
+    <create-edit-risk-factors-week #createEditRiskFactorWeekModal (modalSave)="saveRiskCriticalWeek($event)"></create-edit-risk-factors-week>
+
+    <!-- <create-edit-schedule #createEditScheduleModal (modalSave)="saveSchedule($event)"></create-edit-schedule>
+    <create-edit-agreement #createEditAgreementModal (modalSave)="saveAgreement($event)"></create-edit-agreement>
     <create-edit-action #createEditActionModal (modalSave)="saveAction($event)"></create-edit-action>
     <create-edit-summary #createEditSummaryModal (modalSave)="saveSummary($event)" (findDirectory)="findSummaryDirectory()"></create-edit-summary>
     <create-edit-leader #createEditLeaderModal (modalSave)="saveLeader($event)" (findDirectoryGovernment)="findDirectoryGovernment()" (findDirectoryIndustry)="findDirectoryIndustry()"></create-edit-leader>
@@ -134,5 +114,6 @@
     
     <find-directory-government #findDirectoryGovernmentModal (modalSave)="saveDirectoryGoverment($event)"></find-directory-government>
     <find-directory-industry #findDirectoryIndustryModal (modalSave)="saveDirectoryIndustry($event)"></find-directory-industry>
-    <find-leader-sector-meet-session #findSectorMeetSessionModal (modalSave)="saveSummaryDirectory($event)"></find-leader-sector-meet-session>
+    <find-leader-sector-meet-session #findSectorMeetSessionModal (modalSave)="saveSummaryDirectory($event)"></find-leader-sector-meet-session> -->
+
 </div>

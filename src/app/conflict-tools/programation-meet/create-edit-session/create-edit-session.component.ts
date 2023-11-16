@@ -7,16 +7,16 @@ import { SectorMeetSessionActionLocationDto, SectorMeetSessionAgreementLocationD
 import { UploadServiceProxy } from '@shared/service-proxies/application/upload-proxie';
 import { TokenService } from 'abp-ng2-module';
 import { ProgramationSessionStateService } from '../shared/programation-session-state.service';
-import { ActionInformationComponent } from './action-information/action-information.component';
-import { CreateEditActionInformationComponent } from './action-information/create-edit-action/create-edit-action-information.component';
-import { AgreementInformationComponent } from './agreement-information/agreement-information.component';
-import { CreateEditAgreementInformationComponent } from './agreement-information/create-edit-agreement/create-edit-agreement-information.component';
+// import { ActionInformationComponent } from './action-information/action-information.component';
+// import { CreateEditActionInformationComponent } from './action-information/create-edit-action/create-edit-action-information.component';
+// import { AgreementInformationComponent } from './agreement-information/agreement-information.component';
+// import { CreateEditAgreementInformationComponent } from './agreement-information/create-edit-agreement/create-edit-agreement-information.component';
 import { CreateEditCriticalAspectInformationComponent } from './critical-aspect-information/create-edit-critical-aspect/create-edit-critical-aspect-information.component';
 import { CriticalAspectInformationComponent } from './critical-aspect-information/critical-aspect-information.component';
 import { CreateEditScheduleInformationComponent } from './schedule-information/create-edit-schedule/create-edit-schedule-information.component';
 import { ScheduleInformationComponent } from './schedule-information/schedule-information.component';
-import { CreateEditSummaryInformationComponent } from './summary-information/create-edit-summary/create-edit-summary-information.component';
-import { SummaryInformationComponent } from './summary-information/summary-information.component';
+// import { CreateEditSummaryInformationComponent } from './summary-information/create-edit-summary/create-edit-summary-information.component';
+// import { SummaryInformationComponent } from './summary-information/summary-information.component';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 import { CreateEditLeaderInformationComponent } from './registration-information/leader-information/leader-information.component';
@@ -26,7 +26,9 @@ import { RegistrationInformationComponent } from './registration-information/reg
 import { FindDirectoryIndustryComponent } from '@shared/component/find-directory-industry/find-directory-industry.component';
 import { TeamInformationComponent } from './registration-information/team-information/team-information.component';
 import { CreateEditTeamInformationComponent } from './registration-information/team-information/create-edit-team/create-edit-team.component';
-import { FindLeaderSectorMeetSessionComponent } from './summary-information/find-leader/find-leader.component';
+import { CreateEditRiskFactorWeekComponent } from './risk-factors-week/create-edit-risk-factors-week/create-edit-risk-factors-week.component';
+import { RiskFactorWeekComponent } from './risk-factors-week/risk-factors-week.component';
+// import { FindLeaderSectorMeetSessionComponent } from './summary-information/find-leader/find-leader.component';
 
 @Component({
     templateUrl: 'create-edit-session.component.html',
@@ -37,19 +39,22 @@ import { FindLeaderSectorMeetSessionComponent } from './summary-information/find
     ]
 })
 export class CreateEditSessionComponent extends AppComponentBase implements OnInit {
-
+ 
     @ViewChild('registrationInformation', { static: false }) registrationInformation: RegistrationInformationComponent;
     @ViewChild('scheduleInformation', { static: false }) scheduleInformation: ScheduleInformationComponent;
-    @ViewChild('agreementInformation', { static: false }) agreementInformation: AgreementInformationComponent;
+    // @ViewChild('agreementInformation', { static: false }) agreementInformation: AgreementInformationComponent;
     @ViewChild('criticalAspectInformation', { static: false }) criticalAspectInformation: CriticalAspectInformationComponent;
-    @ViewChild('actionInformation', { static: false }) actionInformation: ActionInformationComponent;
-    @ViewChild('summaryInformation', { static: false }) summaryInformation: SummaryInformationComponent;
+    // @ViewChild('actionInformation', { static: false }) actionInformation: ActionInformationComponent;
+    // @ViewChild('summaryInformation', { static: false }) summaryInformation: SummaryInformationComponent;
 
     @ViewChild('createEditScheduleModal', { static: false }) createEditScheduleModal: CreateEditScheduleInformationComponent;
-    @ViewChild('createEditAgreementModal', { static: false }) createEditAgreementModal: CreateEditAgreementInformationComponent;
+    // @ViewChild('createEditAgreementModal', { static: false }) createEditAgreementModal: CreateEditAgreementInformationComponent;
     @ViewChild('createEditCriticalAspectModal', { static: false }) createEditCriticalAspectModal: CreateEditCriticalAspectInformationComponent;
-    @ViewChild('createEditActionModal', { static: false }) createEditActionModal: CreateEditActionInformationComponent;
-    @ViewChild('createEditSummaryModal', { static: false }) createEditSummaryModal: CreateEditSummaryInformationComponent;
+    @ViewChild('riskFactorWeekComponent', { static: false }) riskFactorWeekComponent: RiskFactorWeekComponent;
+    @ViewChild('createEditRiskFactorWeekModal', { static: false }) createEditRiskFactorWeekModal: CreateEditRiskFactorWeekComponent;
+
+    // @ViewChild('createEditActionModal', { static: false }) createEditActionModal: CreateEditActionInformationComponent;
+    // @ViewChild('createEditSummaryModal', { static: false }) createEditSummaryModal: CreateEditSummaryInformationComponent;
     @ViewChild('createEditLeaderModal', { static: false }) createEditLeaderModal: CreateEditLeaderInformationComponent;
     @ViewChild('createEditTeamModal', { static: false }) createEditTeamModal: CreateEditTeamInformationComponent;
 
@@ -57,7 +62,7 @@ export class CreateEditSessionComponent extends AppComponentBase implements OnIn
 
     @ViewChild('findDirectoryGovernmentModal', { static: false }) findDirectoryGovernmentModal: FindDirectoryGovernmentComponent;
     @ViewChild('findDirectoryIndustryModal', { static: false }) findDirectoryIndustryModal: FindDirectoryIndustryComponent;
-    @ViewChild('findSectorMeetSessionModal', { static: false }) findSectorMeetSessionModal: FindLeaderSectorMeetSessionComponent;
+    // @ViewChild('findSectorMeetSessionModal', { static: false }) findSectorMeetSessionModal: FindLeaderSectorMeetSessionComponent;
     
     id: number;
     meetId: number;
@@ -134,15 +139,15 @@ export class CreateEditSessionComponent extends AppComponentBase implements OnIn
     }
 
     addAgreement() {
-        this.createEditAgreementModal.show(undefined, undefined);
+        // this.createEditAgreementModal.show(undefined, undefined);
     }
 
     editAgreement(event: { index: number, value: SectorMeetSessionAgreementLocationDto }) {
-        this.createEditAgreementModal.show(event.index, event.value);
+        // this.createEditAgreementModal.show(event.index, event.value);
     }
 
     saveAgreement(event: { index: number, value: SectorMeetSessionAgreementLocationDto }) {
-        this.agreementInformation.addOrUpdateItem(event);
+        // this.agreementInformation.addOrUpdateItem(event);
     }
 
     addCriticalAspect() {
@@ -153,40 +158,48 @@ export class CreateEditSessionComponent extends AppComponentBase implements OnIn
         this.createEditCriticalAspectModal.show(event.index, event.value);
     }
 
+    addRiskFactorWeek() {
+        this.createEditRiskFactorWeekModal.show(undefined, undefined);
+    }
+
+    editRiskFactorWeek(event: { index: number, value: SectorMeetSessionCriticalAspectLocationDto }) {
+        this.createEditRiskFactorWeekModal.show(event.index, event.value);
+    }
+
     saveCriticalAspect(event: { index: number, value: SectorMeetSessionCriticalAspectLocationDto }) {
         this.criticalAspectInformation.addOrUpdateItem(event);
     }
 
+    saveRiskCriticalWeek(event: { index: number, value: SectorMeetSessionCriticalAspectLocationDto }) {
+        this.criticalAspectInformation.addOrUpdateItem(event);
+    }
+
     addAction() {
-        this.createEditActionModal.show(undefined, undefined);
+        // this.createEditActionModal.show(undefined, undefined);
     }
 
     editAction(event: { index: number, value: SectorMeetSessionActionLocationDto }) {
-        this.createEditActionModal.show(event.index, event.value);
+        // this.createEditActionModal.show(event.index, event.value);
     }
 
     saveAction(event: { index: number, value: SectorMeetSessionActionLocationDto }) {
-        this.actionInformation.addOrUpdateItem(event);
+        // this.actionInformation.addOrUpdateItem(event);
     }
 
     addSummary() {
-        this.createEditSummaryModal.show(undefined, undefined);
+        // this.createEditSummaryModal.show(undefined, undefined);
     }
 
     editSummary(event: { index: number, value: SectorMeetSessionSummaryLocationDto }) {
-        this.createEditSummaryModal.show(event.index, event.value);
+        // this.createEditSummaryModal.show(event.index, event.value);
     }
 
     saveSummary(event: { index: number, value: SectorMeetSessionSummaryLocationDto }) {
-        this.summaryInformation.addOrUpdateItem(event);
-    }
-
-    findSummaryDirectory() {
-        this.findSectorMeetSessionModal.show(this.id);
+        // this.summaryInformation.addOrUpdateItem(event);
     }
 
     saveSummaryDirectory(sectorMeetSessionLeader: SectorMeetSessionLeaderRelationDto) {
-        this.createEditSummaryModal.addOrUpdateItem(sectorMeetSessionLeader);
+        // this.createEditSummaryModal.addOrUpdateItem(sectorMeetSessionLeader);
     }
 
     addLeader() {
