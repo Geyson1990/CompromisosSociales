@@ -3239,6 +3239,81 @@ export class SocialConflictNoteLocationDto implements ISocialConflictNoteLocatio
 }
 
 
+export interface IRecordResourceDto {
+    id: number;
+    creationTime: moment.Moment;
+    creatorUserName: string;
+    resource: string;
+    name: string;
+    fileName: string;
+    size: string;
+    extension: string;
+    className: string;
+    remove: boolean;
+}
+
+export class RecordResourceDto implements IRecordResourceDto {
+    id: number;
+    creationTime: moment.Moment;
+    creatorUserName: string;
+    resource: string;
+    name: string;
+    fileName: string;
+    size: string;
+    extension: string;
+    className: string;
+    remove: boolean;
+
+    constructor(data?: IRecordResourceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            this.creatorUserName = data["creatorUserName"];
+            this.resource = data["resource"];
+            this.name = data["name"];
+            this.fileName = data["fileName"];
+            this.size = data["size"];
+            this.extension = data["extension"];
+            this.className = data["className"];
+            this.remove = data["remove"];
+        }
+    }
+
+    static fromJS(data: any): RecordResourceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RecordResourceDto();
+        result.init(data);
+
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["creatorUserName"] = this.creatorUserName;
+        data["resource"] = this.resource;
+        data["name"] = this.name;
+        data["fileName"] = this.fileName;
+        data["size"] = this.size;
+        data["extension"] = this.extension;
+        data["className"] = this.className;
+        data["remove"] = this.remove;
+
+        return data;
+    }
+}
+
+
 export interface ISocialConflictRecordDto {
     code: string;
     title: string;
@@ -3253,7 +3328,7 @@ export class SocialConflictRecordDto implements ISocialConflictRecordDto {
     filter: string;
     recordTime: Date;
     womanCompromise: boolean;
-
+    resources: RecordResourceDto[];
     constructor(data?: ISocialConflictRecordDto) {
         if (data) {
             for (var property in data) {
@@ -3270,6 +3345,11 @@ export class SocialConflictRecordDto implements ISocialConflictRecordDto {
             this.filter = data["filter"];
             this.recordTime = data["recordTime"];
             this.womanCompromise = data["womanCompromise"];
+            if (Array.isArray(data["resources"])) {
+                this.resources = [] as any;
+                for (let item of data["resources"])
+                    this.resources!.push(RecordResourceDto.fromJS(item));
+            }
         }
     }
 
@@ -3287,6 +3367,11 @@ export class SocialConflictRecordDto implements ISocialConflictRecordDto {
         data["filter"] = this.filter;
         data["recordTime"] = this.recordTime;
         data["womanCompromise"] = this.womanCompromise;
+        if (Array.isArray(this.resources)) {
+            data["resources"] = [];
+            for (let item of this.resources.filter(p => p.remove))
+                data["resources"].push(item.toJSON());
+        }
         return data;
     }
 }

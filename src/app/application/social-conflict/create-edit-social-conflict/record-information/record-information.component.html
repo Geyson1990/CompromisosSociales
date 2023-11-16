@@ -20,7 +20,8 @@
                         Fecha de Creación
                     </th>
                     
-                    <th *ngIf="hasPermission" style="width: 110px">
+                    <th *ngIf="hasPermission" style="width: 150px">
+                        Acciones
                     </th>
                 </tr>
             </ng-template>
@@ -47,16 +48,16 @@
                                 </span> {{record.recordTime  | momentFormat:'L'}}
                             </td>
                             
-                            <!-- <td *ngIf="hasPermission" style="width: 110px">
-                                <button *ngIf="!record.remove" type="button" pButton icon="pi pi-trash" class="ui-button-danger"
+                            <td *ngIf="hasPermission" style="width: 150px">
+                                <!-- <button *ngIf="!record.remove" type="button" pButton icon="pi pi-trash" class="ui-button-danger"
                                     data-toggle="tooltip" title="Eliminar actor" data-placement="top"
-                                    (click)="removeItem(record, rowIndex)"></button>
-                                <button *ngIf="record.remove" type="button" pButton icon="pi pi-undo" class="ui-button-warning"
-                                    data-toggle="tooltip" title="Deshacer la eliminación del actor" data-placement="top"
-                                    (click)="cancelRemove(record)"></button>
-                            </td> -->
+                                    (click)="removeItem(record, rowIndex)"></button> -->
+                                    <button type="submit" class="btn btn-primary font-weight-bold" (click)="showResources(record)">
+                                        Ver Actas
+                                    </button>
+                            </td>
                 </tr>
-            </ng-template>
+            </ng-template> 
         </p-table>
         <div class="primeng-no-data" *ngIf="socialConflict.records.length == 0">
             Aún no agregó ningún acta
@@ -73,4 +74,5 @@
         </div>
     </div>
     <!--<Primeng-TurboTable-End>-->
-</div>
+</div> 
+<resource-detail-acta-modal #resourceDetailModal></resource-detail-acta-modal>

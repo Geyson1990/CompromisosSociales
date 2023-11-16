@@ -2,6 +2,7 @@ import { Component, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { SocialConflictDto, SocialConflictNoteLocationDto, SocialConflictRecordDto } from '@shared/service-proxies/application/social-conflict-proxie';
 import { LazyLoadEvent, Paginator } from 'primeng';
+import { ResourceDetailActaModalComponent } from './resources/resource-detail-modal.component';
 
 @Component({
     selector: 'record-information-social-conflict',
@@ -11,6 +12,7 @@ import { LazyLoadEvent, Paginator } from 'primeng';
     ]
 })
 export class RecordInformationSocialConflictComponent extends AppComponentBase implements OnInit {
+    @ViewChild('resourceDetailModal', { static: true }) resourceDetailModal: ResourceDetailActaModalComponent;
 
     private _busy: boolean;
     private _socialConflict: SocialConflictDto;
@@ -66,10 +68,9 @@ export class RecordInformationSocialConflictComponent extends AppComponentBase i
     //     }
     // }
 
-    // cancelRemove(fact: SocialConflictNoteLocationDto) {
-    //     fact.remove = false;
-    //     this.notify.success('Se deshizo el marcado de eliminar para el hecho relevante seleccionado');
-    // }
+    showResources(record: any): void {
+        this.resourceDetailModal.show(record);
+    }
 
     private formatPagination(skipCount: number, maxResultCount: number) {
         let index: number = 0;
