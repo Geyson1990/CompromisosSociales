@@ -59,7 +59,7 @@
                                 [resizableColumns]="primengTableHelper.resizableColumns" dataKey="id">
                                 <ng-template pTemplate="header">
                                     <tr>
-                                        <th style="width: 130px" [hidden]="!(['Pages.Maintenance.Actor.Edit', 'Pages.Maintenance.Actor.Delete', 'Pages.Maintenance.Actor.History' ] | permissionAny)">
+                                        <th style="width: 130px" [hidden]="!(['Pages.Maintenance.Actor.Edit', 'Pages.Maintenance.Actor.Delete'] | permissionAny)">
                                             Acciones
                                         </th>
                                         <th style="width: 150px" pSortableColumn="documentNumber">
@@ -94,7 +94,7 @@
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record let-expanded="expanded">
                                     <tr>
-                                        <td style="width: 130px" [hidden]="!(['Pages.Maintenance.Actor.Edit', 'Pages.Maintenance.Actor.Delete','Pages.Maintenance.Actor.History'] | permissionAny)">
+                                        <td style="width: 130px" [hidden]="!(['Pages.Maintenance.Actor.Edit', 'Pages.Maintenance.Actor.Delete'] | permissionAny)">
                                             <div class="btn-group dropdown" dropdown container="body">
                                                 <button dropdownToggle class="dropdown-toggle btn btn-sm btn-primary">
                                                     <i class="fa fa-cog"></i><span class="caret"></span>
@@ -112,7 +112,7 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="javascript:;" *ngIf="'Pages.Maintenance.Actor.History' | permission" (click)="auditItem(record)">
+                                                        <a href="javascript:;" *ngIf="'Pages.Maintenance.Actor.Edit' | permission" (click)="auditItem(record)">
                                                             Ver Auditoria
                                                         </a>
                                                     </li>

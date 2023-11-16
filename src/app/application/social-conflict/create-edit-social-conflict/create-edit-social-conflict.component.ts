@@ -97,7 +97,7 @@ export class CreateEditSocialConflictComponent extends AppComponentBase implemen
     returnUrl: string;
  
     socialConflict: SocialConflictDto;
-    type: string = 'conflict-social';
+
     actorTypes: SocialConflictActorTypeDto[];
     actorMovements: SocialConflictActorMovementDto[];
     departments: SocialConflictDepartmentDto[];
@@ -283,7 +283,7 @@ export class CreateEditSocialConflictComponent extends AppComponentBase implemen
     saveSugerence(event: { index: number, type: SugerenceType, value: SocialConflictSugerenceDto }) {
         this.sugerenceInformation.addOrUpdateItem(event);
     }
- 
+
     saveActor(event: any) {
         let oSocialConflictActorLocationDto: SocialConflictActorLocationDto = new SocialConflictActorLocationDto();
         oSocialConflictActorLocationDto.id = 0;

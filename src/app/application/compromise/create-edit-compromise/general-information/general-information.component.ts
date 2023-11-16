@@ -11,7 +11,7 @@ import { LazyLoadEvent, Paginator } from 'primeng';
     ]
 })
 export class CompromiseGeneralInformationComponent extends AppComponentBase implements OnInit {
- 
+
     @ViewChild('paginator', { static: true }) paginator: Paginator;
     
     @Input() compromise: CompromiseDto;
@@ -39,7 +39,8 @@ export class CompromiseGeneralInformationComponent extends AppComponentBase impl
     }
     
     showFindRecord() {
-        
+        if (this.compromise.id)
+            return;
         this.openFindRecord.emit();
     }
 
