@@ -16,7 +16,7 @@
                 <div class="input-group input-group-right">
                     <input class="form-control" type="text" name="RecordCode" id="RecordCode"
                         value="{{compromise.record ? compromise.record.code : 'Seleccione el acta'}}" disabled>
-                    <span *ngIf="!compromise.id" class="input-group-text" (click)="showFindRecord()">
+                    <span class="input-group-text" (click)="showFindRecord()">
                         <i class="fas fa-search"></i>
                     </span>
                 </div>

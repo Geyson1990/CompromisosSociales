@@ -44,8 +44,8 @@ export class CompromiseGeneralInformationComponent extends AppComponentBase impl
     }
     
     showFindRecord() {
-        if (this.compromise.id)
-            return;
+        // if (this.compromise.id)
+        //     return;
         this.openFindRecord.emit();
     }
 
