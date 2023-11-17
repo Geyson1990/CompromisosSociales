@@ -37,7 +37,7 @@ export class ActorInformationSocialConflictSensibleComponent extends AppComponen
     }
 
     @Output() openFindActor: EventEmitter<void> = new EventEmitter<void>();
-    @Output() editActor: EventEmitter<{ index: number, value: SocialConflictSensibleActorLocationDto }> = new EventEmitter<{ index: number, value: SocialConflictSensibleActorLocationDto }>();
+    @Output() showSocialFindActorModal: EventEmitter<void> = new EventEmitter<void>();
 
     private skipCount: number;
     private maxResultCount: number;
@@ -74,6 +74,10 @@ export class ActorInformationSocialConflictSensibleComponent extends AppComponen
         this.notify.success('Se deshizo el marcado de eliminar de la actor seleccionado');
     }
 
+    addEvent() {
+        this.showSocialFindActorModal.emit();
+    }
+    
     actorEvent() {
         this.router.navigate(['/app/maintenance/actors'], { queryParams: { returnUrl: 'actors' } });
     }
@@ -83,9 +87,9 @@ export class ActorInformationSocialConflictSensibleComponent extends AppComponen
         this.openFindActor.emit();
     }
 
-    editEvent(value: SocialConflictSensibleActorLocationDto, index: number) {
-        this.editActor.emit({ index: index, value: value });
-    }
+    // editEvent(value: SocialConflictSensibleActorLocationDto, index: number) {
+    //     this.editActor.emit({ index: index, value: value });
+    // }
 
     addOrUpdateItem(event: { value: SocialConflictSensibleActorLocationDto, index: number }) {
         if (event.index || event.index == 0) {
@@ -111,18 +115,5 @@ export class ActorInformationSocialConflictSensibleComponent extends AppComponen
     selectRecord(record: UtilityRecordDto) {
         this.showMainSpinner('Cargando localizaciones del conflicto social...');
 
-        // this._utilityServiceProxy
-        //     .getAllSocialConflictLocations(record.socialConflict.id)
-        //     .pipe(finalize(() => setTimeout(() => this.hideMainSpinner(), 1000)))
-        //     .subscribe(response => {
-        //         this.compromise.record = record;
-        //         this.compromise.compromiseLocations = response.items.map(p => {
-        //             return new CompromiseLocationDto({
-        //                 id: undefined,
-        //                 socialConflictLocation: p,
-        //                 check: false
-        //             });
-        //         });
-        //     });
     }
 }

@@ -233,6 +233,7 @@
         <attached-file-management-information-social-conflict #attachedFileManagementInformation>
         </attached-file-management-information-social-conflict>
         <create-edit-sugerence-information #createEditSugerenceInformation (modalSave)="saveSugerence($event)"></create-edit-sugerence-information>
-        <find-actor #findActorModal (modalSave)="saveActor($event)" (modalSaveAlert)="saveAfterAlert($event)" [type]="type"></find-actor>
+        <!-- <find-actor #findActorModal (modalSave)="saveActor($event)" (modalSaveAlert)="saveAfterAlert($event)" [actorTypeModal]="socialConflict"></find-actor> -->
+        <find-actor #findActorModal (modalSave)="saveActor($event)"></find-actor> 
     </ng-container>
 </div>

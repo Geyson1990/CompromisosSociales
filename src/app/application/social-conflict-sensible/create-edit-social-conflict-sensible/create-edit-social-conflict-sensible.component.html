@@ -76,16 +76,15 @@
                                     [persons]="persons" 
                                     [typologies]="typologies">
                                 </general-information-social-conflict-sensible>
-                                <find-actor #findActorModal (modalSave)="selectRecord($event)"></find-actor>
                             </p-tabPanel>
 
                             <p-tabPanel header="Actores">
                                 <actor-information-social-conflict-sensible 
                                     #actorInformation 
                                     [(busy)]="busy"
-                                    [socialConflictSensible]="socialConflictSensible"
+                                    [(socialConflictSensible)]="socialConflictSensible"
                                     (addActor)="addActor()"
-                                    (editActor)="showActorEdition($event)">
+                                    (showSocialFindActorModal)="showSocialFindActorModal()">
                                 </actor-information-social-conflict-sensible>
                             </p-tabPanel>
 
@@ -194,5 +193,6 @@
         <attached-file-management-information-social-conflict-sensible #attachedFileManagementInformation>
         </attached-file-management-information-social-conflict-sensible>
         <create-edit-sugerence-information #createEditSugerenceInformation (modalSave)="saveSugerence($event)"></create-edit-sugerence-information>
+        <find-actor #findActorModal (modalSave)="saveActor($event)"></find-actor> 
     </ng-container>
 </div>

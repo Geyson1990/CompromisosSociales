@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { ActorDto, ActorTypeDto, ActorTypologyDto, ActorSubTypologyDto, ActorMovementDto, ActorServiceProxy } from '@shared/service-proxies/application/actor-proxie';
+import { ActorDto, ActorTypeDto, ActorTypologyDto, ActorSubTypologyDto, ActorMovementDto, ActorServiceProxy, ActorSocialConflictDto, ActorSocialConflictAlertDto, ActorSocialConflictSensibleDto } from '@shared/service-proxies/application/actor-proxie';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
+import { TabView } from 'primeng';
 
 @Component({
     selector: 'create-edit-actor',
@@ -12,14 +13,20 @@ import { finalize } from 'rxjs/operators';
     ]
 })
 export class CreateEditActorComponent extends AppComponentBase {
-
+    @ViewChild('primeTabView', { static: false }) primeTabView: TabView;
     @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
+    
 
+    activeIndex: number = 0;
     item: ActorDto = new ActorDto();
     actorTypes: ActorTypeDto[];
     actorTypologies: ActorTypologyDto[];
     actorMovements: ActorMovementDto[];
+    socialConflicts: ActorSocialConflictDto[];
+    socialConflictAlerts: ActorSocialConflictAlertDto[];
+    socialConflictSensibles: ActorSocialConflictSensibleDto[];
+
     state: string = 'true';
     politic: string = 'false';
     active: boolean = false;
@@ -27,6 +34,8 @@ export class CreateEditActorComponent extends AppComponentBase {
 
     selectedTypologies: ActorTypologyDto[];
     selectedSubTypologies: ActorSubTypologyDto[];
+
+    defaultRecordsCountPerPage : Number = 5;
 
     constructor(_injector: Injector, private _actorServiceProxy: ActorServiceProxy) {
         super(_injector);
@@ -36,12 +45,14 @@ export class CreateEditActorComponent extends AppComponentBase {
         this.item = new ActorDto(item);
         this.saving = false;
         this.state = 'true';
-        
         this._actorServiceProxy.get(id).subscribe(result => {
             if (result.actor) {  
-                this.item = result.actor;
+                this.item = result.actor;                
+                this.socialConflicts = result.socialConflicts;
+                this.socialConflictAlerts = result.socialConflictAlerts;
+                this.socialConflictSensibles = result.socialConflictSensibles;
                 this.state = this.item.enabled ? 'true' : 'false';
-            }                
+            }      
             this.actorTypes = result.actorTypes;
             this.actorMovements = result.actorMovements;
             this.politic = this.item && this.item.isPoliticalAssociation ? 'true' : 'false';

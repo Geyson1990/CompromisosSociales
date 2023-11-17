@@ -38,7 +38,7 @@ export class ActorInformationSocialConflictAlertComponent extends AppComponentBa
     }
 
     @Output() addActor: EventEmitter<void> = new EventEmitter<void>();
-    @Output() editActor: EventEmitter<{ index: number, value: SocialConflictAlertActorLocationDto }> = new EventEmitter<{ index: number, value: SocialConflictAlertActorLocationDto }>();
+    @Output() showSocialFindActorModal: EventEmitter<void> = new EventEmitter<void>();
 
     private skipCount: number;
     private maxResultCount: number;
@@ -75,12 +75,11 @@ export class ActorInformationSocialConflictAlertComponent extends AppComponentBa
         this.notify.success('Se deshizo el marcado de eliminar de la actor seleccionado');
     }
 
+    addEvent() {
+        this.showSocialFindActorModal.emit();
+    }
     actorEvent() {
         this.router.navigate(['/app/maintenance/actors'], { queryParams: { returnUrl: 'actors' } });
-    }
-
-    editEvent(value: SocialConflictAlertActorLocationDto, index: number) {
-        this.editActor.emit({ index: index, value: value });
     }
 
     addOrUpdateItem(event: { value: SocialConflictAlertActorLocationDto, index: number }) {
@@ -108,18 +107,5 @@ export class ActorInformationSocialConflictAlertComponent extends AppComponentBa
     selectRecord(record: UtilityRecordDto) {
         this.showMainSpinner('Cargando localizaciones del conflicto social...');
 
-        // this._utilityServiceProxy
-        //     .getAllSocialConflictLocations(record.socialConflict.id)
-        //     .pipe(finalize(() => setTimeout(() => this.hideMainSpinner(), 1000)))
-        //     .subscribe(response => {
-        //         this.compromise.record = record;
-        //         this.compromise.compromiseLocations = response.items.map(p => {
-        //             return new CompromiseLocationDto({
-        //                 id: undefined,
-        //                 socialConflictLocation: p,
-        //                 check: false
-        //             });
-        //         });
-        //     });
     }
 }

@@ -24,6 +24,7 @@ import { CreateEditSectorInformationSocialConflictAlertComponent } from './secto
 import { SectorInformationSocialConflictAlertComponent } from './sector-information/sector-information.component';
 import { CreateEditStateInformationSocialConflictAlertComponent } from './state-information/create-edit-state-information/create-edit-state-information.component';
 import { StateInformationSocialConflictAlertComponent } from './state-information/state-information.component';
+import { FindActorComponent } from '@shared/component/find-actor/find-actor.component';
 
 @Component({
     templateUrl: 'create-edit-social-conflict-alert.component.html',
@@ -42,7 +43,7 @@ export class CreateEditSocialConflictAlertComponent extends AppComponentBase imp
     @ViewChild('sectorInformation', { static: false }) sectorInformation: SectorInformationSocialConflictAlertComponent;
     @ViewChild('stateInformation', { static: false }) stateInformation: StateInformationSocialConflictAlertComponent;
     @ViewChild('sealInformation', { static: false }) sealInformation: SealInformationSocialConflictAlertComponent;
-
+    @ViewChild('findActorModal', { static: false }) findActorModal: FindActorComponent;
     @ViewChild('findSocialConflictModal', { static: false }) findSocialConflictModal: FindSocialConflictComponent;
     @ViewChild('createEditActorModal', { static: false }) createEditActorModal: CreateEditActorInformationSocialConflictAlertComponent;
     @ViewChild('createEditRiskModal', { static: false }) createEditRiskModal: CreateEditRiskInformationSocialConflictAlertComponent;
@@ -53,6 +54,7 @@ export class CreateEditSocialConflictAlertComponent extends AppComponentBase imp
 
     @ViewChild('fileDownloader', { static: false }) fileDownloader: FileDownloadComponent;
 
+    type: string;
     id: number;
     returnUrl: string;
 
@@ -176,11 +178,15 @@ export class CreateEditSocialConflictAlertComponent extends AppComponentBase imp
         this.createEditActorModal.show(undefined, undefined, this.actorTypes, this.actorMovements);
     }
 
+    showSocialFindActorModal() {
+        this.findActorModal.show();
+     }
+
     editActor(event: { index: number, value: SocialConflictAlertActorLocationDto }) {
         this.createEditActorModal.show(event.index, event.value, this.actorTypes, this.actorMovements);
     }
 
-    saveActor(event: { value: SocialConflictAlertActorLocationDto, index: number }) {
+    saveActorEdition(event: { value: SocialConflictAlertActorLocationDto, index: number }) {
         this.actorInformation.addOrUpdateItem(event);
     }
 
@@ -234,6 +240,29 @@ export class CreateEditSocialConflictAlertComponent extends AppComponentBase imp
 
     showEmailSender() {
         this.emailSenderModal.show(this.socialConflictAlert);
+    }
+
+    saveActor(event: any) {
+        let oSocialConflictActorLocationDto: SocialConflictAlertActorLocationDto = new SocialConflictAlertActorLocationDto();
+        oSocialConflictActorLocationDto.id = 0;
+        oSocialConflictActorLocationDto.actorId = event.id;
+        oSocialConflictActorLocationDto.name= event.fullName;
+        oSocialConflictActorLocationDto.document= event.documentNumber;
+        oSocialConflictActorLocationDto.job= event.jobPosition;
+        oSocialConflictActorLocationDto.community= event.institution;
+        oSocialConflictActorLocationDto.phoneNumber= event.phoneNumber;
+        oSocialConflictActorLocationDto.emailAddress= event.emailAddress;
+        oSocialConflictActorLocationDto.isPoliticalAssociation= event.isPoliticalAssociation;
+        oSocialConflictActorLocationDto.politicalAssociation= event.politicalAssociation;
+        oSocialConflictActorLocationDto.position= event.position;
+        oSocialConflictActorLocationDto.interest= event.interest;
+        oSocialConflictActorLocationDto.actorType= event.actorType;
+        oSocialConflictActorLocationDto.actorMovement= event.actorMovement;
+        oSocialConflictActorLocationDto.remove= false;
+        oSocialConflictActorLocationDto.isHidden = false;
+        event.value = oSocialConflictActorLocationDto;
+        console.log("event::::::::::::",event)
+       this.actorInformation.addOrUpdateItem(event);
     }
 
     save() {

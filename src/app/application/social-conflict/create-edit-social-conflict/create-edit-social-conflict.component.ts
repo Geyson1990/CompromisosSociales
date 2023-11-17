@@ -1,5 +1,5 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { Component, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -90,12 +90,14 @@ export class CreateEditSocialConflictComponent extends AppComponentBase implemen
     @ViewChild('createEditViolenceFactInformation', { static: false }) createEditViolenceFactInformation: CreateEditViolenceFactSocialConflictComponent;
     @ViewChild('createEditConditionInformation', { static: false }) createEditConditionInformation: CreateEditConditionInformationSocialConflictComponent;
     @ViewChild('createEditSugerenceInformation', { static: false }) createEditSugerenceInformation: CreateEditSugerenceInformationSocialConflictComponent;
+   
+    actorTypeModal: string;
 
     id: number;
     returnUrl: string;
  
     socialConflict: SocialConflictDto;
-    type: string = 'conflict-social';
+
     actorTypes: SocialConflictActorTypeDto[];
     actorMovements: SocialConflictActorMovementDto[];
     departments: SocialConflictDepartmentDto[];
@@ -281,7 +283,7 @@ export class CreateEditSocialConflictComponent extends AppComponentBase implemen
     saveSugerence(event: { index: number, type: SugerenceType, value: SocialConflictSugerenceDto }) {
         this.sugerenceInformation.addOrUpdateItem(event);
     }
- 
+
     saveActor(event: any) {
         let oSocialConflictActorLocationDto: SocialConflictActorLocationDto = new SocialConflictActorLocationDto();
         oSocialConflictActorLocationDto.id = 0;
@@ -303,10 +305,6 @@ export class CreateEditSocialConflictComponent extends AppComponentBase implemen
         event.value = oSocialConflictActorLocationDto;
         console.log("event::::::::::::",event)
        this.actorInformation.addOrUpdateItem(event);
-    }
-
-    saveAfterAlert(event) {
-     // 
     }
 
     save() {

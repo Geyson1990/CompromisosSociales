@@ -1522,6 +1522,7 @@ export interface ISocialConflictSensibleActorLocationDto {
 
 export class SocialConflictSensibleActorLocationDto implements ISocialConflictSensibleActorLocationDto {
     id: number;
+    actorId: number;
     name: string;
     document: string;
     job: string;
@@ -1533,7 +1534,7 @@ export class SocialConflictSensibleActorLocationDto implements ISocialConflictSe
     position: string;
     interest: string;
     actorType: SocialConflictSensibleActorTypeDto;
-    actorMovement: SocialConflictSensibleActorMovementDto;
+    actorMovement: SocialConflictSensibleActorMovementDto;    
     remove: boolean;
 
     //readonly
@@ -1554,6 +1555,7 @@ export class SocialConflictSensibleActorLocationDto implements ISocialConflictSe
     init(data?: any) {
         if (data) {
             this.id = data["id"];
+            this.actorId = data["actorId"];
             this.name = data["name"];
             this.document = data["document"];
             this.job = data["job"];
@@ -1579,6 +1581,7 @@ export class SocialConflictSensibleActorLocationDto implements ISocialConflictSe
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["actorId"] = this.actorId;
         data["name"] = this.name;
         data["document"] = this.document;
         data["job"] = this.job;

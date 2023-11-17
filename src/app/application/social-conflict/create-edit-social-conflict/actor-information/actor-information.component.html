@@ -278,12 +278,12 @@
                             <td style="width: 150px">
                                 <span class="ui-column-title">
                                     Tipo de actor
-                                </span> {{record.actorType ? record.actorType.name : ''}}
+                                </span> {{record.actorType ? record.actorType.name : 'N/A'}}
                             </td>
                             <td style="width: 150px">
                                 <span class="ui-column-title">
                                     Capacidad de movilización
-                                </span> {{record.actorMovement ? record.actorMovement.name : ''}}
+                                </span> {{record.actorMovement ? record.actorMovement.name : 'N/A'}}
                             </td>
                             <td *ngIf="hasPermission" style="width: 110px">
                                 <button *ngIf="!record.remove" type="button" pButton icon="pi pi-trash" class="ui-button-danger"
@@ -310,5 +310,4 @@
             </span>
         </div>
     </div>
-    <!--<Primeng-TurboTable-End>-->
 </div>
