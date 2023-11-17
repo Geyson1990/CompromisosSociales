@@ -400,7 +400,7 @@ export class RegistrationInformationComponent extends AppComponentBase implement
                         labels: data.map(p => p.status),
                         datasets: [
                             {
-                                label: 'Total Partcipantes por Género',
+                                label: 'Total Participantes por Género',
                                 tooltipLabels: data.map(p => this.formatNumber(this.roundNumber((p.count / total) * 100, 2), 0) + '% '),
                                 data: data.map(p => p.count),
                                 backgroundColor: this.backgroundColors(),
