@@ -15,210 +15,366 @@
                     <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
                         <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
-                </div>
-                <div *ngIf="active" class="modal-body row">
-                    <div class="form-group col-sm-6">
-                        <label for="actorType">
-                            Tipo actor (*)
-                        </label>
-                        <select (change)="onActorTypeChange($event)" class="form-control" id="actorType" name="actorType" [(ngModel)]="item.actorType.id">
-                            <option value="-1">
-                                Seleccione
-                            </option>
-                            <option *ngFor="let actorType of actorTypes" [value]="actorType.id">
-                                {{actorType.name}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group col-sm-6">
-                        <label for="ActorDocumentNumber">
-                            Documento Identidad
-                        </label>
-                        <input #actorDocumentNumberInput="ngModel" id="ActorDocumentNumber" name="ActorDocumentNumber"
-                            class="form-control" type="text" [(ngModel)]="item.documentNumber"
-                            (keyup)="keyUpOnlyInteger($event)" (keypress)="keyPressOnlyNumbers($event)" minlength="8"
-                            maxlength="8" >
-                        <validation-messages [formCtrl]="actorDocumentNumberInput"></validation-messages>
-                    </div>
-                    <div class="form-group col-sm-8">
-                        <label for="ActorName">
-                            Nombres (*)
-                        </label>
-                        <input id="ActorName" #nameInput="ngModel" class="form-control text-uppercase" type="text"
-                            name="ActorName" [(ngModel)]="item.fullName" required maxlength="255">
-                        <validation-messages [formCtrl]="nameInput"></validation-messages>
-                    </div>
-                    <div *ngIf="item.actorType.showMovement"
-                    class="form-group col-sm-4">
-                    <label for="ActorMovement">
-                        Capacidad de movilización (*)
-                    </label>
-                    <select (change)="onActorMovementChange($event)" class="form-control" id="ActorMovement"
-                        name="ActorMovement" [(ngModel)]="item.actorMovement.id">
-                        <option value="-1">
-                            Seleccione
-                        </option>
-                        <option *ngFor="let movement of actorMovements" [value]="movement.id">
-                            {{movement.name}}
-                        </option>
-                    </select>
-                    </div>
-                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
-                        <label for="jobPosition">
-                            Cargo
-                        </label>
-                        <input id="jobPosition" #analystSurnameInput="ngModel" class="form-control text-uppercase"
-                            type="text" name="jobPosition" [(ngModel)]="item.jobPosition" required maxlength="255">
-                    </div>
-                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
-                        <label for="institution">
-                            Institución (*)
-                        </label>
-                        <input id="institution" #institutionInput="ngModel" class="form-control text-uppercase"
-                            type="text" name="institution" [(ngModel)]="item.institution" maxlength="255" required>
-                        <validation-messages [formCtrl]="institutionInput"></validation-messages>
-                    </div>
-                    <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
-                        <label for="institutionAddress">
-                            Dirección de institución (*)
-                        </label>
-                        <input id="institutionAddress" #institutionAddressInput="ngModel" class="form-control text-uppercase"
-                            type="text" name="institutionAddress" [(ngModel)]="item.institutionAddress" maxlength="255" required>
-                        <validation-messages [formCtrl]="institutionAddressInput"></validation-messages>
-                    </div>   
-                    <!-- <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
-                        <label for="actorTypology">
-                            Tipología (*)
-                        </label>
-                        <select class="form-control" id="actorTypology" name="actorTypology" (change)="onTypologyChange($event)" [(ngModel)]="item.actorTypology.id">
-                            <option value="-1">
-                                Seleccione
-                            </option>
-                            <option *ngFor="let actorTypology of actorTypologies" [value]="actorTypology.id">
-                                {{actorTypology.name}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
-                        <label for="actorSubTypology">
-                            Tipología Detallada (*)
-                        </label>
-                        <select class="form-control" 
-                            [disabled]="item.actorTypology.id == -1" 
-                            name="actorSubTypology" 
-                            [(ngModel)]="item.actorSubTypology.id">
-                            <option value="-1">
-                                Seleccione
-                            </option>
-                            <option *ngFor="let subTypology of selectedSubTypologies" [value]="subTypology.id">
-                                {{subTypology.name}}
-                            </option>
-                        </select>
-                    </div> -->
-                    <!-- <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
-                        <label for="actorMovement">
-                            Tipo actor (*)
-                        </label>
-                        <select class="form-control" id="actorMovement" name="actorMovement" [(ngModel)]="item.actorMovement.id">
-                            <option value="-1">
-                                Seleccione
-                            </option>
-                            <option *ngFor="let actorMovement of actorMovements" [value]="actorMovement.id">
-                                {{actorMovement.name}}
-                            </option>
-                        </select>
-                    </div> -->
-                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
-                        <label for="ActorEmailAddress">
-                            Correo electrónico
-                        </label>
-                        <input id="ActorEmailAddress" name="ActorEmailAddress" #emailAddressInput="ngModel"
-                            type="email" class="form-control" [(ngModel)]="item.emailAddress" maxlength="256" email />
-                        <validation-messages [formCtrl]="emailAddressInput"></validation-messages>
-                    </div>    
-                    <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
-                        <label for="ActorPhoneNumber">
-                            Número de teléfono
-                        </label>
-                        <input #actorPhoneNumberInput="ngModel" id="ActorPhoneNumber" name="ActorPhoneNumber"
-                            class="form-control" type="text" (keyup)="keyUpPhoneNumber($event)"
-                            (keypress)="keyPressPhoneNumber($event)" [(ngModel)]="item.phoneNumber" maxlength="255">
-                        <validation-messages [formCtrl]="actorPhoneNumberInput"></validation-messages>
-                    </div> 
-                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
-                        <label for="ActorTypeDetail">
-                            Pertenece o perteneció a algún partido político
-                        </label>
-                        <select class="form-control" id="ActorTypeDetail" name="ActorTypeDetail" [(ngModel)]="politic">
-                            <option value="false">
-                                No
-                            </option>
-                            <option value="true">
-                                Si
-                            </option>
-                        </select>
-                    </div>
-                    <div *ngIf="politic == 'true'" class="form-group col-sm-12">
-                        <label for="ActorPoliticalAssociation">
-                            Nombre del partido político
-                        </label>
-                        <input #actorPoliticalAssociationInput="ngModel" id="ActorPoliticalAssociation"
-                            name="ActorPoliticalAssociation" class="form-control" type="text"
-                            [(ngModel)]="item.politicalAssociation" maxlength="500">
-                        <validation-messages [formCtrl]="actorPoliticalAssociationInput"></validation-messages>
-                    </div>
-                    <ng-container *ngIf="item.actorType.showDetail">
-                        <div class="form-group col-sm-12">
-                            <label for="ActorPosition">
-                                Posición
+                </div>              
+
+
+                    <p-tabView #primeTabView [(activeIndex)]="activeIndex">
+                        <p-tabPanel header="Aspectos generales">
+                            <div *ngIf="active" class="modal-body row">
+                            <div class="form-group col-sm-6">
+                                <label for="actorType">
+                                    Tipo actor (*)
+                                </label>
+                                <select (change)="onActorTypeChange($event)" class="form-control" id="actorType" name="actorType" [(ngModel)]="item.actorType.id">
+                                    <option value="-1">
+                                        Seleccione
+                                    </option>
+                                    <option *ngFor="let actorType of actorTypes" [value]="actorType.id">
+                                        {{actorType.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="ActorDocumentNumber">
+                                    Documento Identidad
+                                </label>
+                                <input #actorDocumentNumberInput="ngModel" id="ActorDocumentNumber" name="ActorDocumentNumber"
+                                    class="form-control" type="text" [(ngModel)]="item.documentNumber"
+                                    (keyup)="keyUpOnlyInteger($event)" (keypress)="keyPressOnlyNumbers($event)" minlength="8"
+                                    maxlength="8" >
+                                <validation-messages [formCtrl]="actorDocumentNumberInput"></validation-messages>
+                            </div>
+                            <div class="form-group col-sm-8">
+                                <label for="ActorName">
+                                    Nombres (*)
+                                </label>
+                                <input id="ActorName" #nameInput="ngModel" class="form-control text-uppercase" type="text"
+                                    name="ActorName" [(ngModel)]="item.fullName" required maxlength="255">
+                                <validation-messages [formCtrl]="nameInput"></validation-messages>
+                            </div>
+                            <div *ngIf="item.actorType.showMovement"
+                            class="form-group col-sm-4">
+                            <label for="ActorMovement">
+                                Capacidad de movilización (*)
                             </label>
-                            <div class="input-group">
-                                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
-                                    cdkAutosizeMaxRows="100" #actorPosition #actorPositionInput="ngModel"
-                                    id="ActorPosition" [(ngModel)]="item.position" name="ActorPosition"
-                                    class="form-control" maxlength="3000"></textarea>
-                                <validation-messages [formCtrl]="actorPositionInput"></validation-messages>
-                                <span class="input-legth">
-                                    {{actorPosition.value ?
-                                    actorPosition.value.length :
-                                    0}}/{{actorPosition.maxLength}}
-                                </span>
+                            <select (change)="onActorMovementChange($event)" class="form-control" id="ActorMovement"
+                                name="ActorMovement" [(ngModel)]="item.actorMovement.id">
+                                <option value="-1">
+                                    Seleccione
+                                </option>
+                                <option *ngFor="let movement of actorMovements" [value]="movement.id">
+                                    {{movement.name}}
+                                </option>
+                            </select>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                                <label for="jobPosition">
+                                    Cargo
+                                </label>
+                                <input id="jobPosition" #analystSurnameInput="ngModel" class="form-control text-uppercase"
+                                    type="text" name="jobPosition" [(ngModel)]="item.jobPosition" required maxlength="255">
+                            </div>
+                            <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                                <label for="institution">
+                                    Institución (*)
+                                </label>
+                                <input id="institution" #institutionInput="ngModel" class="form-control text-uppercase"
+                                    type="text" name="institution" [(ngModel)]="item.institution" maxlength="255" required>
+                                <validation-messages [formCtrl]="institutionInput"></validation-messages>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
+                                <label for="institutionAddress">
+                                    Dirección de institución (*)
+                                </label>
+                                <input id="institutionAddress" #institutionAddressInput="ngModel" class="form-control text-uppercase"
+                                    type="text" name="institutionAddress" [(ngModel)]="item.institutionAddress" maxlength="255" required>
+                                <validation-messages [formCtrl]="institutionAddressInput"></validation-messages>
+                            </div>   
+                            <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                                <label for="ActorEmailAddress">
+                                    Correo electrónico
+                                </label>
+                                <input id="ActorEmailAddress" name="ActorEmailAddress" #emailAddressInput="ngModel"
+                                    type="email" class="form-control" [(ngModel)]="item.emailAddress" maxlength="256" email />
+                                <validation-messages [formCtrl]="emailAddressInput"></validation-messages>
+                            </div>    
+                            <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                                <label for="ActorPhoneNumber">
+                                    Número de teléfono
+                                </label>
+                                <input #actorPhoneNumberInput="ngModel" id="ActorPhoneNumber" name="ActorPhoneNumber"
+                                    class="form-control" type="text" (keyup)="keyUpPhoneNumber($event)"
+                                    (keypress)="keyPressPhoneNumber($event)" [(ngModel)]="item.phoneNumber" maxlength="255">
+                                <validation-messages [formCtrl]="actorPhoneNumberInput"></validation-messages>
+                            </div> 
+                            <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                                <label for="ActorTypeDetail">
+                                    Pertenece o perteneció a algún partido político
+                                </label>
+                                <select class="form-control" id="ActorTypeDetail" name="ActorTypeDetail" [(ngModel)]="politic">
+                                    <option value="false">
+                                        No
+                                    </option>
+                                    <option value="true">
+                                        Si
+                                    </option>
+                                </select>
+                            </div>
+                            <div *ngIf="politic == 'true'" class="form-group col-sm-12">
+                                <label for="ActorPoliticalAssociation">
+                                    Nombre del partido político
+                                </label>
+                                <input #actorPoliticalAssociationInput="ngModel" id="ActorPoliticalAssociation"
+                                    name="ActorPoliticalAssociation" class="form-control" type="text"
+                                    [(ngModel)]="item.politicalAssociation" maxlength="500">
+                                <validation-messages [formCtrl]="actorPoliticalAssociationInput"></validation-messages>
+                            </div>
+                            <ng-container *ngIf="item.actorType.showDetail">
+                                <div class="form-group col-sm-12">
+                                    <label for="ActorPosition">
+                                        Posición
+                                    </label>
+                                    <div class="input-group">
+                                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                                            cdkAutosizeMaxRows="100" #actorPosition #actorPositionInput="ngModel"
+                                            id="ActorPosition" [(ngModel)]="item.position" name="ActorPosition"
+                                            class="form-control" maxlength="3000"></textarea>
+                                        <validation-messages [formCtrl]="actorPositionInput"></validation-messages>
+                                        <span class="input-legth">
+                                            {{actorPosition.value ?
+                                            actorPosition.value.length :
+                                            0}}/{{actorPosition.maxLength}}
+                                        </span>
+                                    </div>
+                                </div>
+        
+                                <div class="form-group col-sm-12">
+                                    <label for="ActorInterest">
+                                        Interés
+                                    </label>
+                                    <div class="input-group">
+                                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                                            cdkAutosizeMaxRows="100" #actorInterest #actorInterestInput="ngModel"
+                                            id="ActorInterest" [(ngModel)]="item.interest" name="ActorInterest"
+                                            class="form-control" maxlength="3000"></textarea>
+                                        <validation-messages [formCtrl]="actorInterestInput"></validation-messages>
+                                        <span class="input-legth">
+                                            {{actorInterest.value ?
+                                            actorInterest.value.length :
+                                            0}}/{{actorInterest.maxLength}}
+                                        </span>
+                                    </div>
+                                </div>
+        
+                            </ng-container>
+                            <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
+                                <label for="ActorState">
+                                    Estado (*)
+                                </label>
+                                <select class="form-control" id="ActorState" name="ActorState" [(ngModel)]="state">
+                                    <option value="false">
+                                        Inactivo
+                                    </option>
+                                    <option value="true">
+                                        Activo
+                                    </option>
+                                </select>
                             </div>
                         </div>
-
-                        <div class="form-group col-sm-12">
-                            <label for="ActorInterest">
-                                Interés
-                            </label>
-                            <div class="input-group">
-                                <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
-                                    cdkAutosizeMaxRows="100" #actorInterest #actorInterestInput="ngModel"
-                                    id="ActorInterest" [(ngModel)]="item.interest" name="ActorInterest"
-                                    class="form-control" maxlength="3000"></textarea>
-                                <validation-messages [formCtrl]="actorInterestInput"></validation-messages>
-                                <span class="input-legth">
-                                    {{actorInterest.value ?
-                                    actorInterest.value.length :
-                                    0}}/{{actorInterest.maxLength}}
-                                </span>
+                        </p-tabPanel>
+                        <p-tabPanel *ngIf="item.id" header="Casos de conflicto">
+                            <div class="modal-body row">
+                                <div class="kt-portlet__body">
+                                    <p-table #dataTable1 sortMode="multiple"
+                                    [value]=" socialConflicts"
+                                    rows="{{defaultRecordsCountPerPage}}" [paginator]="false"
+                                    [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                    [responsive]="true"
+                                    [resizableColumns]="true" dataKey="id">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width: 150px" pSortableColumn="Code">
+                                                    Código
+                                                    <p-sortIcon field="Code"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 200px" pSortableColumn="CaseName">
+                                                    Denominación
+                                                    <p-sortIcon field="CaseName"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="CreationTime">
+                                                    Fecha de creación
+                                                    <p-sortIcon field="CreationTime"></p-sortIcon>
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record>
+                                            <tr > 
+                                                <td style="width: 150px">
+                                                    <span class="ui-column-title">
+                                                        Código
+                                                    </span>
+                                                    {{record.code}}
+                                                </td>
+                                                <td style="width: 200px">
+                                                    <span class="ui-column-title">
+                                                        Denominación
+                                                    </span>
+                                                    {{record.caseName}}
+                                                </td>
+                                                <td style="width: 150px">
+                                                    <span class="ui-column-title">
+                                                        Fecha de creación
+                                                    </span>
+                                                    {{record.creationTime | momentFormat:'L'}}
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                    <div class="primeng-no-data" *ngIf="socialConflicts.length == 0">
+                                        {{'NoData' | localize}}
+                                    </div>
+                                    <div class="primeng-paging-container">
+                                        <p-paginator [rows]="defaultRecordsCountPerPage" #paginator
+                                            [totalRecords]="socialConflicts.length"
+                                            [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">        
+                                        </p-paginator>
+                                        <span class="total-records-count">
+                                            {{'TotalRecordsCount' | localize:socialConflicts.length}}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-
-                    </ng-container>
-                    <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
-                        <label for="ActorState">
-                            Estado (*)
-                        </label>
-                        <select class="form-control" id="ActorState" name="ActorState" [(ngModel)]="state">
-                            <option value="false">
-                                Inactivo
-                            </option>
-                            <option value="true">
-                                Activo
-                            </option>
-                        </select>
-                    </div>
-                </div>
+                        </p-tabPanel>
+                        <p-tabPanel *ngIf="item.id" header="Alertas">
+                            <div class="modal-body row">
+                                <div class="kt-portlet__body">
+                                    <p-table #dataTable2 sortMode="multiple"
+                                    [value]=" socialConflictAlerts"
+                                    rows="{{defaultRecordsCountPerPage}}" [paginator]="false"
+                                    [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                    [responsive]="true"
+                                    [resizableColumns]="true" dataKey="id">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width: 150px" pSortableColumn="Code">
+                                                    Código
+                                                    <p-sortIcon field="Code"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 200px" pSortableColumn="CaseName">
+                                                    Denominación
+                                                    <p-sortIcon field="CaseName"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="CreationTime">
+                                                    Fecha de creación
+                                                    <p-sortIcon field="CreationTime"></p-sortIcon>
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record>
+                                            <tr > 
+                                                <td style="width: 150px">
+                                                    <span class="ui-column-title">
+                                                        Código
+                                                    </span>
+                                                    {{record.code}}
+                                                </td>
+                                                <td style="width: 200px">
+                                                    <span class="ui-column-title">
+                                                        Denominación
+                                                    </span>
+                                                    {{record.description}}
+                                                </td>
+                                                <td style="width: 150px">
+                                                    <span class="ui-column-title">
+                                                        Fecha de creación
+                                                    </span>
+                                                    {{record.creationTime | momentFormat:'L'}}
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                    <div class="primeng-no-data" *ngIf="socialConflictAlerts.length == 0">
+                                        {{'NoData' | localize}}
+                                    </div>
+                                    <div class="primeng-paging-container">
+                                        <p-paginator [rows]="defaultRecordsCountPerPage" #paginator
+                                            [totalRecords]="socialConflictAlerts.length"
+                                            [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+        
+                                        </p-paginator>
+                                        <span class="total-records-count">
+                                            {{'TotalRecordsCount' | localize:socialConflictAlerts.length}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-tabPanel>
+                        <p-tabPanel *ngIf="item.id" header="Situaciones sensibles">
+                            <div class="modal-body row">
+                                <div class="kt-portlet__body">
+                                    <p-table #dataTable3 sortMode="multiple"
+                                    [value]=" socialConflictSensibles"
+                                    rows="{{defaultRecordsCountPerPage}}" [paginator]="false"
+                                    [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                    [responsive]="true"
+                                    [resizableColumns]="true" dataKey="id">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width: 150px" pSortableColumn="Code">
+                                                    Código
+                                                    <p-sortIcon field="Code"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 200px" pSortableColumn="CaseName">
+                                                    Denominación
+                                                    <p-sortIcon field="CaseName"></p-sortIcon>
+                                                </th>
+                                                <th style="width: 150px" pSortableColumn="CreationTime">
+                                                    Fecha de creación
+                                                    <p-sortIcon field="CreationTime"></p-sortIcon>
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record>
+                                            <tr > 
+                                                <td style="width: 150px">
+                                                    <span class="ui-column-title">
+                                                        Código
+                                                    </span>
+                                                    {{record.code}}
+                                                </td>
+                                                <td style="width: 200px">
+                                                    <span class="ui-column-title">
+                                                        Denominación
+                                                    </span>
+                                                    {{record.caseName}}
+                                                </td>
+                                                <td style="width: 150px">
+                                                    <span class="ui-column-title">
+                                                        Fecha de creación
+                                                    </span>
+                                                    {{record.creationTime | momentFormat:'L'}}
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                    <div class="primeng-no-data" *ngIf="socialConflictSensibles.length == 0">
+                                        {{'NoData' | localize}}
+                                    </div>
+                                    <div class="primeng-paging-container">
+                                        <p-paginator [rows]="defaultRecordsCountPerPage" #paginator
+                                            [totalRecords]="socialConflictSensibles.length"
+                                            [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+        
+                                        </p-paginator>
+                                        <span class="total-records-count">
+                                            {{'TotalRecordsCount' | localize:socialConflictSensibles.length}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-tabPanel>
+                    </p-tabView>
+               
                 <div class="modal-footer">
                     <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold"
                         (click)="close()">

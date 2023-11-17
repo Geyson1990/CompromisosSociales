@@ -59,7 +59,7 @@
                                 [resizableColumns]="primengTableHelper.resizableColumns" dataKey="id">
                                 <ng-template pTemplate="header">
                                     <tr>
-                                        <th style="width: 130px" [hidden]="!(['Pages.Maintenance.Actor.Edit', 'Pages.Maintenance.Actor.Delete' ] | permissionAny)">
+                                        <th style="width: 130px" [hidden]="!(['Pages.Maintenance.Actor.Edit', 'Pages.Maintenance.Actor.Delete'] | permissionAny)">
                                             Acciones
                                         </th>
                                         <th style="width: 150px" pSortableColumn="documentNumber">

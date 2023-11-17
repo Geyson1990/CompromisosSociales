@@ -21,7 +21,8 @@ export class FindActorComponent extends AppComponentBase {
 
     @Output() modalSave: EventEmitter<ActorDto> = new EventEmitter<ActorDto>();
     @Output() modalSaveAlert: EventEmitter<ActorDto> = new EventEmitter<ActorDto>();
-    @Input() type: string;
+
+    @Input() actorTypeModal: string;
     active: boolean = false;
     advancedFiltersAreShown: boolean = false;
     filterText: string;
@@ -32,20 +33,7 @@ export class FindActorComponent extends AppComponentBase {
     constructor(_injector: Injector, private _actorServiceProxy: ActorServiceProxy) {
         super(_injector);
     }
- 
-    // show(skippedDirectoryGovernmentsIds?: number[]): void {
 
-    //     this.showMainSpinner('Cargando información, por favor espere...');
-    //     this.skippedDirectoryGovernmentsIds = skippedDirectoryGovernmentsIds;
-    //     this._actorServiceProxy
-    //         .getAllDirectoryGovermentFilters()
-    //         .pipe(finalize(() => setTimeout(() => this.hideMainSpinner(), 1000)))
-    //         .subscribe(response => {
-    //             this.sectors = response.sectors;
-    //             this.active = true;
-    //             this.modal.show();
-    //         });
-    // }
     show(): void {
         this.filterText = "";
         this.modal.show();
@@ -82,13 +70,12 @@ export class FindActorComponent extends AppComponentBase {
     }
 
     selectActor(actor: ActorDto) {
-        if (this.type === 'conflict-social') {
+        if (this.actorTypeModal="socialConflict")
             this.modalSave.emit(actor);
-        }
-        if (this.type === 'conflict-social') {
-            this.modalSaveAlert.emit(actor);
-        }
-
+        else if (this.actorTypeModal="socialConflictAlert")
+            this.modalSave.emit(actor);
+        else if (this.actorTypeModal="socialConflictSensible")
+            this.modalSave.emit(actor);
         this.close();
     }
 
