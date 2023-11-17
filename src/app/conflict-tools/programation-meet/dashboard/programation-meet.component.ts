@@ -1,13 +1,12 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { SectorMeetDto } from '@shared/service-proxies/application/sector-meet-proxie';
+import { SectorMeetDto, SectorMeetServiceProxy } from '@shared/service-proxies/application/sector-meet-proxie';
 import { SectorMeetSessionType } from '@shared/service-proxies/application/sector-meet-session-proxie';
 import { UtilityDepartmentDataDto, UtilityDistrictDataDto, UtilityPersonDto, UtilityProvinceDataDto, UtilityServiceProxy } from '@shared/service-proxies/application/utility-proxie';
 import { LazyLoadEvent, Paginator, Table } from 'primeng';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
-import { SectorMeetProgamServiceProxy } from '@shared/service-proxies/application/sector-meet-program-proxie';
 
 @Component({
     templateUrl: 'programation-meet.component.html',
@@ -43,7 +42,7 @@ export class ProgramationMeetComponent extends AppComponentBase implements OnIni
         remote: SectorMeetSessionType.REMOTE
     }
 
-    constructor(_injector: Injector, private _utilityServiceProxy: UtilityServiceProxy, private _sectorMeetServiceProxy: SectorMeetProgamServiceProxy) {
+    constructor(_injector: Injector, private _utilityServiceProxy: UtilityServiceProxy, private _sectorMeetServiceProxy: SectorMeetServiceProxy) {
         super(_injector);
     }
 
@@ -56,7 +55,7 @@ export class ProgramationMeetComponent extends AppComponentBase implements OnIni
                 this.persons = response.persons;
             });
     }
-
+ 
     createItem() {
         this.router.navigate(['app/conflict-tools/programation-meet/create-meet']);
     }
@@ -105,7 +104,8 @@ export class ProgramationMeetComponent extends AppComponentBase implements OnIni
             this.advancedFiltersAreShown && this.filterByDate ? moment(this.dateRange[1]).endOf('day') : <any>undefined,
             this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getMaxResultCount(this.paginator, event),
-            this.primengTableHelper.getSkipCount(this.paginator, event)
+            this.primengTableHelper.getSkipCount(this.paginator, event),
+            1
         ).pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator())).subscribe(result => {
             this.primengTableHelper.totalRecordsCount = result.totalCount;
             this.primengTableHelper.records = result.items;

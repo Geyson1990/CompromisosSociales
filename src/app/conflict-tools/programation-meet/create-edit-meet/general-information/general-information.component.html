@@ -131,15 +131,32 @@
 
     <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
         <div class="mb-2 form-group">
+            <label for="SectorMeetTerritorial">
+                Unidad Territorial (*)
+            </label>
+            <div class="input-group">
+                <select (change)="onTerritorialUnitChange($event)" [(ngModel)]="state.sectorMeet.territorialUnit.id"
+                    id="SectorMeetTerritorial" name="SectorMeetTerritorial" class="form-control" type="text">
+                    <option value="-1">
+                        Seleccione
+                    </option>
+                    <option *ngFor="let territorialUnit of state.territorialUnits" [value]="territorialUnit.id">
+                        {{territorialUnit.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <div class="mb-2 form-group">
             <label for="meetingRiskLevel">
                 Nivel de Riesgo de la Reunión (*)
             </label>
             <div class="input-group">
                 <select
                     id="meetingRiskLevel" [(ngModel)]="state.sectorMeet.riskLevel" name="meetingRiskLevel" class="form-control" type="text">
-                    <option value="-1">
-                        Seleccione
-                    </option>
+                    <option [ngValue]="null">Seleccione</option>
                     <option *ngFor="let meetingRiskLevel of meetingRiskLevels" [value]="meetingRiskLevel.id">
                         {{meetingRiskLevel.name}}
                     </option>
@@ -156,13 +173,84 @@
             <div class="input-group">
                 <select
                     id="typeMeeting" name="typeMeeting" class="form-control" type="text" [(ngModel)]="state.sectorMeet.meetType">
-                    <option value="-1">
-                        Seleccione
-                    </option>
+                    <option [ngValue]="null">Seleccione</option>
                     <option *ngFor="let typeMeeting of typesMeeting" [value]="typeMeeting.id">
                         {{typeMeeting.name}}
                     </option>
                 </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-3 col-lg-6 col-xl-2 col-xxl-2">
+        <div class="mb-2 form-group">
+            <label for="SectorMeetSessionLongitude ">
+                Nombre del Responsable SSGD (*)
+            </label>
+            <div class="input-group">
+                <input [(ngModel)]="state.sectorMeet.responsibleName" id="responsibleName " name="responsibleName " autoFocus
+                    class="form-control" [placeholder]="l('Ingrese nombre del Responsable ')" type="text">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+        <div class="mb-2 form-group">
+            <label for="rolId">
+                Rol de la SSGD-PCM (*)
+            </label>
+            <div class="input-group">
+                <select [(ngModel)]="state.sectorMeet.rolId" id="rolId"
+                    name="rolId" class="form-control" type="text">
+                    <option [ngValue]="null">Seleccione</option>
+                    <option [value]="4">
+                        Usuario SSSGC
+                    </option>
+                    <option [value]="5">
+                        Coordinador UT
+                    </option>
+                    <option [value]="6">
+                        Gestor UT
+                    </option>
+                    <option [value]="1005">
+                        Analista
+                    </option>
+                    <option [value]="1006">
+                        GeoPeru
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+        <div class="mb-2 form-group">
+            <label for="rolId">
+                Modalidad de Reunión (*)
+            </label>
+            <div class="input-group">
+                <select [(ngModel)]="state.sectorMeet.modality" id="modality"
+                    name="rolId" class="form-control" type="text">
+                    <option [ngValue]="null">Seleccione</option>
+                    <option [value]="1">
+                        Digital 
+                    </option>
+                    <option [value]="2">
+                        Presencial
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-2 col-xxl-2">
+        <div class="mb-2 form-group">
+            <label for="object">
+                Objetivo de la Reunión (*)
+            </label>
+            <div class="input-group">
+                <input [(ngModel)]="state.sectorMeet.object" id="object " name="object " autoFocus
+                    class="form-control" [placeholder]="l('Ingrese el objetivo de la Reunión')" type="text">
             </div>
         </div>
     </div>
@@ -174,7 +262,7 @@
 
         <hr>
     </div>
-
+ 
     <div class="col-12 text-right mb-2 mx-0">
         <button (click)="addSession()" class="mb-0 mt-auto btn btn-primary">
             <i class="fa fa-plus"></i>

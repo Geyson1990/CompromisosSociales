@@ -30,7 +30,8 @@ export class SectorMeetServiceProxy {
         endDate: moment.Moment | undefined,
         sorting: string | undefined,
         maxResultCount: number | undefined,
-        skipCount: number | undefined): Observable<PagedResultDtoOfSectorMeetListDto> {
+        skipCount: number | undefined,
+        state: number | undefined): Observable<PagedResultDtoOfSectorMeetListDto> {
         let url_ = this.baseUrl + "/api/services/app/SectorMeet/GetAll?";
         if (sectorMeetCode !== undefined)
             url_ += "SectorMeetCode=" + encodeURIComponent("" + sectorMeetCode) + "&";
@@ -66,6 +67,8 @@ export class SectorMeetServiceProxy {
             throw new Error("The parameter 'skipCount' cannot be null.");
         else if (skipCount !== undefined)
             url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        else if (state !== undefined)
+            url_ += "state=" + encodeURIComponent("" + state) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
 
@@ -378,7 +381,7 @@ export interface ISectorMeetDto {
     territorialUnit: SectorMeetTerritorialUnitDto;
     socialConflict: SectorMeetSocialConflict;
 }
-
+ 
 export class SectorMeetDto implements ISectorMeetDto {
     id: number;
     count: number;
@@ -395,6 +398,13 @@ export class SectorMeetDto implements ISectorMeetDto {
     replaceCount: number;
     uploadFiles: SectorMeetSessionAttachmentUploadDto[];
     resources: SectorMeetSessionResourceDto[];
+    modality: number;
+    meetType: number;
+    riskLevel: number;
+    object: string;
+    rolId: number;
+    state: number;
+    responsibleName: string;
 
     constructor(data?: ISectorMeetDto) {
         if (data) {
@@ -430,6 +440,14 @@ export class SectorMeetDto implements ISectorMeetDto {
                 for (let item of _data["resources"])
                     this.resources!.push(SectorMeetSessionResourceDto.fromJS(item));
             }
+            this.modality = _data["modality"];
+            this.meetType = _data["meetType"];
+            this.riskLevel = _data["riskLevel"];
+
+            this.object = _data["object"];
+            this.rolId = _data["rolId"];
+            this.state = _data["state"];
+            this.responsibleName = _data["responsibleName"];
         }
     }
 
@@ -460,6 +478,13 @@ export class SectorMeetDto implements ISectorMeetDto {
             for (let item of this.uploadFiles)
                 data["uploadFiles"].push(item.toJSON());
         }
+        data["modality"] = this.modality;
+        data["meetType"] = this.meetType;
+        data["riskLevel"] = this.riskLevel;
+        data["object"] = this.object;
+        data["rolId"] = this.rolId;
+        data["state"] = this.state;
+        data["responsibleName"] = this.responsibleName;
         return data;
     }
 }

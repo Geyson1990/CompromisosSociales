@@ -13,16 +13,16 @@ import { CreateEditScheduleInformationComponent } from './create-edit-session/sc
 import { ScheduleInformationComponent } from './create-edit-session/schedule-information/schedule-information.component';
 import { ProgramationMeetComponent } from './dashboard/programation-meet.component';
 import { ProgramationMeetRoutingModule } from './programation-meet-routing.module';
-import { ProgramationMeetStateService } from './shared/programation-meet-state.service';
-import { ProgramationSessionStateService } from './shared/programation-session-state.service';
 import { CreateEditRiskFactorWeekComponent } from './create-edit-session/risk-factors-week/create-edit-risk-factors-week/create-edit-risk-factors-week.component';
 import { RiskFactorWeekComponent } from './create-edit-session/risk-factors-week/risk-factors-week.component';
+import { SectorMeetStateService } from '../sector-meet/shared/sector-meet-state.service';
+import { SectorSessionStateService } from '../sector-meet/shared/sector-session-state.service';
 
 @NgModule({
     imports: [
         AppSharedModule,
         ProgramationMeetRoutingModule
-    ],
+    ], 
     declarations: [
         ProgramationMeetComponent,
         CreateEditSectorMeetComponent,
@@ -40,8 +40,8 @@ import { RiskFactorWeekComponent } from './create-edit-session/risk-factors-week
         CreateEditTeamInformationComponent,
     ],
     providers: [
-        ProgramationMeetStateService,
-        ProgramationSessionStateService
+        SectorMeetStateService,
+        SectorSessionStateService
     ]
 })
 export class ProgramationMeetModule { }

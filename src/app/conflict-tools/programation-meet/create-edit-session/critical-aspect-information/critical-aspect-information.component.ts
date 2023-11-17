@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
+import { SectorSessionStateService } from '@app/conflict-tools/sector-meet/shared/sector-session-state.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { SectorMeetSessionCriticalAspectLocationDto } from '@shared/service-proxies/application/sector-meet-session-proxie';
 import { LazyLoadEvent, Paginator } from 'primeng';
-import { ProgramationSessionStateService } from '../../shared/programation-session-state.service';
 
 @Component({
     selector: 'critical-aspect-information',
@@ -18,14 +18,14 @@ export class CriticalAspectInformationComponent extends AppComponentBase impleme
     @Output() addCriticalAspect: EventEmitter<void> = new EventEmitter<void>();
     @Output() editCriticalAspect: EventEmitter<{ index: number, value: SectorMeetSessionCriticalAspectLocationDto }> = new EventEmitter<{ index: number, value: SectorMeetSessionCriticalAspectLocationDto }>();
 
-    state: ProgramationSessionStateService;
+    state: SectorSessionStateService;
     
     private skipCount: number;
     private maxResultCount: number;
 
     constructor(_injector: Injector) {
         super(_injector);
-        this.state = _injector.get(ProgramationSessionStateService);
+        this.state = _injector.get(SectorSessionStateService);
         this.primengTableHelper.defaultRecordsCountPerPage = 5;
         this.skipCount = 0;
         this.maxResultCount = this.primengTableHelper.defaultRecordsCountPerPage;

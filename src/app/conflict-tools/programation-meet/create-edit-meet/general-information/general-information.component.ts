@@ -3,8 +3,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { SectorMeetSessionDto, SectorMeetSessionServiceProxy, SectorMeetSessionType } from '@shared/service-proxies/application/sector-meet-session-proxie';
 import { LazyLoadEvent, Paginator, Table } from 'primeng';
 import { finalize } from 'rxjs/operators';
-import { ProgramationMeetStateService } from '../../shared/programation-meet-state.service';
-import { SectorMeetSessionProgramServiceProxy } from '@shared/service-proxies/application/sector-meet-session-program-proxie';
+import { SectorMeetStateService } from '@app/conflict-tools/sector-meet/shared/sector-meet-state.service';
 
 @Component({
     selector: 'general-information',
@@ -27,21 +26,27 @@ export class GeneralInformationComponent extends AppComponentBase {
     meetingRiskLevels: any[] = [
         {
             id: 1,
-            name: "Nivel de riesgo 1",
+            name: "Crisis",
         },{
             id: 2,
-            name: "Nivel de riesgo 2",
+            name: "Inminente",
+        },{
+            id: 3,
+            name: "Intermedio",
+        },{
+            id: 4,
+            name: "Bajo",
         }
     ];
     typesMeeting: any[] = [{
         id: 1,
-        name: "tipo de reunión 1"
+        name: "Preparatoria y/o de articulación"
     }, {
         id: 2,
-        name: "tipo de reunión 2"
+        name: "Espacio de Diálogo"
     }]
 
-    state: ProgramationMeetStateService;
+    state: SectorMeetStateService;
     types = {
         none: SectorMeetSessionType.NONE,
         presential: SectorMeetSessionType.PRESENTIAL,
@@ -59,14 +64,18 @@ export class GeneralInformationComponent extends AppComponentBase {
 
         return 'Presione el botón de búsqueda para seleccionar un caso conflictivo';
     }
-
-    constructor(_injector: Injector, private _sectorMeetSessionServiveProxy: SectorMeetSessionProgramServiceProxy) {
+ 
+    constructor(_injector: Injector, private _sectorMeetSessionServiveProxy: SectorMeetSessionServiceProxy) {
         super(_injector);
-        this.state = _injector.get(ProgramationMeetStateService);
-        this.state.sectorMeet.state = 0;
-        this.state.sectorMeet.modality = 0;
-        this.state.sectorMeet.rolId = 0;
-        this.state.sectorMeet.object = '';
+        
+        this.state = _injector.get(SectorMeetStateService);
+        this.state.sectorMeet.state = 1;
+        this.state.sectorMeet.modality = this.state.sectorMeet?.modality ? this.state.sectorMeet?.modality : null;
+        this.state.sectorMeet.rolId = this.state.sectorMeet?.rolId ? this.state.sectorMeet?.rolId : null;;
+        this.state.sectorMeet.object = this.state.sectorMeet?.object ? this.state.sectorMeet?.object : null;;
+        this.state.sectorMeet.responsibleName = this.state.sectorMeet?.responsibleName ? this.state.sectorMeet?.responsibleName : null;;
+        this.state.sectorMeet.riskLevel = this.state.sectorMeet?.riskLevel ? this.state.sectorMeet?.riskLevel : null;;
+        this.state.sectorMeet.meetType = this.state.sectorMeet?.meetType ? this.state.sectorMeet?.meetType : null;;
     }
 
     addSession() {
@@ -75,6 +84,17 @@ export class GeneralInformationComponent extends AppComponentBase {
 
     editSession(session: SectorMeetSessionDto) {
         this.showEditSession.emit(session);
+    }
+ 
+    onTerritorialUnitChange(event: any) {
+        const itemId: number = +event.target.value;
+        const index: number = this.state.territorialUnits.findIndex(p => p.id == itemId);
+
+        if (index != -1) {
+            this.state.sectorMeet.territorialUnit.name = this.state.territorialUnits[index].name;
+        } else {
+            this.state.sectorMeet.territorialUnit.name = undefined;
+        }
     }
 
     createReport(session: SectorMeetSessionDto) {

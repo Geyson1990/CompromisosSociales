@@ -486,6 +486,7 @@ export class ISectorMeetSessionDto {
     schedules: SectorMeetSessionScheduleLocationDto[];
     agreements: SectorMeetSessionAgreementLocationDto[];
     criticalAspects: SectorMeetSessionCriticalAspectLocationDto[];
+    riskFactors: SectorMeetSessionRiskFactorDto[];
     leaders: SectorMeetSessionLeaderRelationDto[];
     resources: SectorMeetSessionResourceDto[];
     summaries: SectorMeetSessionSummaryLocationDto[];
@@ -514,6 +515,7 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
     schedules: SectorMeetSessionScheduleLocationDto[];
     agreements: SectorMeetSessionAgreementLocationDto[];
     criticalAspects: SectorMeetSessionCriticalAspectLocationDto[];
+    riskFactors: SectorMeetSessionRiskFactorDto[];
     leaders: SectorMeetSessionLeaderRelationDto[];
     resources: SectorMeetSessionResourceDto[];
     resourcesFile: SectorMeetSessionResourceDto[];
@@ -532,6 +534,7 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
             this.schedules = [];
             this.agreements = [];
             this.criticalAspects = [];
+            this.riskFactors = [];
             this.actions = [];
             this.summaries = [];
             this.resources = [];
@@ -613,6 +616,12 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
                 for (let item of data["criticalAspects"])
                     this.criticalAspects!.push(SectorMeetSessionCriticalAspectLocationDto.fromJS(item));
             }
+            if (Array.isArray(data["riskFactors"])) {
+                this.riskFactors = [] as any;
+                for (let item of data["riskFactors"])
+                    this.riskFactors!.push(SectorMeetSessionCriticalAspectLocationDto.fromJS(item));
+            }
+
             if (Array.isArray(data["leaders"])) {
                 this.leaders = [] as any;
                 for (let item of data["leaders"])
@@ -680,6 +689,11 @@ export class SectorMeetSessionDto implements ISectorMeetSessionDto {
             data["criticalAspects"] = [];
             for (let item of this.criticalAspects)
                 data["criticalAspects"].push(item.toJSON());
+        }
+        if (Array.isArray(this.riskFactors)) {
+            data["riskFactors"] = [];
+            for (let item of this.riskFactors)
+                data["riskFactors"].push(item.toJSON());
         }
         if (Array.isArray(this.leaders)) {
             data["leaders"] = [];
@@ -860,6 +874,52 @@ export interface ISectorMeetSessionCriticalAspectLocationDto {
 }
 
 export class SectorMeetSessionCriticalAspectLocationDto implements ISectorMeetSessionCriticalAspectLocationDto {
+    id: number;
+    description: string;
+    remove: boolean;
+
+    //readonly
+    isHidden: boolean;
+
+    constructor(data?: ISectorMeetSessionCriticalAspectLocationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.description = data["description"];
+        }
+    }
+
+    static fromJS(data: any): SectorMeetSessionCriticalAspectLocationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SectorMeetSessionCriticalAspectLocationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["description"] = this.description;
+        data["remove"] = this.remove;
+
+        return data;
+    }
+}
+
+export interface ISectorMeetSessionRiskFactorDto {
+    id: number;
+    description: string;
+}
+
+export class SectorMeetSessionRiskFactorDto implements ISectorMeetSessionRiskFactorDto {
     id: number;
     description: string;
     remove: boolean;

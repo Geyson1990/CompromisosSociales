@@ -6,7 +6,6 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { SectorMeetSessionActionLocationDto, SectorMeetSessionAgreementLocationDto, SectorMeetSessionCriticalAspectLocationDto, SectorMeetSessionLeaderRelationDto, SectorMeetSessionScheduleLocationDto, SectorMeetSessionServiceProxy, SectorMeetSessionSummaryLocationDto, SectorMeetSessionTeamRelationDto, SectorMeetSessionType } from '@shared/service-proxies/application/sector-meet-session-proxie';
 import { UploadServiceProxy } from '@shared/service-proxies/application/upload-proxie';
 import { TokenService } from 'abp-ng2-module';
-import { ProgramationSessionStateService } from '../shared/programation-session-state.service';
 // import { ActionInformationComponent } from './action-information/action-information.component';
 // import { CreateEditActionInformationComponent } from './action-information/create-edit-action/create-edit-action-information.component';
 // import { AgreementInformationComponent } from './agreement-information/agreement-information.component';
@@ -28,6 +27,7 @@ import { TeamInformationComponent } from './registration-information/team-inform
 import { CreateEditTeamInformationComponent } from './registration-information/team-information/create-edit-team/create-edit-team.component';
 import { CreateEditRiskFactorWeekComponent } from './risk-factors-week/create-edit-risk-factors-week/create-edit-risk-factors-week.component';
 import { RiskFactorWeekComponent } from './risk-factors-week/risk-factors-week.component';
+import { SectorSessionStateService } from '@app/conflict-tools/sector-meet/shared/sector-session-state.service';
 // import { FindLeaderSectorMeetSessionComponent } from './summary-information/find-leader/find-leader.component';
 
 @Component({
@@ -70,7 +70,7 @@ export class CreateEditSessionComponent extends AppComponentBase implements OnIn
     busy: boolean = false;
     tabIndex: number = 0;
 
-    state: ProgramationSessionStateService;
+    state: SectorSessionStateService;
 
     types = {
         none: SectorMeetSessionType.NONE,
@@ -84,7 +84,7 @@ export class CreateEditSessionComponent extends AppComponentBase implements OnIn
         private _uploadServiceProxy: UploadServiceProxy,
         private _tokenService: TokenService) {
         super(_injector);
-        this.state = _injector.get(ProgramationSessionStateService);
+        this.state = _injector.get(SectorSessionStateService);
     }
 
     ngOnInit() {
@@ -171,9 +171,9 @@ export class CreateEditSessionComponent extends AppComponentBase implements OnIn
     }
 
     saveRiskCriticalWeek(event: { index: number, value: SectorMeetSessionCriticalAspectLocationDto }) {
-        this.criticalAspectInformation.addOrUpdateItem(event);
+        this.riskFactorWeekComponent.addOrUpdateItem(event);
     }
-
+ 
     addAction() {
         // this.createEditActionModal.show(undefined, undefined);
     }
@@ -390,7 +390,7 @@ export class CreateEditSessionComponent extends AppComponentBase implements OnIn
                 .subscribe((response) => {
                     this.loaded = false;
                     this.notify.success('Se registro correctamente la información', 'Aviso');
-                    this.router.navigate(['/app/conflict-tools/sector-meet/edit-session', this.meetId, response.id]);
+                    this.router.navigate(['/app/conflict-tools/programation-meet/edit-session', this.meetId, response.id]);
                 }, () => setTimeout(() => this.hideMainSpinner(), 1500));
     }
 

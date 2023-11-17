@@ -102,18 +102,19 @@
 
     <create-edit-critical-aspect #createEditCriticalAspectModal (modalSave)="saveCriticalAspect($event)"></create-edit-critical-aspect>
     <create-edit-risk-factors-week #createEditRiskFactorWeekModal (modalSave)="saveRiskCriticalWeek($event)"></create-edit-risk-factors-week>
+    <create-edit-leader #createEditLeaderModal (modalSave)="saveLeader($event)" (findDirectoryGovernment)="findDirectoryGovernment()" (findDirectoryIndustry)="findDirectoryIndustry()"></create-edit-leader>
+    <find-directory-industry #findDirectoryIndustryModal (modalSave)="saveDirectoryIndustry($event)"></find-directory-industry>
+    <find-directory-government #findDirectoryGovernmentModal (modalSave)="saveDirectoryGoverment($event)"></find-directory-government>
+    <team-information #teamInformationModal (modalSave)="saveLeader($event)" (addTeam)="addTeam()" (editTeam)="editTeam($event)"></team-information>
+    <create-edit-team #createEditTeamModal (modalSave)="saveTeam($event)"></create-edit-team>
+    <create-edit-schedule #createEditScheduleModal (modalSave)="saveSchedule($event)"></create-edit-schedule>
 
-    <!-- <create-edit-schedule #createEditScheduleModal (modalSave)="saveSchedule($event)"></create-edit-schedule>
+    <!--
     <create-edit-agreement #createEditAgreementModal (modalSave)="saveAgreement($event)"></create-edit-agreement>
     <create-edit-action #createEditActionModal (modalSave)="saveAction($event)"></create-edit-action>
     <create-edit-summary #createEditSummaryModal (modalSave)="saveSummary($event)" (findDirectory)="findSummaryDirectory()"></create-edit-summary>
-    <create-edit-leader #createEditLeaderModal (modalSave)="saveLeader($event)" (findDirectoryGovernment)="findDirectoryGovernment()" (findDirectoryIndustry)="findDirectoryIndustry()"></create-edit-leader>
-    <create-edit-team #createEditTeamModal (modalSave)="saveTeam($event)"></create-edit-team>
 
-    <team-information #teamInformationModal (modalSave)="saveLeader($event)" (addTeam)="addTeam()" (editTeam)="editTeam($event)"></team-information>
     
-    <find-directory-government #findDirectoryGovernmentModal (modalSave)="saveDirectoryGoverment($event)"></find-directory-government>
-    <find-directory-industry #findDirectoryIndustryModal (modalSave)="saveDirectoryIndustry($event)"></find-directory-industry>
     <find-leader-sector-meet-session #findSectorMeetSessionModal (modalSave)="saveSummaryDirectory($event)"></find-leader-sector-meet-session> -->
-
+ 
 </div>

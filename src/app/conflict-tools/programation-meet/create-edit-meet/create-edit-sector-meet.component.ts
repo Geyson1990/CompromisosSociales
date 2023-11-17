@@ -2,18 +2,12 @@ import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { FileDownloadRequestComponent } from '@shared/component/file-download-request/file-download-request.component';
-import { FileDownloadComponent } from '@shared/component/file-download/file-download.component';
 import { FindSocialConflictComponent } from '@shared/component/find-social-conflict/find-social-conflict.component';
-import { ReportServiceProxy, ReportType } from '@shared/service-proxies/application/report-proxie';
-import { SectorMeetDto, SectorMeetProgamServiceProxy, SectorMeetSocialConflict } from '@shared/service-proxies/application/sector-meet-program-proxie';
 import { SectorMeetSessionDto } from '@shared/service-proxies/application/sector-meet-session-proxie';
 import { UtilitySocialConflictDto } from '@shared/service-proxies/application/utility-proxie';
 import { finalize } from 'rxjs/operators';
-import { ProgramationMeetStateService } from '../shared/programation-meet-state.service';
-import { UploadServiceProxy } from '@shared/service-proxies/application/upload-proxie';
-import { TokenService } from 'abp-ng2-module';
-import { HttpResponse } from '@angular/common/http';
+import { SectorMeetDto, SectorMeetServiceProxy, SectorMeetSocialConflict } from '@shared/service-proxies/application/sector-meet-proxie';
+import { SectorMeetStateService } from '@app/conflict-tools/sector-meet/shared/sector-meet-state.service';
 
 @Component({
     templateUrl: 'create-edit-sector-meet.component.html',
@@ -32,12 +26,12 @@ export class CreateEditSectorMeetComponent extends AppComponentBase implements O
     busy: boolean = false;
     tabIndex: number = 0;
 
-    state: ProgramationMeetStateService;
+    state: SectorMeetStateService;
 
     constructor(_injector: Injector, private _activatedRoute: ActivatedRoute, 
-        private _sectorMeetServiceProxy: SectorMeetProgamServiceProxy) {
+        private _sectorMeetServiceProxy: SectorMeetServiceProxy) {
         super(_injector);
-        this.state = _injector.get(ProgramationMeetStateService);
+        this.state = _injector.get(SectorMeetStateService);
     }
 
     ngOnInit() {
@@ -65,6 +59,8 @@ export class CreateEditSectorMeetComponent extends AppComponentBase implements O
                 .get(this.id)
                 .pipe(finalize(() => setTimeout(() => this.hideMainSpinner(), 1500)))
                 .subscribe(response => {
+                    this.state.territorialUnits = response.territorialUnits;
+
                     if (response.sectorMeet)
                         this.state.sectorMeet = response.sectorMeet;
                     else
@@ -111,6 +107,46 @@ export class CreateEditSectorMeetComponent extends AppComponentBase implements O
             this.message.info('Debe ingresar el nombre de la reunión antes de guardar los cambios');
             return;
         }
+
+        if (this.state.sectorMeet.territorialUnit.id == -1) {
+            this.message.info('Debe seleccionar la unidad territorial antes de guardar los cambios');
+            return;
+        }
+
+        if (this.state.sectorMeet.riskLevel === null) {
+            this.message.info('Debe seleccionar un nivel de riesgo');
+            return;
+        }
+
+        if (this.state.sectorMeet.meetType === null) {
+            this.message.info('Debe seleccionar un tipo de reunión');
+            return;
+        }
+
+        if (this.state.sectorMeet.responsibleName === null) {
+            this.message.info('Debe ingresar un responsable');
+            return;
+        }
+
+        if (this.state.sectorMeet.rolId === null) {
+            this.message.info('Debe seleccionar un rol');
+            return;
+        }
+
+        if (this.state.sectorMeet.modality === null) {
+            this.message.info('Debe seleccionar una modalidad');
+            return;
+        }
+
+        if (this.state.sectorMeet.object === null) {
+            this.message.info('Debe ingresar un objetivo');
+            return;
+        }
+
+
+        
+
+        
 
         if (this.state.sectorMeet.replaceCode) {
             if (+this.state.sectorMeet.replaceCode <= 0 || (<any>this.state.sectorMeet.replaceCode + '').trim() == '') {
