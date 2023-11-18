@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
+import { SectorSessionStateService } from '@app/conflict-tools/sector-meet/shared/sector-session-state.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { SectorMeetSessionDistrictDto, SectorMeetSessionDistrictReverseDto, SectorMeetSessionEntityType, SectorMeetSessionLeaderRelationDto, SectorMeetSessionProvinceDto, SectorMeetSessionProvinceReverseDto, SectorMeetSessionType } from '@shared/service-proxies/application/sector-meet-session-proxie';
 import { LazyLoadEvent, Paginator } from 'primeng';
-import { ProgramationSessionStateService } from '../../shared/programation-session-state.service';
 
 @Component({
     selector: 'registration-information',
@@ -19,7 +19,7 @@ export class RegistrationInformationComponent extends AppComponentBase implement
     @Output() editLeader: EventEmitter<{ index: number, value: SectorMeetSessionLeaderRelationDto }> = new EventEmitter<{ index: number, value: SectorMeetSessionLeaderRelationDto }>();
     @Output() showTeam: EventEmitter<{ index: number, value: SectorMeetSessionLeaderRelationDto }> = new EventEmitter<{ index: number, value: SectorMeetSessionLeaderRelationDto }>();
 
-    state: ProgramationSessionStateService;
+    state: SectorSessionStateService;
     types = {
         none: SectorMeetSessionType.NONE,
         presential: SectorMeetSessionType.PRESENTIAL,
@@ -42,7 +42,7 @@ export class RegistrationInformationComponent extends AppComponentBase implement
 
     constructor(_injector: Injector) {
         super(_injector);
-        this.state = _injector.get(ProgramationSessionStateService);
+        this.state = _injector.get(SectorSessionStateService);
         this.primengTableHelper.defaultRecordsCountPerPage = 5;
         this.skipCount = 0;
         this.maxResultCount = this.primengTableHelper.defaultRecordsCountPerPage;

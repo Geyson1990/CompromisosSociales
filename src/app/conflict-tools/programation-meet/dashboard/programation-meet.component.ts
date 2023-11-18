@@ -55,7 +55,7 @@ export class ProgramationMeetComponent extends AppComponentBase implements OnIni
                 this.persons = response.persons;
             });
     }
-
+ 
     createItem() {
         this.router.navigate(['app/conflict-tools/programation-meet/create-meet']);
     }
@@ -104,7 +104,8 @@ export class ProgramationMeetComponent extends AppComponentBase implements OnIni
             this.advancedFiltersAreShown && this.filterByDate ? moment(this.dateRange[1]).endOf('day') : <any>undefined,
             this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getMaxResultCount(this.paginator, event),
-            this.primengTableHelper.getSkipCount(this.paginator, event)
+            this.primengTableHelper.getSkipCount(this.paginator, event),
+            1
         ).pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator())).subscribe(result => {
             this.primengTableHelper.totalRecordsCount = result.totalCount;
             this.primengTableHelper.records = result.items;
@@ -114,6 +115,30 @@ export class ProgramationMeetComponent extends AppComponentBase implements OnIni
 
     reloadPage(): void {
         this.paginator.changePage(this.paginator.getPage());
+    }
+
+    addMeet(id:number) {
+        this.message.confirm('Se registrará una reunión. ¿Esta seguro de continuar?', 'Aviso', confirmation => {
+            if (confirmation) {
+                this.completeSaving(id);
+            }
+        });
+    }
+
+    private completeSaving(id: number) {
+        this.showMainSpinner('Guardando información, por favor espere...');
+
+            this._sectorMeetServiceProxy
+                .createMeet(id)
+                .subscribe(() => {
+                        this.notify.success('Se registro correctamente la información', 'Aviso');
+                        this.hideMainSpinner();
+                        this.reloadPage();
+                }, () => setTimeout(() => this.hideMainSpinner(), 1500));
+    }
+
+    redirectMeet(id: number) {
+        this.router.navigate(['app/conflict-tools/sector-meet/edit-meet',id]);
     }
 
     onDepartmentChange(event: any) {

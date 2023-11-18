@@ -6,11 +6,11 @@
                 <div class="modal-header">
                     <h4 class="modal-title">
                         <span *ngIf="rowIndex || rowIndex == 0; else elseRowIndex">
-                            Editar próximas acciones
+                            Editar Factor de Riesgo
                         </span>
                         <ng-template #elseRowIndex>
                             <span>
-                                Crear próximas acciones
+                                Crear Factor de Riesgo
                             </span>
                         </ng-template>
                     </h4>
@@ -21,13 +21,13 @@
                 <div class="modal-body row">
 
                     <div class="form-group col-sm-12">
-                        <label for="ActionDescription">
+                        <label for="CriticalAspectDescription">
                             Descripción
                         </label>
                         <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
-                            cdkAutosizeMaxRows="100" id="ActionDescription" #descriptionInput
+                            cdkAutosizeMaxRows="100" id="CriticalAspectDescription" #descriptionInput
                             #descriptionInputValidation="ngModel" class="form-control" type="text"
-                            name="ActionDescription" [(ngModel)]="item.description" maxlength="5000"></textarea>
+                            name="CriticalAspectDescription" [(ngModel)]="item.description" maxlength="5000"></textarea>
                         <validation-messages [formCtrl]="descriptionInputValidation"></validation-messages>
                         <span class="input-legth">
                             {{descriptionInput.value ? descriptionInput.value?.length :

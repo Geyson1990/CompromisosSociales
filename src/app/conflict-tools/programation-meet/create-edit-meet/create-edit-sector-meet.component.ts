@@ -2,18 +2,12 @@ import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { FileDownloadRequestComponent } from '@shared/component/file-download-request/file-download-request.component';
-import { FileDownloadComponent } from '@shared/component/file-download/file-download.component';
 import { FindSocialConflictComponent } from '@shared/component/find-social-conflict/find-social-conflict.component';
-import { ReportServiceProxy, ReportType } from '@shared/service-proxies/application/report-proxie';
-import { SectorMeetDto, SectorMeetServiceProxy, SectorMeetSocialConflict } from '@shared/service-proxies/application/sector-meet-proxie';
 import { SectorMeetSessionDto } from '@shared/service-proxies/application/sector-meet-session-proxie';
 import { UtilitySocialConflictDto } from '@shared/service-proxies/application/utility-proxie';
 import { finalize } from 'rxjs/operators';
-import { ProgramationMeetStateService } from '../shared/programation-meet-state.service';
-import { UploadServiceProxy } from '@shared/service-proxies/application/upload-proxie';
-import { TokenService } from 'abp-ng2-module';
-import { HttpResponse } from '@angular/common/http';
+import { SectorMeetDto, SectorMeetServiceProxy, SectorMeetSocialConflict } from '@shared/service-proxies/application/sector-meet-proxie';
+import { SectorMeetStateService } from '@app/conflict-tools/sector-meet/shared/sector-meet-state.service';
 
 @Component({
     templateUrl: 'create-edit-sector-meet.component.html',
@@ -26,23 +20,18 @@ import { HttpResponse } from '@angular/common/http';
 export class CreateEditSectorMeetComponent extends AppComponentBase implements OnInit {
 
     @ViewChild('findSocialConflictModal', { static: false }) findSocialConflictModal: FindSocialConflictComponent;
-    @ViewChild('fileDownloader', { static: true }) fileDownloader: FileDownloadComponent;
-    @ViewChild('fileDownloadRequest', { static: true }) fileDownloadRequest: FileDownloadRequestComponent;
 
     id: number;
     loaded: boolean = false;
     busy: boolean = false;
     tabIndex: number = 0;
 
-    state: ProgramationMeetStateService;
+    state: SectorMeetStateService;
 
     constructor(_injector: Injector, private _activatedRoute: ActivatedRoute, 
-        private _sectorMeetServiceProxy: SectorMeetServiceProxy,
-        private _uploadServiceProxy: UploadServiceProxy,
-        private _tokenService: TokenService,
-        private _reportServiceProxy: ReportServiceProxy) {
+        private _sectorMeetServiceProxy: SectorMeetServiceProxy) {
         super(_injector);
-        this.state = _injector.get(ProgramationMeetStateService);
+        this.state = _injector.get(SectorMeetStateService);
     }
 
     ngOnInit() {
@@ -109,12 +98,7 @@ export class CreateEditSectorMeetComponent extends AppComponentBase implements O
             code: socialConflict.code,
             caseName: socialConflict.caseName
         });
-        if (socialConflict.locations.length > 0) {
-            const locationIndex: number = this.state.territorialUnits.findIndex(p => p.id == socialConflict.locations[0].territorialUnit.id);
-            if (locationIndex != -1) {
-                this.state.sectorMeet.territorialUnit = this.state.territorialUnits[locationIndex];
-            }
-        }
+       
     }
 
     save(callback?: (id: number) => void) {
@@ -129,6 +113,41 @@ export class CreateEditSectorMeetComponent extends AppComponentBase implements O
             return;
         }
 
+        if (this.state.sectorMeet.riskLevel === null) {
+            this.message.info('Debe seleccionar un nivel de riesgo');
+            return;
+        }
+
+        if (this.state.sectorMeet.meetType === null) {
+            this.message.info('Debe seleccionar un tipo de reunión');
+            return;
+        }
+
+        if (this.state.sectorMeet.responsibleName === null) {
+            this.message.info('Debe ingresar un responsable');
+            return;
+        }
+
+        if (this.state.sectorMeet.rolId === null) {
+            this.message.info('Debe seleccionar un rol');
+            return;
+        }
+
+        if (this.state.sectorMeet.modality === null) {
+            this.message.info('Debe seleccionar una modalidad');
+            return;
+        }
+
+        if (this.state.sectorMeet.object === null) {
+            this.message.info('Debe ingresar un objetivo');
+            return;
+        }
+
+
+        
+
+        
+
         if (this.state.sectorMeet.replaceCode) {
             if (+this.state.sectorMeet.replaceCode <= 0 || (<any>this.state.sectorMeet.replaceCode + '').trim() == '') {
                 this.message.info('El Código (Número) de reemplazo es obligatorio', 'Aviso');
@@ -141,68 +160,8 @@ export class CreateEditSectorMeetComponent extends AppComponentBase implements O
         }
     
         this.showMainSpinner('Guardando información, por favor espere...');
-        if (this.state.sectorMeet.uploadFiles.length == 0) {
-            this.completeSaving(callback);
-            return;
-        }
-        
-        if (this.state.sectorMeet.uploadFiles.length > 0) {
-            this.uploadResources(() => {
-                this.completeSaving(callback);
-            });
-            return;
-        }
-        
-    }
+        this.completeSaving(callback);
 
-    private uploadResources(callback: () => void) {
-
-        this._uploadServiceProxy
-            .uploadFiles(this.state.sectorMeet.uploadFiles.map(p => p.file), this._tokenService.getToken())
-            .subscribe(event => {
-                if (event instanceof HttpResponse) {
-                    if (event.body.success) {
-                        let index: number = 0;
-                        for (let token of event.body.result.fileTokens) {
-                            this.state.sectorMeet.uploadFiles[index].token = token;
-                            index++;
-                        }
-                        callback();
-                    } else {
-                        this.message.info(event.body.error?.details ? event.body.error?.details : 'No se pudo completar la transacción, intente nuevamente mas tarde', 'Aviso');
-                        setTimeout(() => this.hideMainSpinner(), 1500);
-                    }
-                }
-            }, (error) => {
-                this.message.error(error?.error?.error?.details ? error.error.error.details : 'No se pudo completar la transacción, intente nuevamente mas tarde', 'Aviso');
-                setTimeout(() => this.hideMainSpinner(), 1500);
-            });
-    }
-
-    showDownloader(sectorMeetSession: SectorMeetSessionDto) {
-        this.fileDownloader.formats.pdf.enabled = true;
-        this.fileDownloader.formats.xlsx.enabled = true;
-        this.fileDownloader.show(`Archivo de sesión de reuniones ${this.state.sectorMeet.code}`, sectorMeetSession, ReportType.DOCX);
-    }
-
-    completeDownload(event: { format: ReportType, parameter: SectorMeetSessionDto }) {
-        this.showMainSpinner('Generando reporte, por favor espere...');
-
-        const fileName: string = `RE_${this.state.sectorMeet.count < 10 ? '0' : ''}${this.state.sectorMeet.count}_${this.state.sectorMeet.year}`;
-
-        this.fileDownloadRequest.show();
-        this._reportServiceProxy
-            .createSectorMeetSession(event.parameter.id, event.format)
-            .pipe(finalize(() => {
-                this.hideMainSpinner();
-                this.fileDownloadRequest.hide();
-            })).subscribe((response) => {
-                const fileURL: any = URL.createObjectURL(response);
-                const a = document.createElement("a");
-                a.href = fileURL;
-                a.download = fileName;
-                a.click();
-            });
     }
 
     backButtonPressed() {

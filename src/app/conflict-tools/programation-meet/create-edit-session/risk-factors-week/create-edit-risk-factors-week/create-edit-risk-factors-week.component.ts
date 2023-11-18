@@ -1,21 +1,21 @@
 import { Component, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { SectorMeetSessionAgreementLocationDto } from '@shared/service-proxies/application/sector-meet-session-proxie';
+import { SectorMeetSessionCriticalAspectLocationDto } from '@shared/service-proxies/application/sector-meet-session-proxie';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
-    selector: 'create-edit-agreement',
-    templateUrl: 'create-edit-agreement-information.component.html',
+    selector: 'create-edit-risk-factors-week',
+    templateUrl: 'create-edit-risk-factors-week.component.html',
     styleUrls: [
-        'create-edit-agreement-information.component.css'
+        'create-edit-risk-factors-week.component.css'
     ]
 })
-export class CreateEditAgreementInformationComponent extends AppComponentBase {
+export class CreateEditRiskFactorWeekComponent extends AppComponentBase {
 
     @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
-    @Output() modalSave: EventEmitter<{ value: SectorMeetSessionAgreementLocationDto, index: number }> = new EventEmitter<{ value: SectorMeetSessionAgreementLocationDto, index: number }>();
+    @Output() modalSave: EventEmitter<{ value: SectorMeetSessionCriticalAspectLocationDto, index: number }> = new EventEmitter<{ value: SectorMeetSessionCriticalAspectLocationDto, index: number }>();
 
-    item: SectorMeetSessionAgreementLocationDto = new SectorMeetSessionAgreementLocationDto();
+    item: SectorMeetSessionCriticalAspectLocationDto = new SectorMeetSessionCriticalAspectLocationDto();
     riskTime: Date;
     rowIndex: number;
 
@@ -26,17 +26,17 @@ export class CreateEditAgreementInformationComponent extends AppComponentBase {
         super(_injector);
     }
 
-    show(rowIndex: number, item: SectorMeetSessionAgreementLocationDto): void {
+    show(rowIndex: number, item: SectorMeetSessionCriticalAspectLocationDto): void {
         this.rowIndex = rowIndex;
         this.saving = false;
-        this.item = new SectorMeetSessionAgreementLocationDto(item);
+        this.item = new SectorMeetSessionCriticalAspectLocationDto(item);
 
         this.active = true;
         this.modal.show();
     }
 
     onShown(): void {
-        document.getElementById('AgreementDescription')?.focus();
+        document.getElementById('CriticalAspectDescription')?.focus();
     }
 
     close(): void {

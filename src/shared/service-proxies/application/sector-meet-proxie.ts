@@ -30,8 +30,11 @@ export class SectorMeetServiceProxy {
         endDate: moment.Moment | undefined,
         sorting: string | undefined,
         maxResultCount: number | undefined,
-        skipCount: number | undefined): Observable<PagedResultDtoOfSectorMeetListDto> {
-        let url_ = this.baseUrl + "/api/services/app/SectorMeet/GetAll?";
+        skipCount: number | undefined,
+        state: number | undefined): Observable<PagedResultDtoOfSectorMeetListDto> {
+            console.log("state xxx:",state)
+       
+            let url_ = this.baseUrl + "/api/services/app/SectorMeet/GetAll?";
         if (sectorMeetCode !== undefined)
             url_ += "SectorMeetCode=" + encodeURIComponent("" + sectorMeetCode) + "&";
         if (sectorMeetName !== undefined)
@@ -66,8 +69,12 @@ export class SectorMeetServiceProxy {
             throw new Error("The parameter 'skipCount' cannot be null.");
         else if (skipCount !== undefined)
             url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
-        url_ = url_.replace(/[?&]$/, "");
+        else if (state !== null)
+             console.log("url_ vvvv:",url_)
 
+            url_ += "State=" + encodeURIComponent("" + state) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        console.log("url_ xxx:",url_)
 
         let options_: any = {
             observe: "response",
@@ -192,6 +199,36 @@ export class SectorMeetServiceProxy {
                 return <Observable<EntityDto>><any>_observableThrow(response_);
         }));
     }
+
+    createMeet(variable: number): Observable<EntityDto> {
+        let url_ = this.baseUrl + "/api/services/app/SectorMeet/GenerateMeetProcess";
+
+        let options_: any = {
+            observe: "response",
+            responseType: "blob",
+            body: {
+                "id": variable
+              },
+            headers: new HttpHeaders({
+                "Accept": "text/plain",
+                "Content-Type": "application/json-patch+json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processCreateOrUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<EntityDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<EntityDto>><any>_observableThrow(response_);
+        }));
+    }
+
 
     update(variable: SectorMeetDto): Observable<EntityDto> {
         let url_ = this.baseUrl + "/api/services/app/SectorMeet/Update";
@@ -378,7 +415,7 @@ export interface ISectorMeetDto {
     territorialUnit: SectorMeetTerritorialUnitDto;
     socialConflict: SectorMeetSocialConflict;
 }
-
+ 
 export class SectorMeetDto implements ISectorMeetDto {
     id: number;
     count: number;
@@ -395,6 +432,13 @@ export class SectorMeetDto implements ISectorMeetDto {
     replaceCount: number;
     uploadFiles: SectorMeetSessionAttachmentUploadDto[];
     resources: SectorMeetSessionResourceDto[];
+    modality: number;
+    meetType: number;
+    riskLevel: number;
+    object: string;
+    rolId: number;
+    state: number;
+    responsibleName: string;
 
     constructor(data?: ISectorMeetDto) {
         if (data) {
@@ -430,6 +474,14 @@ export class SectorMeetDto implements ISectorMeetDto {
                 for (let item of _data["resources"])
                     this.resources!.push(SectorMeetSessionResourceDto.fromJS(item));
             }
+            this.modality = _data["modality"];
+            this.meetType = _data["meetType"];
+            this.riskLevel = _data["riskLevel"];
+
+            this.object = _data["object"];
+            this.rolId = _data["rolId"];
+            this.state = _data["state"];
+            this.responsibleName = _data["responsibleName"];
         }
     }
 
@@ -460,6 +512,13 @@ export class SectorMeetDto implements ISectorMeetDto {
             for (let item of this.uploadFiles)
                 data["uploadFiles"].push(item.toJSON());
         }
+        data["modality"] = this.modality;
+        data["meetType"] = this.meetType;
+        data["riskLevel"] = this.riskLevel;
+        data["object"] = this.object;
+        data["rolId"] = this.rolId;
+        data["state"] = this.state;
+        data["responsibleName"] = this.responsibleName;
         return data;
     }
 }

@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
+import { SectorSessionStateService } from '@app/conflict-tools/sector-meet/shared/sector-session-state.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { SectorMeetSessionScheduleLocationDto } from '@shared/service-proxies/application/sector-meet-session-proxie';
 import { LazyLoadEvent, Paginator } from 'primeng';
-import { ProgramationSessionStateService } from '../../shared/programation-session-state.service';
 
 @Component({
     selector: 'schedule-information',
@@ -18,14 +18,14 @@ export class ScheduleInformationComponent extends AppComponentBase implements On
     @Output() addSchedule: EventEmitter<void> = new EventEmitter<void>();
     @Output() editSchedule: EventEmitter<{ index: number, value: SectorMeetSessionScheduleLocationDto }> = new EventEmitter<{ index: number, value: SectorMeetSessionScheduleLocationDto }>();
 
-    state: ProgramationSessionStateService;
+    state: SectorSessionStateService;
     
     private skipCount: number;
     private maxResultCount: number;
 
     constructor(_injector: Injector) {
         super(_injector);
-        this.state = _injector.get(ProgramationSessionStateService);
+        this.state = _injector.get(SectorSessionStateService);
         this.primengTableHelper.defaultRecordsCountPerPage = 5;
         this.skipCount = 0;
         this.maxResultCount = this.primengTableHelper.defaultRecordsCountPerPage;

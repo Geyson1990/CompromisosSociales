@@ -46,7 +46,7 @@ export class GeneralInformationComponent extends AppComponentBase {
         super(_injector);
         this.state = _injector.get(SectorMeetStateService);
     }
-
+ 
     addSession() {
         this.showAddSession.emit();
     }
