@@ -117,6 +117,30 @@ export class ProgramationMeetComponent extends AppComponentBase implements OnIni
         this.paginator.changePage(this.paginator.getPage());
     }
 
+    addMeet(id:number) {
+        this.message.confirm('Se registrará una reunión. ¿Esta seguro de continuar?', 'Aviso', confirmation => {
+            if (confirmation) {
+                this.completeSaving(id);
+            }
+        });
+    }
+
+    private completeSaving(id: number) {
+        this.showMainSpinner('Guardando información, por favor espere...');
+
+            this._sectorMeetServiceProxy
+                .createMeet(id)
+                .subscribe(() => {
+                        this.notify.success('Se registro correctamente la información', 'Aviso');
+                        this.hideMainSpinner();
+                        this.reloadPage();
+                }, () => setTimeout(() => this.hideMainSpinner(), 1500));
+    }
+
+    redirectMeet(id: number) {
+        this.router.navigate(['app/conflict-tools/sector-meet/edit-meet',id]);
+    }
+
     onDepartmentChange(event: any) {
         const departmentId: number = +event.target.value;
         const index: number = this.departments.findIndex(p => p.id == departmentId);

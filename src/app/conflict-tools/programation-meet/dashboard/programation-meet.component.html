@@ -266,18 +266,33 @@
                                                     {{"Actions" | localize}}
                                                 </button>
                                                 <ul class="dropdown-menu" *dropdownMenu>
-                                                    <li>
+                                                    <li *ngIf="record.state !== 2">
                                                         <a href="javascript:;"
                                                             *ngIf="'Pages.ConflictTools.SectorMeet.Edit' | permission"
                                                             (click)="editItem(record)">
                                                             {{'Edit' | localize}}
                                                         </a>
                                                     </li>
-                                                    <li>
+                                                    <li *ngIf="record.state !== 2">
                                                         <a href="javascript:;"
                                                             *ngIf="'Pages.ConflictTools.SectorMeet.Delete' | permission"
                                                             (click)="deleteItem(record)">
                                                             {{'Delete' | localize}}
+                                                        </a>
+                                                    </li>
+                                                    <li *ngIf="record.state !== 2">
+                                                        <a href="javascript:;"
+                                                            *ngIf="'Pages.ConflictTools.SectorMeet.Edit' | permission"
+                                                            (click)="addMeet(record.id)">
+                                                            Generar Reunión
+                                                        </a>
+                                                    </li>
+
+                                                    <li *ngIf="record.state === 2">
+                                                        <a href="javascript:;"
+                                                            *ngIf="'Pages.ConflictTools.SectorMeet.Edit' | permission"
+                                                            (click)="redirectMeet(record.state)">
+                                                            Ir a Reunión
                                                         </a>
                                                     </li>
                                                 </ul>
