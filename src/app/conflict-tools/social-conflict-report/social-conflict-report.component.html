@@ -1,0 +1,179 @@
+<div [@routerTransition]>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        Reporte de participantes en reuniones
+                    </h3>
+                </div>
+
+                <div class="kt-subheader__toolbar">
+                    
+                </div>
+
+            </div>
+        </div>
+
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <form class="kt-form" autocomplete="new-password">
+                        <div>
+                          
+                            <div class="row justify-content-center align-items-center mb-4">
+
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                    <div class="mb-2 form-group">
+                                        <label for="GlobalFilter">
+                                            Filtro
+                                        </label>
+                                        <div class="input-group">
+                                            <input [(ngModel)]="filterText" id="GlobalFilter" name="GlobalFilter"
+                                                class="form-control" [placeholder]="l('SearchWithThreeDot')"
+                                                type="text">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12"></div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                    <div class="mb-2 form-group">
+                                        <label for="territorialUnitSelect">
+                                            Unidad territorial
+                                        </label>
+                                        <div class="input-group">
+                                            <select [(ngModel)]="territorialUnit" id="territorialUnitSelect"
+                                                name="territorialUnitSelect" class="form-control" type="text">
+                                                <option value="-1">
+                                                    Todas
+                                                </option>
+                                                <option *ngFor="let territorialUnit of territorialUnits"
+                                                    [value]="territorialUnit.id">
+                                                    {{territorialUnit.name}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12"></div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                    <div class="mb-2 form-group">
+                                        <label for="filterText">
+                                            Código del conflicto social
+                                        </label>
+                                        <div class="input-group">
+                                            <input [(ngModel)]="socialConflictCode" id="filterText" name="filterText"
+                                                autoFocus class="form-control" [placeholder]="l('SearchWithThreeDot')"
+                                                type="text">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12"></div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                    <div class="mb-2 form-group">
+                                        <label for="StateSelect">
+                                            Estado
+                                        </label>
+                                        <div class="input-group">
+                                            <select [(ngModel)]="verificationState" id="StateSelect" name="StateSelect"
+                                                class="form-control" type="text">
+                                                <option value="-1">
+                                                    Todos
+                                                </option>
+                                                <option [value]="verificationStates.denied">
+                                                    No aprobado
+                                                </option>
+                                                <option [value]="verificationStates.process">
+                                                    En proceso
+                                                </option>
+                                                <option [value]="verificationStates.accepted">
+                                                    Aprobado
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12"></div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 my-2">
+
+                                    <div class="kt-checkbox-list">
+
+                                        <label for="Date_Filter" class="kt-checkbox">
+                                            <input id="Date_Filter" type="checkbox" name="ActiveFilter"
+                                                [(ngModel)]="filterByDate">
+                                            Filtrar por fecha
+                                            <span></span>
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <ng-container *ngIf="filterByDate">
+
+                                    <div class="col-12"></div>
+
+                                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                                        <div class="mb-2 form-group mr-2">
+                                            <label for="SocialConflictStartTime">
+                                                Fecha de registro
+                                            </label>
+                                            <div class="input-group fix-border">
+                                                <input id="SocialConflictStartTime" name="SocialConflictStartTime"
+                                                    type="text" class="form-control" bsDatepicker
+                                                    datePickerMomentModifier
+                                                    [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }"
+                                                    [(ngModel)]="dateRange[0]">
+                                                <span class="input-group-text">
+                                                    <i class="far fa-calendar-alt"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                                        <div class="mb-2 form-group mr-2">
+                                            <label for="SocialConflictEndTime">
+                                                Fecha final de registro
+                                            </label>
+                                            <div class="input-group fix-border">
+                                                <input id="SocialConflictEndTime" name="SocialConflictEndTime"
+                                                    type="text" class="form-control" bsDatepicker
+                                                    datePickerMomentModifier
+                                                    [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }"
+                                                    [(ngModel)]="dateRange[1]">
+                                                <span class="input-group-text">
+                                                    <i class="far fa-calendar-alt"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </ng-container>
+
+                                <div class="col-12"></div>
+
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 text-right">
+                                    <button (click)="completeDownload()" class="btn btn-primary" type="submit">
+                                        <i class="fa fa-download"></i>
+                                        Descargar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+ 
+    </div>
+</div>

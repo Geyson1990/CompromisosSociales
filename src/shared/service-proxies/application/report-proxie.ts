@@ -4,6 +4,7 @@ import { Observable, throwError as _observableThrow, of as _observableOf } from 
 import { Injectable, Inject, Optional, } from '@angular/core';
 import { API_BASE_URL, blobToText, processComplete, throwException } from '../service-proxies';
 import * as moment from 'moment';
+import { ConflictVerificationState } from './utility-proxie';
 
 @Injectable()
 export class ReportServiceProxy {
@@ -113,6 +114,40 @@ export class ReportServiceProxy {
             body: JSON.stringify({
                 id: id,
                 type: type
+            }),
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processDownload(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDownload(<any>response_);
+                } catch (e) {
+                    return <Observable<Blob>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Blob>><any>_observableThrow(response_);
+        }));
+    }
+
+    createSocialConflictReport(filter: string | undefined, verification: ConflictVerificationState, code: string | undefined, territorialUnit: number | undefined, startDate: moment.Moment | undefined, endDate: moment.Moment | undefined): Observable<Blob> {
+        let url_ = this.baseUrl + "/api/services/app/Report/xxxxxxxxx?";
+
+        let options_: any = {
+            body: JSON.stringify({
+                Filter: filter,
+                Verification: verification,
+                TerritorialUnitId: territorialUnit,
+                StartTime: startDate,
+                EndTime: endDate,
+                Code: code
             }),
             observe: "response",
             responseType: "blob",
