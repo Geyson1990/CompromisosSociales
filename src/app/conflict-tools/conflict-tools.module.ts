@@ -53,6 +53,7 @@ import { CreateEditAgreementInformationCrisisCommitteeComponent } from './crisis
 import { TaskInformationCrisisCommitteeComponent } from './crisis-committee/create-edit-crisis-committee/task-information/task-information.component';
 import { CreateEditTaskInformationCrisisCommitteeComponent } from './crisis-committee/create-edit-crisis-committee/task-information/create-edit-task-information/create-edit-task-information.component';
 import { CreateEditGeneralInformationCrisisCommitteeComponent } from './crisis-committee/create-edit-crisis-committee/general-information/create-edit-general-information/create-edit-general-information.component';
+import { SocialConflictReportComponent } from './social-conflict-report/social-conflict-report.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // suppressScrollX: true
@@ -112,7 +113,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         CreateEditAgreementInformationCrisisCommitteeComponent,
         TaskInformationCrisisCommitteeComponent,
         CreateEditTaskInformationCrisisCommitteeComponent,
-        CreateEditGeneralInformationCrisisCommitteeComponent
+        CreateEditGeneralInformationCrisisCommitteeComponent,
+        SocialConflictReportComponent
     ],
     providers: [
         TreeDragDropService,

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { CreateEditCrisisCommitteeComponent } from './crisis-committee/create-edit-crisis-committee/create-edit-crisis-committee.component';
 import { CrisisCommitteeComponent } from './crisis-committee/crisis-committee.component';
+import { SocialConflictReportComponent } from './social-conflict-report/social-conflict-report.component';
 
 @NgModule({
     imports: [
@@ -32,6 +33,7 @@ import { CrisisCommitteeComponent } from './crisis-committee/crisis-committee.co
                         loadChildren: () => import('./programation-meet/programation-meet.module').then(m => m.ProgramationMeetModule), //Lazy load admin module
                         data: { permission: 'Pages.ConflictTools.ProgramationMeet' }
                     },
+                    { path: 'social-conflict-report', component: SocialConflictReportComponent },
                     { path: '', redirectTo: '/app/admin/hostDashboard', pathMatch: 'full' },
                     { path: '**', redirectTo: '/app/admin/hostDashboard' }
                 ]
