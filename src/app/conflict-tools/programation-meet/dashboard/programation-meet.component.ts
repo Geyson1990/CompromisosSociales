@@ -22,7 +22,7 @@ export class ProgramationMeetComponent extends AppComponentBase implements OnIni
     @ViewChild('paginator', { static: true }) paginator: Paginator;
 
     advancedFiltersAreShown: boolean;
-
+    currentDate: moment.Moment = moment();
     sectorMeetCode: string;
     sectorMeetName: string;
     sectorMeetSessionType: SectorMeetSessionType = SectorMeetSessionType.NONE;
@@ -139,6 +139,20 @@ export class ProgramationMeetComponent extends AppComponentBase implements OnIni
 
     redirectMeet(id: number) {
         this.router.navigate(['app/conflict-tools/sector-meet/edit-meet',id]);
+    }
+
+    showOption(record: any) {
+        if(  record.state === 2 || record.creationTime.isSameOrAfter(this.currentDate)) {
+            return false;
+        }
+        if( record.state !== 2 ) {
+            return true;
+        }
+        return true;
+    }
+
+    getState(state:number) {
+        return  state === 2 ? 'Generado' : 'Pendiente';
     }
 
     onDepartmentChange(event: any) {

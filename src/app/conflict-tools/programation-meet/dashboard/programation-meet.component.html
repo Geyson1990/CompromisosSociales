@@ -244,15 +244,15 @@
                                             {{'Actions' | localize}}</th>
                                         <th style="width: 150px" pSortableColumn="Code">
                                             Código de Reunión
-                                            <p-sortIcon field="Code"></p-sortIcon>
                                         </th>
-                                        <th style="width: 450px" pSortableColumn="MeetName">
+                                        <th style="width: 350px" pSortableColumn="MeetName">
                                             Nombre de la Reunión
-                                            <p-sortIcon field="MeetName"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 100px" pSortableColumn="MeetName">
+                                            Estado
                                         </th>
                                         <th style="width: 150px" pSortableColumn="CreationTime">
                                             Fecha de programación
-                                            <p-sortIcon field="CreationTime"></p-sortIcon>
                                         </th>
                                     </tr>
                                 </ng-template>
@@ -280,9 +280,8 @@
                                                             {{'Delete' | localize}}
                                                         </a>
                                                     </li>
-                                                    <li *ngIf="record.state !== 2">
+                                                    <li *ngIf="showOption(record)">
                                                         <a href="javascript:;"
-                                                            *ngIf="'Pages.ConflictTools.SectorMeet.Edit' | permission"
                                                             (click)="addMeet(record.id)">
                                                             Generar Reunión
                                                         </a>
@@ -290,7 +289,6 @@
 
                                                     <li *ngIf="record.state === 2">
                                                         <a href="javascript:;"
-                                                            *ngIf="'Pages.ConflictTools.SectorMeet.Edit' | permission"
                                                             (click)="redirectMeet(record.state)">
                                                             Ir a Reunión
                                                         </a>
@@ -303,10 +301,15 @@
                                                 Código de Reunión
                                             </span> RE - {{record.code}}
                                         </td>
-                                        <td style="width: 450px">
+                                        <td style="width: 350px">
                                             <span class="ui-column-title">
                                                 Nombre de la Reunión
                                             </span> {{record.meetName}}
+                                        </td>
+                                        <td style="width: 100px">
+                                            <span class="ui-column-title">
+                                                Estado
+                                            </span> {{getState(record.state)}}
                                         </td>
                                         <td style="width: 150px">
                                             <span class="ui-column-title">

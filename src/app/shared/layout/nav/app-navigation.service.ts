@@ -147,6 +147,7 @@ export class AppNavigationService {
                     new AppMenuItem('Tipologías generales', 'Pages.Maintenance.Typology', 'fas fa-tape', '/app/maintenance/typologies'),
                     new AppMenuItem('Tipo de Actores', 'Pages.Maintenance.ActorType', 'fas fa-vector-square', '/app/maintenance/actor-types'),
                     new AppMenuItem('Tipo de gestiones', 'Pages.Maintenance.Management', 'fas fa-code-branch', '/app/maintenance/managements'),
+                    new AppMenuItem('Alerta diaria', 'Pages.Maintenance.Management', 'fas fa-code-branch', '/app/maintenance/day-alert'),              
                 ]),
                 new AppMenuItem('Alertas de Conflictividad Social', '', 'fas fa-bell', '', [], [
                     new AppMenuItem('Riesgos', 'Pages.Maintenance.AlertRisk', 'fas fa-exclamation-triangle', '/app/maintenance/alert-risks'),

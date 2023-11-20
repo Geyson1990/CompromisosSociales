@@ -138,7 +138,7 @@ export class ReportServiceProxy {
     }
 
     createSocialConflictReport(filter: string | undefined, verification: ConflictVerificationState, code: string | undefined, territorialUnit: number | undefined, startDate: moment.Moment | undefined, endDate: moment.Moment | undefined): Observable<Blob> {
-        let url_ = this.baseUrl + "/api/services/app/Report/xxxxxxxxx?";
+        let url_ = this.baseUrl + "/api/services/app/Report/ReportTeams?";
 
         let options_: any = {
             body: JSON.stringify({

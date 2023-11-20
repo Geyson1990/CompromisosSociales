@@ -43,6 +43,7 @@ import { DialogSpaceHolidayComponent } from './dialog-space-holiday/dialog-space
 import { DialogSpaceTypeComponent } from './dialog-space-type/dialog-space-type.component';
 import { DialogSpaceDocumentSituationComponent } from './dialog-space-document-situation/dialog-space-document-situation.component';
 import { ActorComponent } from './actor/actor.component';
+import { DayAlertComponent } from './day-alert/day-alert.component';
 
 @NgModule({
     imports: [
@@ -93,6 +94,7 @@ import { ActorComponent } from './actor/actor.component';
                     { path: 'dialog-space-types', component: DialogSpaceTypeComponent, data: { permission: 'Pages.Maintenance.DialogSpaceType' } },
                     { path: 'dialog-space-document-situations', component: DialogSpaceDocumentSituationComponent, data: { permission: 'Pages.Maintenance.DialogSpaceDocumentSituation' } },
                     { path: 'actors', component: ActorComponent, data: { permission: 'Pages.Maintenance.Actor' } },
+                    { path: 'day-alert', component: DayAlertComponent },                
                     { path: '', redirectTo: '/app/admin/hostDashboard', pathMatch: 'full' },
                     { path: '**', redirectTo: '/app/admin/hostDashboard' }
                 ]

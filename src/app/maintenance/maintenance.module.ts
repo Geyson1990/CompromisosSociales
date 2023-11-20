@@ -132,6 +132,7 @@ import { DialogSpaceDocumentSituationComponent } from './dialog-space-document-s
 import { CreateEditDialogSpaceDocumentSituationComponent } from './dialog-space-document-situation/create-edit-dialog-space-document-situation/create-edit-dialog-space-document-situation.component';
 import { ActorComponent } from './actor/actor.component';
 import { CreateEditActorComponent } from './actor/create-edit-actor/create-edit-actor.component';
+import { DayAlertComponent } from './day-alert/day-alert.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // suppressScrollX: true
@@ -267,7 +268,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         DialogSpaceDocumentSituationComponent,
         CreateEditDialogSpaceDocumentSituationComponent,
         ActorComponent,
-        CreateEditActorComponent
+        CreateEditActorComponent,
+        DayAlertComponent
     ],
     providers: [
         TreeDragDropService,

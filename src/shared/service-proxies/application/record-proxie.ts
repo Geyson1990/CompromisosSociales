@@ -82,6 +82,70 @@ export class RecordServiceProxy {
         }));
     }
 
+    getAllPersons(
+        filter: string | undefined,
+        sorting: string | undefined,
+        maxResultCount: number | undefined,
+        skipCount: number | undefined): Observable<PagedResultDtoOfRecordPersonsListDto> {
+        let url_ = this.baseUrl + "/api/services/app/Record/GetAllPersons?";
+        if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processGetAllPersons(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllPersons(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfRecordPersonsListDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfRecordPersonsListDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllPersons(response: HttpResponseBase): Observable<PagedResultDtoOfRecordPersonsListDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } };
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+                let result200: any = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PagedResultDtoOfRecordPersonsListDto.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfRecordPersonsListDto>(<any>null);
+    }
+
     protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfRecordListDto> {
         const status = response.status;
         const responseBlob =
@@ -267,6 +331,33 @@ export class RecordServiceProxy {
         }));
     }
 
+    createSendAlert(item: any): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Record/GenerateSendAlert";
+
+        let options_: any = {
+            observe: "response",
+            responseType: "blob",
+            body: item,
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return processComplete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return processComplete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    } 
+
     update(item: RecordDto): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Record/Update";
 
@@ -351,7 +442,7 @@ export class RecordServiceProxy {
                 return <Observable<void>><any>_observableThrow(response_);
         }));
     }
-
+ 
     getActasZip(
         filter: string | undefined,
         socialConflictCode: string | undefined,
@@ -417,6 +508,59 @@ export class RecordServiceProxy {
 export interface IPagedResultDtoOfRecordListDto {
     totalCount: number;
     items: RecordDto[] | undefined;
+}
+
+export interface IPagedResultDtoOfRecordPersonsListDto {
+    totalCount: number;
+    items: RecordPersonsDto[] | undefined;
+}
+
+export interface IPagedResultDtoOfRecordPersonsListDto {
+    totalCount: number;
+    items: RecordPersonsDto[] | undefined;
+}
+export class PagedResultDtoOfRecordPersonsListDto implements IPagedResultDtoOfRecordPersonsListDto {
+    totalCount!: number;
+    items!: RecordPersonsDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfRecordPersonsListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(RecordPersonsDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfRecordPersonsListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfRecordPersonsListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+
+        return data;
+    }
 }
 
 export class PagedResultDtoOfRecordListDto implements IPagedResultDtoOfRecordListDto {
@@ -529,6 +673,60 @@ export interface IRecordDto {
     resources: RecordResourceDto[];
     uploadFiles: AttachmentUploadDto[];
 }
+
+export interface IRecordPersonsDto {
+    id: number;
+    name: string;
+    emailAddress: string;
+    type: number;
+    alertSend: boolean;
+}
+
+export class RecordPersonsDto implements IRecordPersonsDto {
+    id: number;
+    name: string;
+    emailAddress: string;
+    type: number;
+    alertSend: boolean;
+
+    constructor(data?: IRecordPersonsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        } 
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.emailAddress = _data["emailAddress"];
+            this.type = _data["type"];
+            this.alertSend = _data["alertSend"];   
+        }
+    }
+
+    static fromJS(data: any): RecordPersonsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RecordPersonsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["emailAddress"] = this.emailAddress;
+        data["type"] = this.type;
+        data["alertSend"] = this.alertSend;
+        return data;
+    }
+}
+
 
 export class RecordDto implements IRecordDto {
     id: number;
