@@ -18,7 +18,9 @@ export class RegistrationInformationComponent extends AppComponentBase implement
     @Output() addLeader: EventEmitter<void> = new EventEmitter<void>();
     @Output() editLeader: EventEmitter<{ index: number, value: SectorMeetSessionLeaderRelationDto }> = new EventEmitter<{ index: number, value: SectorMeetSessionLeaderRelationDto }>();
     @Output() showTeam: EventEmitter<{ index: number, value: SectorMeetSessionLeaderRelationDto }> = new EventEmitter<{ index: number, value: SectorMeetSessionLeaderRelationDto }>();
-
+    today: Date = new Date();
+    tomorrow: Date = new Date(this.today);
+    
     state: SectorSessionStateService;
     types = {
         none: SectorMeetSessionType.NONE,
@@ -36,7 +38,7 @@ export class RegistrationInformationComponent extends AppComponentBase implement
         civilSociety: SectorMeetSessionEntityType.CIVIL_SOCIETY,
         other: SectorMeetSessionEntityType.OTHER
     }
-
+ 
     private skipCount: number;
     private maxResultCount: number;
 
@@ -49,6 +51,8 @@ export class RegistrationInformationComponent extends AppComponentBase implement
     }
 
     ngOnInit() {
+         this.tomorrow.setDate(this.today.getDate() + 1); 
+    
         if (this.state.sectorMeetSession.type == SectorMeetSessionType.PRESENTIAL) {
             let departmentId: number = this.state.sectorMeetSession.department.id;
             let provinceId: number = this.state.sectorMeetSession.province.id;

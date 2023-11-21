@@ -12,10 +12,10 @@ import { LazyLoadEvent, Paginator } from 'primeng';
     ]
 })
 export class ActorInformationSocialConflictSensibleComponent extends AppComponentBase implements OnInit {
-
+ 
     private _busy: boolean;
     private _socialConflictSensible: SocialConflictSensibleDto;
-    
+    socialConflictSelect: SocialConflictSensibleActorLocationDto;
 
     @ViewChild('paginator', { static: true }) paginator: Paginator;
 
@@ -92,6 +92,15 @@ export class ActorInformationSocialConflictSensibleComponent extends AppComponen
     // }
 
     addOrUpdateItem(event: { value: SocialConflictSensibleActorLocationDto, index: number }) {
+        this.socialConflictSelect = event.value;
+
+        const existe = this.socialConflictSensible.actors.filter((actor) =>  actor.actorId === this.socialConflictSelect.actorId);
+
+        if (existe?.length > 0) {
+            this.notify.warn('El actor seleccionado ya existe');
+            return;
+        }
+
         if (event.index || event.index == 0) {
             this.socialConflictSensible.actors[event.index] = event.value;
         } else {

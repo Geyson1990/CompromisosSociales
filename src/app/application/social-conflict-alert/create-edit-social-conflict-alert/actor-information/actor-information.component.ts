@@ -13,10 +13,10 @@ import { LazyLoadEvent, Paginator } from 'primeng';
     ]
 })
 export class ActorInformationSocialConflictAlertComponent extends AppComponentBase implements OnInit {
-
+ 
     private _busy: boolean;
     private _socialConflictAlert: SocialConflictAlertDto;
-    
+    socialConflictSelect: SocialConflictAlertActorLocationDto;
     @ViewChild('findActorModal', { static: true }) findRecord: FindActorComponent;
     @ViewChild('paginator', { static: true }) paginator: Paginator;
 
@@ -27,7 +27,7 @@ export class ActorInformationSocialConflictAlertComponent extends AppComponentBa
     set busy(value: boolean) {
         this._busy = value;
     }
-
+ 
     @Input() get socialConflictAlert(): SocialConflictAlertDto {
         return this._socialConflictAlert;
     }
@@ -83,6 +83,13 @@ export class ActorInformationSocialConflictAlertComponent extends AppComponentBa
     }
 
     addOrUpdateItem(event: { value: SocialConflictAlertActorLocationDto, index: number }) {
+        this.socialConflictSelect = event.value;
+        const existe = this.socialConflictAlert.actors.filter((actor) =>  actor.actorId === this.socialConflictSelect.actorId);
+
+        if (existe?.length > 0) {
+            this.notify.warn('El actor seleccionado ya existe');
+            return;
+        }
         if (event.index || event.index == 0) {
             this.socialConflictAlert.actors[event.index] = event.value;
         } else {

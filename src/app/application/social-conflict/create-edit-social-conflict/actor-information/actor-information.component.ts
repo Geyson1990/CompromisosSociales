@@ -12,9 +12,10 @@ import { LazyLoadEvent, Paginator } from 'primeng';
     ]
 })
 export class ActorInformationSocialConflictComponent extends AppComponentBase implements OnInit {
-
+ 
     private _busy: boolean;
     private _socialConflict: SocialConflictDto;
+    socialConflictSelect: SocialConflictActorLocationDto;
 
     @ViewChild('findActorModal', { static: true }) findRecord: FindActorComponent;
     @ViewChild('paginator', { static: true }) paginator: Paginator;
@@ -84,17 +85,22 @@ export class ActorInformationSocialConflictComponent extends AppComponentBase im
     actorEvent() {
         this.router.navigate(['/app/maintenance/actors'], { queryParams: { returnUrl: 'actors' } });
     }
-
     addOrUpdateItem(event: { value: SocialConflictActorLocationDto, index: number }) {
-        console.log("dccccccccccc:",event.value)
+        
+        this.socialConflictSelect = event.value;
+        const existe = this.socialConflict.actors.filter((actor) =>  actor.actorId === this.socialConflictSelect.actorId);
+
+        if (existe?.length > 0) {
+            this.notify.warn('El actor seleccionado ya existe');
+            return;
+        }
         if (event.index || event.index == 0) {
             this.socialConflict.actors[event.index] = event.value;
         } else {
             this.socialConflict.actors.push(event.value);
         }
         this.formatPagination(this.skipCount, this.maxResultCount);
-        console.log("dccccccccccc bbbbbbb:",this.socialConflict)
-
+        
     }
 
     private formatPagination(skipCount: number, maxResultCount: number) {
