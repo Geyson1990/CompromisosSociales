@@ -66,21 +66,9 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3" *ngIf="esCierre">
-            <label for="DueDateInput">
-                Fecha de Cierre
-            </label>
-            <div class="input-group fix-border">
-                <input #datePicker="bsDatepicker" id="DueDateInput"
-                    name="DueDateInput" type="text" class="form-control" bsDatepicker
-                    datePickerMomentModifier [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }"
-                    [(ngModel)]="dueDate" readonly (ngModelChange)="onDueDateChange($event)">
-                <span (click)="datePicker.toggle()" class="input-group-text">
-                    <i class="far fa-calendar-alt"></i>
-                </span>
-            </div>
-        </div>
+    </div>
 
+    <div class="row mb-4">
         <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
             <label for="DeadLineInput">
                 Fecha Límite
@@ -96,9 +84,20 @@
             </div>
         </div>
 
-
-        
-
+        <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3" *ngIf="esCierre">
+            <label for="DueDateInput">
+                Fecha de Cierre
+            </label>
+            <div class="input-group fix-border">
+                <input #datePicker="bsDatepicker" id="DueDateInput"
+                    name="DueDateInput" type="text" class="form-control" bsDatepicker
+                    datePickerMomentModifier [bsConfig]="{ adaptivePosition: true, customTodayClass: 'datepicker-today' }"
+                    [(ngModel)]="dueDate" readonly (ngModelChange)="onDueDateChange($event)">
+                <span (click)="datePicker.toggle()" class="input-group-text">
+                    <i class="far fa-calendar-alt"></i>
+                </span>
+            </div>
+        </div>
     </div>
 
     <div class="row mb-4">
