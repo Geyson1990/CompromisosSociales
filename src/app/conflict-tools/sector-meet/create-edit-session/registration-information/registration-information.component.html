@@ -201,29 +201,34 @@
     </div>
     <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10"> 
     </div>
-    <div *ngIf="charts.compromisGenderStates.type == chartTypes.pie" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
 
-        <h6 class="d-block text-center text-dark font-weight-bold mt-5 text-accent-primary">
-            Total Participantes por Género
-        </h6>
+    <ng-container *ngIf="viewGraphics">
 
-        <app-spinner *ngIf="busy" class="d-block my-auto"></app-spinner>
-        
-        <p-chart *ngIf="!busy" type="pie" [data]="charts.compromisGenderStates.pie" [options]="optionsPieDefault">
-        </p-chart>
-    </div>
+        <div *ngIf="charts.compromisGenderStates.type == chartTypes.pie" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
     
-    <div *ngIf="charts.compromisInstitutionStates.type == chartTypes.pie" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
-
-        <h6 class="d-block text-center text-dark font-weight-bold mt-5 text-accent-primary">
-            Total Partcipantes por Institución
-        </h6>
-
-        <app-spinner *ngIf="busy" class="d-block my-auto"></app-spinner>
+            <h6 class="d-block text-center text-dark font-weight-bold mt-5 text-accent-primary">
+                Total Participantes por Género
+            </h6>
+    
+            <app-spinner *ngIf="busy" class="d-block my-auto"></app-spinner>
+            
+            <p-chart *ngIf="!busy" type="pie" [data]="charts.compromisGenderStates.pie" [options]="optionsPieDefault">
+            </p-chart>
+        </div>
         
-        <p-chart *ngIf="!busy" type="pie" [data]="charts.compromisInstitutionStates.pie" [options]="optionsPieDefault">
-        </p-chart>
-    </div> 
+        <div *ngIf="charts.compromisInstitutionStates.type == chartTypes.pie" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+    
+            <h6 class="d-block text-center text-dark font-weight-bold mt-5 text-accent-primary">
+                Total Partcipantes por Institución
+            </h6>
+    
+            <app-spinner *ngIf="busy" class="d-block my-auto"></app-spinner>
+            
+            <p-chart *ngIf="!busy" type="pie" [data]="charts.compromisInstitutionStates.pie" [options]="optionsPieDefault">
+            </p-chart>
+        </div> 
+        
+    </ng-container>
 
     <div class="col-12 text-right mb-2 mx-0">
         <button (click)="addLeader.emit()" class="mb-0 mt-auto btn btn-primary">

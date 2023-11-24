@@ -461,4 +461,11 @@ export class RegistrationInformationComponent extends AppComponentBase implement
                             };
                         }
                     }
+
+                    get viewGraphics (): boolean {
+                        // si no hay empresas
+                        if (!this.state.sectorMeetSession.leaders.length) return false
+                        // al menos uno debe tener un equipo
+                        return this.state.sectorMeetSession.leaders.some(leader => leader.teams.length)
+                    }
 }
