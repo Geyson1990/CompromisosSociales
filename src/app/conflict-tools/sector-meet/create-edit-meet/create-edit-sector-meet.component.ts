@@ -221,7 +221,7 @@ export class CreateEditSectorMeetComponent extends AppComponentBase implements O
 
     private completeSaving(callback?: (id: number) => void) {
         this.showMainSpinner('Guardando información, por favor espere...');
-
+        this.state.sectorMeet.state = 0;
         if (this.id)
             this._sectorMeetServiceProxy
                 .update(this.state.sectorMeet)
