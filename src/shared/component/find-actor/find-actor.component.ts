@@ -37,6 +37,7 @@ export class FindActorComponent extends AppComponentBase {
     show(): void {
         this.filterText = "";
         this.modal.show();
+        this.getData();
     }    
 
     getData(event?: LazyLoadEvent) {

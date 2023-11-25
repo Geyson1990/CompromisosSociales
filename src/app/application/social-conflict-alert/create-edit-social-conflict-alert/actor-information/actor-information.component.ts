@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { CreateEditActorComponent } from '@app/maintenance/actor/create-edit-actor/create-edit-actor.component';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { FindActorComponent } from '@shared/component/find-actor/find-actor.component';
 import { SocialConflictAlertDto, SocialConflictAlertActorLocationDto } from '@shared/service-proxies/application/social-conflict-alert-proxie';
@@ -19,7 +20,7 @@ export class ActorInformationSocialConflictAlertComponent extends AppComponentBa
     socialConflictSelect: SocialConflictAlertActorLocationDto;
     @ViewChild('findActorModal', { static: true }) findRecord: FindActorComponent;
     @ViewChild('paginator', { static: true }) paginator: Paginator;
-
+    @ViewChild('createEditModal', { static: true }) createEditModal: CreateEditActorComponent;
     @Input() get busy(): boolean {
         return this._busy;
     }
@@ -27,11 +28,11 @@ export class ActorInformationSocialConflictAlertComponent extends AppComponentBa
     set busy(value: boolean) {
         this._busy = value;
     }
- 
+  
     @Input() get socialConflictAlert(): SocialConflictAlertDto {
         return this._socialConflictAlert;
     }
-
+ 
     set socialConflictAlert(value: SocialConflictAlertDto) {
         this._socialConflictAlert = value;
         this.formatPagination(this.skipCount, this.maxResultCount);
@@ -54,10 +55,18 @@ export class ActorInformationSocialConflictAlertComponent extends AppComponentBa
         this.formatPagination(this.skipCount, this.maxResultCount);
     }
 
+    createItem() {
+        this.createEditModal.show();
+    }
+
     getData(event?: LazyLoadEvent) {
         this.maxResultCount = this.primengTableHelper.getMaxResultCount(this.paginator, event);
         this.skipCount = this.primengTableHelper.getSkipCount(this.paginator, event);
         this.formatPagination(this.skipCount, this.maxResultCount);
+    }
+
+    saveActor () {
+         console.log("guardo existoso")
     }
 
     removeItem(actor: SocialConflictAlertActorLocationDto, index: number) {

@@ -4,13 +4,13 @@
         <button *ngIf="hasPermission" type="button" (click)="addEvent()" class="mb-0 mt-auto btn btn-primary">
             <i class="flaticon-search-1"></i> Consultar actor
         </button>
-        <button *ngIf="hasPermission" type="button" (click)="actorEvent()" class="mb-0 mt-auto btn btn-primary">
+        <button *ngIf="hasPermission" type="button" (click)="createItem()" class="mb-0 mt-auto btn btn-primary">
             <i class="fa fa-plus"></i> Crear actor
         </button>
     </div>
 
 </div>
- 
+  
 <div class="row align-items-center mt-4 mx-0">
     <!--<Primeng-TurboTable-Start>-->
     <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
@@ -154,3 +154,5 @@
         </div>
     </div>
 </div>
+<create-edit-actor #createEditModal (modalSave)="saveActor()"></create-edit-actor>
+ 

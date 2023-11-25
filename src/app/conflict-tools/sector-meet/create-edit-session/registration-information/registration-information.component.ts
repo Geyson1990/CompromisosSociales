@@ -9,7 +9,7 @@ import { finalize } from 'rxjs/operators';
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import ChartOutsideLabels from 'chartjs-plugin-piechart-outlabels';
-
+ 
 @Component({
     selector: 'registration-information',
     templateUrl: 'registration-information.component.html',
@@ -61,7 +61,8 @@ export class RegistrationInformationComponent extends AppComponentBase implement
     departmentId: number = -1;
     provinceId: number = -1;
     districtId: number = -1;
-
+    totalGener: number = 0;
+    totalInstitution: number = 0;
     busy: boolean = true;
     loadTable: boolean = false;
     statusList: ReportDashboardStatusListDto[];
@@ -383,17 +384,30 @@ export class RegistrationInformationComponent extends AppComponentBase implement
             }
 
         totalParticipantes = totalHombres +totalMujeres;  
-        debugger;  
+        this.totalGener = 0;
+        for (var x = 0; x < objeto.length; x++) {
+            this.totalGener += objeto[x].count;
+        }
 
-        this.formatGender(objeto);
-        this.formatInstitution(objetoInstitucion);
+        this.totalInstitution = 0;
+        for (var x = 0; x < objetoInstitucion.length; x++) {
+            this.totalInstitution += objetoInstitucion[x].count;
+        }
+        if (this.totalGener > 0 ) {
+            this.formatGender(objeto);
+        }
+
+        if (this.totalInstitution > 0 ) {
+            this.formatInstitution(objetoInstitucion);
+        }
+
        
         this.busy = false;
     }
     private formatGender(data: ReportDashboardStatusDto[]) {
-        debugger;
+        // debugger;
                 const total: number = data.reduce((p, c) => p + c.count, 0);
-        
+
                 if (data.length > this.primengTableHelper.defaultRecordCountPerPie) {
                     this.charts.compromisGenderStates.type = this.chartTypes.bar;
                     this.charts.compromisGenderStates.bar = {
@@ -401,7 +415,9 @@ export class RegistrationInformationComponent extends AppComponentBase implement
                         datasets: [
                             {
                                 label: 'Total Participantes por Género',
-                                tooltipLabels: data.map(p => this.formatNumber(this.roundNumber((p.count / total) * 100, 2), 0) + '% '),
+                                tooltipLabels: data.map(p => 
+                                    this.returnFormatValueValid(p.count, total)
+                                    + '% '),
                                 data: data.map(p => p.count),
                                 backgroundColor: this.backgroundColors(),
                                 hoverBackgroundColor: this.hoverBackgroundColor()
@@ -413,8 +429,12 @@ export class RegistrationInformationComponent extends AppComponentBase implement
                     this.charts.compromisGenderStates.pie = {
                         totals: total,
                         labels: data.map(p => p.status),
-                        tooltipLabels: data.map(p => this.formatNumber(this.roundNumber((p.count / total) * 100, 2), 0) + '% '),
-                        outLabels: data.map(p => p.count + '; ' + this.formatNumber(this.roundNumber((p.count / total) * 100, 2), 0) + '%'),
+                        tooltipLabels: data.map(p => 
+                            this.returnFormatValueValid(p.count, total)
+                            + '% '),
+                        outLabels: data.map(p => p.count + '; ' + 
+                        this.returnFormatValueValid(p.count, total)
+                        + '%'),
                         datasets: [
                             {
                                 data: data.map(p => p.count),
@@ -424,10 +444,22 @@ export class RegistrationInformationComponent extends AppComponentBase implement
                         ]
                     };
                 }
+
+            }
+
+            returnFormatValueValid(valueCount: number, valueTotal: number) {
+                let valueReturn = "0";
+                if ( valueCount && valueTotal !== 0 ) {
+                    valueReturn = this.formatNumber(this.roundNumber((valueCount / valueTotal) * 100, 2), 0);
+                }     
+  
+                return valueReturn;
             }
     
             private formatInstitution(data: ReportDashboardStatusDto[]) {
-                debugger;
+                console.log("datadata insti:", data)
+
+                // debugger;
                         const total: number = data.reduce((p, c) => p + c.count, 0);
                 
                         if (data.length > this.primengTableHelper.defaultRecordCountPerPie) {
@@ -437,7 +469,9 @@ export class RegistrationInformationComponent extends AppComponentBase implement
                                 datasets: [
                                     {
                                         label: 'Total Partcipantes por Institución',
-                                        tooltipLabels: data.map(p => this.formatNumber(this.roundNumber((p.count / total) * 100, 2), 0) + '% '),
+                                        tooltipLabels: data.map(p => 
+                                            this.returnFormatValueValid(p.count, total)
+                                            + '% '),
                                         data: data.map(p => p.count),
                                         backgroundColor: this.backgroundColors(),
                                         hoverBackgroundColor: this.hoverBackgroundColor()
@@ -449,8 +483,10 @@ export class RegistrationInformationComponent extends AppComponentBase implement
                             this.charts.compromisInstitutionStates.pie = {
                                 totals: total,
                                 labels: data.map(p => p.status),
-                                tooltipLabels: data.map(p => this.formatNumber(this.roundNumber((p.count / total) * 100, 2), 0) + '% '),
-                                outLabels: data.map(p => p.count + '; ' + this.formatNumber(this.roundNumber((p.count / total) * 100, 2), 0) + '%'),
+                                tooltipLabels: data.map(p => 
+                                    this.returnFormatValueValid(p.count, total) + '% '),
+                                outLabels: data.map(p => p.count + '; ' +
+                                this.returnFormatValueValid(p.count, total) + '%'),
                                 datasets: [
                                     {
                                         data: data.map(p => p.count),

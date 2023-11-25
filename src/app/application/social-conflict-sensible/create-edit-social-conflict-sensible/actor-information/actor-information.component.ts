@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { CreateEditActorComponent } from '@app/maintenance/actor/create-edit-actor/create-edit-actor.component';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { SocialConflictSensibleDto, SocialConflictSensibleActorLocationDto } from '@shared/service-proxies/application/social-conflict-sensible-proxie';
 import { UtilityRecordDto } from '@shared/service-proxies/application/utility-proxie';
@@ -12,10 +13,11 @@ import { LazyLoadEvent, Paginator } from 'primeng';
     ]
 })
 export class ActorInformationSocialConflictSensibleComponent extends AppComponentBase implements OnInit {
- 
+  
     private _busy: boolean;
     private _socialConflictSensible: SocialConflictSensibleDto;
     socialConflictSelect: SocialConflictSensibleActorLocationDto;
+    @ViewChild('createEditModal', { static: true }) createEditModal: CreateEditActorComponent;
 
     @ViewChild('paginator', { static: true }) paginator: Paginator;
 
@@ -68,6 +70,12 @@ export class ActorInformationSocialConflictSensibleComponent extends AppComponen
             this.formatPagination(this.skipCount, this.maxResultCount);
         }
     }
+
+    createItem() {
+        this.createEditModal.show();
+    }
+
+    saveActor() {}
 
     cancelRemove(actor: SocialConflictSensibleActorLocationDto) {
         actor.remove = false;

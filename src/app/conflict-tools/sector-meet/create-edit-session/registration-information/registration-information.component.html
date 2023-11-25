@@ -164,7 +164,7 @@
         <h5 class="d-block text-left text-dark font-weight-bold">
             Sectores que participan en el espacio de diálogo
         </h5>
-
+ 
         <hr>
     </div>
                           
@@ -201,10 +201,10 @@
     </div>
     <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10"> 
     </div>
-
+ 
     <ng-container *ngIf="viewGraphics">
 
-        <div *ngIf="charts.compromisGenderStates.type == chartTypes.pie" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+        <div *ngIf="charts.compromisGenderStates.type == chartTypes.pie && totalGener > 0" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
     
             <h6 class="d-block text-center text-dark font-weight-bold mt-5 text-accent-primary">
                 Total Participantes por Género
@@ -216,7 +216,7 @@
             </p-chart>
         </div>
         
-        <div *ngIf="charts.compromisInstitutionStates.type == chartTypes.pie" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+        <div *ngIf="charts.compromisInstitutionStates.type == chartTypes.pie && totalInstitution > 0" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
     
             <h6 class="d-block text-center text-dark font-weight-bold mt-5 text-accent-primary">
                 Total Partcipantes por Institución

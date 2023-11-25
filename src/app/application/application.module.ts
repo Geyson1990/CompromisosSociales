@@ -147,6 +147,8 @@ import { ConflictPendingsComponent } from './compromise/create-edit-compromise/c
 import { ResourceDetailModalComponent } from './compromise/create-edit-compromise/conflict-pendings/resources/resource-detail-modal.component';
 import { RecordInformationSocialConflictComponent } from './social-conflict/create-edit-social-conflict/record-information/record-information.component';
 import { ResourceDetailActaModalComponent } from './social-conflict/create-edit-social-conflict/record-information/resources/resource-detail-modal.component';
+import { CreateEditActorComponent } from '@app/maintenance/actor/create-edit-actor/create-edit-actor.component';
+import { MaintenanceModule } from '@app/maintenance/maintenance.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // suppressScrollX: true
@@ -189,7 +191,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         CalendarModule,
         ChipsModule,
         SelectButtonModule,
-        NgxSelectModule
+        NgxSelectModule,
+        MaintenanceModule
     ],
     declarations: [
         //SocialConflict

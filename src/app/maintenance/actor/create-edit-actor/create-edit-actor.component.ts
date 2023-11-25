@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ActorDto, ActorTypeDto, ActorTypologyDto, ActorSubTypologyDto, ActorMovementDto, ActorServiceProxy, ActorSocialConflictDto, ActorSocialConflictAlertDto, ActorSocialConflictSensibleDto } from '@shared/service-proxies/application/actor-proxie';
 import { ModalDirective } from 'ngx-bootstrap/modal';
@@ -17,7 +17,6 @@ export class CreateEditActorComponent extends AppComponentBase {
     @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
     
-
     activeIndex: number = 0;
     item: ActorDto = new ActorDto();
     actorTypes: ActorTypeDto[];
