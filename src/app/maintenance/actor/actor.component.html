@@ -90,6 +90,10 @@
                                             Habilitado
                                             <p-sortIcon field="Enabled"></p-sortIcon>
                                         </th>
+                                        <th style="width: 130px" pSortableColumn="Enabled">
+                                            Estado
+                                            <p-sortIcon field="Enabled"></p-sortIcon>
+                                        </th>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record let-expanded="expanded">
@@ -160,6 +164,19 @@
                                             <span class="kt-badge kt-badge--dark kt-badge--inline"
                                                 *ngIf="!record.enabled">
                                                 No
+                                            </span>
+                                        </td>
+                                        <td style="width: 130px">
+                                            <span class="ui-column-title">
+                                                Estado
+                                            </span>
+                                            <span class="kt-badge kt-badge--dark kt-badge--inline"
+                                                *ngIf="record.statusId == 1">
+                                                Pend. de revisión
+                                            </span>
+                                            <span class="kt-badge kt-badge--success kt-badge--inline"
+                                                *ngIf="record.statusId == 2">
+                                                Aprobado
                                             </span>
                                         </td>
                                     </tr>
