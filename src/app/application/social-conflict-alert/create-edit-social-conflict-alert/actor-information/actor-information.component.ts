@@ -56,6 +56,7 @@ export class ActorInformationSocialConflictAlertComponent extends AppComponentBa
     }
 
     createItem() {
+        this.createEditModal.statusId = 1;
         this.createEditModal.show();
     }
 
