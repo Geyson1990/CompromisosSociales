@@ -30,6 +30,7 @@ export class CreateEditActorComponent extends AppComponentBase {
     politic: string = 'false';
     active: boolean = false;
     saving: boolean = false;
+    statusId: number = 0;
 
     selectedTypologies: ActorTypologyDto[];
     selectedSubTypologies: ActorSubTypologyDto[];
@@ -95,44 +96,32 @@ export class CreateEditActorComponent extends AppComponentBase {
         this.modal.hide();
     }
 
-    save(): void {
-
-        // if (this.isNullEmptyOrWhiteSpace(this.item.name)) {
-        //     this.message.info('Debe ingresar el nombre y apellido del actor antes de continuar');
-        //     return;
-        // }
-        // if (this.item.actorType.id == -1) {
-        //     this.message.info('Debe seleccionar el tipo de actor antes de continuar');
-        //     return;
-        // }
-        // if (this.item.actorType.showMovement && this.item.actorMovement.id == -1) {
-        //     this.message.info('Debe seleccionar la capacidad de movilización del actor antes de continuar');
-        //     return;
-        // }
-        // if (this.isNullEmptyOrWhiteSpace(this.item.community)) {
-        //     this.message.info('Debe ingresar la institución del actor antes de continuar');
-        //     return;
-        // }
-        // if (!this.isNullEmptyOrWhiteSpace(this.item.document) && this.item.document.length != 8) {
-        //     this.message.info('El DNI debe tener 8 caracteres');
-        //     return;
-        // }
-
+    save() {
+        if (this.item.statusId == 1 && this.item.id > 0) {
+            this.message.confirm(`El actor pasará de estado Pendiente de revisión a Aprobado.`,'¿Esta seguro de continuar?', (confirm) => {
+                if (confirm == false) {
+                    return;
+                }
+            });
+        }
         this.saving = true;
         this.item.enabled = this.state == 'true';
         this.item.isPoliticalAssociation = this.politic == 'true';
 
         if (this.item.id)
+        {
+            this.item.statusId = 2;
             this._actorServiceProxy
-                .update(this.item)
-                .pipe(finalize(() => this.saving = false))
-                .subscribe(() => {
-                    this.close();
-                    this.modalSave.emit();
-                    this.notify.success('Registro actualizado satisfactoriamente');
-                });
-
-        else
+            .update(this.item)
+            .pipe(finalize(() => this.saving = false))
+            .subscribe(() => {
+                this.close();
+                this.modalSave.emit();
+                this.notify.success('Registro actualizado satisfactoriamente');
+            });
+        }
+        else {
+            this.item.statusId = this.statusId;
             this._actorServiceProxy
                 .create(this.item)
                 .pipe(finalize(() => this.saving = false))
@@ -141,6 +130,7 @@ export class CreateEditActorComponent extends AppComponentBase {
                     this.modalSave.emit();
                     this.notify.success('Registro creado satisfactoriamente');
                 });
+            }
     }
 
 }
