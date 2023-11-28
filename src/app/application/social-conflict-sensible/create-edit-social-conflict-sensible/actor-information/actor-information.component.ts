@@ -72,6 +72,7 @@ export class ActorInformationSocialConflictSensibleComponent extends AppComponen
     }
 
     createItem() {
+        this.createEditModal.statusId = 1;
         this.createEditModal.show();
     }
 
