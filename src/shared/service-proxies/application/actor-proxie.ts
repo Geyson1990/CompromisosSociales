@@ -412,6 +412,7 @@ export interface IActorDto {
     editUser: ActorUserDto;
     creationTime: moment.Moment;
     lastModificationTime: moment.Moment;
+    statusId: number;
 }
 
 export class ActorDto implements IActorDto {
@@ -434,6 +435,7 @@ export class ActorDto implements IActorDto {
     editUser: ActorUserDto;
     creationTime: moment.Moment;
     lastModificationTime: moment.Moment;
+    statusId: number;
 
     constructor(data?: IActorDto) {
         if (data) {
@@ -464,7 +466,7 @@ export class ActorDto implements IActorDto {
             this.isPoliticalAssociation = _data["isPoliticalAssociation"];
             this.politicalAssociation = _data["politicalAssociation"];
             this.enabled = _data["enabled"];
-            // this.actorType = _data["actorType"] ? ActorTypeDto.fromJS(_data["actorType"]) : <any>undefined;
+            this.statusId = _data["statusId"];
 
             this.actorType = _data["actorType"] ? ActorTypeDto.fromJS(_data["actorType"]) : new ActorTypeDto({
                 id: -1,
@@ -515,6 +517,7 @@ export class ActorDto implements IActorDto {
         data["editUser"] = this.editUser ? this.editUser.toJSON() : <any>undefined;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toISOString() : <any>undefined;
+        data["statusId"] = this.statusId;
 
         return data;
     }
