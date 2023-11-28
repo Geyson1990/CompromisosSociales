@@ -51,6 +51,7 @@ export class ActorComponent extends AppComponentBase implements OnInit {
                 this.primengTableHelper.getSkipCount(this.paginator, event))
             .pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator()))
             .subscribe((result) => {
+                console.log("result",result.items)
                 this.primengTableHelper.records = result.items;
                 this.primengTableHelper.totalRecordsCount = result.totalCount;
                 this.primengTableHelper.hideLoadingIndicator();
@@ -58,6 +59,7 @@ export class ActorComponent extends AppComponentBase implements OnInit {
     }
 
     createItem() {
+        this.createEditModal.statusId = 2;
         this.createEditModal.show();
     }
 
