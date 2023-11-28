@@ -16,7 +16,7 @@
                         <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
                 </div>      
-                <div *ngIf="item.statusId == 1" class="alert" style="padding: 20px;background-color: #f44336;color: white;margin-bottom: 15px;"><span>&times;</span>
+                <div *ngIf="item.statusId == 1 && item.id>0" class="alert" style="padding: 20px;background-color: #f44336;color: white;margin-bottom: 15px;"><span>&times;</span>
                     Si realiza alguna modificación en los campos del Actor: <br>
                     * Se actualizará la información en los Casos de Conflictividad Social, la Situación Sensible al Conflicto o la Alerta. <br>
                     * Adicionalmente se aprobará el registro del Actor.
