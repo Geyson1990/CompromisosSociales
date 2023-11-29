@@ -15,7 +15,7 @@
                     <button type="button" class="close" (click)="close()" aria-label="Cerrar" [disabled]="saving">
                         <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
-                </div>      
+                </div>     
                 <div *ngIf="item.statusId == 1 && item.id>0" class="alert" style="padding: 20px;background-color: #f44336;color: white;margin-bottom: 15px;"><span>&times;</span>
                     Si realiza alguna modificación en los campos del Actor: <br>
                     * Se actualizará la información en los Casos de Conflictividad Social, la Situación Sensible al Conflicto o la Alerta. <br>
@@ -28,7 +28,7 @@
                             <label for="actorType">
                                 Tipo actor (*)
                             </label>
-                            <select (change)="onActorTypeChange($event)" class="form-control" id="actorType" name="actorType" [(ngModel)]="item.actorType.id">
+                            <select #actorTypeInput="ngModel" (change)="onActorTypeChange($event)" class="form-control" id="actorType" name="actorType" [(ngModel)]="item.actorType.id" required>
                                 <option value="-1">
                                     Seleccione
                                 </option>
@@ -36,6 +36,7 @@
                                     {{actorType.name}}
                                 </option>
                             </select>
+                            <validation-messages [formCtrl]="actorTypeInput"></validation-messages>
                         </div>
                         <div class="form-group col-sm-6">
                             <label for="ActorDocumentNumber">
@@ -44,7 +45,7 @@
                             <input #actorDocumentNumberInput="ngModel" id="ActorDocumentNumber" name="ActorDocumentNumber"
                                 class="form-control" type="text" [(ngModel)]="item.documentNumber"
                                 (keyup)="keyUpOnlyInteger($event)" (keypress)="keyPressOnlyNumbers($event)" minlength="8"
-                                maxlength="8" >
+                                maxlength="11" required>
                             <validation-messages [formCtrl]="actorDocumentNumberInput"></validation-messages>
                         </div>
                         <div class="form-group col-sm-8">
@@ -72,10 +73,12 @@
                         </div>
                         <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
                             <label for="jobPosition">
-                                Cargo
+                                Cargo (*)
                             </label>
                             <input id="jobPosition" #analystSurnameInput="ngModel" class="form-control text-uppercase"
                                 type="text" name="jobPosition" [(ngModel)]="item.jobPosition" required maxlength="255">
+                                <validation-messages [formCtrl]="analystSurnameInput"></validation-messages>
+
                         </div>
                         <div class="form-group col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
                             <label for="institution">
@@ -107,8 +110,8 @@
                             </label>
                             <input #actorPhoneNumberInput="ngModel" id="ActorPhoneNumber" name="ActorPhoneNumber"
                                 class="form-control" type="text" (keyup)="keyUpPhoneNumber($event)"
-                                (keypress)="keyPressPhoneNumber($event)" [(ngModel)]="item.phoneNumber" maxlength="255">
-                            <validation-messages [formCtrl]="actorPhoneNumberInput"></validation-messages>
+                                (keypress)="keyPressPhoneNumber($event)" [(ngModel)]="item.phoneNumber" minlength="0" maxlength="12">
+                            <!-- <validation-messages [formCtrl]="actorPhoneNumberInput"></validation-messages> -->
                         </div> 
                         <div class="form-group col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
                             <label for="ActorTypeDetail">
