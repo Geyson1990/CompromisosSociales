@@ -104,6 +104,10 @@ export class CreateEditActorComponent extends AppComponentBase {
                 }
             });
         }
+        if (this.item.actorType.id == -1) {
+            this.message.error('Falta seleccionar el tipo de actor', 'Aviso');
+            return;
+        }
         this.saving = true;
         this.item.enabled = this.state == 'true';
         this.item.isPoliticalAssociation = this.politic == 'true';
