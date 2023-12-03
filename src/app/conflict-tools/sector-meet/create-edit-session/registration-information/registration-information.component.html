@@ -202,9 +202,9 @@
     <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10"> 
     </div>
  
-    <ng-container *ngIf="viewGraphics">
+     <ng-container *ngIf="viewGraphics">
 
-        <div *ngIf="charts.compromisGenderStates.type == chartTypes.pie && totalGener > 0" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+        <div *ngIf="charts.compromisGenderStates.type == chartTypes.pie" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
     
             <h6 class="d-block text-center text-dark font-weight-bold mt-5 text-accent-primary">
                 Total Participantes por Género
@@ -216,10 +216,10 @@
             </p-chart>
         </div>
         
-        <div *ngIf="charts.compromisInstitutionStates.type == chartTypes.pie && totalInstitution > 0" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+        <div *ngIf="charts.compromisInstitutionStates.type == chartTypes.pie" class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
     
             <h6 class="d-block text-center text-dark font-weight-bold mt-5 text-accent-primary">
-                Total Partcipantes por Institución
+                Total Participantes por Institución
             </h6>
     
             <app-spinner *ngIf="busy" class="d-block my-auto"></app-spinner>
@@ -229,7 +229,7 @@
         </div> 
         
     </ng-container>
-
+	
     <div class="col-12 text-right mb-2 mx-0">
         <button (click)="addLeader.emit()" class="mb-0 mt-auto btn btn-primary">
             <i class="fa fa-plus"></i>
