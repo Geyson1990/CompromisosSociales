@@ -2,6 +2,7 @@ import { Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } f
 import { CreateEditActorComponent } from '@app/maintenance/actor/create-edit-actor/create-edit-actor.component';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { FindActorComponent } from '@shared/component/find-actor/find-actor.component';
+import { ActorDto } from '@shared/service-proxies/application/actor-proxie';
 import { SocialConflictDto, SocialConflictActorLocationDto } from '@shared/service-proxies/application/social-conflict-proxie';
 import { LazyLoadEvent, Paginator } from 'primeng';
 
@@ -69,10 +70,24 @@ export class ActorInformationSocialConflictComponent extends AppComponentBase im
         this.createEditModal.show();
     }
 
-    saveActor() {
-
+    saveActor(event: { value: ActorDto, index: number} ) {
+        let socialConflictActorDTO : SocialConflictActorLocationDto = new  SocialConflictActorLocationDto();
+        socialConflictActorDTO.actorId = event.value.id ;
+        socialConflictActorDTO.actorType = event.value.actorType;
+        socialConflictActorDTO.document = event.value.documentNumber;
+        socialConflictActorDTO.emailAddress = event.value.emailAddress;
+        socialConflictActorDTO.job = event.value.jobPosition;
+        socialConflictActorDTO.name = event.value.fullName;
+        socialConflictActorDTO.phoneNumber = event.value.phoneNumber;
+        socialConflictActorDTO.community = event.value.institution;
+        socialConflictActorDTO.isPoliticalAssociation = event.value.isPoliticalAssociation;
+        socialConflictActorDTO.politicalAssociation = event.value.politicalAssociation;
+        socialConflictActorDTO.position = event.value.position;
+        socialConflictActorDTO.interest = event.value.interest;
+        socialConflictActorDTO.actorMovement = event.value.actorMovement;
+        this.addOrUpdateItem( {value: socialConflictActorDTO, index: null});
     }
-    
+     
     removeItem(actor: SocialConflictActorLocationDto, index: number) {
         if (actor.id) {
             actor.remove = true;

@@ -2,8 +2,9 @@ import { Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } f
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ActorDto, ActorTypeDto, ActorTypologyDto, ActorSubTypologyDto, ActorMovementDto, ActorServiceProxy, ActorSocialConflictDto, ActorSocialConflictAlertDto, ActorSocialConflictSensibleDto } from '@shared/service-proxies/application/actor-proxie';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { finalize } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs/operators';
 import { TabView } from 'primeng';
+import { SocialConflictActorLocationDto } from '@shared/service-proxies/application/social-conflict-proxie';
 
 @Component({
     selector: 'create-edit-actor',
@@ -31,7 +32,7 @@ export class CreateEditActorComponent extends AppComponentBase {
     active: boolean = false;
     saving: boolean = false;
     statusId: number = 0;
-
+ 
     selectedTypologies: ActorTypologyDto[];
     selectedSubTypologies: ActorSubTypologyDto[];
 
@@ -128,13 +129,22 @@ export class CreateEditActorComponent extends AppComponentBase {
             this.item.statusId = this.statusId;
             this._actorServiceProxy
                 .create(this.item)
-                .pipe(finalize(() => this.saving = false))
-                .subscribe(() => {
+                .pipe(
+                    finalize(() => this.saving = false))
+                .subscribe((resp: any) => {
+                    console.log('Respuesta del servidor:', resp);
                     this.close();
-                    this.modalSave.emit();
+                    this.item.id = resp.id ;
+                    this.item.statusId = -1;
+                    console.log("value:", this.item)
+                    this.modalSave.emit({ value: this.item });
                     this.notify.success('Registro creado satisfactoriamente');
-                });
+                }, 
+                (error: any) => {
+                    console.error('Error al procesar la respuesta del servidor:', error);
+                }
+                    );
             }
     }
-
+ 
 }
